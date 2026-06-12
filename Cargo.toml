@@ -1,0 +1,31 @@
+[workspace]
+members = [".", "xtask"]
+resolver = "2"
+
+[package]
+name = "rootly"
+version = "0.1.0"
+edition = "2021"
+description = "Rust SDK for the Rootly API"
+license = "MIT"
+repository = "https://github.com/rootlyhq/rootly-rs"
+keywords = ["rootly", "incident-management", "api-client", "openapi"]
+categories = ["api-bindings", "web-programming::http-client"]
+
+[dependencies]
+progenitor-client = "0.14"
+reqwest = { version = "0.13", default-features = false, features = ["json"] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["serde", "v4"] }
+thiserror = "2"
+tokio = { version = "1", features = ["time"] }
+http = "1"
+futures = "0.3"
+rand = "0.9"
+regress = "0.10"
+bytes = "1"
+
+[dev-dependencies]
+tokio = { version = "1", features = ["macros", "rt-multi-thread"] }
