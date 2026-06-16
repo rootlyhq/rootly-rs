@@ -1500,21 +1500,41 @@ pub mod types {
     ///    "updated_at"
     ///  ],
     ///  "properties": {
-    ///    "alert_field_values_attributes": {
-    ///      "description": "Custom alert field values to create with the alert",
-    ///      "type": "array",
+    ///    "alert_field_values": {
+    ///      "description": "Custom alert field values associated with the alert. Only present when the enable_alert_fields feature flag is enabled for the team.",
+    ///      "type": [
+    ///        "array",
+    ///        "null"
+    ///      ],
     ///      "items": {
-    ///        "type": [
-    ///          "object",
-    ///          "null"
-    ///        ],
+    ///        "type": "object",
     ///        "required": [
     ///          "alert_field_id",
+    ///          "alert_id",
+    ///          "created_at",
+    ///          "id",
+    ///          "updated_at",
     ///          "value"
     ///        ],
     ///        "properties": {
     ///          "alert_field_id": {
     ///            "description": "ID of the custom alert field",
+    ///            "type": "string"
+    ///          },
+    ///          "alert_id": {
+    ///            "description": "ID of the alert",
+    ///            "type": "string"
+    ///          },
+    ///          "created_at": {
+    ///            "description": "Date of creation",
+    ///            "type": "string"
+    ///          },
+    ///          "id": {
+    ///            "description": "Unique ID of the alert field value",
+    ///            "type": "string"
+    ///          },
+    ///          "updated_at": {
+    ///            "description": "Date of last update",
     ///            "type": "string"
     ///          },
     ///          "value": {
@@ -1524,12 +1544,47 @@ pub mod types {
     ///        }
     ///      }
     ///    },
+    ///    "alert_urgency": {
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ],
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/alert_urgency"
+    ///        }
+    ///      ]
+    ///    },
     ///    "alert_urgency_id": {
     ///      "description": "The ID of the alert urgency",
     ///      "type": [
     ///        "string",
     ///        "null"
     ///      ]
+    ///    },
+    ///    "alerting_targets": {
+    ///      "description": "Alerting targets associated with the alert. Only present when advanced routing is enabled for the team.",
+    ///      "type": [
+    ///        "array",
+    ///        "null"
+    ///      ],
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "id": {
+    ///            "description": "ID of the alerting target",
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "description": "Type of the alerting target (e.g. team, user, escalation_policy, service, functionality, slack_channel)",
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      }
     ///    },
     ///    "created_at": {
     ///      "description": "Date of creation",
@@ -1761,6 +1816,11 @@ pub mod types {
     ///    "updated_at": {
     ///      "description": "Date of last update",
     ///      "type": "string"
+    ///    },
+    ///    "url": {
+    ///      "description": "The Rootly dashboard URL for the alert",
+    ///      "type": "string",
+    ///      "format": "uri"
     ///    }
     ///  }
     ///}
@@ -1768,14 +1828,21 @@ pub mod types {
     /// </details>
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct Alert {
-        ///Custom alert field values to create with the alert
-        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
-        pub alert_field_values_attributes: ::std::vec::Vec<
-            ::std::option::Option<AlertAlertFieldValuesAttributesItem>,
+        ///Custom alert field values associated with the alert. Only present when the enable_alert_fields feature flag is enabled for the team.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub alert_field_values: ::std::option::Option<
+            ::std::vec::Vec<AlertAlertFieldValuesItem>,
         >,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub alert_urgency: ::std::option::Option<AlertUrgency>,
         ///The ID of the alert urgency
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub alert_urgency_id: ::std::option::Option<::std::string::String>,
+        ///Alerting targets associated with the alert. Only present when advanced routing is enabled for the team.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub alerting_targets: ::std::option::Option<
+            ::std::vec::Vec<AlertAlertingTargetsItem>,
+        >,
         ///Date of creation
         pub created_at: ::std::string::String,
         ///Additional data
@@ -1857,13 +1924,16 @@ pub mod types {
         pub summary: ::std::string::String,
         ///Date of last update
         pub updated_at: ::std::string::String,
+        ///The Rootly dashboard URL for the alert
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub url: ::std::option::Option<::std::string::String>,
     }
     impl Alert {
         pub fn builder() -> builder::Alert {
             Default::default()
         }
     }
-    ///`AlertAlertFieldValuesAttributesItem`
+    ///`AlertAlertFieldValuesItem`
     ///
     /// <details><summary>JSON schema</summary>
     ///
@@ -1872,11 +1942,31 @@ pub mod types {
     ///  "type": "object",
     ///  "required": [
     ///    "alert_field_id",
+    ///    "alert_id",
+    ///    "created_at",
+    ///    "id",
+    ///    "updated_at",
     ///    "value"
     ///  ],
     ///  "properties": {
     ///    "alert_field_id": {
     ///      "description": "ID of the custom alert field",
+    ///      "type": "string"
+    ///    },
+    ///    "alert_id": {
+    ///      "description": "ID of the alert",
+    ///      "type": "string"
+    ///    },
+    ///    "created_at": {
+    ///      "description": "Date of creation",
+    ///      "type": "string"
+    ///    },
+    ///    "id": {
+    ///      "description": "Unique ID of the alert field value",
+    ///      "type": "string"
+    ///    },
+    ///    "updated_at": {
+    ///      "description": "Date of last update",
     ///      "type": "string"
     ///    },
     ///    "value": {
@@ -1888,14 +1978,59 @@ pub mod types {
     /// ```
     /// </details>
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct AlertAlertFieldValuesAttributesItem {
+    pub struct AlertAlertFieldValuesItem {
         ///ID of the custom alert field
         pub alert_field_id: ::std::string::String,
+        ///ID of the alert
+        pub alert_id: ::std::string::String,
+        ///Date of creation
+        pub created_at: ::std::string::String,
+        ///Unique ID of the alert field value
+        pub id: ::std::string::String,
+        ///Date of last update
+        pub updated_at: ::std::string::String,
         ///Value for the alert field
         pub value: ::std::string::String,
     }
-    impl AlertAlertFieldValuesAttributesItem {
-        pub fn builder() -> builder::AlertAlertFieldValuesAttributesItem {
+    impl AlertAlertFieldValuesItem {
+        pub fn builder() -> builder::AlertAlertFieldValuesItem {
+            Default::default()
+        }
+    }
+    ///`AlertAlertingTargetsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "id": {
+    ///      "description": "ID of the alerting target",
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "description": "Type of the alerting target (e.g. team, user, escalation_policy, service, functionality, slack_channel)",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AlertAlertingTargetsItem {
+        ///ID of the alerting target
+        pub id: ::std::string::String,
+        ///Type of the alerting target (e.g. team, user, escalation_policy, service, functionality, slack_channel)
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AlertAlertingTargetsItem {
+        pub fn builder() -> builder::AlertAlertingTargetsItem {
             Default::default()
         }
     }
@@ -5919,12 +6054,30 @@ pub mod types {
     ///    "updated_at"
     ///  ],
     ///  "properties": {
+    ///    "color": {
+    ///      "description": "The color associated with this urgency level",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "created_at": {
     ///      "description": "Date of creation",
     ///      "type": "string"
     ///    },
+    ///    "deleted_at": {
+    ///      "description": "Date of deletion",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "description": {
     ///      "description": "The description of the alert urgency",
+    ///      "type": "string"
+    ///    },
+    ///    "id": {
+    ///      "description": "Unique ID of the alert urgency",
     ///      "type": "string"
     ///    },
     ///    "name": {
@@ -5935,9 +6088,20 @@ pub mod types {
     ///      "description": "Position of the alert urgency",
     ///      "type": "integer"
     ///    },
+    ///    "team_id": {
+    ///      "description": "The ID of the team this urgency belongs to",
+    ///      "type": "integer"
+    ///    },
     ///    "updated_at": {
     ///      "description": "Date of last update",
     ///      "type": "string"
+    ///    },
+    ///    "urgency": {
+    ///      "description": "The urgency level",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
     ///    }
     ///  }
     ///}
@@ -5945,16 +6109,31 @@ pub mod types {
     /// </details>
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AlertUrgency {
+        ///The color associated with this urgency level
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub color: ::std::option::Option<::std::string::String>,
         ///Date of creation
         pub created_at: ::std::string::String,
+        ///Date of deletion
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub deleted_at: ::std::option::Option<::std::string::String>,
         ///The description of the alert urgency
         pub description: ::std::string::String,
+        ///Unique ID of the alert urgency
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
         ///The name of the alert urgency
         pub name: ::std::string::String,
         ///Position of the alert urgency
         pub position: i64,
+        ///The ID of the team this urgency belongs to
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub team_id: ::std::option::Option<i64>,
         ///Date of last update
         pub updated_at: ::std::string::String,
+        ///The urgency level
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub urgency: ::std::option::Option<::std::string::String>,
     }
     impl AlertUrgency {
         pub fn builder() -> builder::AlertUrgency {
@@ -160068,14 +160247,20 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct Alert {
-            alert_field_values_attributes: ::std::result::Result<
-                ::std::vec::Vec<
-                    ::std::option::Option<super::AlertAlertFieldValuesAttributesItem>,
-                >,
+            alert_field_values: ::std::result::Result<
+                ::std::option::Option<::std::vec::Vec<super::AlertAlertFieldValuesItem>>,
+                ::std::string::String,
+            >,
+            alert_urgency: ::std::result::Result<
+                ::std::option::Option<super::AlertUrgency>,
                 ::std::string::String,
             >,
             alert_urgency_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            alerting_targets: ::std::result::Result<
+                ::std::option::Option<::std::vec::Vec<super::AlertAlertingTargetsItem>>,
                 ::std::string::String,
             >,
             created_at: ::std::result::Result<
@@ -160182,12 +160367,18 @@ pub mod types {
                 ::std::string::String,
                 ::std::string::String,
             >,
+            url: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default for Alert {
             fn default() -> Self {
                 Self {
-                    alert_field_values_attributes: Ok(Default::default()),
+                    alert_field_values: Ok(Default::default()),
+                    alert_urgency: Ok(Default::default()),
                     alert_urgency_id: Ok(Default::default()),
+                    alerting_targets: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
                     data: Ok(Default::default()),
                     deduplication_key: Ok(Default::default()),
@@ -160215,25 +160406,38 @@ pub mod types {
                     status: Ok(Default::default()),
                     summary: Err("no value supplied for summary".to_string()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
+                    url: Ok(Default::default()),
                 }
             }
         }
         impl Alert {
-            pub fn alert_field_values_attributes<T>(mut self, value: T) -> Self
+            pub fn alert_field_values<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::vec::Vec<
-                        ::std::option::Option<super::AlertAlertFieldValuesAttributesItem>,
+                    ::std::option::Option<
+                        ::std::vec::Vec<super::AlertAlertFieldValuesItem>,
                     >,
                 >,
                 T::Error: ::std::fmt::Display,
             {
-                self.alert_field_values_attributes = value
+                self.alert_field_values = value
                     .try_into()
                     .map_err(|e| {
                         format!(
-                            "error converting supplied value for alert_field_values_attributes: {e}"
+                            "error converting supplied value for alert_field_values: {e}"
                         )
+                    });
+                self
+            }
+            pub fn alert_urgency<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::AlertUrgency>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.alert_urgency = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for alert_urgency: {e}")
                     });
                 self
             }
@@ -160247,6 +160451,24 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for alert_urgency_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn alerting_targets<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::std::vec::Vec<super::AlertAlertingTargetsItem>,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.alerting_targets = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for alerting_targets: {e}"
                         )
                     });
                 self
@@ -160609,6 +160831,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for url: {e}")
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<Alert> for super::Alert {
             type Error = super::error::ConversionError;
@@ -160616,8 +160850,10 @@ pub mod types {
                 value: Alert,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
-                    alert_field_values_attributes: value.alert_field_values_attributes?,
+                    alert_field_values: value.alert_field_values?,
+                    alert_urgency: value.alert_urgency?,
                     alert_urgency_id: value.alert_urgency_id?,
+                    alerting_targets: value.alerting_targets?,
                     created_at: value.created_at?,
                     data: value.data?,
                     deduplication_key: value.deduplication_key?,
@@ -160645,16 +160881,17 @@ pub mod types {
                     status: value.status?,
                     summary: value.summary?,
                     updated_at: value.updated_at?,
+                    url: value.url?,
                 })
             }
         }
         impl ::std::convert::From<super::Alert> for Alert {
             fn from(value: super::Alert) -> Self {
                 Self {
-                    alert_field_values_attributes: Ok(
-                        value.alert_field_values_attributes,
-                    ),
+                    alert_field_values: Ok(value.alert_field_values),
+                    alert_urgency: Ok(value.alert_urgency),
                     alert_urgency_id: Ok(value.alert_urgency_id),
+                    alerting_targets: Ok(value.alerting_targets),
                     created_at: Ok(value.created_at),
                     data: Ok(value.data),
                     deduplication_key: Ok(value.deduplication_key),
@@ -160682,28 +160919,46 @@ pub mod types {
                     status: Ok(value.status),
                     summary: Ok(value.summary),
                     updated_at: Ok(value.updated_at),
+                    url: Ok(value.url),
                 }
             }
         }
         #[derive(Clone, Debug)]
-        pub struct AlertAlertFieldValuesAttributesItem {
+        pub struct AlertAlertFieldValuesItem {
             alert_field_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            alert_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            updated_at: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
             >,
             value: ::std::result::Result<::std::string::String, ::std::string::String>,
         }
-        impl ::std::default::Default for AlertAlertFieldValuesAttributesItem {
+        impl ::std::default::Default for AlertAlertFieldValuesItem {
             fn default() -> Self {
                 Self {
                     alert_field_id: Err(
                         "no value supplied for alert_field_id".to_string(),
                     ),
+                    alert_id: Err("no value supplied for alert_id".to_string()),
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
                     value: Err("no value supplied for value".to_string()),
                 }
             }
         }
-        impl AlertAlertFieldValuesAttributesItem {
+        impl AlertAlertFieldValuesItem {
             pub fn alert_field_id<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -160715,6 +160970,52 @@ pub mod types {
                         format!(
                             "error converting supplied value for alert_field_id: {e}"
                         )
+                    });
+                self
+            }
+            pub fn alert_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.alert_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for alert_id: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
                     });
                 self
             }
@@ -160731,24 +161032,90 @@ pub mod types {
                 self
             }
         }
-        impl ::std::convert::TryFrom<AlertAlertFieldValuesAttributesItem>
-        for super::AlertAlertFieldValuesAttributesItem {
+        impl ::std::convert::TryFrom<AlertAlertFieldValuesItem>
+        for super::AlertAlertFieldValuesItem {
             type Error = super::error::ConversionError;
             fn try_from(
-                value: AlertAlertFieldValuesAttributesItem,
+                value: AlertAlertFieldValuesItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     alert_field_id: value.alert_field_id?,
+                    alert_id: value.alert_id?,
+                    created_at: value.created_at?,
+                    id: value.id?,
+                    updated_at: value.updated_at?,
                     value: value.value?,
                 })
             }
         }
-        impl ::std::convert::From<super::AlertAlertFieldValuesAttributesItem>
-        for AlertAlertFieldValuesAttributesItem {
-            fn from(value: super::AlertAlertFieldValuesAttributesItem) -> Self {
+        impl ::std::convert::From<super::AlertAlertFieldValuesItem>
+        for AlertAlertFieldValuesItem {
+            fn from(value: super::AlertAlertFieldValuesItem) -> Self {
                 Self {
                     alert_field_id: Ok(value.alert_field_id),
+                    alert_id: Ok(value.alert_id),
+                    created_at: Ok(value.created_at),
+                    id: Ok(value.id),
+                    updated_at: Ok(value.updated_at),
                     value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AlertAlertingTargetsItem {
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AlertAlertingTargetsItem {
+            fn default() -> Self {
+                Self {
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AlertAlertingTargetsItem {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AlertAlertingTargetsItem>
+        for super::AlertAlertingTargetsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertAlertingTargetsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AlertAlertingTargetsItem>
+        for AlertAlertingTargetsItem {
+            fn from(value: super::AlertAlertingTargetsItem) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
                 }
             }
         }
@@ -166496,33 +166863,70 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct AlertUrgency {
+            color: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             created_at: ::std::result::Result<
                 ::std::string::String,
+                ::std::string::String,
+            >,
+            deleted_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
             description: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
             >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
             position: ::std::result::Result<i64, ::std::string::String>,
+            team_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
             updated_at: ::std::result::Result<
                 ::std::string::String,
+                ::std::string::String,
+            >,
+            urgency: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
         }
         impl ::std::default::Default for AlertUrgency {
             fn default() -> Self {
                 Self {
+                    color: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
+                    deleted_at: Ok(Default::default()),
                     description: Err("no value supplied for description".to_string()),
+                    id: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     position: Err("no value supplied for position".to_string()),
+                    team_id: Ok(Default::default()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
+                    urgency: Ok(Default::default()),
                 }
             }
         }
         impl AlertUrgency {
+            pub fn color<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.color = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for color: {e}")
+                    });
+                self
+            }
             pub fn created_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -166532,6 +166936,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn deleted_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.deleted_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for deleted_at: {e}")
                     });
                 self
             }
@@ -166545,6 +166961,16 @@ pub mod types {
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
                     });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
                 self
             }
             pub fn name<T>(mut self, value: T) -> Self
@@ -166571,6 +166997,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn team_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.team_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for team_id: {e}")
+                    });
+                self
+            }
             pub fn updated_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -166583,6 +167021,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn urgency<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.urgency = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for urgency: {e}")
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<AlertUrgency> for super::AlertUrgency {
             type Error = super::error::ConversionError;
@@ -166590,22 +167040,32 @@ pub mod types {
                 value: AlertUrgency,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    color: value.color?,
                     created_at: value.created_at?,
+                    deleted_at: value.deleted_at?,
                     description: value.description?,
+                    id: value.id?,
                     name: value.name?,
                     position: value.position?,
+                    team_id: value.team_id?,
                     updated_at: value.updated_at?,
+                    urgency: value.urgency?,
                 })
             }
         }
         impl ::std::convert::From<super::AlertUrgency> for AlertUrgency {
             fn from(value: super::AlertUrgency) -> Self {
                 Self {
+                    color: Ok(value.color),
                     created_at: Ok(value.created_at),
+                    deleted_at: Ok(value.deleted_at),
                     description: Ok(value.description),
+                    id: Ok(value.id),
                     name: Ok(value.name),
                     position: Ok(value.position),
+                    team_id: Ok(value.team_id),
                     updated_at: Ok(value.updated_at),
+                    urgency: Ok(value.urgency),
                 }
             }
         }

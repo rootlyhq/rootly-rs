@@ -33329,56 +33329,7 @@
           },
           "source": {
             "type": "string",
-            "description": "The source of the alert",
-            "enum": [
-              "rootly",
-              "manual",
-              "api",
-              "heartbeat",
-              "web",
-              "slack",
-              "email",
-              "workflow",
-              "live_call_routing",
-              "mobile",
-              "google_chat",
-              "pagerduty",
-              "opsgenie",
-              "victorops",
-              "pagertree",
-              "datadog",
-              "dynatrace",
-              "nobl9",
-              "zendesk",
-              "asana",
-              "clickup",
-              "sentry",
-              "rollbar",
-              "jira",
-              "honeycomb",
-              "service_now",
-              "linear",
-              "grafana",
-              "alertmanager",
-              "google_cloud",
-              "generic_webhook",
-              "cloud_watch",
-              "aws_sns",
-              "azure",
-              "splunk",
-              "chronosphere",
-              "cloudflare",
-              "app_optics",
-              "bug_snag",
-              "monte_carlo",
-              "nagios",
-              "prtg",
-              "catchpoint",
-              "app_dynamics",
-              "checkly",
-              "new_relic",
-              "gitlab"
-            ]
+            "description": "The source of the alert"
           },
           "status": {
             "type": "string",
@@ -33495,6 +33446,15 @@
             "description": "The ID of the alert urgency",
             "nullable": true
           },
+          "alert_urgency": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/alert_urgency"
+              }
+            ],
+            "nullable": true
+          },
           "group_leader_alert_id": {
             "type": "string",
             "description": "The ID of the group leader alert",
@@ -33563,27 +33523,74 @@
             "description": "Alerts sharing the same deduplication key are treated as a single alert.",
             "nullable": true
           },
-          "alert_field_values_attributes": {
+          "alert_field_values": {
             "type": "array",
-            "description": "Custom alert field values to create with the alert",
+            "description": "Custom alert field values associated with the alert. Only present when the enable_alert_fields feature flag is enabled for the team.",
             "items": {
               "type": "object",
               "properties": {
-                "alert_field_id": {
+                "id": {
                   "type": "string",
-                  "description": "ID of the custom alert field"
+                  "description": "Unique ID of the alert field value"
                 },
                 "value": {
                   "type": "string",
                   "description": "Value for the alert field"
+                },
+                "alert_field_id": {
+                  "type": "string",
+                  "description": "ID of the custom alert field"
+                },
+                "alert_id": {
+                  "type": "string",
+                  "description": "ID of the alert"
+                },
+                "created_at": {
+                  "type": "string",
+                  "description": "Date of creation"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "description": "Date of last update"
                 }
               },
               "required": [
+                "id",
+                "value",
                 "alert_field_id",
-                "value"
-              ],
-              "nullable": true
-            }
+                "alert_id",
+                "created_at",
+                "updated_at"
+              ]
+            },
+            "nullable": true
+          },
+          "alerting_targets": {
+            "type": "array",
+            "description": "Alerting targets associated with the alert. Only present when advanced routing is enabled for the team.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "ID of the alerting target"
+                },
+                "type": {
+                  "type": "string",
+                  "description": "Type of the alerting target (e.g. team, user, escalation_policy, service, functionality, slack_channel)"
+                }
+              },
+              "required": [
+                "id",
+                "type"
+              ]
+            },
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "description": "The Rootly dashboard URL for the alert",
+            "format": "uri"
           },
           "started_at": {
             "type": "string",
@@ -33626,56 +33633,7 @@
               },
               "source": {
                 "type": "string",
-                "description": "The source of the alert",
-                "enum": [
-                  "rootly",
-                  "manual",
-                  "api",
-                  "heartbeat",
-                  "web",
-                  "slack",
-                  "email",
-                  "workflow",
-                  "live_call_routing",
-                  "mobile",
-                  "google_chat",
-                  "pagerduty",
-                  "opsgenie",
-                  "victorops",
-                  "pagertree",
-                  "datadog",
-                  "dynatrace",
-                  "nobl9",
-                  "zendesk",
-                  "asana",
-                  "clickup",
-                  "sentry",
-                  "rollbar",
-                  "jira",
-                  "honeycomb",
-                  "service_now",
-                  "linear",
-                  "grafana",
-                  "alertmanager",
-                  "google_cloud",
-                  "generic_webhook",
-                  "cloud_watch",
-                  "aws_sns",
-                  "azure",
-                  "splunk",
-                  "chronosphere",
-                  "cloudflare",
-                  "app_optics",
-                  "bug_snag",
-                  "monte_carlo",
-                  "nagios",
-                  "prtg",
-                  "catchpoint",
-                  "app_dynamics",
-                  "checkly",
-                  "new_relic",
-                  "gitlab"
-                ]
+                "description": "The source of the alert"
               },
               "type": {
                 "type": "string",
@@ -33723,56 +33681,7 @@
                 },
                 "source": {
                   "type": "string",
-                  "description": "The source of the alert",
-                  "enum": [
-                    "rootly",
-                    "manual",
-                    "api",
-                    "heartbeat",
-                    "web",
-                    "slack",
-                    "email",
-                    "workflow",
-                    "live_call_routing",
-                    "mobile",
-                    "google_chat",
-                    "pagerduty",
-                    "opsgenie",
-                    "victorops",
-                    "pagertree",
-                    "datadog",
-                    "dynatrace",
-                    "nobl9",
-                    "zendesk",
-                    "asana",
-                    "clickup",
-                    "sentry",
-                    "rollbar",
-                    "jira",
-                    "honeycomb",
-                    "service_now",
-                    "linear",
-                    "grafana",
-                    "alertmanager",
-                    "google_cloud",
-                    "generic_webhook",
-                    "cloud_watch",
-                    "aws_sns",
-                    "azure",
-                    "splunk",
-                    "chronosphere",
-                    "cloudflare",
-                    "app_optics",
-                    "bug_snag",
-                    "monte_carlo",
-                    "nagios",
-                    "prtg",
-                    "catchpoint",
-                    "app_dynamics",
-                    "checkly",
-                    "new_relic",
-                    "gitlab"
-                  ]
+                  "description": "The source of the alert"
                 },
                 "type": {
                   "type": "string",
@@ -37333,6 +37242,10 @@
       "alert_urgency": {
         "type": "object",
         "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique ID of the alert urgency"
+          },
           "name": {
             "type": "string",
             "description": "The name of the alert urgency"
@@ -37344,6 +37257,25 @@
           "position": {
             "type": "integer",
             "description": "Position of the alert urgency"
+          },
+          "urgency": {
+            "type": "string",
+            "description": "The urgency level",
+            "nullable": true
+          },
+          "color": {
+            "type": "string",
+            "description": "The color associated with this urgency level",
+            "nullable": true
+          },
+          "team_id": {
+            "type": "integer",
+            "description": "The ID of the team this urgency belongs to"
+          },
+          "deleted_at": {
+            "type": "string",
+            "description": "Date of deletion",
+            "nullable": true
           },
           "created_at": {
             "type": "string",
