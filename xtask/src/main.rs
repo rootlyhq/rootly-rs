@@ -174,6 +174,12 @@ fn main() {
     let ast = syn::parse2(tokens).expect("failed to parse generated tokens");
     let code = prettyplease::unparse(&ast);
 
+    // Strip deny_unknown_fields — the API returns fields not in the OpenAPI spec,
+    // and strict deserialization rejects them.
+    let code = code
+        .replace("#[serde(deny_unknown_fields)]\n", "")
+        .replace("#[serde(untagged, deny_unknown_fields)]", "#[serde(untagged)]");
+
     let output_path = Path::new("src/generated.rs");
     fs::write(output_path, &code).expect("failed to write generated.rs");
 
