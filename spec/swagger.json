@@ -2090,6 +2090,14 @@
             }
           },
           {
+            "name": "filter[enabled]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
             "name": "sort",
             "in": "query",
             "required": false,
@@ -2323,6 +2331,7 @@
                 "functionalities",
                 "responders",
                 "incidents",
+                "notified_users",
                 "events",
                 "alert_urgency",
                 "heartbeat",
@@ -2436,6 +2445,7 @@
                 "functionalities",
                 "responders",
                 "incidents",
+                "notified_users",
                 "events",
                 "alert_urgency",
                 "heartbeat",
@@ -2704,6 +2714,7 @@
                 "functionalities",
                 "responders",
                 "incidents",
+                "notified_users",
                 "events",
                 "alert_urgency",
                 "heartbeat",
@@ -33356,6 +33367,7 @@
               "azure",
               "splunk",
               "chronosphere",
+              "cloudflare",
               "app_optics",
               "bug_snag",
               "monte_carlo",
@@ -33652,6 +33664,7 @@
                   "azure",
                   "splunk",
                   "chronosphere",
+                  "cloudflare",
                   "app_optics",
                   "bug_snag",
                   "monte_carlo",
@@ -33748,6 +33761,7 @@
                     "azure",
                     "splunk",
                     "chronosphere",
+                    "cloudflare",
                     "app_optics",
                     "bug_snag",
                     "monte_carlo",
@@ -34307,6 +34321,10 @@
                     "type": "string",
                     "description": "The name of the alert source"
                   },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Whether the alert source is enabled. Disabled sources do not create alerts from incoming events."
+                  },
                   "source_type": {
                     "type": "string",
                     "description": "The alert source type",
@@ -34644,6 +34662,10 @@
                     "type": "string",
                     "description": "The name of the alert source"
                   },
+                  "enabled": {
+                    "type": "boolean",
+                    "description": "Whether the alert source is enabled. Disabled sources do not create alerts from incoming events."
+                  },
                   "source_type": {
                     "type": "string",
                     "description": "The alert source type",
@@ -34965,6 +34987,10 @@
           "name": {
             "type": "string",
             "description": "The name of the alert source"
+          },
+          "enabled": {
+            "type": "boolean",
+            "description": "Whether the alert source is enabled. Disabled sources do not create alerts from incoming events."
           },
           "source_type": {
             "type": "string",
@@ -38558,6 +38584,26 @@
           "user_id": {
             "type": "integer",
             "description": "The ID of who took action on the object. Together with whodunnit_type can be used to find the user",
+            "nullable": true
+          },
+          "ip_address": {
+            "type": "string",
+            "description": "IP address of the client that performed the action",
+            "nullable": true
+          },
+          "user_agent": {
+            "type": "string",
+            "description": "User-Agent header of the client that performed the action",
+            "nullable": true
+          },
+          "request_id": {
+            "type": "string",
+            "description": "Unique request ID (UUID) for the HTTP request that triggered the action",
+            "nullable": true
+          },
+          "session_id": {
+            "type": "string",
+            "description": "SHA-256 fingerprint of the web session for correlating multiple actions within the same browser session",
             "nullable": true
           },
           "created_at": {
@@ -67926,6 +67972,111 @@
                     "type": "string",
                     "description": "The Jira issue URL.",
                     "nullable": true
+                  },
+                  "form_field_selections": {
+                    "type": "array",
+                    "nullable": true,
+                    "description": "Custom field values to set on the action item. Ignored unless custom fields for action items are enabled for the organization.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "ID of an existing selection. Required when updating or removing a field's existing value."
+                        },
+                        "form_field_id": {
+                          "type": "string",
+                          "description": "ID of the custom field"
+                        },
+                        "value": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ],
+                          "description": "Value for text, textarea, rich text, date, datetime, number, checkbox, or tag fields"
+                        },
+                        "selected_option_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected custom field options",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_user_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected users",
+                          "items": {
+                            "type": "integer"
+                          }
+                        },
+                        "selected_group_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected teams",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_service_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected services",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_functionality_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected functionalities",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_catalog_entity_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected catalog entities",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_environment_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected environments",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_cause_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected causes",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_incident_type_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected incident types",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "_destroy": {
+                          "type": "boolean",
+                          "nullable": true,
+                          "description": "Set to true to remove the field's value from the action item"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "form_field_id"
+                      ]
+                    }
                   }
                 },
                 "additionalProperties": false,
@@ -68027,6 +68178,111 @@
                     "type": "string",
                     "description": "The Jira issue URL.",
                     "nullable": true
+                  },
+                  "form_field_selections": {
+                    "type": "array",
+                    "nullable": true,
+                    "description": "Custom field values to set on the action item. Ignored unless custom fields for action items are enabled for the organization.",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string",
+                          "description": "ID of an existing selection. Required when updating or removing a field's existing value."
+                        },
+                        "form_field_id": {
+                          "type": "string",
+                          "description": "ID of the custom field"
+                        },
+                        "value": {
+                          "oneOf": [
+                            {
+                              "type": "string",
+                              "nullable": true
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              }
+                            }
+                          ],
+                          "description": "Value for text, textarea, rich text, date, datetime, number, checkbox, or tag fields"
+                        },
+                        "selected_option_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected custom field options",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_user_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected users",
+                          "items": {
+                            "type": "integer"
+                          }
+                        },
+                        "selected_group_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected teams",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_service_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected services",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_functionality_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected functionalities",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_catalog_entity_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected catalog entities",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_environment_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected environments",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_cause_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected causes",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "selected_incident_type_ids": {
+                          "type": "array",
+                          "description": "IDs of the selected incident types",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "_destroy": {
+                          "type": "boolean",
+                          "nullable": true,
+                          "description": "Set to true to remove the field's value from the action item"
+                        }
+                      },
+                      "additionalProperties": false,
+                      "required": [
+                        "form_field_id"
+                      ]
+                    }
                   }
                 },
                 "additionalProperties": false
