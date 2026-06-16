@@ -3,16 +3,18 @@ use std::path::Path;
 
 /// Remove enums with operator values like `!=`, `>=`, `<=`, `=`
 /// that can't become valid Rust identifiers.
+/// Also remove ALL string enums from schemas — the API frequently returns
+/// values not in the spec, and strict enum deserialization rejects them.
 fn sanitize_enums(value: &mut serde_json::Value) {
     match value {
         serde_json::Value::Object(map) => {
             if let Some(serde_json::Value::Array(variants)) = map.get("enum") {
-                let has_operator = variants
+                let all_strings = variants
                     .iter()
-                    .any(|v| matches!(v.as_str(), Some("!=" | ">=" | "<=" | "=")));
-                if has_operator {
+                    .all(|v| v.is_string());
+                if all_strings {
                     map.remove("enum");
-                    return;
+                    // Don't return — continue processing nested objects
                 }
             }
             for v in map.values_mut() {
@@ -174,8 +176,7 @@ fn main() {
     let ast = syn::parse2(tokens).expect("failed to parse generated tokens");
     let code = prettyplease::unparse(&ast);
 
-    // Strip deny_unknown_fields — the API returns fields not in the OpenAPI spec,
-    // and strict deserialization rejects them.
+    // Strip deny_unknown_fields — the API returns fields not in the OpenAPI spec
     let code = code
         .replace("#[serde(deny_unknown_fields)]\n", "")
         .replace("#[serde(untagged, deny_unknown_fields)]", "#[serde(untagged)]");
