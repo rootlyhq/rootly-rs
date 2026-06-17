@@ -44975,10 +44975,6 @@ pub mod types {
     ///      ],
     ///      "format": "date-time"
     ///    },
-    ///    "has_video": {
-    ///      "description": "Whether a video recording file is attached",
-    ///      "type": "boolean"
-    ///    },
     ///    "platform": {
     ///      "description": "Meeting platform",
     ///      "type": "string"
@@ -45022,6 +45018,13 @@ pub mod types {
     ///      "type": "string",
     ///      "format": "date-time"
     ///    },
+    ///    "video_url": {
+    ///      "description": "Signed URL to stream/download the video recording",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "word_count": {
     ///      "description": "Total word count across all transcript segments",
     ///      "type": "integer"
@@ -45043,9 +45046,6 @@ pub mod types {
         ///When the recording ended
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub ended_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-        ///Whether a video recording file is attached
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub has_video: ::std::option::Option<bool>,
         ///Meeting platform
         pub platform: ::std::string::String,
         ///Session number within the incident for this platform (starts at 1, increments on re-invite)
@@ -45066,6 +45066,9 @@ pub mod types {
         pub transcript_summary: ::std::option::Option<::std::string::String>,
         ///When the recording session was last updated
         pub updated_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Signed URL to stream/download the video recording
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub video_url: ::std::option::Option<::std::string::String>,
         ///Total word count across all transcript segments
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub word_count: ::std::option::Option<i64>,
@@ -228128,10 +228131,6 @@ pub mod types {
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
             >,
-            has_video: ::std::result::Result<
-                ::std::option::Option<bool>,
-                ::std::string::String,
-            >,
             platform: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
@@ -228158,6 +228157,10 @@ pub mod types {
                 ::chrono::DateTime<::chrono::offset::Utc>,
                 ::std::string::String,
             >,
+            video_url: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             word_count: ::std::result::Result<
                 ::std::option::Option<i64>,
                 ::std::string::String,
@@ -228170,7 +228173,6 @@ pub mod types {
                     created_by: Ok(Default::default()),
                     duration_minutes: Ok(Default::default()),
                     ended_at: Ok(Default::default()),
-                    has_video: Ok(Default::default()),
                     platform: Err("no value supplied for platform".to_string()),
                     session_number: Err(
                         "no value supplied for session_number".to_string(),
@@ -228181,6 +228183,7 @@ pub mod types {
                     title: Ok(Default::default()),
                     transcript_summary: Ok(Default::default()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
+                    video_url: Ok(Default::default()),
                     word_count: Ok(Default::default()),
                 }
             }
@@ -228235,18 +228238,6 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for ended_at: {e}")
-                    });
-                self
-            }
-            pub fn has_video<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<bool>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.has_video = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for has_video: {e}")
                     });
                 self
             }
@@ -228352,6 +228343,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn video_url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.video_url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for video_url: {e}")
+                    });
+                self
+            }
             pub fn word_count<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<i64>>,
@@ -228375,7 +228378,6 @@ pub mod types {
                     created_by: value.created_by?,
                     duration_minutes: value.duration_minutes?,
                     ended_at: value.ended_at?,
-                    has_video: value.has_video?,
                     platform: value.platform?,
                     session_number: value.session_number?,
                     speaker_count: value.speaker_count?,
@@ -228384,6 +228386,7 @@ pub mod types {
                     title: value.title?,
                     transcript_summary: value.transcript_summary?,
                     updated_at: value.updated_at?,
+                    video_url: value.video_url?,
                     word_count: value.word_count?,
                 })
             }
@@ -228395,7 +228398,6 @@ pub mod types {
                     created_by: Ok(value.created_by),
                     duration_minutes: Ok(value.duration_minutes),
                     ended_at: Ok(value.ended_at),
-                    has_video: Ok(value.has_video),
                     platform: Ok(value.platform),
                     session_number: Ok(value.session_number),
                     speaker_count: Ok(value.speaker_count),
@@ -228404,6 +228406,7 @@ pub mod types {
                     title: Ok(value.title),
                     transcript_summary: Ok(value.transcript_summary),
                     updated_at: Ok(value.updated_at),
+                    video_url: Ok(value.video_url),
                     word_count: Ok(value.word_count),
                 }
             }

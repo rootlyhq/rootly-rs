@@ -74722,9 +74722,10 @@
             "description": "Human-readable label for the recording session",
             "nullable": true
           },
-          "has_video": {
-            "type": "boolean",
-            "description": "Whether a video recording file is attached"
+          "video_url": {
+            "type": "string",
+            "nullable": true,
+            "description": "Signed URL to stream/download the video recording"
           },
           "created_by": {
             "type": "string",
