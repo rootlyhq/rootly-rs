@@ -22600,6 +22600,88 @@
         }
       }
     },
+    "/v1/meeting_recordings": {
+      "get": {
+        "summary": "List all meeting recordings",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Meeting Recordings"
+        ],
+        "description": "List meeting recordings across the organization. Returns the current user's standalone recordings plus incident-backed recordings the user can access. Supports filtering by status, platform, and created_by.",
+        "operationId": "listAllMeetingRecordings",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "required": false,
+            "description": "Filter by status",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "platform",
+            "in": "query",
+            "required": false,
+            "description": "Filter by platform",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "created_by",
+            "in": "query",
+            "required": false,
+            "description": "Filter by creator type",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "meeting recordings found"
+          }
+        }
+      }
+    },
+    "/v1/meeting_recordings/start_session": {
+      "post": {
+        "summary": "Start a recording session",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Meeting Recordings"
+        ],
+        "description": "Start a new desktop recording session. The server creates a recording record and returns a stream token the desktop client uses to send audio. No provider-specific configuration is needed from the client.",
+        "operationId": "startRecordingSession",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "session created"
+          },
+          "422": {
+            "description": "invalid platform"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/start_session_request"
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/meeting_recordings/{id}": {
       "get": {
         "summary": "Get a meeting recording",
@@ -23877,7 +23959,7 @@
         "tags": [
           "OverrideShifts"
         ],
-        "description": "Creates a new override shift from provided data. If any existing override shifts overlap with the specified time range, they will be automatically deleted and replaced by the new override.",
+        "description": "Creates a new override shift from provided data. If any existing override shifts overlap with the specified time range, they will be automatically deleted and replaced by the new override. This endpoint is idempotent: re-sending an identical override (same user and same start/end time) returns the existing override with a 200 status and does not recreate it.",
         "operationId": "createOverrideShift",
         "parameters": [],
         "responses": {
@@ -23897,6 +23979,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "returns the existing override without recreating it",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/override_shift_response"
                 }
               }
             }
@@ -38476,6 +38568,7 @@
               "Integrations::GoogleMeetAccount",
               "Integrations::JiraAccount",
               "Integrations::MicrosoftTeamsAccount",
+              "Integrations::NotionAccount",
               "Integrations::OpsgenieAccount",
               "Integrations::PagerdutyAccount",
               "Integrations::ServiceNowAccount",
@@ -74515,6 +74608,55 @@
           "platform"
         ]
       },
+      "start_session_request": {
+        "type": "object",
+        "properties": {
+          "platform": {
+            "type": "string",
+            "description": "Meeting platform",
+            "enum": [
+              "zoom",
+              "google_meet",
+              "microsoft_teams",
+              "webex"
+            ]
+          },
+          "title": {
+            "type": "string",
+            "description": "Human-readable label for the recording session",
+            "nullable": true
+          }
+        }
+      },
+      "start_session_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "session_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "Meeting recording UUID"
+              },
+              "stream_token": {
+                "type": "string",
+                "description": "Token for the desktop client to stream audio"
+              },
+              "meeting_recording_id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "Meeting recording UUID"
+              }
+            },
+            "required": [
+              "session_id",
+              "stream_token",
+              "meeting_recording_id"
+            ]
+          }
+        }
+      },
       "meeting_recording": {
         "type": "object",
         "properties": {
@@ -74575,9 +74717,19 @@
             "description": "AI-generated summary of the meeting transcript (null if no transcript or not yet analyzed)",
             "nullable": true
           },
+          "title": {
+            "type": "string",
+            "description": "Human-readable label for the recording session",
+            "nullable": true
+          },
           "has_video": {
             "type": "boolean",
             "description": "Whether a video recording file is attached"
+          },
+          "created_by": {
+            "type": "string",
+            "description": "Source that created the recording (e.g. desktop_sdk, recall_bot)",
+            "nullable": true
           },
           "created_at": {
             "type": "string",
@@ -78220,6 +78372,41 @@
           "data",
           "links",
           "meta"
+        ]
+      },
+      "receipt": {
+        "type": "object",
+        "properties": {
+          "state": {
+            "type": "string",
+            "description": "Delivery state of the receipt.",
+            "enum": [
+              "pending",
+              "done",
+              "failed"
+            ]
+          },
+          "reason": {
+            "type": "string",
+            "description": "Reason a receipt failed. Present when state is failed.",
+            "enum": [
+              "no_route_matched",
+              "deduplicated",
+              "suppressed",
+              "validation_error"
+            ]
+          },
+          "resource_type": {
+            "type": "string",
+            "description": "Type of the referenced resource (present when set)."
+          },
+          "resource_id": {
+            "type": "string",
+            "description": "ID of the referenced resource (present when set)."
+          }
+        },
+        "required": [
+          "state"
         ]
       },
       "update_retrospective_configuration": {

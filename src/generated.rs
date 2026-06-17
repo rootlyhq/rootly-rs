@@ -44953,6 +44953,13 @@ pub mod types {
     ///      "type": "string",
     ///      "format": "date-time"
     ///    },
+    ///    "created_by": {
+    ///      "description": "Source that created the recording (e.g. desktop_sdk, recall_bot)",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "duration_minutes": {
     ///      "description": "Recording duration in minutes (null if not started)",
     ///      "type": [
@@ -44996,6 +45003,13 @@ pub mod types {
     ///      "description": "Current recording lifecycle status",
     ///      "type": "string"
     ///    },
+    ///    "title": {
+    ///      "description": "Human-readable label for the recording session",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "transcript_summary": {
     ///      "description": "AI-generated summary of the meeting transcript (null if no transcript or not yet analyzed)",
     ///      "type": [
@@ -45020,6 +45034,9 @@ pub mod types {
     pub struct MeetingRecording {
         ///When the recording session was created
         pub created_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Source that created the recording (e.g. desktop_sdk, recall_bot)
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by: ::std::option::Option<::std::string::String>,
         ///Recording duration in minutes (null if not started)
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub duration_minutes: ::std::option::Option<f64>,
@@ -45041,6 +45058,9 @@ pub mod types {
         pub started_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
         ///Current recording lifecycle status
         pub status: ::std::string::String,
+        ///Human-readable label for the recording session
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub title: ::std::option::Option<::std::string::String>,
         ///AI-generated summary of the meeting transcript (null if no transcript or not yet analyzed)
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub transcript_summary: ::std::option::Option<::std::string::String>,
@@ -92900,6 +92920,56 @@ pub mod types {
             Default::default()
         }
     }
+    ///`Receipt`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "state"
+    ///  ],
+    ///  "properties": {
+    ///    "reason": {
+    ///      "description": "Reason a receipt failed. Present when state is failed.",
+    ///      "type": "string"
+    ///    },
+    ///    "resource_id": {
+    ///      "description": "ID of the referenced resource (present when set).",
+    ///      "type": "string"
+    ///    },
+    ///    "resource_type": {
+    ///      "description": "Type of the referenced resource (present when set).",
+    ///      "type": "string"
+    ///    },
+    ///    "state": {
+    ///      "description": "Delivery state of the receipt.",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct Receipt {
+        ///Reason a receipt failed. Present when state is failed.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub reason: ::std::option::Option<::std::string::String>,
+        ///ID of the referenced resource (present when set).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub resource_id: ::std::option::Option<::std::string::String>,
+        ///Type of the referenced resource (present when set).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub resource_type: ::std::option::Option<::std::string::String>,
+        ///Delivery state of the receipt.
+        pub state: ::std::string::String,
+    }
+    impl Receipt {
+        pub fn builder() -> builder::Receipt {
+            Default::default()
+        }
+    }
     ///`RedisClientTaskParams`
     ///
     /// <details><summary>JSON schema</summary>
@@ -104081,6 +104151,147 @@ pub mod types {
     }
     impl SnoozeAlertDataAttributes {
         pub fn builder() -> builder::SnoozeAlertDataAttributes {
+            Default::default()
+        }
+    }
+    ///`StartSessionRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "platform": {
+    ///      "description": "Meeting platform",
+    ///      "type": "string"
+    ///    },
+    ///    "title": {
+    ///      "description": "Human-readable label for the recording session",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct StartSessionRequest {
+        ///Meeting platform
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub platform: ::std::option::Option<::std::string::String>,
+        ///Human-readable label for the recording session
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub title: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default for StartSessionRequest {
+        fn default() -> Self {
+            Self {
+                platform: Default::default(),
+                title: Default::default(),
+            }
+        }
+    }
+    impl StartSessionRequest {
+        pub fn builder() -> builder::StartSessionRequest {
+            Default::default()
+        }
+    }
+    ///`StartSessionResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "meeting_recording_id",
+    ///        "session_id",
+    ///        "stream_token"
+    ///      ],
+    ///      "properties": {
+    ///        "meeting_recording_id": {
+    ///          "description": "Meeting recording UUID",
+    ///          "type": "string",
+    ///          "format": "uuid"
+    ///        },
+    ///        "session_id": {
+    ///          "description": "Meeting recording UUID",
+    ///          "type": "string",
+    ///          "format": "uuid"
+    ///        },
+    ///        "stream_token": {
+    ///          "description": "Token for the desktop client to stream audio",
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct StartSessionResponse {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<StartSessionResponseData>,
+    }
+    impl ::std::default::Default for StartSessionResponse {
+        fn default() -> Self {
+            Self { data: Default::default() }
+        }
+    }
+    impl StartSessionResponse {
+        pub fn builder() -> builder::StartSessionResponse {
+            Default::default()
+        }
+    }
+    ///`StartSessionResponseData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "meeting_recording_id",
+    ///    "session_id",
+    ///    "stream_token"
+    ///  ],
+    ///  "properties": {
+    ///    "meeting_recording_id": {
+    ///      "description": "Meeting recording UUID",
+    ///      "type": "string",
+    ///      "format": "uuid"
+    ///    },
+    ///    "session_id": {
+    ///      "description": "Meeting recording UUID",
+    ///      "type": "string",
+    ///      "format": "uuid"
+    ///    },
+    ///    "stream_token": {
+    ///      "description": "Token for the desktop client to stream audio",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct StartSessionResponseData {
+        ///Meeting recording UUID
+        pub meeting_recording_id: ::uuid::Uuid,
+        ///Meeting recording UUID
+        pub session_id: ::uuid::Uuid,
+        ///Token for the desktop client to stream audio
+        pub stream_token: ::std::string::String,
+    }
+    impl StartSessionResponseData {
+        pub fn builder() -> builder::StartSessionResponseData {
             Default::default()
         }
     }
@@ -227905,6 +228116,10 @@ pub mod types {
                 ::chrono::DateTime<::chrono::offset::Utc>,
                 ::std::string::String,
             >,
+            created_by: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             duration_minutes: ::std::result::Result<
                 ::std::option::Option<f64>,
                 ::std::string::String,
@@ -227931,6 +228146,10 @@ pub mod types {
                 ::std::string::String,
             >,
             status: ::std::result::Result<::std::string::String, ::std::string::String>,
+            title: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             transcript_summary: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -227948,6 +228167,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     created_at: Err("no value supplied for created_at".to_string()),
+                    created_by: Ok(Default::default()),
                     duration_minutes: Ok(Default::default()),
                     ended_at: Ok(Default::default()),
                     has_video: Ok(Default::default()),
@@ -227958,6 +228178,7 @@ pub mod types {
                     speaker_count: Ok(Default::default()),
                     started_at: Ok(Default::default()),
                     status: Err("no value supplied for status".to_string()),
+                    title: Ok(Default::default()),
                     transcript_summary: Ok(Default::default()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
                     word_count: Ok(Default::default()),
@@ -227974,6 +228195,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_by: {e}")
                     });
                 self
             }
@@ -228081,6 +228314,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
             pub fn transcript_summary<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -228127,6 +228372,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     created_at: value.created_at?,
+                    created_by: value.created_by?,
                     duration_minutes: value.duration_minutes?,
                     ended_at: value.ended_at?,
                     has_video: value.has_video?,
@@ -228135,6 +228381,7 @@ pub mod types {
                     speaker_count: value.speaker_count?,
                     started_at: value.started_at?,
                     status: value.status?,
+                    title: value.title?,
                     transcript_summary: value.transcript_summary?,
                     updated_at: value.updated_at?,
                     word_count: value.word_count?,
@@ -228145,6 +228392,7 @@ pub mod types {
             fn from(value: super::MeetingRecording) -> Self {
                 Self {
                     created_at: Ok(value.created_at),
+                    created_by: Ok(value.created_by),
                     duration_minutes: Ok(value.duration_minutes),
                     ended_at: Ok(value.ended_at),
                     has_video: Ok(value.has_video),
@@ -228153,6 +228401,7 @@ pub mod types {
                     speaker_count: Ok(value.speaker_count),
                     started_at: Ok(value.started_at),
                     status: Ok(value.status),
+                    title: Ok(value.title),
                     transcript_summary: Ok(value.transcript_summary),
                     updated_at: Ok(value.updated_at),
                     word_count: Ok(value.word_count),
@@ -273962,6 +274211,105 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct Receipt {
+            reason: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            resource_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            resource_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            state: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for Receipt {
+            fn default() -> Self {
+                Self {
+                    reason: Ok(Default::default()),
+                    resource_id: Ok(Default::default()),
+                    resource_type: Ok(Default::default()),
+                    state: Err("no value supplied for state".to_string()),
+                }
+            }
+        }
+        impl Receipt {
+            pub fn reason<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.reason = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for reason: {e}")
+                    });
+                self
+            }
+            pub fn resource_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.resource_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for resource_id: {e}")
+                    });
+                self
+            }
+            pub fn resource_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.resource_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for resource_type: {e}")
+                    });
+                self
+            }
+            pub fn state<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.state = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for state: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<Receipt> for super::Receipt {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: Receipt,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    reason: value.reason?,
+                    resource_id: value.resource_id?,
+                    resource_type: value.resource_type?,
+                    state: value.state?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::Receipt> for Receipt {
+            fn from(value: super::Receipt) -> Self {
+                Self {
+                    reason: Ok(value.reason),
+                    resource_id: Ok(value.resource_id),
+                    resource_type: Ok(value.resource_type),
+                    state: Ok(value.state),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct RedisClientTaskParams {
             commands: ::std::result::Result<
                 ::std::string::String,
@@ -290562,6 +290910,201 @@ pub mod types {
             fn from(value: super::SnoozeAlertDataAttributes) -> Self {
                 Self {
                     delay_minutes: Ok(value.delay_minutes),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct StartSessionRequest {
+            platform: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            title: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for StartSessionRequest {
+            fn default() -> Self {
+                Self {
+                    platform: Ok(Default::default()),
+                    title: Ok(Default::default()),
+                }
+            }
+        }
+        impl StartSessionRequest {
+            pub fn platform<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.platform = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for platform: {e}")
+                    });
+                self
+            }
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<StartSessionRequest>
+        for super::StartSessionRequest {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: StartSessionRequest,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    platform: value.platform?,
+                    title: value.title?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::StartSessionRequest> for StartSessionRequest {
+            fn from(value: super::StartSessionRequest) -> Self {
+                Self {
+                    platform: Ok(value.platform),
+                    title: Ok(value.title),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct StartSessionResponse {
+            data: ::std::result::Result<
+                ::std::option::Option<super::StartSessionResponseData>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for StartSessionResponse {
+            fn default() -> Self {
+                Self {
+                    data: Ok(Default::default()),
+                }
+            }
+        }
+        impl StartSessionResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::StartSessionResponseData>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<StartSessionResponse>
+        for super::StartSessionResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: StartSessionResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::StartSessionResponse> for StartSessionResponse {
+            fn from(value: super::StartSessionResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct StartSessionResponseData {
+            meeting_recording_id: ::std::result::Result<
+                ::uuid::Uuid,
+                ::std::string::String,
+            >,
+            session_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            stream_token: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for StartSessionResponseData {
+            fn default() -> Self {
+                Self {
+                    meeting_recording_id: Err(
+                        "no value supplied for meeting_recording_id".to_string(),
+                    ),
+                    session_id: Err("no value supplied for session_id".to_string()),
+                    stream_token: Err("no value supplied for stream_token".to_string()),
+                }
+            }
+        }
+        impl StartSessionResponseData {
+            pub fn meeting_recording_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meeting_recording_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for meeting_recording_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn session_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.session_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for session_id: {e}")
+                    });
+                self
+            }
+            pub fn stream_token<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.stream_token = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for stream_token: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<StartSessionResponseData>
+        for super::StartSessionResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: StartSessionResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    meeting_recording_id: value.meeting_recording_id?,
+                    session_id: value.session_id?,
+                    stream_token: value.stream_token?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::StartSessionResponseData>
+        for StartSessionResponseData {
+            fn from(value: super::StartSessionResponseData) -> Self {
+                Self {
+                    meeting_recording_id: Ok(value.meeting_recording_id),
+                    session_id: Ok(value.session_id),
+                    stream_token: Ok(value.stream_token),
                 }
             }
         }
@@ -355018,6 +355561,42 @@ let response = client.delete_live_call_router()
     pub fn delete_live_call_router(&self) -> builder::DeleteLiveCallRouter<'_> {
         builder::DeleteLiveCallRouter::new(self)
     }
+    /**List all meeting recordings
+
+List meeting recordings across the organization. Returns the current user's standalone recordings plus incident-backed recordings the user can access. Supports filtering by status, platform, and created_by.
+
+Sends a `GET` request to `/v1/meeting_recordings`
+
+Arguments:
+- `created_by`: Filter by creator type
+- `platform`: Filter by platform
+- `status`: Filter by status
+```ignore
+let response = client.list_all_meeting_recordings()
+    .created_by(created_by)
+    .platform(platform)
+    .status(status)
+    .send()
+    .await;
+```*/
+    pub fn list_all_meeting_recordings(&self) -> builder::ListAllMeetingRecordings<'_> {
+        builder::ListAllMeetingRecordings::new(self)
+    }
+    /**Start a recording session
+
+Start a new desktop recording session. The server creates a recording record and returns a stream token the desktop client uses to send audio. No provider-specific configuration is needed from the client.
+
+Sends a `POST` request to `/v1/meeting_recordings/start_session`
+
+```ignore
+let response = client.start_recording_session()
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn start_recording_session(&self) -> builder::StartRecordingSession<'_> {
+        builder::StartRecordingSession::new(self)
+    }
     /**Get a meeting recording
 
 Retrieve a single meeting recording session including its status, duration, speaker count, word count, and transcript summary.
@@ -356888,7 +357467,7 @@ let response = client.list_override_shifts()
     }
     /**creates an override shift
 
-Creates a new override shift from provided data. If any existing override shifts overlap with the specified time range, they will be automatically deleted and replaced by the new override.
+Creates a new override shift from provided data. If any existing override shifts overlap with the specified time range, they will be automatically deleted and replaced by the new override. This endpoint is idempotent: re-sending an identical override (same user and same start/end time) returns the existing override with a 200 status and does not recreate it.
 
 Sends a `POST` request to `/v1/schedules/{schedule_id}/override_shifts`
 
@@ -397259,6 +397838,177 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::list_all_meeting_recordings`]
+
+[`Client::list_all_meeting_recordings`]: super::Client::list_all_meeting_recordings*/
+    #[derive(Debug, Clone)]
+    pub struct ListAllMeetingRecordings<'a> {
+        client: &'a super::Client,
+        created_by: Result<Option<::std::string::String>, String>,
+        platform: Result<Option<::std::string::String>, String>,
+        status: Result<Option<::std::string::String>, String>,
+    }
+    impl<'a> ListAllMeetingRecordings<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                created_by: Ok(None),
+                platform: Ok(None),
+                status: Ok(None),
+            }
+        }
+        pub fn created_by<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.created_by = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for created_by failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn platform<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.platform = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for platform failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn status<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.status = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for status failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/meeting_recordings`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, created_by, platform, status } = self;
+            let created_by = created_by.map_err(Error::InvalidRequest)?;
+            let platform = platform.map_err(Error::InvalidRequest)?;
+            let status = status.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/meeting_recordings", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .query(&progenitor_client::QueryParam::new("created_by", &created_by))
+                .query(&progenitor_client::QueryParam::new("platform", &platform))
+                .query(&progenitor_client::QueryParam::new("status", &status))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_all_meeting_recordings",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::start_recording_session`]
+
+[`Client::start_recording_session`]: super::Client::start_recording_session*/
+    #[derive(Debug, Clone)]
+    pub struct StartRecordingSession<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::StartSessionRequest, String>,
+    }
+    impl<'a> StartRecordingSession<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::StartSessionRequest>,
+            <V as std::convert::TryInto<
+                types::StartSessionRequest,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `StartSessionRequest` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::StartSessionRequest,
+            ) -> types::builder::StartSessionRequest,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/meeting_recordings/start_session`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| {
+                    types::StartSessionRequest::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/meeting_recordings/start_session", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "start_recording_session",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::get_meeting_recording`]
 
 [`Client::get_meeting_recording`]: super::Client::get_meeting_recording*/
@@ -408336,6 +409086,7 @@ pub mod builder {
             client.post(&result, &info).await?;
             let response = result?;
             match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
                 201u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
