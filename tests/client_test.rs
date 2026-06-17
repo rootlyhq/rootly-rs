@@ -17,6 +17,7 @@ fn test_client_custom_config() {
     let _client = RootlyClient::new(RootlyClientConfig {
         token: "custom-token".into(),
         base_url: "https://custom.rootly.com".into(),
+        ..Default::default()
     });
 }
 

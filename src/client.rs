@@ -8,6 +8,7 @@ pub struct RootlyClient {
 pub struct RootlyClientConfig {
     pub token: String,
     pub base_url: String,
+    pub extra_headers: HeaderMap,
 }
 
 impl Default for RootlyClientConfig {
@@ -15,6 +16,7 @@ impl Default for RootlyClientConfig {
         Self {
             token: String::new(),
             base_url: "https://api.rootly.com".to_string(),
+            extra_headers: HeaderMap::new(),
         }
     }
 }
@@ -32,6 +34,7 @@ impl RootlyClient {
             HeaderValue::from_static("application/vnd.api+json"),
         );
         headers.insert(ACCEPT, HeaderValue::from_static("application/vnd.api+json"));
+        headers.extend(config.extra_headers);
 
         let http_client = reqwest::Client::builder()
             .default_headers(headers)
