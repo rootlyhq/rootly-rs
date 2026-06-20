@@ -4004,6 +4004,80 @@
         }
       }
     },
+    "/v1/bulk_imports": {
+      "post": {
+        "summary": "Create a bulk import",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Bulk Imports"
+        ],
+        "description": "Create a new bulk import for incidents. Requires global API key authentication.",
+        "operationId": "createBulkImport",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "bulk import created"
+          },
+          "403": {
+            "description": "unauthorized - user lacks incident create permission"
+          },
+          "422": {
+            "description": "invalid parameters"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/new_bulk_import"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/v1/bulk_imports/{id}": {
+      "get": {
+        "summary": "Get bulk import status",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Bulk Imports"
+        ],
+        "description": "Retrieves the current status of a bulk import job.\n\n**Use this endpoint to:**\n- Poll for import progress\n- Check validation errors if status is `validation_failed`\n- Get final results when status is `completed` or `failed`\n",
+        "operationId": "getBulkImport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Bulk import ID returned from the create endpoint",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "403": {
+            "description": "organization API keys feature not enabled"
+          }
+        }
+      }
+    },
     "/v1/catalog_checklist_templates": {
       "post": {
         "summary": "Creates a catalog checklist template",
@@ -4548,6 +4622,22 @@
             }
           },
           {
+            "name": "filter[external_id]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[managed_by]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "filter[created_at][gt]",
             "in": "query",
             "required": false,
@@ -4745,6 +4835,156 @@
               }
             }
           }
+        }
+      }
+    },
+    "/v1/catalogs/{catalog_id}/entities/bulk_upsert": {
+      "parameters": [
+        {
+          "name": "catalog_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Bulk upsert Catalog Entities",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "CatalogEntities"
+        ],
+        "description": "Create or update multiple catalog entities by external_id. Only attributes present in the payload are written (managed-fields semantics). Transactional: all succeed or all fail.",
+        "operationId": "bulkUpsertCatalogEntities",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "entities upserted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bulk_upsert_catalog_entities_response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "validation or entity-level error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/errors_list"
+                    },
+                    {
+                      "$ref": "#/components/schemas/bulk_upsert_catalog_entities_error"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bulk_upsert_catalog_entities"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/v1/catalogs/{catalog_id}/entities/bulk_delete": {
+      "parameters": [
+        {
+          "name": "catalog_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Bulk delete Catalog Entities",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "CatalogEntities"
+        ],
+        "description": "Delete catalog entities by external_id list, or prune by managed_by source. Two mutually exclusive modes.",
+        "operationId": "bulkDeleteCatalogEntities",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "entities deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/bulk_destroy_catalog_entities_response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "validation or partial-failure error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/components/schemas/errors_list"
+                    },
+                    {
+                      "$ref": "#/components/schemas/bulk_destroy_catalog_entities_response"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/bulk_destroy_catalog_entities"
+              }
+            }
+          },
+          "required": true
         }
       }
     },
@@ -5511,6 +5751,22 @@
           },
           {
             "name": "filter[name]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[external_id]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[managed_by]",
             "in": "query",
             "required": false,
             "schema": {
@@ -13854,6 +14110,256 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/workflow_task_response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workflows/{workflow_id}/action_item_form_field_conditions": {
+      "parameters": [
+        {
+          "name": "workflow_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "Creates a workflow action item form field condition",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "WorkflowActionItemFormFieldConditions"
+        ],
+        "description": "Creates a new workflow action item form field condition from provided data",
+        "operationId": "createWorkflowActionItemFormFieldCondition",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "workflow_action_item_form_field_condition created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workflow_action_item_form_field_condition_response"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "responds with unauthorized for invalid token",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "responds with forbidden when the feature flag is disabled"
+          },
+          "422": {
+            "description": "rejects conditions on a non-action-item workflow",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/new_workflow_action_item_form_field_condition"
+              }
+            }
+          },
+          "required": true
+        }
+      },
+      "get": {
+        "summary": "List workflow action item form field conditions",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "WorkflowActionItemFormFieldConditions"
+        ],
+        "description": "List workflow action item form field conditions",
+        "operationId": "listWorkflowActionItemFormFieldConditions",
+        "parameters": [
+          {
+            "name": "include",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workflow_action_item_form_field_condition_list"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/workflow_action_item_form_field_conditions/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "Retrieves a workflow action item form field condition",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "WorkflowActionItemFormFieldConditions"
+        ],
+        "description": "Retrieves a specific workflow action item form field condition by id",
+        "operationId": "getWorkflowActionItemFormFieldCondition",
+        "responses": {
+          "200": {
+            "description": "includes native field ids",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workflow_action_item_form_field_condition_response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update a workflow action item form field condition",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "WorkflowActionItemFormFieldConditions"
+        ],
+        "description": "Update a specific workflow action item form field condition by id",
+        "operationId": "updateWorkflowActionItemFormFieldCondition",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "ignores non-allowlisted attributes such as workflow_id",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workflow_action_item_form_field_condition_response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "resource not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_workflow_action_item_form_field_condition"
+              }
+            }
+          },
+          "required": true
+        }
+      },
+      "delete": {
+        "summary": "Delete a workflow action item form field condition",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "WorkflowActionItemFormFieldConditions"
+        ],
+        "description": "Delete a specific workflow action item form field condition by id",
+        "operationId": "deleteWorkflowActionItemFormFieldCondition",
+        "responses": {
+          "200": {
+            "description": "allows deleting an existing condition when the feature flag is disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/workflow_action_item_form_field_condition_response"
                 }
               }
             }
@@ -25295,6 +25801,47 @@
         }
       }
     },
+    "/v1/alerts/receipts/{id}": {
+      "get": {
+        "summary": "Get a receipt",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Alerts"
+        ],
+        "description": "Retrieve the delivery receipt for a notification by ID, including its state and (when applicable) failure reason and referenced resource.",
+        "operationId": "getReceipt",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Receipt ID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "receipt found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/receipt"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "receipt not found"
+          }
+        }
+      }
+    },
     "/v1/retrospective_configurations": {
       "get": {
         "summary": "List retrospective configurations",
@@ -32736,7 +33283,7 @@
         "parameters": [],
         "responses": {
           "201": {
-            "description": "webhooks_endpoint created",
+            "description": "webhooks_endpoint created with custom_headers",
             "content": {
               "application/json": {
                 "schema": {
@@ -32906,7 +33453,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "webhooks_endpoint updated",
+            "description": "webhooks_endpoint custom_headers cleared with empty array",
             "content": {
               "application/json": {
                 "schema": {
@@ -33657,6 +34204,32 @@
             },
             "nullable": true
           },
+          "responders": {
+            "type": "array",
+            "description": "Users who responded to the alert. Included on all non-list responses (show, create, update, resolve, etc.); on list responses only when `include=responders` is requested.",
+            "items": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/user_flat_response"
+                }
+              ]
+            },
+            "nullable": true
+          },
+          "notified_users": {
+            "type": "array",
+            "description": "Users who were notified about the alert. Included on all non-list responses (show, create, update, resolve, etc.); on list responses only when `include=notified_users` is requested.",
+            "items": {
+              "type": "object",
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/user"
+                }
+              ]
+            },
+            "nullable": true
+          },
           "alerting_targets": {
             "type": "array",
             "description": "Alerting targets associated with the alert. Only present when advanced routing is enabled for the team.",
@@ -33927,6 +34500,53 @@
           }
         }
       },
+      "alert_event_user": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "first_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "last_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "preferred_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "full_name": {
+            "type": "string",
+            "nullable": true
+          },
+          "time_zone": {
+            "type": "string",
+            "nullable": true
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "name",
+          "email",
+          "created_at",
+          "updated_at"
+        ]
+      },
       "new_alert_event": {
         "type": "object",
         "properties": {
@@ -34084,6 +34704,154 @@
           "details": {
             "type": "string",
             "description": "Note message.",
+            "nullable": true
+          },
+          "user": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/alert_event_user"
+              }
+            ],
+            "nullable": true
+          },
+          "incident": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "sequential_id": {
+                "type": "integer",
+                "nullable": true
+              },
+              "title": {
+                "type": "string"
+              },
+              "slug": {
+                "type": "string"
+              },
+              "kind": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "private": {
+                "type": "boolean"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "started_at": {
+                "type": "string",
+                "nullable": true
+              },
+              "duration": {
+                "type": "integer",
+                "description": "Duration in seconds.",
+                "nullable": true
+              },
+              "url": {
+                "type": "string"
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "updated_at": {
+                "type": "string"
+              }
+            }
+          },
+          "schedule": {
+            "type": "object",
+            "nullable": true,
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              },
+              "description": {
+                "type": "string",
+                "nullable": true
+              },
+              "escalation_policies": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "type": "string"
+                    },
+                    "name": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    },
+                    "updated_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              },
+              "created_at": {
+                "type": "string"
+              },
+              "updated_at": {
+                "type": "string"
+              }
+            }
+          },
+          "escalation_level": {
+            "type": "integer",
+            "nullable": true
+          },
+          "escalation_target_type": {
+            "type": "string",
+            "description": "e.g. EscalationPolicy, User.",
+            "nullable": true
+          },
+          "escalation_target": {
+            "type": "object",
+            "description": "JSON:API-wrapped escalation target (User or EscalationPolicy).",
+            "nullable": true,
+            "properties": {
+              "data": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string"
+                  },
+                  "type": {
+                    "type": "string",
+                    "description": "e.g. users, escalation_policies."
+                  },
+                  "attributes": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          },
+          "slack_channel": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/slack_channel"
+              }
+            ],
+            "nullable": true
+          },
+          "incident_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
             "nullable": true
           },
           "created_at": {
@@ -38611,6 +39379,16 @@
             "description": "The ID of who took action on the object. Together with whodunnit_type can be used to find the user",
             "nullable": true
           },
+          "user_name": {
+            "type": "string",
+            "description": "Display name of the user who performed the action",
+            "nullable": true
+          },
+          "user_email": {
+            "type": "string",
+            "description": "Email address of the user who performed the action",
+            "nullable": true
+          },
           "ip_address": {
             "type": "string",
             "description": "IP address of the client that performed the action",
@@ -38986,6 +39764,171 @@
           "meta"
         ]
       },
+      "bulk_import_attributes": {
+        "type": "object",
+        "properties": {
+          "entity_type": {
+            "type": "string",
+            "enum": [
+              "Incident"
+            ],
+            "description": "Type of entity being imported"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "validating",
+              "validation_failed",
+              "importing",
+              "indexing",
+              "completed",
+              "failed"
+            ],
+            "description": "Current status of the import"
+          },
+          "file_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the JSONL file being imported"
+          },
+          "notification_email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address for notifications"
+          },
+          "total_records": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Total number of records in the file"
+          },
+          "processed_records": {
+            "type": "integer",
+            "description": "Number of records processed so far"
+          },
+          "failed_records": {
+            "type": "integer",
+            "description": "Number of records that failed to import"
+          },
+          "validation_errors": {
+            "type": "object",
+            "nullable": true,
+            "description": "Validation errors encountered during validation phase"
+          },
+          "error_message": {
+            "type": "string",
+            "nullable": true,
+            "description": "Error message if import failed"
+          },
+          "progress_percentage": {
+            "type": "number",
+            "format": "float",
+            "description": "Import progress percentage (0-100)"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When import processing started"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When import completed or failed"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the bulk import was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the bulk import was last updated"
+          }
+        },
+        "required": [
+          "status",
+          "processed_records",
+          "failed_records",
+          "progress_percentage"
+        ]
+      },
+      "new_bulk_import": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "entity_type": {
+                    "type": "string",
+                    "enum": [
+                      "Incident"
+                    ],
+                    "description": "Type of entity to import (currently only 'Incident' is supported)"
+                  },
+                  "file_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL of the JSONL file to import. Must be accessible via HTTPS."
+                  },
+                  "notification_email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address to receive import status notifications"
+                  }
+                },
+                "required": [
+                  "entity_type",
+                  "file_url",
+                  "notification_email"
+                ]
+              }
+            },
+            "required": [
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "bulk_import_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "bulk_import"
+                ]
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/bulk_import_attributes"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
       "new_catalog": {
         "type": "object",
         "properties": {
@@ -39024,6 +39967,11 @@
                   "position": {
                     "type": "integer",
                     "description": "Default position of the catalog when displayed in a list.",
+                    "nullable": true
+                  },
+                  "external_id": {
+                    "type": "string",
+                    "description": "An external identifier for this catalog. Must be unique within the team.",
                     "nullable": true
                   }
                 },
@@ -39082,6 +40030,11 @@
                     "type": "integer",
                     "description": "Default position of the catalog when displayed in a list.",
                     "nullable": true
+                  },
+                  "external_id": {
+                    "type": "string",
+                    "description": "An external identifier for this catalog. Must be unique within the team.",
+                    "nullable": true
                   }
                 },
                 "additionalProperties": false
@@ -39124,6 +40077,24 @@
             "type": "integer",
             "description": "Default position of the catalog when displayed in a list.",
             "nullable": true
+          },
+          "external_id": {
+            "type": "string",
+            "description": "An external identifier for this catalog. Must be unique within the team.",
+            "nullable": true
+          },
+          "managed_by": {
+            "type": "string",
+            "enum": [
+              "web",
+              "admin_web",
+              "api",
+              "terraform",
+              "pulumi",
+              "backstage",
+              "catalog_sync"
+            ],
+            "description": "Which source manages this resource (read-only)."
           },
           "created_at": {
             "type": "string"
@@ -39309,6 +40280,11 @@
                       "service",
                       "team"
                     ]
+                  },
+                  "external_id": {
+                    "type": "string",
+                    "description": "An external identifier for this catalog field. Must be unique within the scope.",
+                    "nullable": true
                   }
                 },
                 "additionalProperties": false,
@@ -39387,6 +40363,11 @@
                       "service",
                       "team"
                     ]
+                  },
+                  "external_id": {
+                    "type": "string",
+                    "description": "An external identifier for this catalog field. Must be unique within the scope.",
+                    "nullable": true
                   }
                 },
                 "additionalProperties": false
@@ -39452,6 +40433,24 @@
               "service",
               "team"
             ]
+          },
+          "external_id": {
+            "type": "string",
+            "description": "An external identifier for this catalog field. Must be unique within the scope.",
+            "nullable": true
+          },
+          "managed_by": {
+            "type": "string",
+            "enum": [
+              "web",
+              "admin_web",
+              "api",
+              "terraform",
+              "pulumi",
+              "backstage",
+              "catalog_sync"
+            ],
+            "description": "Which source manages this resource (read-only)."
           },
           "created_at": {
             "type": "string"
@@ -39639,6 +40638,11 @@
                       "service",
                       "team"
                     ]
+                  },
+                  "external_id": {
+                    "type": "string",
+                    "description": "An external identifier for this catalog property. Must be unique within the scope.",
+                    "nullable": true
                   }
                 },
                 "additionalProperties": false,
@@ -39717,6 +40721,11 @@
                       "service",
                       "team"
                     ]
+                  },
+                  "external_id": {
+                    "type": "string",
+                    "description": "An external identifier for this catalog property. Must be unique within the scope.",
+                    "nullable": true
                   }
                 },
                 "additionalProperties": false
@@ -39782,6 +40791,24 @@
               "service",
               "team"
             ]
+          },
+          "external_id": {
+            "type": "string",
+            "description": "An external identifier for this catalog property. Must be unique within the scope.",
+            "nullable": true
+          },
+          "managed_by": {
+            "type": "string",
+            "enum": [
+              "web",
+              "admin_web",
+              "api",
+              "terraform",
+              "pulumi",
+              "backstage",
+              "catalog_sync"
+            ],
+            "description": "Which source manages this resource (read-only)."
           },
           "created_at": {
             "type": "string"
@@ -39937,6 +40964,11 @@
                     "description": "The Backstage entity ID this catalog entity is linked to.",
                     "nullable": true
                   },
+                  "external_id": {
+                    "type": "string",
+                    "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+                    "nullable": true
+                  },
                   "properties": {
                     "type": "array",
                     "description": "Array of property values for this catalog entity",
@@ -40007,6 +41039,11 @@
                     "description": "The Backstage entity ID this catalog entity is linked to.",
                     "nullable": true
                   },
+                  "external_id": {
+                    "type": "string",
+                    "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+                    "nullable": true
+                  },
                   "properties": {
                     "type": "array",
                     "description": "Array of property values for this catalog entity",
@@ -40061,6 +41098,24 @@
             "type": "string",
             "description": "The Backstage entity ID this catalog entity is linked to.",
             "nullable": true
+          },
+          "external_id": {
+            "type": "string",
+            "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+            "nullable": true
+          },
+          "managed_by": {
+            "type": "string",
+            "enum": [
+              "web",
+              "admin_web",
+              "api",
+              "terraform",
+              "pulumi",
+              "backstage",
+              "catalog_sync"
+            ],
+            "description": "Which source manages this resource (read-only)."
           },
           "created_at": {
             "type": "string"
@@ -40201,6 +41256,218 @@
           "links",
           "meta"
         ]
+      },
+      "bulk_upsert_catalog_entities": {
+        "type": "object",
+        "properties": {
+          "entities": {
+            "type": "array",
+            "description": "Array of catalog entities to upsert. Each must have an external_id. Max 100 per request. external_ids must be unique within a batch.",
+            "items": {
+              "type": "object",
+              "properties": {
+                "external_id": {
+                  "type": "string",
+                  "description": "External identifier used as the upsert key. Must be unique within the catalog."
+                },
+                "name": {
+                  "type": "string",
+                  "description": "Required for new entities. Optional for updates (managed-fields: omitted attributes are preserved)."
+                },
+                "description": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "backstage_id": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "fields": {
+                  "type": "array",
+                  "description": "Property values for this entity. Only mentioned fields are written; unmentioned fields are preserved.",
+                  "items": {
+                    "type": "object",
+                    "description": "Each field entry must include either catalog_field_id or catalog_property_id.",
+                    "properties": {
+                      "catalog_field_id": {
+                        "type": "string",
+                        "description": "UUID, slug, or external_id of the catalog field (required if catalog_property_id is absent)"
+                      },
+                      "catalog_property_id": {
+                        "type": "string",
+                        "description": "Alias for catalog_field_id (required if catalog_field_id is absent)"
+                      },
+                      "value": {
+                        "type": "string",
+                        "description": "The value for this field"
+                      }
+                    },
+                    "required": [
+                      "value"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "external_id"
+              ]
+            }
+          }
+        },
+        "required": [
+          "entities"
+        ]
+      },
+      "bulk_upsert_catalog_entities_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "catalog_entities"
+                  ]
+                },
+                "attributes": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/catalog_entity"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_resource"
+            }
+          }
+        }
+      },
+      "bulk_upsert_catalog_entities_error": {
+        "type": "object",
+        "required": [
+          "errors"
+        ],
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "index",
+                "external_id",
+                "errors"
+              ],
+              "properties": {
+                "index": {
+                  "type": "integer",
+                  "description": "Position of the failed entity in the batch"
+                },
+                "external_id": {
+                  "type": "string"
+                },
+                "errors": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "bulk_destroy_catalog_entities": {
+        "description": "Two mutually exclusive modes. Pass exactly one of: external_ids (delete specific entities) or managed_by (prune all managed entities not in keep set).",
+        "oneOf": [
+          {
+            "type": "object",
+            "required": [
+              "external_ids"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "external_ids": {
+                "type": "array",
+                "description": "Array of external_ids to delete. Max 100 per request.",
+                "items": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "minItems": 1
+              }
+            }
+          },
+          {
+            "type": "object",
+            "required": [
+              "managed_by"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "managed_by": {
+                "type": "string",
+                "enum": [
+                  "api",
+                  "terraform",
+                  "pulumi",
+                  "backstage",
+                  "catalog_sync"
+                ],
+                "description": "Delete all entities with this managed_by value (web/admin_web not allowed)."
+              },
+              "keep_external_ids": {
+                "type": "array",
+                "description": "Entities with these external_ids are preserved.",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        ]
+      },
+      "bulk_destroy_catalog_entities_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "deleted_external_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "External IDs that were successfully deleted"
+              },
+              "failed_external_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "External IDs where destroy failed (e.g. protected/synced entities)"
+              },
+              "not_found_external_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "External IDs that were not found (only present in external_ids mode)"
+              }
+            }
+          }
+        }
       },
       "new_catalog_entity_property": {
         "type": "object",
@@ -58499,6 +59766,98 @@
           "channels"
         ]
       },
+      "invite_to_microsoft_teams_channel_rootly_task_params": {
+        "type": "object",
+        "properties": {
+          "task_type": {
+            "type": "string",
+            "enum": [
+              "invite_to_microsoft_teams_channel_rootly"
+            ]
+          },
+          "team": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "channel": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "escalation_policy_target": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "service_target": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "user_target": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "group_target": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          },
+          "schedule_target": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            }
+          }
+        },
+        "required": [
+          "team",
+          "channel"
+        ]
+      },
       "invite_to_slack_channel_pagerduty_task_params": {
         "type": "object",
         "properties": {
@@ -62168,6 +63527,9 @@
                         "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
                       },
                       {
+                        "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+                      },
+                      {
                         "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
                       },
                       {
@@ -62656,6 +64018,9 @@
                         "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
                       },
                       {
+                        "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+                      },
+                      {
                         "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
                       },
                       {
@@ -63116,6 +64481,9 @@
                 "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
               },
               {
+                "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+              },
+              {
                 "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
               },
               {
@@ -63386,6 +64754,456 @@
                   "allOf": [
                     {
                       "$ref": "#/components/schemas/workflow_task"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "type",
+                "attributes"
+              ]
+            }
+          },
+          "links": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/links"
+              }
+            ]
+          },
+          "meta": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/meta"
+              }
+            ]
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_resource"
+            }
+          }
+        },
+        "required": [
+          "data",
+          "links",
+          "meta"
+        ]
+      },
+      "new_workflow_action_item_form_field_condition": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "workflow_action_item_form_field_conditions"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "form_field_id": {
+                    "type": "string",
+                    "description": "The custom field for this condition"
+                  },
+                  "action_item_condition": {
+                    "type": "string",
+                    "description": "The trigger condition",
+                    "enum": [
+                      "IS",
+                      "IS NOT",
+                      "ANY",
+                      "CONTAINS",
+                      "CONTAINS_ALL",
+                      "CONTAINS_NONE",
+                      "NONE",
+                      "SET",
+                      "UNSET"
+                    ],
+                    "default": "ANY"
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The value to associate with the custom field trigger"
+                    }
+                  },
+                  "selected_catalog_entity_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected catalog entities for select and multi_select kinds"
+                    }
+                  },
+                  "selected_functionality_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected functionalities for select and multi_select kinds"
+                    }
+                  },
+                  "selected_group_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected groups (teams) for select and multi_select kinds"
+                    }
+                  },
+                  "selected_option_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected option id for select and multi_select kinds"
+                    }
+                  },
+                  "selected_service_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected services for select and multi_select kinds"
+                    }
+                  },
+                  "selected_user_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "description": "The selected user id for select and multi_select kinds"
+                    }
+                  },
+                  "selected_cause_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected causes for select and multi_select kinds"
+                    }
+                  },
+                  "selected_environment_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected environments for select and multi_select kinds"
+                    }
+                  },
+                  "selected_incident_type_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected incident types for select and multi_select kinds"
+                    }
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "action_item_condition",
+                  "form_field_id"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "update_workflow_action_item_form_field_condition": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "workflow_action_item_form_field_conditions"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "action_item_condition": {
+                    "type": "string",
+                    "description": "The trigger condition",
+                    "enum": [
+                      "IS",
+                      "IS NOT",
+                      "ANY",
+                      "CONTAINS",
+                      "CONTAINS_ALL",
+                      "CONTAINS_NONE",
+                      "NONE",
+                      "SET",
+                      "UNSET"
+                    ],
+                    "default": "ANY"
+                  },
+                  "values": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The value to associate with the custom field trigger"
+                    }
+                  },
+                  "selected_catalog_entity_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected catalog entities for select and multi_select kinds"
+                    }
+                  },
+                  "selected_functionality_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected functionalities for select and multi_select kinds"
+                    }
+                  },
+                  "selected_group_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected groups (teams) for select and multi_select kinds"
+                    }
+                  },
+                  "selected_option_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected option id for select and multi_select kinds"
+                    }
+                  },
+                  "selected_service_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected services for select and multi_select kinds"
+                    }
+                  },
+                  "selected_user_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "integer",
+                      "description": "The selected user id for select and multi_select kinds"
+                    }
+                  },
+                  "selected_cause_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected causes for select and multi_select kinds"
+                    }
+                  },
+                  "selected_environment_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected environments for select and multi_select kinds"
+                    }
+                  },
+                  "selected_incident_type_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "The selected incident types for select and multi_select kinds"
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "workflow_action_item_form_field_condition": {
+        "type": "object",
+        "properties": {
+          "workflow_id": {
+            "type": "string",
+            "description": "The workflow for this condition"
+          },
+          "form_field_id": {
+            "type": "string",
+            "description": "The custom field for this condition"
+          },
+          "action_item_condition": {
+            "type": "string",
+            "description": "The trigger condition",
+            "enum": [
+              "IS",
+              "IS NOT",
+              "ANY",
+              "CONTAINS",
+              "CONTAINS_ALL",
+              "CONTAINS_NONE",
+              "NONE",
+              "SET",
+              "UNSET"
+            ],
+            "default": "ANY"
+          },
+          "values": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The value to associate with the custom field trigger"
+            }
+          },
+          "selected_catalog_entity_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The selected catalog entities for select and multi_select kinds"
+            }
+          },
+          "selected_functionality_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The selected functionalities for select and multi_select kinds"
+            }
+          },
+          "selected_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The selected groups (teams) for select and multi_select kinds"
+            }
+          },
+          "selected_option_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The selected option id for select and multi_select kinds"
+            }
+          },
+          "selected_service_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The selected services for select and multi_select kinds"
+            }
+          },
+          "selected_user_ids": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "description": "The selected user id for select and multi_select kinds"
+            }
+          },
+          "selected_cause_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The selected causes for select and multi_select kinds"
+            }
+          },
+          "selected_environment_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The selected environments for select and multi_select kinds"
+            }
+          },
+          "selected_incident_type_ids": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "description": "The selected incident types for select and multi_select kinds"
+            }
+          }
+        },
+        "required": [
+          "workflow_id",
+          "form_field_id",
+          "action_item_condition",
+          "selected_catalog_entity_ids",
+          "selected_option_ids",
+          "selected_user_ids"
+        ]
+      },
+      "workflow_action_item_form_field_condition_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique ID of the workflow_action_item_form_field_condition"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "workflow_action_item_form_field_conditions"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/workflow_action_item_form_field_condition"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_resource"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "workflow_action_item_form_field_condition_list": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique ID of the workflow_action_item_form_field_condition"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "workflow_action_item_form_field_conditions"
+                  ]
+                },
+                "attributes": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/workflow_action_item_form_field_condition"
                     }
                   ]
                 }
@@ -67593,6 +69411,13 @@
                       "Functionality"
                     ]
                   },
+                  "owner_group_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of team IDs that own this heartbeat"
+                  },
                   "enabled": {
                     "type": "boolean",
                     "description": "Whether to trigger alerts when heartbeat is expired."
@@ -67682,6 +69507,13 @@
                       "Functionality"
                     ]
                   },
+                  "owner_group_ids": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    },
+                    "description": "List of team IDs that own this heartbeat"
+                  },
                   "enabled": {
                     "type": "boolean",
                     "description": "Whether to trigger alerts when heartbeat is expired."
@@ -67750,6 +69582,13 @@
               "EscalationPolicy",
               "Functionality"
             ]
+          },
+          "owner_group_ids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of team IDs that own this heartbeat"
           },
           "enabled": {
             "type": "boolean",
@@ -68398,6 +70237,16 @@
           "jira_issue_url": {
             "type": "string",
             "description": "The Jira issue URL.",
+            "nullable": true
+          },
+          "created_by": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/user_flat_response"
+              }
+            ],
+            "description": "User who created this action item",
             "nullable": true
           },
           "created_at": {
@@ -84223,6 +86072,37 @@
           }
         }
       },
+      "slack_channel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "slack_channel_name": {
+            "type": "string"
+          },
+          "slack_channel_id": {
+            "type": "string"
+          },
+          "slack_team_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "id",
+          "slack_channel_name",
+          "slack_channel_id",
+          "slack_team_id",
+          "created_at",
+          "updated_at"
+        ]
+      },
       "new_status_page_template": {
         "type": "object",
         "properties": {
@@ -86987,48 +88867,72 @@
       },
       "user_flat_response": {
         "type": "object",
-        "description": "Flat user object as returned by serializer",
+        "description": "Flat user attributes as returned by UserFlatSerializer (no nested associations)",
         "properties": {
           "id": {
             "type": "integer",
             "description": "User ID"
           },
+          "name": {
+            "type": "string",
+            "description": "Display name"
+          },
           "email": {
             "type": "string",
-            "description": "User email"
+            "description": "Email address"
+          },
+          "phone": {
+            "type": "string",
+            "description": "Primary phone number",
+            "nullable": true
+          },
+          "phone_2": {
+            "type": "string",
+            "description": "Secondary phone number",
+            "nullable": true
           },
           "first_name": {
             "type": "string",
-            "description": "User first name",
+            "description": "First name",
             "nullable": true
           },
           "last_name": {
             "type": "string",
-            "description": "User last name",
+            "description": "Last name",
+            "nullable": true
+          },
+          "preferred_name": {
+            "type": "string",
+            "description": "Preferred name",
             "nullable": true
           },
           "full_name": {
             "type": "string",
-            "description": "User full name",
+            "description": "Full name",
             "nullable": true
           },
           "full_name_with_team": {
             "type": "string",
-            "description": "User full name with team",
+            "description": "Full name with team context",
+            "nullable": true
+          },
+          "slack_id": {
+            "type": "string",
+            "description": "Slack user ID",
             "nullable": true
           },
           "time_zone": {
             "type": "string",
-            "description": "User time zone",
+            "description": "IANA time zone",
             "nullable": true
           },
           "created_at": {
             "type": "string",
-            "description": "User creation timestamp"
+            "description": "Date of creation"
           },
           "updated_at": {
             "type": "string",
-            "description": "User last update timestamp"
+            "description": "Date of last update"
           }
         },
         "required": [
@@ -87450,6 +89354,29 @@
                   },
                   "enabled": {
                     "type": "boolean"
+                  },
+                  "custom_headers": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "maxLength": 256
+                        },
+                        "value": {
+                          "type": "string",
+                          "maxLength": 8192
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected."
                   }
                 },
                 "additionalProperties": false,
@@ -87529,6 +89456,29 @@
                   },
                   "enabled": {
                     "type": "boolean"
+                  },
+                  "custom_headers": {
+                    "type": "array",
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string",
+                          "maxLength": 256
+                        },
+                        "value": {
+                          "type": "string",
+                          "maxLength": 8192
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "value"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected."
                   }
                 },
                 "additionalProperties": false
@@ -87604,6 +89554,29 @@
           },
           "enabled": {
             "type": "boolean"
+          },
+          "custom_headers": {
+            "type": "array",
+            "maxItems": 10,
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "maxLength": 256
+                },
+                "value": {
+                  "type": "string",
+                  "maxLength": 8192
+                }
+              },
+              "required": [
+                "name",
+                "value"
+              ],
+              "additionalProperties": false
+            },
+            "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected."
           },
           "created_at": {
             "type": "string",

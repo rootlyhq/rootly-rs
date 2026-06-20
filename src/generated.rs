@@ -1767,6 +1767,36 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "notified_users": {
+    ///      "description": "Users who were notified about the alert. Included on all non-list responses (show, create, update, resolve, etc.); on list responses only when `include=notified_users` is requested.",
+    ///      "type": [
+    ///        "array",
+    ///        "null"
+    ///      ],
+    ///      "items": {
+    ///        "type": "object",
+    ///        "allOf": [
+    ///          {
+    ///            "$ref": "#/components/schemas/user"
+    ///          }
+    ///        ]
+    ///      }
+    ///    },
+    ///    "responders": {
+    ///      "description": "Users who responded to the alert. Included on all non-list responses (show, create, update, resolve, etc.); on list responses only when `include=responders` is requested.",
+    ///      "type": [
+    ///        "array",
+    ///        "null"
+    ///      ],
+    ///      "items": {
+    ///        "type": "object",
+    ///        "allOf": [
+    ///          {
+    ///            "$ref": "#/components/schemas/user_flat_response"
+    ///          }
+    ///        ]
+    ///      }
+    ///    },
     ///    "service_ids": {
     ///      "description": "The Service IDs to attach to the alert. If your organization has On-Call enabled and your notification target is a Service. This field will be automatically set for you.",
     ///      "type": [
@@ -1904,6 +1934,12 @@ pub mod types {
         ///Only available for organizations with Rootly On-Call enabled. Can be one of Group, Service, EscalationPolicy, Functionality, User.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub notification_target_type: ::std::option::Option<::std::string::String>,
+        ///Users who were notified about the alert. Included on all non-list responses (show, create, update, resolve, etc.); on list responses only when `include=notified_users` is requested.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub notified_users: ::std::option::Option<::std::vec::Vec<User>>,
+        ///Users who responded to the alert. Included on all non-list responses (show, create, update, resolve, etc.); on list responses only when `include=responders` is requested.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub responders: ::std::option::Option<::std::vec::Vec<UserFlatResponse>>,
         ///The Service IDs to attach to the alert. If your organization has On-Call enabled and your notification target is a Service. This field will be automatically set for you.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub service_ids: ::std::option::Option<::std::vec::Vec<::std::string::String>>,
@@ -2067,14 +2103,188 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "escalation_level": {
+    ///      "type": [
+    ///        "integer",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "escalation_target": {
+    ///      "description": "JSON:API-wrapped escalation target (User or EscalationPolicy).",
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ],
+    ///      "properties": {
+    ///        "data": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "attributes": {
+    ///              "type": "object"
+    ///            },
+    ///            "id": {
+    ///              "type": "string"
+    ///            },
+    ///            "type": {
+    ///              "description": "e.g. users, escalation_policies.",
+    ///              "type": "string"
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "escalation_target_type": {
+    ///      "description": "e.g. EscalationPolicy, User.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "incident": {
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ],
+    ///      "properties": {
+    ///        "created_at": {
+    ///          "type": "string"
+    ///        },
+    ///        "description": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "duration": {
+    ///          "description": "Duration in seconds.",
+    ///          "type": [
+    ///            "integer",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "kind": {
+    ///          "type": "string"
+    ///        },
+    ///        "private": {
+    ///          "type": "boolean"
+    ///        },
+    ///        "sequential_id": {
+    ///          "type": [
+    ///            "integer",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "slug": {
+    ///          "type": "string"
+    ///        },
+    ///        "started_at": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "status": {
+    ///          "type": "string"
+    ///        },
+    ///        "title": {
+    ///          "type": "string"
+    ///        },
+    ///        "updated_at": {
+    ///          "type": "string"
+    ///        },
+    ///        "url": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "incident_ids": {
+    ///      "type": [
+    ///        "array",
+    ///        "null"
+    ///      ],
+    ///      "items": {
+    ///        "type": "string"
+    ///      }
+    ///    },
     ///    "kind": {
     ///      "type": "string"
+    ///    },
+    ///    "schedule": {
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ],
+    ///      "properties": {
+    ///        "created_at": {
+    ///          "type": "string"
+    ///        },
+    ///        "description": {
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "escalation_policies": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "properties": {
+    ///              "created_at": {
+    ///                "type": "string"
+    ///              },
+    ///              "id": {
+    ///                "type": "string"
+    ///              },
+    ///              "name": {
+    ///                "type": "string"
+    ///              },
+    ///              "updated_at": {
+    ///                "type": "string"
+    ///              }
+    ///            }
+    ///          }
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "name": {
+    ///          "type": "string"
+    ///        },
+    ///        "updated_at": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "slack_channel": {
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ],
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/slack_channel"
+    ///        }
+    ///      ]
     ///    },
     ///    "source": {
     ///      "type": "string"
     ///    },
     ///    "updated_at": {
     ///      "type": "string"
+    ///    },
+    ///    "user": {
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ],
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/alert_event_user"
+    ///        }
+    ///      ]
     ///    },
     ///    "user_id": {
     ///      "description": "Author of the note.",
@@ -2096,15 +2306,126 @@ pub mod types {
         ///Note message.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub details: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub escalation_level: ::std::option::Option<i64>,
+        ///JSON:API-wrapped escalation target (User or EscalationPolicy).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub escalation_target: ::std::option::Option<AlertEventEscalationTarget>,
+        ///e.g. EscalationPolicy, User.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub escalation_target_type: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub incident: ::std::option::Option<AlertEventIncident>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub incident_ids: ::std::option::Option<::std::vec::Vec<::std::string::String>>,
         pub kind: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule: ::std::option::Option<AlertEventSchedule>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub slack_channel: ::std::option::Option<SlackChannel>,
         pub source: ::std::string::String,
         pub updated_at: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub user: ::std::option::Option<AlertEventUser>,
         ///Author of the note.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub user_id: ::std::option::Option<i64>,
     }
     impl AlertEvent {
         pub fn builder() -> builder::AlertEvent {
+            Default::default()
+        }
+    }
+    ///JSON:API-wrapped escalation target (User or EscalationPolicy).
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "JSON:API-wrapped escalation target (User or EscalationPolicy).",
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object"
+    ///        },
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "description": "e.g. users, escalation_policies.",
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AlertEventEscalationTarget {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<AlertEventEscalationTargetData>,
+    }
+    impl ::std::default::Default for AlertEventEscalationTarget {
+        fn default() -> Self {
+            Self { data: Default::default() }
+        }
+    }
+    impl AlertEventEscalationTarget {
+        pub fn builder() -> builder::AlertEventEscalationTarget {
+            Default::default()
+        }
+    }
+    ///`AlertEventEscalationTargetData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object"
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "description": "e.g. users, escalation_policies.",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AlertEventEscalationTargetData {
+        #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
+        pub attributes: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        ///e.g. users, escalation_policies.
+        #[serde(
+            rename = "type",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub type_: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default for AlertEventEscalationTargetData {
+        fn default() -> Self {
+            Self {
+                attributes: Default::default(),
+                id: Default::default(),
+                type_: Default::default(),
+            }
+        }
+    }
+    impl AlertEventEscalationTargetData {
+        pub fn builder() -> builder::AlertEventEscalationTargetData {
             Default::default()
         }
     }
@@ -2303,6 +2624,124 @@ pub mod types {
     }
     impl AlertEventFeedMeta {
         pub fn builder() -> builder::AlertEventFeedMeta {
+            Default::default()
+        }
+    }
+    ///`AlertEventIncident`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "created_at": {
+    ///      "type": "string"
+    ///    },
+    ///    "description": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "duration": {
+    ///      "description": "Duration in seconds.",
+    ///      "type": [
+    ///        "integer",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "kind": {
+    ///      "type": "string"
+    ///    },
+    ///    "private": {
+    ///      "type": "boolean"
+    ///    },
+    ///    "sequential_id": {
+    ///      "type": [
+    ///        "integer",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "slug": {
+    ///      "type": "string"
+    ///    },
+    ///    "started_at": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "status": {
+    ///      "type": "string"
+    ///    },
+    ///    "title": {
+    ///      "type": "string"
+    ///    },
+    ///    "updated_at": {
+    ///      "type": "string"
+    ///    },
+    ///    "url": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AlertEventIncident {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+        ///Duration in seconds.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub duration: ::std::option::Option<i64>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub kind: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub private: ::std::option::Option<bool>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub sequential_id: ::std::option::Option<i64>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub slug: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub started_at: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub status: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub title: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub url: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default for AlertEventIncident {
+        fn default() -> Self {
+            Self {
+                created_at: Default::default(),
+                description: Default::default(),
+                duration: Default::default(),
+                id: Default::default(),
+                kind: Default::default(),
+                private: Default::default(),
+                sequential_id: Default::default(),
+                slug: Default::default(),
+                started_at: Default::default(),
+                status: Default::default(),
+                title: Default::default(),
+                updated_at: Default::default(),
+                url: Default::default(),
+            }
+        }
+    }
+    impl AlertEventIncident {
+        pub fn builder() -> builder::AlertEventIncident {
             Default::default()
         }
     }
@@ -2530,6 +2969,227 @@ pub mod types {
     }
     impl AlertEventResponseData {
         pub fn builder() -> builder::AlertEventResponseData {
+            Default::default()
+        }
+    }
+    ///`AlertEventSchedule`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "created_at": {
+    ///      "type": "string"
+    ///    },
+    ///    "description": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "escalation_policies": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "properties": {
+    ///          "created_at": {
+    ///            "type": "string"
+    ///          },
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "name": {
+    ///            "type": "string"
+    ///          },
+    ///          "updated_at": {
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    },
+    ///    "updated_at": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AlertEventSchedule {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub escalation_policies: ::std::vec::Vec<
+            AlertEventScheduleEscalationPoliciesItem,
+        >,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default for AlertEventSchedule {
+        fn default() -> Self {
+            Self {
+                created_at: Default::default(),
+                description: Default::default(),
+                escalation_policies: Default::default(),
+                id: Default::default(),
+                name: Default::default(),
+                updated_at: Default::default(),
+            }
+        }
+    }
+    impl AlertEventSchedule {
+        pub fn builder() -> builder::AlertEventSchedule {
+            Default::default()
+        }
+    }
+    ///`AlertEventScheduleEscalationPoliciesItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "created_at": {
+    ///      "type": "string"
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    },
+    ///    "updated_at": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AlertEventScheduleEscalationPoliciesItem {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default for AlertEventScheduleEscalationPoliciesItem {
+        fn default() -> Self {
+            Self {
+                created_at: Default::default(),
+                id: Default::default(),
+                name: Default::default(),
+                updated_at: Default::default(),
+            }
+        }
+    }
+    impl AlertEventScheduleEscalationPoliciesItem {
+        pub fn builder() -> builder::AlertEventScheduleEscalationPoliciesItem {
+            Default::default()
+        }
+    }
+    ///`AlertEventUser`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "created_at",
+    ///    "email",
+    ///    "id",
+    ///    "name",
+    ///    "updated_at"
+    ///  ],
+    ///  "properties": {
+    ///    "created_at": {
+    ///      "type": "string"
+    ///    },
+    ///    "email": {
+    ///      "type": "string"
+    ///    },
+    ///    "first_name": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "full_name": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "id": {
+    ///      "type": "integer"
+    ///    },
+    ///    "last_name": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    },
+    ///    "preferred_name": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "time_zone": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "updated_at": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AlertEventUser {
+        pub created_at: ::std::string::String,
+        pub email: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub first_name: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub full_name: ::std::option::Option<::std::string::String>,
+        pub id: i64,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub last_name: ::std::option::Option<::std::string::String>,
+        pub name: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub preferred_name: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub time_zone: ::std::option::Option<::std::string::String>,
+        pub updated_at: ::std::string::String,
+    }
+    impl AlertEventUser {
+        pub fn builder() -> builder::AlertEventUser {
             Default::default()
         }
     }
@@ -8862,10 +9522,24 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "user_email": {
+    ///      "description": "Email address of the user who performed the action",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "user_id": {
     ///      "description": "The ID of who took action on the object. Together with whodunnit_type can be used to find the user",
     ///      "type": [
     ///        "integer",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "user_name": {
+    ///      "description": "Display name of the user who performed the action",
+    ///      "type": [
+    ///        "string",
     ///        "null"
     ///      ]
     ///    }
@@ -8913,9 +9587,15 @@ pub mod types {
         ///User-Agent header of the client that performed the action
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub user_agent: ::std::option::Option<::std::string::String>,
+        ///Email address of the user who performed the action
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub user_email: ::std::option::Option<::std::string::String>,
         ///The ID of who took action on the object. Together with whodunnit_type can be used to find the user
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub user_id: ::std::option::Option<i64>,
+        ///Display name of the user who performed the action
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub user_name: ::std::option::Option<::std::string::String>,
     }
     impl Audit {
         pub fn builder() -> builder::Audit {
@@ -10167,6 +10847,902 @@ pub mod types {
             Default::default()
         }
     }
+    ///Two mutually exclusive modes. Pass exactly one of: external_ids (delete specific entities) or managed_by (prune all managed entities not in keep set).
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "Two mutually exclusive modes. Pass exactly one of: external_ids (delete specific entities) or managed_by (prune all managed entities not in keep set).",
+    ///  "oneOf": [
+    ///    {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "external_ids"
+    ///      ],
+    ///      "properties": {
+    ///        "external_ids": {
+    ///          "description": "Array of external_ids to delete. Max 100 per request.",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "string",
+    ///            "minLength": 1
+    ///          },
+    ///          "minItems": 1
+    ///        }
+    ///      },
+    ///      "additionalProperties": false
+    ///    },
+    ///    {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "managed_by"
+    ///      ],
+    ///      "properties": {
+    ///        "keep_external_ids": {
+    ///          "description": "Entities with these external_ids are preserved.",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "managed_by": {
+    ///          "description": "Delete all entities with this managed_by value (web/admin_web not allowed).",
+    ///          "type": "string"
+    ///        }
+    ///      },
+    ///      "additionalProperties": false
+    ///    }
+    ///  ]
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum BulkDestroyCatalogEntities {
+        Variant0 {
+            ///Array of external_ids to delete. Max 100 per request.
+            external_ids: ::std::vec::Vec<
+                BulkDestroyCatalogEntitiesVariant0ExternalIdsItem,
+            >,
+        },
+        Variant1 {
+            ///Entities with these external_ids are preserved.
+            #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+            keep_external_ids: ::std::vec::Vec<::std::string::String>,
+            ///Delete all entities with this managed_by value (web/admin_web not allowed).
+            managed_by: ::std::string::String,
+        },
+    }
+    ///`BulkDestroyCatalogEntitiesResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "deleted_external_ids": {
+    ///          "description": "External IDs that were successfully deleted",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "failed_external_ids": {
+    ///          "description": "External IDs where destroy failed (e.g. protected/synced entities)",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "not_found_external_ids": {
+    ///          "description": "External IDs that were not found (only present in external_ids mode)",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkDestroyCatalogEntitiesResponse {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub data: ::std::option::Option<BulkDestroyCatalogEntitiesResponseData>,
+    }
+    impl ::std::default::Default for BulkDestroyCatalogEntitiesResponse {
+        fn default() -> Self {
+            Self { data: Default::default() }
+        }
+    }
+    impl BulkDestroyCatalogEntitiesResponse {
+        pub fn builder() -> builder::BulkDestroyCatalogEntitiesResponse {
+            Default::default()
+        }
+    }
+    ///`BulkDestroyCatalogEntitiesResponseData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "deleted_external_ids": {
+    ///      "description": "External IDs that were successfully deleted",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "failed_external_ids": {
+    ///      "description": "External IDs where destroy failed (e.g. protected/synced entities)",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "not_found_external_ids": {
+    ///      "description": "External IDs that were not found (only present in external_ids mode)",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "string"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkDestroyCatalogEntitiesResponseData {
+        ///External IDs that were successfully deleted
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub deleted_external_ids: ::std::vec::Vec<::std::string::String>,
+        ///External IDs where destroy failed (e.g. protected/synced entities)
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub failed_external_ids: ::std::vec::Vec<::std::string::String>,
+        ///External IDs that were not found (only present in external_ids mode)
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub not_found_external_ids: ::std::vec::Vec<::std::string::String>,
+    }
+    impl ::std::default::Default for BulkDestroyCatalogEntitiesResponseData {
+        fn default() -> Self {
+            Self {
+                deleted_external_ids: Default::default(),
+                failed_external_ids: Default::default(),
+                not_found_external_ids: Default::default(),
+            }
+        }
+    }
+    impl BulkDestroyCatalogEntitiesResponseData {
+        pub fn builder() -> builder::BulkDestroyCatalogEntitiesResponseData {
+            Default::default()
+        }
+    }
+    ///`BulkDestroyCatalogEntitiesVariant0ExternalIdsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "minLength": 1
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct BulkDestroyCatalogEntitiesVariant0ExternalIdsItem(::std::string::String);
+    impl ::std::ops::Deref for BulkDestroyCatalogEntitiesVariant0ExternalIdsItem {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<BulkDestroyCatalogEntitiesVariant0ExternalIdsItem>
+    for ::std::string::String {
+        fn from(value: BulkDestroyCatalogEntitiesVariant0ExternalIdsItem) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr for BulkDestroyCatalogEntitiesVariant0ExternalIdsItem {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() < 1usize {
+                return Err("shorter than 1 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for BulkDestroyCatalogEntitiesVariant0ExternalIdsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<&::std::string::String>
+    for BulkDestroyCatalogEntitiesVariant0ExternalIdsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for BulkDestroyCatalogEntitiesVariant0ExternalIdsItem {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for BulkDestroyCatalogEntitiesVariant0ExternalIdsItem {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`BulkImportAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "failed_records",
+    ///    "processed_records",
+    ///    "progress_percentage",
+    ///    "status"
+    ///  ],
+    ///  "properties": {
+    ///    "completed_at": {
+    ///      "description": "When import completed or failed",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ],
+    ///      "format": "date-time"
+    ///    },
+    ///    "created_at": {
+    ///      "description": "When the bulk import was created",
+    ///      "type": "string",
+    ///      "format": "date-time"
+    ///    },
+    ///    "entity_type": {
+    ///      "description": "Type of entity being imported",
+    ///      "type": "string"
+    ///    },
+    ///    "error_message": {
+    ///      "description": "Error message if import failed",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "failed_records": {
+    ///      "description": "Number of records that failed to import",
+    ///      "type": "integer"
+    ///    },
+    ///    "file_url": {
+    ///      "description": "URL of the JSONL file being imported",
+    ///      "type": "string",
+    ///      "format": "uri"
+    ///    },
+    ///    "notification_email": {
+    ///      "description": "Email address for notifications",
+    ///      "type": "string",
+    ///      "format": "email"
+    ///    },
+    ///    "processed_records": {
+    ///      "description": "Number of records processed so far",
+    ///      "type": "integer"
+    ///    },
+    ///    "progress_percentage": {
+    ///      "description": "Import progress percentage (0-100)",
+    ///      "type": "number",
+    ///      "format": "float"
+    ///    },
+    ///    "started_at": {
+    ///      "description": "When import processing started",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ],
+    ///      "format": "date-time"
+    ///    },
+    ///    "status": {
+    ///      "description": "Current status of the import",
+    ///      "type": "string"
+    ///    },
+    ///    "total_records": {
+    ///      "description": "Total number of records in the file",
+    ///      "type": [
+    ///        "integer",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "updated_at": {
+    ///      "description": "When the bulk import was last updated",
+    ///      "type": "string",
+    ///      "format": "date-time"
+    ///    },
+    ///    "validation_errors": {
+    ///      "description": "Validation errors encountered during validation phase",
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkImportAttributes {
+        ///When import completed or failed
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub completed_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///When the bulk import was created
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Type of entity being imported
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub entity_type: ::std::option::Option<::std::string::String>,
+        ///Error message if import failed
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub error_message: ::std::option::Option<::std::string::String>,
+        ///Number of records that failed to import
+        pub failed_records: i64,
+        ///URL of the JSONL file being imported
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub file_url: ::std::option::Option<::std::string::String>,
+        ///Email address for notifications
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub notification_email: ::std::option::Option<::std::string::String>,
+        ///Number of records processed so far
+        pub processed_records: i64,
+        ///Import progress percentage (0-100)
+        pub progress_percentage: f32,
+        ///When import processing started
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub started_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Current status of the import
+        pub status: ::std::string::String,
+        ///Total number of records in the file
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub total_records: ::std::option::Option<i64>,
+        ///When the bulk import was last updated
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Validation errors encountered during validation phase
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub validation_errors: ::std::option::Option<
+            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+        >,
+    }
+    impl BulkImportAttributes {
+        pub fn builder() -> builder::BulkImportAttributes {
+            Default::default()
+        }
+    }
+    ///`BulkImportResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "$ref": "#/components/schemas/bulk_import_attributes"
+    ///        },
+    ///        "id": {
+    ///          "type": "string",
+    ///          "format": "uuid"
+    ///        },
+    ///        "type": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkImportResponse {
+        pub data: BulkImportResponseData,
+    }
+    impl BulkImportResponse {
+        pub fn builder() -> builder::BulkImportResponse {
+            Default::default()
+        }
+    }
+    ///`BulkImportResponseData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "$ref": "#/components/schemas/bulk_import_attributes"
+    ///    },
+    ///    "id": {
+    ///      "type": "string",
+    ///      "format": "uuid"
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkImportResponseData {
+        pub attributes: BulkImportAttributes,
+        pub id: ::uuid::Uuid,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl BulkImportResponseData {
+        pub fn builder() -> builder::BulkImportResponseData {
+            Default::default()
+        }
+    }
+    ///`BulkUpsertCatalogEntities`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "entities"
+    ///  ],
+    ///  "properties": {
+    ///    "entities": {
+    ///      "description": "Array of catalog entities to upsert. Each must have an external_id. Max 100 per request. external_ids must be unique within a batch.",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "external_id"
+    ///        ],
+    ///        "properties": {
+    ///          "backstage_id": {
+    ///            "type": [
+    ///              "string",
+    ///              "null"
+    ///            ]
+    ///          },
+    ///          "description": {
+    ///            "type": [
+    ///              "string",
+    ///              "null"
+    ///            ]
+    ///          },
+    ///          "external_id": {
+    ///            "description": "External identifier used as the upsert key. Must be unique within the catalog.",
+    ///            "type": "string"
+    ///          },
+    ///          "fields": {
+    ///            "description": "Property values for this entity. Only mentioned fields are written; unmentioned fields are preserved.",
+    ///            "type": "array",
+    ///            "items": {
+    ///              "description": "Each field entry must include either catalog_field_id or catalog_property_id.",
+    ///              "type": "object",
+    ///              "required": [
+    ///                "value"
+    ///              ],
+    ///              "properties": {
+    ///                "catalog_field_id": {
+    ///                  "description": "UUID, slug, or external_id of the catalog field (required if catalog_property_id is absent)",
+    ///                  "type": "string"
+    ///                },
+    ///                "catalog_property_id": {
+    ///                  "description": "Alias for catalog_field_id (required if catalog_field_id is absent)",
+    ///                  "type": "string"
+    ///                },
+    ///                "value": {
+    ///                  "description": "The value for this field",
+    ///                  "type": "string"
+    ///                }
+    ///              }
+    ///            }
+    ///          },
+    ///          "name": {
+    ///            "description": "Required for new entities. Optional for updates (managed-fields: omitted attributes are preserved).",
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkUpsertCatalogEntities {
+        ///Array of catalog entities to upsert. Each must have an external_id. Max 100 per request. external_ids must be unique within a batch.
+        pub entities: ::std::vec::Vec<BulkUpsertCatalogEntitiesEntitiesItem>,
+    }
+    impl BulkUpsertCatalogEntities {
+        pub fn builder() -> builder::BulkUpsertCatalogEntities {
+            Default::default()
+        }
+    }
+    ///`BulkUpsertCatalogEntitiesEntitiesItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "external_id"
+    ///  ],
+    ///  "properties": {
+    ///    "backstage_id": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "description": {
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "external_id": {
+    ///      "description": "External identifier used as the upsert key. Must be unique within the catalog.",
+    ///      "type": "string"
+    ///    },
+    ///    "fields": {
+    ///      "description": "Property values for this entity. Only mentioned fields are written; unmentioned fields are preserved.",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "Each field entry must include either catalog_field_id or catalog_property_id.",
+    ///        "type": "object",
+    ///        "required": [
+    ///          "value"
+    ///        ],
+    ///        "properties": {
+    ///          "catalog_field_id": {
+    ///            "description": "UUID, slug, or external_id of the catalog field (required if catalog_property_id is absent)",
+    ///            "type": "string"
+    ///          },
+    ///          "catalog_property_id": {
+    ///            "description": "Alias for catalog_field_id (required if catalog_field_id is absent)",
+    ///            "type": "string"
+    ///          },
+    ///          "value": {
+    ///            "description": "The value for this field",
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "name": {
+    ///      "description": "Required for new entities. Optional for updates (managed-fields: omitted attributes are preserved).",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkUpsertCatalogEntitiesEntitiesItem {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub backstage_id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+        ///External identifier used as the upsert key. Must be unique within the catalog.
+        pub external_id: ::std::string::String,
+        ///Property values for this entity. Only mentioned fields are written; unmentioned fields are preserved.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub fields: ::std::vec::Vec<BulkUpsertCatalogEntitiesEntitiesItemFieldsItem>,
+        ///Required for new entities. Optional for updates (managed-fields: omitted attributes are preserved).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+    }
+    impl BulkUpsertCatalogEntitiesEntitiesItem {
+        pub fn builder() -> builder::BulkUpsertCatalogEntitiesEntitiesItem {
+            Default::default()
+        }
+    }
+    ///Each field entry must include either catalog_field_id or catalog_property_id.
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "description": "Each field entry must include either catalog_field_id or catalog_property_id.",
+    ///  "type": "object",
+    ///  "required": [
+    ///    "value"
+    ///  ],
+    ///  "properties": {
+    ///    "catalog_field_id": {
+    ///      "description": "UUID, slug, or external_id of the catalog field (required if catalog_property_id is absent)",
+    ///      "type": "string"
+    ///    },
+    ///    "catalog_property_id": {
+    ///      "description": "Alias for catalog_field_id (required if catalog_field_id is absent)",
+    ///      "type": "string"
+    ///    },
+    ///    "value": {
+    ///      "description": "The value for this field",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkUpsertCatalogEntitiesEntitiesItemFieldsItem {
+        ///UUID, slug, or external_id of the catalog field (required if catalog_property_id is absent)
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_field_id: ::std::option::Option<::std::string::String>,
+        ///Alias for catalog_field_id (required if catalog_field_id is absent)
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_property_id: ::std::option::Option<::std::string::String>,
+        ///The value for this field
+        pub value: ::std::string::String,
+    }
+    impl BulkUpsertCatalogEntitiesEntitiesItemFieldsItem {
+        pub fn builder() -> builder::BulkUpsertCatalogEntitiesEntitiesItemFieldsItem {
+            Default::default()
+        }
+    }
+    ///`BulkUpsertCatalogEntitiesError`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "errors"
+    ///  ],
+    ///  "properties": {
+    ///    "errors": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "errors",
+    ///          "external_id",
+    ///          "index"
+    ///        ],
+    ///        "properties": {
+    ///          "errors": {
+    ///            "type": "array",
+    ///            "items": {
+    ///              "type": "string"
+    ///            }
+    ///          },
+    ///          "external_id": {
+    ///            "type": "string"
+    ///          },
+    ///          "index": {
+    ///            "description": "Position of the failed entity in the batch",
+    ///            "type": "integer"
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkUpsertCatalogEntitiesError {
+        pub errors: ::std::vec::Vec<BulkUpsertCatalogEntitiesErrorErrorsItem>,
+    }
+    impl BulkUpsertCatalogEntitiesError {
+        pub fn builder() -> builder::BulkUpsertCatalogEntitiesError {
+            Default::default()
+        }
+    }
+    ///`BulkUpsertCatalogEntitiesErrorErrorsItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "errors",
+    ///    "external_id",
+    ///    "index"
+    ///  ],
+    ///  "properties": {
+    ///    "errors": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "external_id": {
+    ///      "type": "string"
+    ///    },
+    ///    "index": {
+    ///      "description": "Position of the failed entity in the batch",
+    ///      "type": "integer"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkUpsertCatalogEntitiesErrorErrorsItem {
+        pub errors: ::std::vec::Vec<::std::string::String>,
+        pub external_id: ::std::string::String,
+        ///Position of the failed entity in the batch
+        pub index: i64,
+    }
+    impl BulkUpsertCatalogEntitiesErrorErrorsItem {
+        pub fn builder() -> builder::BulkUpsertCatalogEntitiesErrorErrorsItem {
+            Default::default()
+        }
+    }
+    ///`BulkUpsertCatalogEntitiesResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "properties": {
+    ///          "attributes": {
+    ///            "type": "object",
+    ///            "allOf": [
+    ///              {
+    ///                "$ref": "#/components/schemas/catalog_entity"
+    ///              }
+    ///            ]
+    ///          },
+    ///          "id": {
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/jsonapi_included_resource"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkUpsertCatalogEntitiesResponse {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data: ::std::vec::Vec<BulkUpsertCatalogEntitiesResponseDataItem>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<JsonapiIncludedResource>,
+    }
+    impl ::std::default::Default for BulkUpsertCatalogEntitiesResponse {
+        fn default() -> Self {
+            Self {
+                data: Default::default(),
+                included: Default::default(),
+            }
+        }
+    }
+    impl BulkUpsertCatalogEntitiesResponse {
+        pub fn builder() -> builder::BulkUpsertCatalogEntitiesResponse {
+            Default::default()
+        }
+    }
+    ///`BulkUpsertCatalogEntitiesResponseDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/catalog_entity"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkUpsertCatalogEntitiesResponseDataItem {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<CatalogEntity>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(
+            rename = "type",
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub type_: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default for BulkUpsertCatalogEntitiesResponseDataItem {
+        fn default() -> Self {
+            Self {
+                attributes: Default::default(),
+                id: Default::default(),
+                type_: Default::default(),
+            }
+        }
+    }
+    impl BulkUpsertCatalogEntitiesResponseDataItem {
+        pub fn builder() -> builder::BulkUpsertCatalogEntitiesResponseDataItem {
+            Default::default()
+        }
+    }
     ///`CallPeopleTaskParams`
     ///
     /// <details><summary>JSON schema</summary>
@@ -10376,7 +11952,18 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog. Must be unique within the team.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "icon": {
+    ///      "type": "string"
+    ///    },
+    ///    "managed_by": {
+    ///      "description": "Which source manages this resource (read-only).",
     ///      "type": "string"
     ///    },
     ///    "name": {
@@ -10401,7 +11988,13 @@ pub mod types {
         pub created_at: ::std::string::String,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog. Must be unique within the team.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         pub icon: ::std::string::String,
+        ///Which source manages this resource (read-only).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub managed_by: ::std::option::Option<::std::string::String>,
         pub name: ::std::string::String,
         ///Default position of the catalog when displayed in a list.
         pub position: ::std::option::Option<i64>,
@@ -10906,6 +12499,17 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "managed_by": {
+    ///      "description": "Which source manages this resource (read-only).",
+    ///      "type": "string"
+    ///    },
     ///    "name": {
     ///      "type": "string"
     ///    },
@@ -10952,6 +12556,12 @@ pub mod types {
         pub created_at: ::std::string::String,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog entity. Must be unique within the catalog.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
+        ///Which source manages this resource (read-only).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub managed_by: ::std::option::Option<::std::string::String>,
         pub name: ::std::string::String,
         ///Default position of the item when displayed in a list.
         pub position: ::std::option::Option<i64>,
@@ -12494,6 +14104,13 @@ pub mod types {
     ///    "created_at": {
     ///      "type": "string"
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog field. Must be unique within the scope.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "kind": {
     ///      "type": "string"
     ///    },
@@ -12503,6 +14120,10 @@ pub mod types {
     ///        "string",
     ///        "null"
     ///      ]
+    ///    },
+    ///    "managed_by": {
+    ///      "description": "Which source manages this resource (read-only).",
+    ///      "type": "string"
     ///    },
     ///    "multiple": {
     ///      "description": "Whether the attribute accepts multiple values.",
@@ -12539,10 +14160,16 @@ pub mod types {
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub catalog_type: ::std::option::Option<::std::string::String>,
         pub created_at: ::std::string::String,
+        ///An external identifier for this catalog field. Must be unique within the scope.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         pub kind: ::std::string::String,
         ///Restricts values to items of specified catalog.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub kind_catalog_id: ::std::option::Option<::std::string::String>,
+        ///Which source manages this resource (read-only).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub managed_by: ::std::option::Option<::std::string::String>,
         ///Whether the attribute accepts multiple values.
         pub multiple: bool,
         pub name: ::std::string::String,
@@ -12942,6 +14569,13 @@ pub mod types {
     ///    "created_at": {
     ///      "type": "string"
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog property. Must be unique within the scope.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "kind": {
     ///      "type": "string"
     ///    },
@@ -12951,6 +14585,10 @@ pub mod types {
     ///        "string",
     ///        "null"
     ///      ]
+    ///    },
+    ///    "managed_by": {
+    ///      "description": "Which source manages this resource (read-only).",
+    ///      "type": "string"
     ///    },
     ///    "multiple": {
     ///      "description": "Whether the attribute accepts multiple values.",
@@ -12987,10 +14625,16 @@ pub mod types {
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub catalog_type: ::std::option::Option<::std::string::String>,
         pub created_at: ::std::string::String,
+        ///An external identifier for this catalog property. Must be unique within the scope.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         pub kind: ::std::string::String,
         ///Restricts values to items of specified catalog.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub kind_catalog_id: ::std::option::Option<::std::string::String>,
+        ///Which source manages this resource (read-only).
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub managed_by: ::std::option::Option<::std::string::String>,
         ///Whether the attribute accepts multiple values.
         pub multiple: bool,
         pub name: ::std::string::String,
@@ -34500,6 +36144,13 @@ pub mod types {
     ///      "description": "The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.",
     ///      "type": "string"
     ///    },
+    ///    "owner_group_ids": {
+    ///      "description": "List of team IDs that own this heartbeat",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "string"
+    ///      }
+    ///    },
     ///    "ping_url": {
     ///      "description": "URL to receive heartbeat pings.",
     ///      "type": [
@@ -34557,6 +36208,9 @@ pub mod types {
         pub notification_target_id: ::std::string::String,
         ///The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.
         pub notification_target_type: ::std::string::String,
+        ///List of team IDs that own this heartbeat
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub owner_group_ids: ::std::vec::Vec<::std::string::String>,
         ///URL to receive heartbeat pings.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub ping_url: ::std::option::Option<::std::string::String>,
@@ -36527,6 +38181,18 @@ pub mod types {
     ///      "description": "Date of creation",
     ///      "type": "string"
     ///    },
+    ///    "created_by": {
+    ///      "description": "User who created this action item",
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ],
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/user_flat_response"
+    ///        }
+    ///      ]
+    ///    },
     ///    "description": {
     ///      "description": "The description of incident action item",
     ///      "type": [
@@ -36598,6 +38264,9 @@ pub mod types {
         >,
         ///Date of creation
         pub created_at: ::std::string::String,
+        ///User who created this action item
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by: ::std::option::Option<UserFlatResponse>,
         ///The description of incident action item
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
@@ -42459,6 +44128,406 @@ pub mod types {
     }
     impl InviteToGoogleChatSpaceTaskParamsSpace {
         pub fn builder() -> builder::InviteToGoogleChatSpaceTaskParamsSpace {
+            Default::default()
+        }
+    }
+    ///`InviteToMicrosoftTeamsChannelRootlyTaskParams`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "channel",
+    ///    "team"
+    ///  ],
+    ///  "properties": {
+    ///    "channel": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "name": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "escalation_policy_target": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "name": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "group_target": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "name": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "schedule_target": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "name": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "service_target": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "name": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "task_type": {
+    ///      "type": "string"
+    ///    },
+    ///    "team": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "name": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "user_target": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "id": {
+    ///          "type": "string"
+    ///        },
+    ///        "name": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct InviteToMicrosoftTeamsChannelRootlyTaskParams {
+        pub channel: InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub escalation_policy_target: ::std::option::Option<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget,
+        >,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub group_target: ::std::option::Option<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget,
+        >,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_target: ::std::option::Option<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget,
+        >,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub service_target: ::std::option::Option<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget,
+        >,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub task_type: ::std::option::Option<::std::string::String>,
+        pub team: InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub user_target: ::std::option::Option<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget,
+        >,
+    }
+    impl InviteToMicrosoftTeamsChannelRootlyTaskParams {
+        pub fn builder() -> builder::InviteToMicrosoftTeamsChannelRootlyTaskParams {
+            Default::default()
+        }
+    }
+    ///`InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default
+    for InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                name: Default::default(),
+            }
+        }
+    }
+    impl InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+        pub fn builder() -> builder::InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+            Default::default()
+        }
+    }
+    ///`InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default
+    for InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                name: Default::default(),
+            }
+        }
+    }
+    impl InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+        pub fn builder() -> builder::InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+            Default::default()
+        }
+    }
+    ///`InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default
+    for InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                name: Default::default(),
+            }
+        }
+    }
+    impl InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+        pub fn builder() -> builder::InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+            Default::default()
+        }
+    }
+    ///`InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default
+    for InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                name: Default::default(),
+            }
+        }
+    }
+    impl InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+        pub fn builder() -> builder::InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+            Default::default()
+        }
+    }
+    ///`InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default
+    for InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                name: Default::default(),
+            }
+        }
+    }
+    impl InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+        pub fn builder() -> builder::InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+            Default::default()
+        }
+    }
+    ///`InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default for InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                name: Default::default(),
+            }
+        }
+    }
+    impl InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+        pub fn builder() -> builder::InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+            Default::default()
+        }
+    }
+    ///`InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "name": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+    }
+    impl ::std::default::Default
+    for InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
+        fn default() -> Self {
+            Self {
+                id: Default::default(),
+                name: Default::default(),
+            }
+        }
+    }
+    impl InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
+        pub fn builder() -> builder::InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
             Default::default()
         }
     }
@@ -50874,6 +52943,155 @@ pub mod types {
             Default::default()
         }
     }
+    ///`NewBulkImport`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "entity_type",
+    ///            "file_url",
+    ///            "notification_email"
+    ///          ],
+    ///          "properties": {
+    ///            "entity_type": {
+    ///              "description": "Type of entity to import (currently only 'Incident' is supported)",
+    ///              "type": "string"
+    ///            },
+    ///            "file_url": {
+    ///              "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
+    ///              "type": "string",
+    ///              "format": "uri"
+    ///            },
+    ///            "notification_email": {
+    ///              "description": "Email address to receive import status notifications",
+    ///              "type": "string",
+    ///              "format": "email"
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewBulkImport {
+        pub data: NewBulkImportData,
+    }
+    impl NewBulkImport {
+        pub fn builder() -> builder::NewBulkImport {
+            Default::default()
+        }
+    }
+    ///`NewBulkImportData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "entity_type",
+    ///        "file_url",
+    ///        "notification_email"
+    ///      ],
+    ///      "properties": {
+    ///        "entity_type": {
+    ///          "description": "Type of entity to import (currently only 'Incident' is supported)",
+    ///          "type": "string"
+    ///        },
+    ///        "file_url": {
+    ///          "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
+    ///          "type": "string",
+    ///          "format": "uri"
+    ///        },
+    ///        "notification_email": {
+    ///          "description": "Email address to receive import status notifications",
+    ///          "type": "string",
+    ///          "format": "email"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewBulkImportData {
+        pub attributes: NewBulkImportDataAttributes,
+    }
+    impl NewBulkImportData {
+        pub fn builder() -> builder::NewBulkImportData {
+            Default::default()
+        }
+    }
+    ///`NewBulkImportDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "entity_type",
+    ///    "file_url",
+    ///    "notification_email"
+    ///  ],
+    ///  "properties": {
+    ///    "entity_type": {
+    ///      "description": "Type of entity to import (currently only 'Incident' is supported)",
+    ///      "type": "string"
+    ///    },
+    ///    "file_url": {
+    ///      "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
+    ///      "type": "string",
+    ///      "format": "uri"
+    ///    },
+    ///    "notification_email": {
+    ///      "description": "Email address to receive import status notifications",
+    ///      "type": "string",
+    ///      "format": "email"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewBulkImportDataAttributes {
+        ///Type of entity to import (currently only 'Incident' is supported)
+        pub entity_type: ::std::string::String,
+        ///URL of the JSONL file to import. Must be accessible via HTTPS.
+        pub file_url: ::std::string::String,
+        ///Email address to receive import status notifications
+        pub notification_email: ::std::string::String,
+    }
+    impl NewBulkImportDataAttributes {
+        pub fn builder() -> builder::NewBulkImportDataAttributes {
+            Default::default()
+        }
+    }
     ///`NewCatalog`
     ///
     /// <details><summary>JSON schema</summary>
@@ -50899,6 +53117,13 @@ pub mod types {
     ///          ],
     ///          "properties": {
     ///            "description": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "external_id": {
+    ///              "description": "An external identifier for this catalog. Must be unique within the team.",
     ///              "type": [
     ///                "string",
     ///                "null"
@@ -51485,6 +53710,13 @@ pub mod types {
     ///            "null"
     ///          ]
     ///        },
+    ///        "external_id": {
+    ///          "description": "An external identifier for this catalog. Must be unique within the team.",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
     ///        "icon": {
     ///          "type": "string"
     ///        },
@@ -51536,6 +53768,13 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog. Must be unique within the team.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "icon": {
     ///      "type": "string"
     ///    },
@@ -51558,6 +53797,9 @@ pub mod types {
         pub struct NewCatalogDataAttributes {
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog. Must be unique within the team.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub icon: ::std::option::Option<::std::string::String>,
         pub name: ::std::string::String,
@@ -51602,6 +53844,13 @@ pub mod types {
     ///              ]
     ///            },
     ///            "description": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "external_id": {
+    ///              "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
     ///              "type": [
     ///                "string",
     ///                "null"
@@ -51690,6 +53939,13 @@ pub mod types {
     ///            "null"
     ///          ]
     ///        },
+    ///        "external_id": {
+    ///          "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
     ///        "name": {
     ///          "type": "string"
     ///        },
@@ -51766,6 +54022,13 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "name": {
     ///      "type": "string"
     ///    },
@@ -51809,6 +54072,9 @@ pub mod types {
         pub backstage_id: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog entity. Must be unique within the catalog.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         pub name: ::std::string::String,
         ///Default position of the item when displayed in a list.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
@@ -52048,6 +54314,13 @@ pub mod types {
     ///              "description": "The type of catalog the field belongs to.",
     ///              "type": "string"
     ///            },
+    ///            "external_id": {
+    ///              "description": "An external identifier for this catalog field. Must be unique within the scope.",
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
     ///            "kind": {
     ///              "type": "string"
     ///            },
@@ -52120,6 +54393,13 @@ pub mod types {
     ///          "description": "The type of catalog the field belongs to.",
     ///          "type": "string"
     ///        },
+    ///        "external_id": {
+    ///          "description": "An external identifier for this catalog field. Must be unique within the scope.",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
     ///        "kind": {
     ///          "type": "string"
     ///        },
@@ -52185,6 +54465,13 @@ pub mod types {
     ///      "description": "The type of catalog the field belongs to.",
     ///      "type": "string"
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog field. Must be unique within the scope.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "kind": {
     ///      "type": "string"
     ///    },
@@ -52223,6 +54510,9 @@ pub mod types {
         ///The type of catalog the field belongs to.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub catalog_type: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog field. Must be unique within the scope.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         pub kind: ::std::string::String,
         ///Restricts values to items of specified catalog.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
@@ -52272,6 +54562,13 @@ pub mod types {
     ///            "catalog_type": {
     ///              "description": "The type of catalog the property belongs to.",
     ///              "type": "string"
+    ///            },
+    ///            "external_id": {
+    ///              "description": "An external identifier for this catalog property. Must be unique within the scope.",
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
     ///            },
     ///            "kind": {
     ///              "type": "string"
@@ -52345,6 +54642,13 @@ pub mod types {
     ///          "description": "The type of catalog the property belongs to.",
     ///          "type": "string"
     ///        },
+    ///        "external_id": {
+    ///          "description": "An external identifier for this catalog property. Must be unique within the scope.",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
     ///        "kind": {
     ///          "type": "string"
     ///        },
@@ -52410,6 +54714,13 @@ pub mod types {
     ///      "description": "The type of catalog the property belongs to.",
     ///      "type": "string"
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog property. Must be unique within the scope.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "kind": {
     ///      "type": "string"
     ///    },
@@ -52448,6 +54759,9 @@ pub mod types {
         ///The type of catalog the property belongs to.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub catalog_type: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog property. Must be unique within the scope.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         pub kind: ::std::string::String,
         ///Restricts values to items of specified catalog.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
@@ -62401,6 +64715,13 @@ pub mod types {
     ///            "notification_target_type": {
     ///              "description": "The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.",
     ///              "type": "string"
+    ///            },
+    ///            "owner_group_ids": {
+    ///              "description": "List of team IDs that own this heartbeat",
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "string"
+    ///              }
     ///            }
     ///          },
     ///          "additionalProperties": false
@@ -62491,6 +64812,13 @@ pub mod types {
     ///        "notification_target_type": {
     ///          "description": "The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.",
     ///          "type": "string"
+    ///        },
+    ///        "owner_group_ids": {
+    ///          "description": "List of team IDs that own this heartbeat",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "string"
+    ///          }
     ///        }
     ///      },
     ///      "additionalProperties": false
@@ -62574,6 +64902,13 @@ pub mod types {
     ///    "notification_target_type": {
     ///      "description": "The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.",
     ///      "type": "string"
+    ///    },
+    ///    "owner_group_ids": {
+    ///      "description": "List of team IDs that own this heartbeat",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "string"
+    ///      }
     ///    }
     ///  },
     ///  "additionalProperties": false
@@ -62603,6 +64938,9 @@ pub mod types {
         pub notification_target_id: ::std::string::String,
         ///The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.
         pub notification_target_type: ::std::string::String,
+        ///List of team IDs that own this heartbeat
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub owner_group_ids: ::std::vec::Vec<::std::string::String>,
     }
     impl NewHeartbeatDataAttributes {
         pub fn builder() -> builder::NewHeartbeatDataAttributes {
@@ -80742,6 +83080,29 @@ pub mod types {
     ///            "url"
     ///          ],
     ///          "properties": {
+    ///            "custom_headers": {
+    ///              "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.",
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "name",
+    ///                  "value"
+    ///                ],
+    ///                "properties": {
+    ///                  "name": {
+    ///                    "type": "string",
+    ///                    "maxLength": 256
+    ///                  },
+    ///                  "value": {
+    ///                    "type": "string",
+    ///                    "maxLength": 8192
+    ///                  }
+    ///                },
+    ///                "additionalProperties": false
+    ///              },
+    ///              "maxItems": 10
+    ///            },
     ///            "enabled": {
     ///              "type": "boolean"
     ///            },
@@ -80803,6 +83164,29 @@ pub mod types {
     ///        "url"
     ///      ],
     ///      "properties": {
+    ///        "custom_headers": {
+    ///          "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "name",
+    ///              "value"
+    ///            ],
+    ///            "properties": {
+    ///              "name": {
+    ///                "type": "string",
+    ///                "maxLength": 256
+    ///              },
+    ///              "value": {
+    ///                "type": "string",
+    ///                "maxLength": 8192
+    ///              }
+    ///            },
+    ///            "additionalProperties": false
+    ///          },
+    ///          "maxItems": 10
+    ///        },
     ///        "enabled": {
     ///          "type": "boolean"
     ///        },
@@ -80857,6 +83241,29 @@ pub mod types {
     ///    "url"
     ///  ],
     ///  "properties": {
+    ///    "custom_headers": {
+    ///      "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "name",
+    ///          "value"
+    ///        ],
+    ///        "properties": {
+    ///          "name": {
+    ///            "type": "string",
+    ///            "maxLength": 256
+    ///          },
+    ///          "value": {
+    ///            "type": "string",
+    ///            "maxLength": 8192
+    ///          }
+    ///        },
+    ///        "additionalProperties": false
+    ///      },
+    ///      "maxItems": 10
+    ///    },
     ///    "enabled": {
     ///      "type": "boolean"
     ///    },
@@ -80885,6 +83292,11 @@ pub mod types {
     /// </details>
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewWebhooksEndpointDataAttributes {
+        ///Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub custom_headers: ::std::vec::Vec<
+            NewWebhooksEndpointDataAttributesCustomHeadersItem,
+        >,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub enabled: ::std::option::Option<bool>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -80900,6 +83312,200 @@ pub mod types {
     impl NewWebhooksEndpointDataAttributes {
         pub fn builder() -> builder::NewWebhooksEndpointDataAttributes {
             Default::default()
+        }
+    }
+    ///`NewWebhooksEndpointDataAttributesCustomHeadersItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "name",
+    ///    "value"
+    ///  ],
+    ///  "properties": {
+    ///    "name": {
+    ///      "type": "string",
+    ///      "maxLength": 256
+    ///    },
+    ///    "value": {
+    ///      "type": "string",
+    ///      "maxLength": 8192
+    ///    }
+    ///  },
+    ///  "additionalProperties": false
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewWebhooksEndpointDataAttributesCustomHeadersItem {
+        pub name: NewWebhooksEndpointDataAttributesCustomHeadersItemName,
+        pub value: NewWebhooksEndpointDataAttributesCustomHeadersItemValue,
+    }
+    impl NewWebhooksEndpointDataAttributesCustomHeadersItem {
+        pub fn builder() -> builder::NewWebhooksEndpointDataAttributesCustomHeadersItem {
+            Default::default()
+        }
+    }
+    ///`NewWebhooksEndpointDataAttributesCustomHeadersItemName`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "maxLength": 256
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct NewWebhooksEndpointDataAttributesCustomHeadersItemName(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref for NewWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<NewWebhooksEndpointDataAttributesCustomHeadersItemName>
+    for ::std::string::String {
+        fn from(value: NewWebhooksEndpointDataAttributesCustomHeadersItemName) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr for NewWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() > 256usize {
+                return Err("longer than 256 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<&::std::string::String>
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemName {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`NewWebhooksEndpointDataAttributesCustomHeadersItemValue`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "maxLength": 8192
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct NewWebhooksEndpointDataAttributesCustomHeadersItemValue(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref for NewWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<NewWebhooksEndpointDataAttributesCustomHeadersItemValue>
+    for ::std::string::String {
+        fn from(value: NewWebhooksEndpointDataAttributesCustomHeadersItemValue) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() > 8192usize {
+                return Err("longer than 8192 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<&::std::string::String>
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for NewWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
         }
     }
     ///`NewWorkflow`
@@ -81103,6 +83709,378 @@ pub mod types {
     }
     impl NewWorkflow {
         pub fn builder() -> builder::NewWorkflow {
+            Default::default()
+        }
+    }
+    ///`NewWorkflowActionItemFormFieldCondition`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "action_item_condition",
+    ///            "form_field_id"
+    ///          ],
+    ///          "properties": {
+    ///            "action_item_condition": {
+    ///              "description": "The trigger condition",
+    ///              "default": "ANY",
+    ///              "type": "string"
+    ///            },
+    ///            "form_field_id": {
+    ///              "description": "The custom field for this condition",
+    ///              "type": "string"
+    ///            },
+    ///            "selected_catalog_entity_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected catalog entities for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_cause_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected causes for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_environment_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected environments for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_functionality_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected functionalities for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_group_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected groups (teams) for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_incident_type_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected incident types for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_option_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected option id for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_service_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected services for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_user_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected user id for select and multi_select kinds",
+    ///                "type": "integer"
+    ///              }
+    ///            },
+    ///            "values": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The value to associate with the custom field trigger",
+    ///                "type": "string"
+    ///              }
+    ///            }
+    ///          },
+    ///          "additionalProperties": false
+    ///        },
+    ///        "type": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewWorkflowActionItemFormFieldCondition {
+        pub data: NewWorkflowActionItemFormFieldConditionData,
+    }
+    impl NewWorkflowActionItemFormFieldCondition {
+        pub fn builder() -> builder::NewWorkflowActionItemFormFieldCondition {
+            Default::default()
+        }
+    }
+    ///`NewWorkflowActionItemFormFieldConditionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "action_item_condition",
+    ///        "form_field_id"
+    ///      ],
+    ///      "properties": {
+    ///        "action_item_condition": {
+    ///          "description": "The trigger condition",
+    ///          "default": "ANY",
+    ///          "type": "string"
+    ///        },
+    ///        "form_field_id": {
+    ///          "description": "The custom field for this condition",
+    ///          "type": "string"
+    ///        },
+    ///        "selected_catalog_entity_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected catalog entities for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_cause_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected causes for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_environment_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected environments for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_functionality_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected functionalities for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_group_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected groups (teams) for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_incident_type_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected incident types for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_option_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected option id for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_service_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected services for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_user_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected user id for select and multi_select kinds",
+    ///            "type": "integer"
+    ///          }
+    ///        },
+    ///        "values": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The value to associate with the custom field trigger",
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      },
+    ///      "additionalProperties": false
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewWorkflowActionItemFormFieldConditionData {
+        pub attributes: NewWorkflowActionItemFormFieldConditionDataAttributes,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl NewWorkflowActionItemFormFieldConditionData {
+        pub fn builder() -> builder::NewWorkflowActionItemFormFieldConditionData {
+            Default::default()
+        }
+    }
+    ///`NewWorkflowActionItemFormFieldConditionDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "action_item_condition",
+    ///    "form_field_id"
+    ///  ],
+    ///  "properties": {
+    ///    "action_item_condition": {
+    ///      "description": "The trigger condition",
+    ///      "default": "ANY",
+    ///      "type": "string"
+    ///    },
+    ///    "form_field_id": {
+    ///      "description": "The custom field for this condition",
+    ///      "type": "string"
+    ///    },
+    ///    "selected_catalog_entity_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected catalog entities for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_cause_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected causes for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_environment_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected environments for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_functionality_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected functionalities for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_group_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected groups (teams) for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_incident_type_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected incident types for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_option_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected option id for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_service_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected services for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_user_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected user id for select and multi_select kinds",
+    ///        "type": "integer"
+    ///      }
+    ///    },
+    ///    "values": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The value to associate with the custom field trigger",
+    ///        "type": "string"
+    ///      }
+    ///    }
+    ///  },
+    ///  "additionalProperties": false
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewWorkflowActionItemFormFieldConditionDataAttributes {
+        ///The trigger condition
+        pub action_item_condition: ::std::string::String,
+        ///The custom field for this condition
+        pub form_field_id: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_catalog_entity_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_cause_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_environment_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_functionality_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_group_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_incident_type_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_option_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_service_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_user_ids: ::std::vec::Vec<i64>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub values: ::std::vec::Vec<::std::string::String>,
+    }
+    impl NewWorkflowActionItemFormFieldConditionDataAttributes {
+        pub fn builder() -> builder::NewWorkflowActionItemFormFieldConditionDataAttributes {
             Default::default()
         }
     }
@@ -83675,6 +86653,9 @@ pub mod types {
     ///                  "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///                },
     ///                {
+    ///                  "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///                },
+    ///                {
     ///                  "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///                },
     ///                {
@@ -84170,6 +87151,9 @@ pub mod types {
     ///              "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///            },
     ///            {
+    ///              "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///            },
+    ///            {
     ///              "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///            },
     ///            {
@@ -84658,6 +87642,9 @@ pub mod types {
     ///          "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///        },
     ///        {
+    ///          "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///        },
+    ///        {
     ///          "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///        },
     ///        {
@@ -85128,6 +88115,9 @@ pub mod types {
     ///      "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///    },
     ///    {
+    ///      "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///    },
+    ///    {
     ///      "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///    },
     ///    {
@@ -85393,6 +88383,9 @@ pub mod types {
         HttpClientTaskParams(HttpClientTaskParams),
         InviteToSlackChannelOpsgenieTaskParams(InviteToSlackChannelOpsgenieTaskParams),
         InviteToSlackChannelRootlyTaskParams(InviteToSlackChannelRootlyTaskParams),
+        InviteToMicrosoftTeamsChannelRootlyTaskParams(
+            InviteToMicrosoftTeamsChannelRootlyTaskParams,
+        ),
         InviteToSlackChannelPagerdutyTaskParams(InviteToSlackChannelPagerdutyTaskParams),
         InviteToSlackChannelTaskParams(InviteToSlackChannelTaskParams),
         InviteToSlackChannelVictorOpsTaskParams(InviteToSlackChannelVictorOpsTaskParams),
@@ -85984,6 +88977,12 @@ pub mod types {
     for NewWorkflowTaskDataAttributesTaskParams {
         fn from(value: InviteToSlackChannelRootlyTaskParams) -> Self {
             Self::InviteToSlackChannelRootlyTaskParams(value)
+        }
+    }
+    impl ::std::convert::From<InviteToMicrosoftTeamsChannelRootlyTaskParams>
+    for NewWorkflowTaskDataAttributesTaskParams {
+        fn from(value: InviteToMicrosoftTeamsChannelRootlyTaskParams) -> Self {
+            Self::InviteToMicrosoftTeamsChannelRootlyTaskParams(value)
         }
     }
     impl ::std::convert::From<InviteToSlackChannelPagerdutyTaskParams>
@@ -103481,6 +106480,58 @@ pub mod types {
             Default::default()
         }
     }
+    ///`SlackChannel`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "created_at",
+    ///    "id",
+    ///    "slack_channel_id",
+    ///    "slack_channel_name",
+    ///    "slack_team_id",
+    ///    "updated_at"
+    ///  ],
+    ///  "properties": {
+    ///    "created_at": {
+    ///      "type": "string"
+    ///    },
+    ///    "id": {
+    ///      "type": "string"
+    ///    },
+    ///    "slack_channel_id": {
+    ///      "type": "string"
+    ///    },
+    ///    "slack_channel_name": {
+    ///      "type": "string"
+    ///    },
+    ///    "slack_team_id": {
+    ///      "type": "string"
+    ///    },
+    ///    "updated_at": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct SlackChannel {
+        pub created_at: ::std::string::String,
+        pub id: ::std::string::String,
+        pub slack_channel_id: ::std::string::String,
+        pub slack_channel_name: ::std::string::String,
+        pub slack_team_id: ::std::string::String,
+        pub updated_at: ::std::string::String,
+    }
+    impl SlackChannel {
+        pub fn builder() -> builder::SlackChannel {
+            Default::default()
+        }
+    }
     ///`SnapshotDatadogGraphTaskParams`
     ///
     /// <details><summary>JSON schema</summary>
@@ -112886,6 +115937,13 @@ pub mod types {
     ///                "null"
     ///              ]
     ///            },
+    ///            "external_id": {
+    ///              "description": "An external identifier for this catalog. Must be unique within the team.",
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
     ///            "icon": {
     ///              "type": "string"
     ///            },
@@ -113417,6 +116475,13 @@ pub mod types {
     ///            "null"
     ///          ]
     ///        },
+    ///        "external_id": {
+    ///          "description": "An external identifier for this catalog. Must be unique within the team.",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
     ///        "icon": {
     ///          "type": "string"
     ///        },
@@ -113465,6 +116530,13 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog. Must be unique within the team.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "icon": {
     ///      "type": "string"
     ///    },
@@ -113487,6 +116559,9 @@ pub mod types {
         pub struct UpdateCatalogDataAttributes {
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog. Must be unique within the team.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub icon: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
@@ -113499,6 +116574,7 @@ pub mod types {
         fn default() -> Self {
             Self {
                 description: Default::default(),
+                external_id: Default::default(),
                 icon: Default::default(),
                 name: Default::default(),
                 position: Default::default(),
@@ -113539,6 +116615,13 @@ pub mod types {
     ///              ]
     ///            },
     ///            "description": {
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "external_id": {
+    ///              "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
     ///              "type": [
     ///                "string",
     ///                "null"
@@ -113624,6 +116707,13 @@ pub mod types {
     ///            "null"
     ///          ]
     ///        },
+    ///        "external_id": {
+    ///          "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
     ///        "name": {
     ///          "type": "string"
     ///        },
@@ -113697,6 +116787,13 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "name": {
     ///      "type": "string"
     ///    },
@@ -113740,6 +116837,9 @@ pub mod types {
         pub backstage_id: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog entity. Must be unique within the catalog.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub name: ::std::option::Option<::std::string::String>,
         ///Default position of the item when displayed in a list.
@@ -113754,6 +116854,7 @@ pub mod types {
             Self {
                 backstage_id: Default::default(),
                 description: Default::default(),
+                external_id: Default::default(),
                 name: Default::default(),
                 position: Default::default(),
                 properties: Default::default(),
@@ -113957,6 +117058,13 @@ pub mod types {
     ///              "description": "The type of catalog the field belongs to.",
     ///              "type": "string"
     ///            },
+    ///            "external_id": {
+    ///              "description": "An external identifier for this catalog field. Must be unique within the scope.",
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
     ///            "kind": {
     ///              "type": "string"
     ///            },
@@ -114021,6 +117129,13 @@ pub mod types {
     ///          "description": "The type of catalog the field belongs to.",
     ///          "type": "string"
     ///        },
+    ///        "external_id": {
+    ///          "description": "An external identifier for this catalog field. Must be unique within the scope.",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
     ///        "kind": {
     ///          "type": "string"
     ///        },
@@ -114078,6 +117193,13 @@ pub mod types {
     ///      "description": "The type of catalog the field belongs to.",
     ///      "type": "string"
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog field. Must be unique within the scope.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "kind": {
     ///      "type": "string"
     ///    },
@@ -114112,6 +117234,9 @@ pub mod types {
         ///The type of catalog the field belongs to.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub catalog_type: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog field. Must be unique within the scope.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub kind: ::std::option::Option<::std::string::String>,
         ///Restricts values to items of specified catalog.
@@ -114130,6 +117255,7 @@ pub mod types {
         fn default() -> Self {
             Self {
                 catalog_type: Default::default(),
+                external_id: Default::default(),
                 kind: Default::default(),
                 kind_catalog_id: Default::default(),
                 name: Default::default(),
@@ -114167,6 +117293,13 @@ pub mod types {
     ///            "catalog_type": {
     ///              "description": "The type of catalog the property belongs to.",
     ///              "type": "string"
+    ///            },
+    ///            "external_id": {
+    ///              "description": "An external identifier for this catalog property. Must be unique within the scope.",
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
     ///            },
     ///            "kind": {
     ///              "type": "string"
@@ -114232,6 +117365,13 @@ pub mod types {
     ///          "description": "The type of catalog the property belongs to.",
     ///          "type": "string"
     ///        },
+    ///        "external_id": {
+    ///          "description": "An external identifier for this catalog property. Must be unique within the scope.",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
     ///        "kind": {
     ///          "type": "string"
     ///        },
@@ -114289,6 +117429,13 @@ pub mod types {
     ///      "description": "The type of catalog the property belongs to.",
     ///      "type": "string"
     ///    },
+    ///    "external_id": {
+    ///      "description": "An external identifier for this catalog property. Must be unique within the scope.",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "kind": {
     ///      "type": "string"
     ///    },
@@ -114323,6 +117470,9 @@ pub mod types {
         ///The type of catalog the property belongs to.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub catalog_type: ::std::option::Option<::std::string::String>,
+        ///An external identifier for this catalog property. Must be unique within the scope.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub external_id: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub kind: ::std::option::Option<::std::string::String>,
         ///Restricts values to items of specified catalog.
@@ -114341,6 +117491,7 @@ pub mod types {
         fn default() -> Self {
             Self {
                 catalog_type: Default::default(),
+                external_id: Default::default(),
                 kind: Default::default(),
                 kind_catalog_id: Default::default(),
                 name: Default::default(),
@@ -125577,6 +128728,13 @@ pub mod types {
     ///            "notification_target_type": {
     ///              "description": "The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.",
     ///              "type": "string"
+    ///            },
+    ///            "owner_group_ids": {
+    ///              "description": "List of team IDs that own this heartbeat",
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "string"
+    ///              }
     ///            }
     ///          },
     ///          "additionalProperties": false
@@ -125659,6 +128817,13 @@ pub mod types {
     ///        "notification_target_type": {
     ///          "description": "The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.",
     ///          "type": "string"
+    ///        },
+    ///        "owner_group_ids": {
+    ///          "description": "List of team IDs that own this heartbeat",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "string"
+    ///          }
     ///        }
     ///      },
     ///      "additionalProperties": false
@@ -125734,6 +128899,13 @@ pub mod types {
     ///    "notification_target_type": {
     ///      "description": "The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.",
     ///      "type": "string"
+    ///    },
+    ///    "owner_group_ids": {
+    ///      "description": "List of team IDs that own this heartbeat",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "string"
+    ///      }
     ///    }
     ///  },
     ///  "additionalProperties": false
@@ -125769,6 +128941,9 @@ pub mod types {
         ///The type of the notification target. Please contact support if you encounter issues using `Functionality` as a target type.
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub notification_target_type: ::std::option::Option<::std::string::String>,
+        ///List of team IDs that own this heartbeat
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub owner_group_ids: ::std::vec::Vec<::std::string::String>,
     }
     impl ::std::default::Default for UpdateHeartbeatDataAttributes {
         fn default() -> Self {
@@ -125783,6 +128958,7 @@ pub mod types {
                 name: Default::default(),
                 notification_target_id: Default::default(),
                 notification_target_type: Default::default(),
+                owner_group_ids: Default::default(),
             }
         }
     }
@@ -147175,6 +150351,29 @@ pub mod types {
     ///        "attributes": {
     ///          "type": "object",
     ///          "properties": {
+    ///            "custom_headers": {
+    ///              "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.",
+    ///              "type": "array",
+    ///              "items": {
+    ///                "type": "object",
+    ///                "required": [
+    ///                  "name",
+    ///                  "value"
+    ///                ],
+    ///                "properties": {
+    ///                  "name": {
+    ///                    "type": "string",
+    ///                    "maxLength": 256
+    ///                  },
+    ///                  "value": {
+    ///                    "type": "string",
+    ///                    "maxLength": 8192
+    ///                  }
+    ///                },
+    ///                "additionalProperties": false
+    ///              },
+    ///              "maxItems": 10
+    ///            },
     ///            "enabled": {
     ///              "type": "boolean"
     ///            },
@@ -147224,6 +150423,29 @@ pub mod types {
     ///    "attributes": {
     ///      "type": "object",
     ///      "properties": {
+    ///        "custom_headers": {
+    ///          "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.",
+    ///          "type": "array",
+    ///          "items": {
+    ///            "type": "object",
+    ///            "required": [
+    ///              "name",
+    ///              "value"
+    ///            ],
+    ///            "properties": {
+    ///              "name": {
+    ///                "type": "string",
+    ///                "maxLength": 256
+    ///              },
+    ///              "value": {
+    ///                "type": "string",
+    ///                "maxLength": 8192
+    ///              }
+    ///            },
+    ///            "additionalProperties": false
+    ///          },
+    ///          "maxItems": 10
+    ///        },
     ///        "enabled": {
     ///          "type": "boolean"
     ///        },
@@ -147266,6 +150488,29 @@ pub mod types {
     ///{
     ///  "type": "object",
     ///  "properties": {
+    ///    "custom_headers": {
+    ///      "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "name",
+    ///          "value"
+    ///        ],
+    ///        "properties": {
+    ///          "name": {
+    ///            "type": "string",
+    ///            "maxLength": 256
+    ///          },
+    ///          "value": {
+    ///            "type": "string",
+    ///            "maxLength": 8192
+    ///          }
+    ///        },
+    ///        "additionalProperties": false
+    ///      },
+    ///      "maxItems": 10
+    ///    },
     ///    "enabled": {
     ///      "type": "boolean"
     ///    },
@@ -147286,6 +150531,11 @@ pub mod types {
     /// </details>
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateWebhooksEndpointDataAttributes {
+        ///Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub custom_headers: ::std::vec::Vec<
+            UpdateWebhooksEndpointDataAttributesCustomHeadersItem,
+        >,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub enabled: ::std::option::Option<bool>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -147297,6 +150547,7 @@ pub mod types {
     impl ::std::default::Default for UpdateWebhooksEndpointDataAttributes {
         fn default() -> Self {
             Self {
+                custom_headers: Default::default(),
                 enabled: Default::default(),
                 event_types: Default::default(),
                 name: Default::default(),
@@ -147306,6 +150557,207 @@ pub mod types {
     impl UpdateWebhooksEndpointDataAttributes {
         pub fn builder() -> builder::UpdateWebhooksEndpointDataAttributes {
             Default::default()
+        }
+    }
+    ///`UpdateWebhooksEndpointDataAttributesCustomHeadersItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "name",
+    ///    "value"
+    ///  ],
+    ///  "properties": {
+    ///    "name": {
+    ///      "type": "string",
+    ///      "maxLength": 256
+    ///    },
+    ///    "value": {
+    ///      "type": "string",
+    ///      "maxLength": 8192
+    ///    }
+    ///  },
+    ///  "additionalProperties": false
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateWebhooksEndpointDataAttributesCustomHeadersItem {
+        pub name: UpdateWebhooksEndpointDataAttributesCustomHeadersItemName,
+        pub value: UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue,
+    }
+    impl UpdateWebhooksEndpointDataAttributesCustomHeadersItem {
+        pub fn builder() -> builder::UpdateWebhooksEndpointDataAttributesCustomHeadersItem {
+            Default::default()
+        }
+    }
+    ///`UpdateWebhooksEndpointDataAttributesCustomHeadersItemName`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "maxLength": 256
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct UpdateWebhooksEndpointDataAttributesCustomHeadersItemName(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<UpdateWebhooksEndpointDataAttributesCustomHeadersItemName>
+    for ::std::string::String {
+        fn from(
+            value: UpdateWebhooksEndpointDataAttributesCustomHeadersItemName,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() > 256usize {
+                return Err("longer than 256 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<&::std::string::String>
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemName {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "maxLength": 8192
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue>
+    for ::std::string::String {
+        fn from(
+            value: UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() > 8192usize {
+                return Err("longer than 8192 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<&::std::string::String>
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
         }
     }
     ///`UpdateWorkflow`
@@ -147492,6 +150944,373 @@ pub mod types {
     }
     impl UpdateWorkflow {
         pub fn builder() -> builder::UpdateWorkflow {
+            Default::default()
+        }
+    }
+    ///`UpdateWorkflowActionItemFormFieldCondition`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "properties": {
+    ///            "action_item_condition": {
+    ///              "description": "The trigger condition",
+    ///              "default": "ANY",
+    ///              "type": "string"
+    ///            },
+    ///            "selected_catalog_entity_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected catalog entities for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_cause_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected causes for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_environment_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected environments for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_functionality_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected functionalities for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_group_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected groups (teams) for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_incident_type_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected incident types for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_option_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected option id for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_service_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected services for select and multi_select kinds",
+    ///                "type": "string"
+    ///              }
+    ///            },
+    ///            "selected_user_ids": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The selected user id for select and multi_select kinds",
+    ///                "type": "integer"
+    ///              }
+    ///            },
+    ///            "values": {
+    ///              "type": "array",
+    ///              "items": {
+    ///                "description": "The value to associate with the custom field trigger",
+    ///                "type": "string"
+    ///              }
+    ///            }
+    ///          },
+    ///          "additionalProperties": false
+    ///        },
+    ///        "type": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct UpdateWorkflowActionItemFormFieldCondition {
+        pub data: UpdateWorkflowActionItemFormFieldConditionData,
+    }
+    impl UpdateWorkflowActionItemFormFieldCondition {
+        pub fn builder() -> builder::UpdateWorkflowActionItemFormFieldCondition {
+            Default::default()
+        }
+    }
+    ///`UpdateWorkflowActionItemFormFieldConditionData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "properties": {
+    ///        "action_item_condition": {
+    ///          "description": "The trigger condition",
+    ///          "default": "ANY",
+    ///          "type": "string"
+    ///        },
+    ///        "selected_catalog_entity_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected catalog entities for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_cause_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected causes for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_environment_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected environments for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_functionality_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected functionalities for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_group_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected groups (teams) for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_incident_type_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected incident types for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_option_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected option id for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_service_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected services for select and multi_select kinds",
+    ///            "type": "string"
+    ///          }
+    ///        },
+    ///        "selected_user_ids": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The selected user id for select and multi_select kinds",
+    ///            "type": "integer"
+    ///          }
+    ///        },
+    ///        "values": {
+    ///          "type": "array",
+    ///          "items": {
+    ///            "description": "The value to associate with the custom field trigger",
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      },
+    ///      "additionalProperties": false
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct UpdateWorkflowActionItemFormFieldConditionData {
+        pub attributes: UpdateWorkflowActionItemFormFieldConditionDataAttributes,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl UpdateWorkflowActionItemFormFieldConditionData {
+        pub fn builder() -> builder::UpdateWorkflowActionItemFormFieldConditionData {
+            Default::default()
+        }
+    }
+    ///`UpdateWorkflowActionItemFormFieldConditionDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "properties": {
+    ///    "action_item_condition": {
+    ///      "description": "The trigger condition",
+    ///      "default": "ANY",
+    ///      "type": "string"
+    ///    },
+    ///    "selected_catalog_entity_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected catalog entities for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_cause_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected causes for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_environment_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected environments for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_functionality_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected functionalities for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_group_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected groups (teams) for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_incident_type_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected incident types for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_option_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected option id for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_service_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected services for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_user_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected user id for select and multi_select kinds",
+    ///        "type": "integer"
+    ///      }
+    ///    },
+    ///    "values": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The value to associate with the custom field trigger",
+    ///        "type": "string"
+    ///      }
+    ///    }
+    ///  },
+    ///  "additionalProperties": false
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateWorkflowActionItemFormFieldConditionDataAttributes {
+        ///The trigger condition
+        #[serde(
+            default = "defaults::update_workflow_action_item_form_field_condition_data_attributes_action_item_condition"
+        )]
+        pub action_item_condition: ::std::string::String,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_catalog_entity_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_cause_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_environment_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_functionality_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_group_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_incident_type_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_option_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_service_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_user_ids: ::std::vec::Vec<i64>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub values: ::std::vec::Vec<::std::string::String>,
+    }
+    impl ::std::default::Default
+    for UpdateWorkflowActionItemFormFieldConditionDataAttributes {
+        fn default() -> Self {
+            Self {
+                action_item_condition: defaults::update_workflow_action_item_form_field_condition_data_attributes_action_item_condition(),
+                selected_catalog_entity_ids: Default::default(),
+                selected_cause_ids: Default::default(),
+                selected_environment_ids: Default::default(),
+                selected_functionality_ids: Default::default(),
+                selected_group_ids: Default::default(),
+                selected_incident_type_ids: Default::default(),
+                selected_option_ids: Default::default(),
+                selected_service_ids: Default::default(),
+                selected_user_ids: Default::default(),
+                values: Default::default(),
+            }
+        }
+    }
+    impl UpdateWorkflowActionItemFormFieldConditionDataAttributes {
+        pub fn builder() -> builder::UpdateWorkflowActionItemFormFieldConditionDataAttributes {
             Default::default()
         }
     }
@@ -149062,6 +152881,9 @@ pub mod types {
     ///                  "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///                },
     ///                {
+    ///                  "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///                },
+    ///                {
     ///                  "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///                },
     ///                {
@@ -149554,6 +153376,9 @@ pub mod types {
     ///              "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///            },
     ///            {
+    ///              "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///            },
+    ///            {
     ///              "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///            },
     ///            {
@@ -150039,6 +153864,9 @@ pub mod types {
     ///          "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///        },
     ///        {
+    ///          "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///        },
+    ///        {
     ///          "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///        },
     ///        {
@@ -150521,6 +154349,9 @@ pub mod types {
     ///    },
     ///    {
     ///      "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
+    ///    },
+    ///    {
+    ///      "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
     ///    },
     ///    {
     ///      "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
@@ -151237,325 +155068,333 @@ pub mod types {
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_89: ::std::option::Option<InviteToSlackChannelPagerdutyTaskParams>,
+        pub subtype_89: ::std::option::Option<
+            InviteToMicrosoftTeamsChannelRootlyTaskParams,
+        >,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_90: ::std::option::Option<InviteToSlackChannelTaskParams>,
+        pub subtype_90: ::std::option::Option<InviteToSlackChannelPagerdutyTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_91: ::std::option::Option<InviteToSlackChannelVictorOpsTaskParams>,
+        pub subtype_91: ::std::option::Option<InviteToSlackChannelTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_92: ::std::option::Option<PageOpsgenieOnCallRespondersTaskParams>,
+        pub subtype_92: ::std::option::Option<InviteToSlackChannelVictorOpsTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_93: ::std::option::Option<CreateOpsgenieAlertTaskParams>,
+        pub subtype_93: ::std::option::Option<PageOpsgenieOnCallRespondersTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_94: ::std::option::Option<CreateJsmopsAlertTaskParams>,
+        pub subtype_94: ::std::option::Option<CreateOpsgenieAlertTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_95: ::std::option::Option<PageJsmopsOnCallRespondersTaskParams>,
+        pub subtype_95: ::std::option::Option<CreateJsmopsAlertTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_96: ::std::option::Option<UpdateOpsgenieAlertTaskParams>,
+        pub subtype_96: ::std::option::Option<PageJsmopsOnCallRespondersTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_97: ::std::option::Option<UpdateOpsgenieIncidentTaskParams>,
+        pub subtype_97: ::std::option::Option<UpdateOpsgenieAlertTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_98: ::std::option::Option<PageRootlyOnCallRespondersTaskParams>,
+        pub subtype_98: ::std::option::Option<UpdateOpsgenieIncidentTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_99: ::std::option::Option<PagePagerdutyOnCallRespondersTaskParams>,
+        pub subtype_99: ::std::option::Option<PageRootlyOnCallRespondersTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_100: ::std::option::Option<PageVictorOpsOnCallRespondersTaskParams>,
+        pub subtype_100: ::std::option::Option<PagePagerdutyOnCallRespondersTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_101: ::std::option::Option<UpdateVictorOpsIncidentTaskParams>,
+        pub subtype_101: ::std::option::Option<PageVictorOpsOnCallRespondersTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_102: ::std::option::Option<PrintTaskParams>,
+        pub subtype_102: ::std::option::Option<UpdateVictorOpsIncidentTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_103: ::std::option::Option<PublishIncidentTaskParams>,
+        pub subtype_103: ::std::option::Option<PrintTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_104: ::std::option::Option<RedisClientTaskParams>,
+        pub subtype_104: ::std::option::Option<PublishIncidentTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_105: ::std::option::Option<RenameSlackChannelTaskParams>,
+        pub subtype_105: ::std::option::Option<RedisClientTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_106: ::std::option::Option<ChangeSlackChannelPrivacyTaskParams>,
+        pub subtype_106: ::std::option::Option<RenameSlackChannelTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_107: ::std::option::Option<RunCommandHerokuTaskParams>,
+        pub subtype_107: ::std::option::Option<ChangeSlackChannelPrivacyTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_108: ::std::option::Option<SendEmailTaskParams>,
+        pub subtype_108: ::std::option::Option<RunCommandHerokuTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_109: ::std::option::Option<SendDashboardReportTaskParams>,
+        pub subtype_109: ::std::option::Option<SendEmailTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_110: ::std::option::Option<CreateSlackChannelTaskParams>,
+        pub subtype_110: ::std::option::Option<SendDashboardReportTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_111: ::std::option::Option<SendSlackMessageTaskParams>,
+        pub subtype_111: ::std::option::Option<CreateSlackChannelTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_112: ::std::option::Option<SendSmsTaskParams>,
+        pub subtype_112: ::std::option::Option<SendSlackMessageTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_113: ::std::option::Option<SendWhatsappMessageTaskParams>,
+        pub subtype_113: ::std::option::Option<SendSmsTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_114: ::std::option::Option<SnapshotDatadogGraphTaskParams>,
+        pub subtype_114: ::std::option::Option<SendWhatsappMessageTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_115: ::std::option::Option<SnapshotGrafanaDashboardTaskParams>,
+        pub subtype_115: ::std::option::Option<SnapshotDatadogGraphTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_116: ::std::option::Option<SnapshotLookerLookTaskParams>,
+        pub subtype_116: ::std::option::Option<SnapshotGrafanaDashboardTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_117: ::std::option::Option<SnapshotNewRelicGraphTaskParams>,
+        pub subtype_117: ::std::option::Option<SnapshotLookerLookTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_118: ::std::option::Option<TweetTwitterMessageTaskParams>,
+        pub subtype_118: ::std::option::Option<SnapshotNewRelicGraphTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_119: ::std::option::Option<UpdateAirtableTableRecordTaskParams>,
+        pub subtype_119: ::std::option::Option<TweetTwitterMessageTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_120: ::std::option::Option<UpdateAsanaTaskTaskParams>,
+        pub subtype_120: ::std::option::Option<UpdateAirtableTableRecordTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_121: ::std::option::Option<UpdateGithubIssueTaskParams>,
+        pub subtype_121: ::std::option::Option<UpdateAsanaTaskTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_122: ::std::option::Option<UpdateGitlabIssueTaskParams>,
+        pub subtype_122: ::std::option::Option<UpdateGithubIssueTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_123: ::std::option::Option<UpdateIncidentTaskParams>,
+        pub subtype_123: ::std::option::Option<UpdateGitlabIssueTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_124: ::std::option::Option<UpdateIncidentPostmortemTaskParams>,
+        pub subtype_124: ::std::option::Option<UpdateIncidentTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_125: ::std::option::Option<UpdateJiraIssueTaskParams>,
+        pub subtype_125: ::std::option::Option<UpdateIncidentPostmortemTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_126: ::std::option::Option<UpdateLinearIssueTaskParams>,
+        pub subtype_126: ::std::option::Option<UpdateJiraIssueTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_127: ::std::option::Option<UpdateServiceNowIncidentTaskParams>,
+        pub subtype_127: ::std::option::Option<UpdateLinearIssueTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_128: ::std::option::Option<UpdateShortcutStoryTaskParams>,
+        pub subtype_128: ::std::option::Option<UpdateServiceNowIncidentTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_129: ::std::option::Option<UpdateShortcutTaskTaskParams>,
+        pub subtype_129: ::std::option::Option<UpdateShortcutStoryTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_130: ::std::option::Option<UpdateSlackChannelTopicTaskParams>,
+        pub subtype_130: ::std::option::Option<UpdateShortcutTaskTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_131: ::std::option::Option<UpdateStatusTaskParams>,
+        pub subtype_131: ::std::option::Option<UpdateSlackChannelTopicTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_132: ::std::option::Option<UpdateIncidentStatusTimestampTaskParams>,
+        pub subtype_132: ::std::option::Option<UpdateStatusTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_133: ::std::option::Option<UpdateTrelloCardTaskParams>,
+        pub subtype_133: ::std::option::Option<UpdateIncidentStatusTimestampTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_134: ::std::option::Option<UpdateClickupTaskTaskParams>,
+        pub subtype_134: ::std::option::Option<UpdateTrelloCardTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_135: ::std::option::Option<UpdateMotionTaskTaskParams>,
+        pub subtype_135: ::std::option::Option<UpdateClickupTaskTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_136: ::std::option::Option<UpdateZendeskTicketTaskParams>,
+        pub subtype_136: ::std::option::Option<UpdateMotionTaskTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_137: ::std::option::Option<UpdateAttachedAlertsTaskParams>,
+        pub subtype_137: ::std::option::Option<UpdateZendeskTicketTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_138: ::std::option::Option<TriggerWorkflowTaskParams>,
+        pub subtype_138: ::std::option::Option<UpdateAttachedAlertsTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_139: ::std::option::Option<SendSlackBlocksTaskParams>,
+        pub subtype_139: ::std::option::Option<TriggerWorkflowTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_140: ::std::option::Option<CreateOpenaiChatCompletionTaskParams>,
+        pub subtype_140: ::std::option::Option<SendSlackBlocksTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_141: ::std::option::Option<CreateWatsonxChatCompletionTaskParams>,
+        pub subtype_141: ::std::option::Option<CreateOpenaiChatCompletionTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_142: ::std::option::Option<
+        pub subtype_142: ::std::option::Option<CreateWatsonxChatCompletionTaskParams>,
+        #[serde(
+            flatten,
+            default,
+            skip_serializing_if = "::std::option::Option::is_none"
+        )]
+        pub subtype_143: ::std::option::Option<
             CreateGoogleGeminiChatCompletionTaskParams,
         >,
         #[serde(
@@ -151563,13 +155402,13 @@ pub mod types {
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_143: ::std::option::Option<CreateMistralChatCompletionTaskParams>,
+        pub subtype_144: ::std::option::Option<CreateMistralChatCompletionTaskParams>,
         #[serde(
             flatten,
             default,
             skip_serializing_if = "::std::option::Option::is_none"
         )]
-        pub subtype_144: ::std::option::Option<CreateAnthropicChatCompletionTaskParams>,
+        pub subtype_145: ::std::option::Option<CreateAnthropicChatCompletionTaskParams>,
     }
     impl ::std::default::Default for UpdateWorkflowTaskDataAttributesTaskParams {
         fn default() -> Self {
@@ -151719,6 +155558,7 @@ pub mod types {
                 subtype_142: Default::default(),
                 subtype_143: Default::default(),
                 subtype_144: Default::default(),
+                subtype_145: Default::default(),
             }
         }
     }
@@ -152312,13 +156152,13 @@ pub mod types {
             Default::default()
         }
     }
-    ///Flat user object as returned by serializer
+    ///Flat user attributes as returned by UserFlatSerializer (no nested associations)
     ///
     /// <details><summary>JSON schema</summary>
     ///
     /// ```json
     ///{
-    ///  "description": "Flat user object as returned by serializer",
+    ///  "description": "Flat user attributes as returned by UserFlatSerializer (no nested associations)",
     ///  "type": "object",
     ///  "required": [
     ///    "created_at",
@@ -152328,29 +156168,29 @@ pub mod types {
     ///  ],
     ///  "properties": {
     ///    "created_at": {
-    ///      "description": "User creation timestamp",
+    ///      "description": "Date of creation",
     ///      "type": "string"
     ///    },
     ///    "email": {
-    ///      "description": "User email",
+    ///      "description": "Email address",
     ///      "type": "string"
     ///    },
     ///    "first_name": {
-    ///      "description": "User first name",
+    ///      "description": "First name",
     ///      "type": [
     ///        "string",
     ///        "null"
     ///      ]
     ///    },
     ///    "full_name": {
-    ///      "description": "User full name",
+    ///      "description": "Full name",
     ///      "type": [
     ///        "string",
     ///        "null"
     ///      ]
     ///    },
     ///    "full_name_with_team": {
-    ///      "description": "User full name with team",
+    ///      "description": "Full name with team context",
     ///      "type": [
     ///        "string",
     ///        "null"
@@ -152361,21 +156201,53 @@ pub mod types {
     ///      "type": "integer"
     ///    },
     ///    "last_name": {
-    ///      "description": "User last name",
+    ///      "description": "Last name",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "name": {
+    ///      "description": "Display name",
+    ///      "type": "string"
+    ///    },
+    ///    "phone": {
+    ///      "description": "Primary phone number",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "phone_2": {
+    ///      "description": "Secondary phone number",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "preferred_name": {
+    ///      "description": "Preferred name",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "slack_id": {
+    ///      "description": "Slack user ID",
     ///      "type": [
     ///        "string",
     ///        "null"
     ///      ]
     ///    },
     ///    "time_zone": {
-    ///      "description": "User time zone",
+    ///      "description": "IANA time zone",
     ///      "type": [
     ///        "string",
     ///        "null"
     ///      ]
     ///    },
     ///    "updated_at": {
-    ///      "description": "User last update timestamp",
+    ///      "description": "Date of last update",
     ///      "type": "string"
     ///    }
     ///  }
@@ -152384,28 +156256,43 @@ pub mod types {
     /// </details>
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct UserFlatResponse {
-        ///User creation timestamp
+        ///Date of creation
         pub created_at: ::std::string::String,
-        ///User email
+        ///Email address
         pub email: ::std::string::String,
-        ///User first name
+        ///First name
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub first_name: ::std::option::Option<::std::string::String>,
-        ///User full name
+        ///Full name
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub full_name: ::std::option::Option<::std::string::String>,
-        ///User full name with team
+        ///Full name with team context
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub full_name_with_team: ::std::option::Option<::std::string::String>,
         ///User ID
         pub id: i64,
-        ///User last name
+        ///Last name
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub last_name: ::std::option::Option<::std::string::String>,
-        ///User time zone
+        ///Display name
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        ///Primary phone number
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub phone: ::std::option::Option<::std::string::String>,
+        ///Secondary phone number
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub phone_2: ::std::option::Option<::std::string::String>,
+        ///Preferred name
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub preferred_name: ::std::option::Option<::std::string::String>,
+        ///Slack user ID
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub slack_id: ::std::option::Option<::std::string::String>,
+        ///IANA time zone
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub time_zone: ::std::option::Option<::std::string::String>,
-        ///User last update timestamp
+        ///Date of last update
         pub updated_at: ::std::string::String,
     }
     impl UserFlatResponse {
@@ -153776,6 +157663,29 @@ pub mod types {
     ///      "description": "Date of creation",
     ///      "type": "string"
     ///    },
+    ///    "custom_headers": {
+    ///      "description": "Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.",
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "name",
+    ///          "value"
+    ///        ],
+    ///        "properties": {
+    ///          "name": {
+    ///            "type": "string",
+    ///            "maxLength": 256
+    ///          },
+    ///          "value": {
+    ///            "type": "string",
+    ///            "maxLength": 8192
+    ///          }
+    ///        },
+    ///        "additionalProperties": false
+    ///      },
+    ///      "maxItems": 10
+    ///    },
     ///    "enabled": {
     ///      "type": "boolean"
     ///    },
@@ -153813,6 +157723,9 @@ pub mod types {
     pub struct WebhooksEndpoint {
         ///Date of creation
         pub created_at: ::std::string::String,
+        ///Custom HTTP headers sent with each delivery. Max 10. Reserved names (Content-Type, X-Rootly-Signature, Host, etc.) are rejected.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub custom_headers: ::std::vec::Vec<WebhooksEndpointCustomHeadersItem>,
         pub enabled: bool,
         pub event_types: ::std::vec::Vec<::std::string::String>,
         ///The name of the endpoint
@@ -153830,6 +157743,191 @@ pub mod types {
     impl WebhooksEndpoint {
         pub fn builder() -> builder::WebhooksEndpoint {
             Default::default()
+        }
+    }
+    ///`WebhooksEndpointCustomHeadersItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "name",
+    ///    "value"
+    ///  ],
+    ///  "properties": {
+    ///    "name": {
+    ///      "type": "string",
+    ///      "maxLength": 256
+    ///    },
+    ///    "value": {
+    ///      "type": "string",
+    ///      "maxLength": 8192
+    ///    }
+    ///  },
+    ///  "additionalProperties": false
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct WebhooksEndpointCustomHeadersItem {
+        pub name: WebhooksEndpointCustomHeadersItemName,
+        pub value: WebhooksEndpointCustomHeadersItemValue,
+    }
+    impl WebhooksEndpointCustomHeadersItem {
+        pub fn builder() -> builder::WebhooksEndpointCustomHeadersItem {
+            Default::default()
+        }
+    }
+    ///`WebhooksEndpointCustomHeadersItemName`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "maxLength": 256
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct WebhooksEndpointCustomHeadersItemName(::std::string::String);
+    impl ::std::ops::Deref for WebhooksEndpointCustomHeadersItemName {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<WebhooksEndpointCustomHeadersItemName>
+    for ::std::string::String {
+        fn from(value: WebhooksEndpointCustomHeadersItemName) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr for WebhooksEndpointCustomHeadersItemName {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() > 256usize {
+                return Err("longer than 256 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str> for WebhooksEndpointCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<&::std::string::String>
+    for WebhooksEndpointCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for WebhooksEndpointCustomHeadersItemName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de> for WebhooksEndpointCustomHeadersItemName {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`WebhooksEndpointCustomHeadersItemValue`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "string",
+    ///  "maxLength": 8192
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct WebhooksEndpointCustomHeadersItemValue(::std::string::String);
+    impl ::std::ops::Deref for WebhooksEndpointCustomHeadersItemValue {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<WebhooksEndpointCustomHeadersItemValue>
+    for ::std::string::String {
+        fn from(value: WebhooksEndpointCustomHeadersItemValue) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr for WebhooksEndpointCustomHeadersItemValue {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() > 8192usize {
+                return Err("longer than 8192 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str> for WebhooksEndpointCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<&::std::string::String>
+    for WebhooksEndpointCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for WebhooksEndpointCustomHeadersItemValue {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de> for WebhooksEndpointCustomHeadersItemValue {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
         }
     }
     ///`WebhooksEndpointList`
@@ -154316,6 +158414,367 @@ pub mod types {
     }
     impl Workflow {
         pub fn builder() -> builder::Workflow {
+            Default::default()
+        }
+    }
+    ///`WorkflowActionItemFormFieldCondition`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "action_item_condition",
+    ///    "form_field_id",
+    ///    "selected_catalog_entity_ids",
+    ///    "selected_option_ids",
+    ///    "selected_user_ids",
+    ///    "workflow_id"
+    ///  ],
+    ///  "properties": {
+    ///    "action_item_condition": {
+    ///      "description": "The trigger condition",
+    ///      "default": "ANY",
+    ///      "type": "string"
+    ///    },
+    ///    "form_field_id": {
+    ///      "description": "The custom field for this condition",
+    ///      "type": "string"
+    ///    },
+    ///    "selected_catalog_entity_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected catalog entities for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_cause_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected causes for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_environment_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected environments for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_functionality_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected functionalities for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_group_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected groups (teams) for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_incident_type_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected incident types for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_option_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected option id for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_service_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected services for select and multi_select kinds",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "selected_user_ids": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The selected user id for select and multi_select kinds",
+    ///        "type": "integer"
+    ///      }
+    ///    },
+    ///    "values": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "description": "The value to associate with the custom field trigger",
+    ///        "type": "string"
+    ///      }
+    ///    },
+    ///    "workflow_id": {
+    ///      "description": "The workflow for this condition",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct WorkflowActionItemFormFieldCondition {
+        ///The trigger condition
+        pub action_item_condition: ::std::string::String,
+        ///The custom field for this condition
+        pub form_field_id: ::std::string::String,
+        pub selected_catalog_entity_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_cause_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_environment_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_functionality_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_group_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_incident_type_ids: ::std::vec::Vec<::std::string::String>,
+        pub selected_option_ids: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub selected_service_ids: ::std::vec::Vec<::std::string::String>,
+        pub selected_user_ids: ::std::vec::Vec<i64>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub values: ::std::vec::Vec<::std::string::String>,
+        ///The workflow for this condition
+        pub workflow_id: ::std::string::String,
+    }
+    impl WorkflowActionItemFormFieldCondition {
+        pub fn builder() -> builder::WorkflowActionItemFormFieldCondition {
+            Default::default()
+        }
+    }
+    ///`WorkflowActionItemFormFieldConditionList`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data",
+    ///    "links",
+    ///    "meta"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "attributes",
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "attributes": {
+    ///            "type": "object",
+    ///            "allOf": [
+    ///              {
+    ///                "$ref": "#/components/schemas/workflow_action_item_form_field_condition"
+    ///              }
+    ///            ]
+    ///          },
+    ///          "id": {
+    ///            "description": "Unique ID of the workflow_action_item_form_field_condition",
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/jsonapi_included_resource"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/links"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "meta": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/meta"
+    ///        }
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct WorkflowActionItemFormFieldConditionList {
+        pub data: ::std::vec::Vec<WorkflowActionItemFormFieldConditionListDataItem>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<JsonapiIncludedResource>,
+        pub links: Links,
+        pub meta: Meta,
+    }
+    impl WorkflowActionItemFormFieldConditionList {
+        pub fn builder() -> builder::WorkflowActionItemFormFieldConditionList {
+            Default::default()
+        }
+    }
+    ///`WorkflowActionItemFormFieldConditionListDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/workflow_action_item_form_field_condition"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "id": {
+    ///      "description": "Unique ID of the workflow_action_item_form_field_condition",
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct WorkflowActionItemFormFieldConditionListDataItem {
+        pub attributes: WorkflowActionItemFormFieldCondition,
+        ///Unique ID of the workflow_action_item_form_field_condition
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl WorkflowActionItemFormFieldConditionListDataItem {
+        pub fn builder() -> builder::WorkflowActionItemFormFieldConditionListDataItem {
+            Default::default()
+        }
+    }
+    ///`WorkflowActionItemFormFieldConditionResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "allOf": [
+    ///            {
+    ///              "$ref": "#/components/schemas/workflow_action_item_form_field_condition"
+    ///            }
+    ///          ]
+    ///        },
+    ///        "id": {
+    ///          "description": "Unique ID of the workflow_action_item_form_field_condition",
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/jsonapi_included_resource"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct WorkflowActionItemFormFieldConditionResponse {
+        pub data: WorkflowActionItemFormFieldConditionResponseData,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<JsonapiIncludedResource>,
+    }
+    impl WorkflowActionItemFormFieldConditionResponse {
+        pub fn builder() -> builder::WorkflowActionItemFormFieldConditionResponse {
+            Default::default()
+        }
+    }
+    ///`WorkflowActionItemFormFieldConditionResponseData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/workflow_action_item_form_field_condition"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "id": {
+    ///      "description": "Unique ID of the workflow_action_item_form_field_condition",
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct WorkflowActionItemFormFieldConditionResponseData {
+        pub attributes: WorkflowActionItemFormFieldCondition,
+        ///Unique ID of the workflow_action_item_form_field_condition
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl WorkflowActionItemFormFieldConditionResponseData {
+        pub fn builder() -> builder::WorkflowActionItemFormFieldConditionResponseData {
             Default::default()
         }
     }
@@ -156158,6 +160617,9 @@ pub mod types {
     ///          "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///        },
     ///        {
+    ///          "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///        },
+    ///        {
     ///          "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///        },
     ///        {
@@ -156865,6 +161327,9 @@ pub mod types {
     ///      "$ref": "#/components/schemas/invite_to_slack_channel_rootly_task_params"
     ///    },
     ///    {
+    ///      "$ref": "#/components/schemas/invite_to_microsoft_teams_channel_rootly_task_params"
+    ///    },
+    ///    {
     ///      "$ref": "#/components/schemas/invite_to_slack_channel_pagerduty_task_params"
     ///    },
     ///    {
@@ -157130,6 +161595,9 @@ pub mod types {
         HttpClientTaskParams(HttpClientTaskParams),
         InviteToSlackChannelOpsgenieTaskParams(InviteToSlackChannelOpsgenieTaskParams),
         InviteToSlackChannelRootlyTaskParams(InviteToSlackChannelRootlyTaskParams),
+        InviteToMicrosoftTeamsChannelRootlyTaskParams(
+            InviteToMicrosoftTeamsChannelRootlyTaskParams,
+        ),
         InviteToSlackChannelPagerdutyTaskParams(InviteToSlackChannelPagerdutyTaskParams),
         InviteToSlackChannelTaskParams(InviteToSlackChannelTaskParams),
         InviteToSlackChannelVictorOpsTaskParams(InviteToSlackChannelVictorOpsTaskParams),
@@ -157683,6 +162151,12 @@ pub mod types {
     for WorkflowTaskTaskParams {
         fn from(value: InviteToSlackChannelRootlyTaskParams) -> Self {
             Self::InviteToSlackChannelRootlyTaskParams(value)
+        }
+    }
+    impl ::std::convert::From<InviteToMicrosoftTeamsChannelRootlyTaskParams>
+    for WorkflowTaskTaskParams {
+        fn from(value: InviteToMicrosoftTeamsChannelRootlyTaskParams) -> Self {
+            Self::InviteToMicrosoftTeamsChannelRootlyTaskParams(value)
         }
     }
     impl ::std::convert::From<InviteToSlackChannelPagerdutyTaskParams>
@@ -160555,6 +165029,14 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            notified_users: ::std::result::Result<
+                ::std::option::Option<::std::vec::Vec<super::User>>,
+                ::std::string::String,
+            >,
+            responders: ::std::result::Result<
+                ::std::option::Option<::std::vec::Vec<super::UserFlatResponse>>,
+                ::std::string::String,
+            >,
             service_ids: ::std::result::Result<
                 ::std::option::Option<::std::vec::Vec<::std::string::String>>,
                 ::std::string::String,
@@ -160612,6 +165094,8 @@ pub mod types {
                     noise: Ok(Default::default()),
                     notification_target_id: Ok(Default::default()),
                     notification_target_type: Ok(Default::default()),
+                    notified_users: Ok(Default::default()),
+                    responders: Ok(Default::default()),
                     service_ids: Ok(Default::default()),
                     services: Ok(Default::default()),
                     short_id: Err("no value supplied for short_id".to_string()),
@@ -160945,6 +165429,36 @@ pub mod types {
                     });
                 self
             }
+            pub fn notified_users<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::vec::Vec<super::User>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.notified_users = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for notified_users: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn responders<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::vec::Vec<super::UserFlatResponse>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.responders = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for responders: {e}")
+                    });
+                self
+            }
             pub fn service_ids<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -161087,6 +165601,8 @@ pub mod types {
                     noise: value.noise?,
                     notification_target_id: value.notification_target_id?,
                     notification_target_type: value.notification_target_type?,
+                    notified_users: value.notified_users?,
+                    responders: value.responders?,
                     service_ids: value.service_ids?,
                     services: value.services?,
                     short_id: value.short_id?,
@@ -161125,6 +165641,8 @@ pub mod types {
                     noise: Ok(value.noise),
                     notification_target_id: Ok(value.notification_target_id),
                     notification_target_type: Ok(value.notification_target_type),
+                    notified_users: Ok(value.notified_users),
+                    responders: Ok(value.responders),
                     service_ids: Ok(value.service_ids),
                     services: Ok(value.services),
                     short_id: Ok(value.short_id),
@@ -161348,10 +165866,42 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            escalation_level: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            escalation_target: ::std::result::Result<
+                ::std::option::Option<super::AlertEventEscalationTarget>,
+                ::std::string::String,
+            >,
+            escalation_target_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            incident: ::std::result::Result<
+                ::std::option::Option<super::AlertEventIncident>,
+                ::std::string::String,
+            >,
+            incident_ids: ::std::result::Result<
+                ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+                ::std::string::String,
+            >,
             kind: ::std::result::Result<::std::string::String, ::std::string::String>,
+            schedule: ::std::result::Result<
+                ::std::option::Option<super::AlertEventSchedule>,
+                ::std::string::String,
+            >,
+            slack_channel: ::std::result::Result<
+                ::std::option::Option<super::SlackChannel>,
+                ::std::string::String,
+            >,
             source: ::std::result::Result<::std::string::String, ::std::string::String>,
             updated_at: ::std::result::Result<
                 ::std::string::String,
+                ::std::string::String,
+            >,
+            user: ::std::result::Result<
+                ::std::option::Option<super::AlertEventUser>,
                 ::std::string::String,
             >,
             user_id: ::std::result::Result<
@@ -161366,9 +165916,17 @@ pub mod types {
                     alert_id: Err("no value supplied for alert_id".to_string()),
                     created_at: Err("no value supplied for created_at".to_string()),
                     details: Ok(Default::default()),
+                    escalation_level: Ok(Default::default()),
+                    escalation_target: Ok(Default::default()),
+                    escalation_target_type: Ok(Default::default()),
+                    incident: Ok(Default::default()),
+                    incident_ids: Ok(Default::default()),
                     kind: Err("no value supplied for kind".to_string()),
+                    schedule: Ok(Default::default()),
+                    slack_channel: Ok(Default::default()),
                     source: Err("no value supplied for source".to_string()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
+                    user: Ok(Default::default()),
                     user_id: Ok(Default::default()),
                 }
             }
@@ -161422,6 +165980,78 @@ pub mod types {
                     });
                 self
             }
+            pub fn escalation_level<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.escalation_level = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for escalation_level: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn escalation_target<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AlertEventEscalationTarget>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.escalation_target = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for escalation_target: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn escalation_target_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.escalation_target_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for escalation_target_type: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn incident<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AlertEventIncident>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.incident = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for incident: {e}")
+                    });
+                self
+            }
+            pub fn incident_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.incident_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for incident_ids: {e}")
+                    });
+                self
+            }
             pub fn kind<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -161431,6 +166061,32 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for kind: {e}")
+                    });
+                self
+            }
+            pub fn schedule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AlertEventSchedule>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for schedule: {e}")
+                    });
+                self
+            }
+            pub fn slack_channel<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::SlackChannel>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slack_channel = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slack_channel: {e}")
                     });
                 self
             }
@@ -161458,6 +166114,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn user<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::AlertEventUser>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user: {e}")
+                    });
+                self
+            }
             pub fn user_id<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<i64>>,
@@ -161481,9 +166149,17 @@ pub mod types {
                     alert_id: value.alert_id?,
                     created_at: value.created_at?,
                     details: value.details?,
+                    escalation_level: value.escalation_level?,
+                    escalation_target: value.escalation_target?,
+                    escalation_target_type: value.escalation_target_type?,
+                    incident: value.incident?,
+                    incident_ids: value.incident_ids?,
                     kind: value.kind?,
+                    schedule: value.schedule?,
+                    slack_channel: value.slack_channel?,
                     source: value.source?,
                     updated_at: value.updated_at?,
+                    user: value.user?,
                     user_id: value.user_id?,
                 })
             }
@@ -161495,10 +166171,148 @@ pub mod types {
                     alert_id: Ok(value.alert_id),
                     created_at: Ok(value.created_at),
                     details: Ok(value.details),
+                    escalation_level: Ok(value.escalation_level),
+                    escalation_target: Ok(value.escalation_target),
+                    escalation_target_type: Ok(value.escalation_target_type),
+                    incident: Ok(value.incident),
+                    incident_ids: Ok(value.incident_ids),
                     kind: Ok(value.kind),
+                    schedule: Ok(value.schedule),
+                    slack_channel: Ok(value.slack_channel),
                     source: Ok(value.source),
                     updated_at: Ok(value.updated_at),
+                    user: Ok(value.user),
                     user_id: Ok(value.user_id),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AlertEventEscalationTarget {
+            data: ::std::result::Result<
+                ::std::option::Option<super::AlertEventEscalationTargetData>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AlertEventEscalationTarget {
+            fn default() -> Self {
+                Self {
+                    data: Ok(Default::default()),
+                }
+            }
+        }
+        impl AlertEventEscalationTarget {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AlertEventEscalationTargetData>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AlertEventEscalationTarget>
+        for super::AlertEventEscalationTarget {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertEventEscalationTarget,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::AlertEventEscalationTarget>
+        for AlertEventEscalationTarget {
+            fn from(value: super::AlertEventEscalationTarget) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AlertEventEscalationTargetData {
+            attributes: ::std::result::Result<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AlertEventEscalationTargetData {
+            fn default() -> Self {
+                Self {
+                    attributes: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    type_: Ok(Default::default()),
+                }
+            }
+        }
+        impl AlertEventEscalationTargetData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AlertEventEscalationTargetData>
+        for super::AlertEventEscalationTargetData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertEventEscalationTargetData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AlertEventEscalationTargetData>
+        for AlertEventEscalationTargetData {
+            fn from(value: super::AlertEventEscalationTargetData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
                 }
             }
         }
@@ -161823,6 +166637,277 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct AlertEventIncident {
+            created_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            duration: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            kind: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            private: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            sequential_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            slug: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            started_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            status: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            title: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            url: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AlertEventIncident {
+            fn default() -> Self {
+                Self {
+                    created_at: Ok(Default::default()),
+                    description: Ok(Default::default()),
+                    duration: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    kind: Ok(Default::default()),
+                    private: Ok(Default::default()),
+                    sequential_id: Ok(Default::default()),
+                    slug: Ok(Default::default()),
+                    started_at: Ok(Default::default()),
+                    status: Ok(Default::default()),
+                    title: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                    url: Ok(Default::default()),
+                }
+            }
+        }
+        impl AlertEventIncident {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn duration<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.duration = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for duration: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for kind: {e}")
+                    });
+                self
+            }
+            pub fn private<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.private = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for private: {e}")
+                    });
+                self
+            }
+            pub fn sequential_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.sequential_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for sequential_id: {e}")
+                    });
+                self
+            }
+            pub fn slug<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slug = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slug: {e}")
+                    });
+                self
+            }
+            pub fn started_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.started_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for started_at: {e}")
+                    });
+                self
+            }
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+            pub fn url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for url: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AlertEventIncident> for super::AlertEventIncident {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertEventIncident,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    description: value.description?,
+                    duration: value.duration?,
+                    id: value.id?,
+                    kind: value.kind?,
+                    private: value.private?,
+                    sequential_id: value.sequential_id?,
+                    slug: value.slug?,
+                    started_at: value.started_at?,
+                    status: value.status?,
+                    title: value.title?,
+                    updated_at: value.updated_at?,
+                    url: value.url?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AlertEventIncident> for AlertEventIncident {
+            fn from(value: super::AlertEventIncident) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    description: Ok(value.description),
+                    duration: Ok(value.duration),
+                    id: Ok(value.id),
+                    kind: Ok(value.kind),
+                    private: Ok(value.private),
+                    sequential_id: Ok(value.sequential_id),
+                    slug: Ok(value.slug),
+                    started_at: Ok(value.started_at),
+                    status: Ok(value.status),
+                    title: Ok(value.title),
+                    updated_at: Ok(value.updated_at),
+                    url: Ok(value.url),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct AlertEventList {
             data: ::std::result::Result<
                 ::std::vec::Vec<super::AlertEventListDataItem>,
@@ -162133,6 +167218,457 @@ pub mod types {
                     attributes: Ok(value.attributes),
                     id: Ok(value.id),
                     type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AlertEventSchedule {
+            created_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            escalation_policies: ::std::result::Result<
+                ::std::vec::Vec<super::AlertEventScheduleEscalationPoliciesItem>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AlertEventSchedule {
+            fn default() -> Self {
+                Self {
+                    created_at: Ok(Default::default()),
+                    description: Ok(Default::default()),
+                    escalation_policies: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl AlertEventSchedule {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn escalation_policies<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AlertEventScheduleEscalationPoliciesItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.escalation_policies = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for escalation_policies: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AlertEventSchedule> for super::AlertEventSchedule {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertEventSchedule,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    description: value.description?,
+                    escalation_policies: value.escalation_policies?,
+                    id: value.id?,
+                    name: value.name?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AlertEventSchedule> for AlertEventSchedule {
+            fn from(value: super::AlertEventSchedule) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    description: Ok(value.description),
+                    escalation_policies: Ok(value.escalation_policies),
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AlertEventScheduleEscalationPoliciesItem {
+            created_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AlertEventScheduleEscalationPoliciesItem {
+            fn default() -> Self {
+                Self {
+                    created_at: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl AlertEventScheduleEscalationPoliciesItem {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AlertEventScheduleEscalationPoliciesItem>
+        for super::AlertEventScheduleEscalationPoliciesItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertEventScheduleEscalationPoliciesItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    id: value.id?,
+                    name: value.name?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AlertEventScheduleEscalationPoliciesItem>
+        for AlertEventScheduleEscalationPoliciesItem {
+            fn from(value: super::AlertEventScheduleEscalationPoliciesItem) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AlertEventUser {
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            email: ::std::result::Result<::std::string::String, ::std::string::String>,
+            first_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            full_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<i64, ::std::string::String>,
+            last_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            preferred_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            time_zone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AlertEventUser {
+            fn default() -> Self {
+                Self {
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    email: Err("no value supplied for email".to_string()),
+                    first_name: Ok(Default::default()),
+                    full_name: Ok(Default::default()),
+                    id: Err("no value supplied for id".to_string()),
+                    last_name: Ok(Default::default()),
+                    name: Err("no value supplied for name".to_string()),
+                    preferred_name: Ok(Default::default()),
+                    time_zone: Ok(Default::default()),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
+                }
+            }
+        }
+        impl AlertEventUser {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for email: {e}")
+                    });
+                self
+            }
+            pub fn first_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.first_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for first_name: {e}")
+                    });
+                self
+            }
+            pub fn full_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.full_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for full_name: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn last_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for last_name: {e}")
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn preferred_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.preferred_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for preferred_name: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn time_zone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.time_zone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for time_zone: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AlertEventUser> for super::AlertEventUser {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertEventUser,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    email: value.email?,
+                    first_name: value.first_name?,
+                    full_name: value.full_name?,
+                    id: value.id?,
+                    last_name: value.last_name?,
+                    name: value.name?,
+                    preferred_name: value.preferred_name?,
+                    time_zone: value.time_zone?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AlertEventUser> for AlertEventUser {
+            fn from(value: super::AlertEventUser) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    email: Ok(value.email),
+                    first_name: Ok(value.first_name),
+                    full_name: Ok(value.full_name),
+                    id: Ok(value.id),
+                    last_name: Ok(value.last_name),
+                    name: Ok(value.name),
+                    preferred_name: Ok(value.preferred_name),
+                    time_zone: Ok(value.time_zone),
+                    updated_at: Ok(value.updated_at),
                 }
             }
         }
@@ -171235,8 +176771,16 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            user_email: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             user_id: ::std::result::Result<
                 ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            user_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
         }
@@ -171255,7 +176799,9 @@ pub mod types {
                     request_id: Ok(Default::default()),
                     session_id: Ok(Default::default()),
                     user_agent: Ok(Default::default()),
+                    user_email: Ok(Default::default()),
                     user_id: Ok(Default::default()),
+                    user_name: Ok(Default::default()),
                 }
             }
         }
@@ -171414,6 +176960,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn user_email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_email: {e}")
+                    });
+                self
+            }
             pub fn user_id<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<i64>>,
@@ -171423,6 +176981,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for user_id: {e}")
+                    });
+                self
+            }
+            pub fn user_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_name: {e}")
                     });
                 self
             }
@@ -171445,7 +177015,9 @@ pub mod types {
                     request_id: value.request_id?,
                     session_id: value.session_id?,
                     user_agent: value.user_agent?,
+                    user_email: value.user_email?,
                     user_id: value.user_id?,
+                    user_name: value.user_name?,
                 })
             }
         }
@@ -171464,7 +177036,9 @@ pub mod types {
                     request_id: Ok(value.request_id),
                     session_id: Ok(value.session_id),
                     user_agent: Ok(value.user_agent),
+                    user_email: Ok(value.user_email),
                     user_id: Ok(value.user_id),
+                    user_name: Ok(value.user_name),
                 }
             }
         }
@@ -173368,6 +178942,1114 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct BulkDestroyCatalogEntitiesResponse {
+            data: ::std::result::Result<
+                ::std::option::Option<super::BulkDestroyCatalogEntitiesResponseData>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkDestroyCatalogEntitiesResponse {
+            fn default() -> Self {
+                Self {
+                    data: Ok(Default::default()),
+                }
+            }
+        }
+        impl BulkDestroyCatalogEntitiesResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::BulkDestroyCatalogEntitiesResponseData>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkDestroyCatalogEntitiesResponse>
+        for super::BulkDestroyCatalogEntitiesResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkDestroyCatalogEntitiesResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::BulkDestroyCatalogEntitiesResponse>
+        for BulkDestroyCatalogEntitiesResponse {
+            fn from(value: super::BulkDestroyCatalogEntitiesResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkDestroyCatalogEntitiesResponseData {
+            deleted_external_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            failed_external_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            not_found_external_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkDestroyCatalogEntitiesResponseData {
+            fn default() -> Self {
+                Self {
+                    deleted_external_ids: Ok(Default::default()),
+                    failed_external_ids: Ok(Default::default()),
+                    not_found_external_ids: Ok(Default::default()),
+                }
+            }
+        }
+        impl BulkDestroyCatalogEntitiesResponseData {
+            pub fn deleted_external_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.deleted_external_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for deleted_external_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn failed_external_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.failed_external_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for failed_external_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn not_found_external_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.not_found_external_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for not_found_external_ids: {e}"
+                        )
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkDestroyCatalogEntitiesResponseData>
+        for super::BulkDestroyCatalogEntitiesResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkDestroyCatalogEntitiesResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    deleted_external_ids: value.deleted_external_ids?,
+                    failed_external_ids: value.failed_external_ids?,
+                    not_found_external_ids: value.not_found_external_ids?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkDestroyCatalogEntitiesResponseData>
+        for BulkDestroyCatalogEntitiesResponseData {
+            fn from(value: super::BulkDestroyCatalogEntitiesResponseData) -> Self {
+                Self {
+                    deleted_external_ids: Ok(value.deleted_external_ids),
+                    failed_external_ids: Ok(value.failed_external_ids),
+                    not_found_external_ids: Ok(value.not_found_external_ids),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkImportAttributes {
+            completed_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            entity_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            error_message: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            failed_records: ::std::result::Result<i64, ::std::string::String>,
+            file_url: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            notification_email: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            processed_records: ::std::result::Result<i64, ::std::string::String>,
+            progress_percentage: ::std::result::Result<f32, ::std::string::String>,
+            started_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            status: ::std::result::Result<::std::string::String, ::std::string::String>,
+            total_records: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            validation_errors: ::std::result::Result<
+                ::std::option::Option<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkImportAttributes {
+            fn default() -> Self {
+                Self {
+                    completed_at: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    entity_type: Ok(Default::default()),
+                    error_message: Ok(Default::default()),
+                    failed_records: Err(
+                        "no value supplied for failed_records".to_string(),
+                    ),
+                    file_url: Ok(Default::default()),
+                    notification_email: Ok(Default::default()),
+                    processed_records: Err(
+                        "no value supplied for processed_records".to_string(),
+                    ),
+                    progress_percentage: Err(
+                        "no value supplied for progress_percentage".to_string(),
+                    ),
+                    started_at: Ok(Default::default()),
+                    status: Err("no value supplied for status".to_string()),
+                    total_records: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                    validation_errors: Ok(Default::default()),
+                }
+            }
+        }
+        impl BulkImportAttributes {
+            pub fn completed_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.completed_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for completed_at: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn entity_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.entity_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for entity_type: {e}")
+                    });
+                self
+            }
+            pub fn error_message<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.error_message = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for error_message: {e}")
+                    });
+                self
+            }
+            pub fn failed_records<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.failed_records = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for failed_records: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn file_url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.file_url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for file_url: {e}")
+                    });
+                self
+            }
+            pub fn notification_email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.notification_email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for notification_email: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn processed_records<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.processed_records = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for processed_records: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn progress_percentage<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<f32>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.progress_percentage = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for progress_percentage: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn started_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.started_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for started_at: {e}")
+                    });
+                self
+            }
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+            pub fn total_records<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.total_records = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for total_records: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+            pub fn validation_errors<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.validation_errors = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for validation_errors: {e}"
+                        )
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkImportAttributes>
+        for super::BulkImportAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkImportAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    completed_at: value.completed_at?,
+                    created_at: value.created_at?,
+                    entity_type: value.entity_type?,
+                    error_message: value.error_message?,
+                    failed_records: value.failed_records?,
+                    file_url: value.file_url?,
+                    notification_email: value.notification_email?,
+                    processed_records: value.processed_records?,
+                    progress_percentage: value.progress_percentage?,
+                    started_at: value.started_at?,
+                    status: value.status?,
+                    total_records: value.total_records?,
+                    updated_at: value.updated_at?,
+                    validation_errors: value.validation_errors?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkImportAttributes> for BulkImportAttributes {
+            fn from(value: super::BulkImportAttributes) -> Self {
+                Self {
+                    completed_at: Ok(value.completed_at),
+                    created_at: Ok(value.created_at),
+                    entity_type: Ok(value.entity_type),
+                    error_message: Ok(value.error_message),
+                    failed_records: Ok(value.failed_records),
+                    file_url: Ok(value.file_url),
+                    notification_email: Ok(value.notification_email),
+                    processed_records: Ok(value.processed_records),
+                    progress_percentage: Ok(value.progress_percentage),
+                    started_at: Ok(value.started_at),
+                    status: Ok(value.status),
+                    total_records: Ok(value.total_records),
+                    updated_at: Ok(value.updated_at),
+                    validation_errors: Ok(value.validation_errors),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkImportResponse {
+            data: ::std::result::Result<
+                super::BulkImportResponseData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkImportResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl BulkImportResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::BulkImportResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkImportResponse> for super::BulkImportResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkImportResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::BulkImportResponse> for BulkImportResponse {
+            fn from(value: super::BulkImportResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkImportResponseData {
+            attributes: ::std::result::Result<
+                super::BulkImportAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for BulkImportResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl BulkImportResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::BulkImportAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkImportResponseData>
+        for super::BulkImportResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkImportResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkImportResponseData>
+        for BulkImportResponseData {
+            fn from(value: super::BulkImportResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkUpsertCatalogEntities {
+            entities: ::std::result::Result<
+                ::std::vec::Vec<super::BulkUpsertCatalogEntitiesEntitiesItem>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkUpsertCatalogEntities {
+            fn default() -> Self {
+                Self {
+                    entities: Err("no value supplied for entities".to_string()),
+                }
+            }
+        }
+        impl BulkUpsertCatalogEntities {
+            pub fn entities<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::BulkUpsertCatalogEntitiesEntitiesItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.entities = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for entities: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkUpsertCatalogEntities>
+        for super::BulkUpsertCatalogEntities {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkUpsertCatalogEntities,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { entities: value.entities? })
+            }
+        }
+        impl ::std::convert::From<super::BulkUpsertCatalogEntities>
+        for BulkUpsertCatalogEntities {
+            fn from(value: super::BulkUpsertCatalogEntities) -> Self {
+                Self {
+                    entities: Ok(value.entities),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkUpsertCatalogEntitiesEntitiesItem {
+            backstage_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            external_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            fields: ::std::result::Result<
+                ::std::vec::Vec<super::BulkUpsertCatalogEntitiesEntitiesItemFieldsItem>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkUpsertCatalogEntitiesEntitiesItem {
+            fn default() -> Self {
+                Self {
+                    backstage_id: Ok(Default::default()),
+                    description: Ok(Default::default()),
+                    external_id: Err("no value supplied for external_id".to_string()),
+                    fields: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                }
+            }
+        }
+        impl BulkUpsertCatalogEntitiesEntitiesItem {
+            pub fn backstage_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.backstage_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for backstage_id: {e}")
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
+                    });
+                self
+            }
+            pub fn fields<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::BulkUpsertCatalogEntitiesEntitiesItemFieldsItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.fields = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for fields: {e}")
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkUpsertCatalogEntitiesEntitiesItem>
+        for super::BulkUpsertCatalogEntitiesEntitiesItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkUpsertCatalogEntitiesEntitiesItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    backstage_id: value.backstage_id?,
+                    description: value.description?,
+                    external_id: value.external_id?,
+                    fields: value.fields?,
+                    name: value.name?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkUpsertCatalogEntitiesEntitiesItem>
+        for BulkUpsertCatalogEntitiesEntitiesItem {
+            fn from(value: super::BulkUpsertCatalogEntitiesEntitiesItem) -> Self {
+                Self {
+                    backstage_id: Ok(value.backstage_id),
+                    description: Ok(value.description),
+                    external_id: Ok(value.external_id),
+                    fields: Ok(value.fields),
+                    name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkUpsertCatalogEntitiesEntitiesItemFieldsItem {
+            catalog_field_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            catalog_property_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default
+        for BulkUpsertCatalogEntitiesEntitiesItemFieldsItem {
+            fn default() -> Self {
+                Self {
+                    catalog_field_id: Ok(Default::default()),
+                    catalog_property_id: Ok(Default::default()),
+                    value: Err("no value supplied for value".to_string()),
+                }
+            }
+        }
+        impl BulkUpsertCatalogEntitiesEntitiesItemFieldsItem {
+            pub fn catalog_field_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_field_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for catalog_field_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn catalog_property_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_property_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for catalog_property_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkUpsertCatalogEntitiesEntitiesItemFieldsItem>
+        for super::BulkUpsertCatalogEntitiesEntitiesItemFieldsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkUpsertCatalogEntitiesEntitiesItemFieldsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    catalog_field_id: value.catalog_field_id?,
+                    catalog_property_id: value.catalog_property_id?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkUpsertCatalogEntitiesEntitiesItemFieldsItem>
+        for BulkUpsertCatalogEntitiesEntitiesItemFieldsItem {
+            fn from(
+                value: super::BulkUpsertCatalogEntitiesEntitiesItemFieldsItem,
+            ) -> Self {
+                Self {
+                    catalog_field_id: Ok(value.catalog_field_id),
+                    catalog_property_id: Ok(value.catalog_property_id),
+                    value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkUpsertCatalogEntitiesError {
+            errors: ::std::result::Result<
+                ::std::vec::Vec<super::BulkUpsertCatalogEntitiesErrorErrorsItem>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkUpsertCatalogEntitiesError {
+            fn default() -> Self {
+                Self {
+                    errors: Err("no value supplied for errors".to_string()),
+                }
+            }
+        }
+        impl BulkUpsertCatalogEntitiesError {
+            pub fn errors<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::BulkUpsertCatalogEntitiesErrorErrorsItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.errors = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for errors: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkUpsertCatalogEntitiesError>
+        for super::BulkUpsertCatalogEntitiesError {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkUpsertCatalogEntitiesError,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { errors: value.errors? })
+            }
+        }
+        impl ::std::convert::From<super::BulkUpsertCatalogEntitiesError>
+        for BulkUpsertCatalogEntitiesError {
+            fn from(value: super::BulkUpsertCatalogEntitiesError) -> Self {
+                Self { errors: Ok(value.errors) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkUpsertCatalogEntitiesErrorErrorsItem {
+            errors: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            external_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            index: ::std::result::Result<i64, ::std::string::String>,
+        }
+        impl ::std::default::Default for BulkUpsertCatalogEntitiesErrorErrorsItem {
+            fn default() -> Self {
+                Self {
+                    errors: Err("no value supplied for errors".to_string()),
+                    external_id: Err("no value supplied for external_id".to_string()),
+                    index: Err("no value supplied for index".to_string()),
+                }
+            }
+        }
+        impl BulkUpsertCatalogEntitiesErrorErrorsItem {
+            pub fn errors<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.errors = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for errors: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
+                    });
+                self
+            }
+            pub fn index<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.index = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for index: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkUpsertCatalogEntitiesErrorErrorsItem>
+        for super::BulkUpsertCatalogEntitiesErrorErrorsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkUpsertCatalogEntitiesErrorErrorsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    errors: value.errors?,
+                    external_id: value.external_id?,
+                    index: value.index?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkUpsertCatalogEntitiesErrorErrorsItem>
+        for BulkUpsertCatalogEntitiesErrorErrorsItem {
+            fn from(value: super::BulkUpsertCatalogEntitiesErrorErrorsItem) -> Self {
+                Self {
+                    errors: Ok(value.errors),
+                    external_id: Ok(value.external_id),
+                    index: Ok(value.index),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkUpsertCatalogEntitiesResponse {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::BulkUpsertCatalogEntitiesResponseDataItem>,
+                ::std::string::String,
+            >,
+            included: ::std::result::Result<
+                ::std::vec::Vec<super::JsonapiIncludedResource>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkUpsertCatalogEntitiesResponse {
+            fn default() -> Self {
+                Self {
+                    data: Ok(Default::default()),
+                    included: Ok(Default::default()),
+                }
+            }
+        }
+        impl BulkUpsertCatalogEntitiesResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::BulkUpsertCatalogEntitiesResponseDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn included<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::JsonapiIncludedResource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.included = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for included: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkUpsertCatalogEntitiesResponse>
+        for super::BulkUpsertCatalogEntitiesResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkUpsertCatalogEntitiesResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    included: value.included?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkUpsertCatalogEntitiesResponse>
+        for BulkUpsertCatalogEntitiesResponse {
+            fn from(value: super::BulkUpsertCatalogEntitiesResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    included: Ok(value.included),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkUpsertCatalogEntitiesResponseDataItem {
+            attributes: ::std::result::Result<
+                ::std::option::Option<super::CatalogEntity>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkUpsertCatalogEntitiesResponseDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    type_: Ok(Default::default()),
+                }
+            }
+        }
+        impl BulkUpsertCatalogEntitiesResponseDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::CatalogEntity>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkUpsertCatalogEntitiesResponseDataItem>
+        for super::BulkUpsertCatalogEntitiesResponseDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkUpsertCatalogEntitiesResponseDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkUpsertCatalogEntitiesResponseDataItem>
+        for BulkUpsertCatalogEntitiesResponseDataItem {
+            fn from(value: super::BulkUpsertCatalogEntitiesResponseDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct CallPeopleTaskParams {
             content: ::std::result::Result<::std::string::String, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
@@ -173627,7 +180309,15 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             icon: ::std::result::Result<::std::string::String, ::std::string::String>,
+            managed_by: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
             position: ::std::result::Result<
                 ::std::option::Option<i64>,
@@ -173643,7 +180333,9 @@ pub mod types {
                 Self {
                     created_at: Err("no value supplied for created_at".to_string()),
                     description: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     icon: Err("no value supplied for icon".to_string()),
+                    managed_by: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     position: Err("no value supplied for position".to_string()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
@@ -173675,6 +180367,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
+                    });
+                self
+            }
             pub fn icon<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -173684,6 +180388,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for icon: {e}")
+                    });
+                self
+            }
+            pub fn managed_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.managed_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for managed_by: {e}")
                     });
                 self
             }
@@ -173732,7 +180448,9 @@ pub mod types {
                 Ok(Self {
                     created_at: value.created_at?,
                     description: value.description?,
+                    external_id: value.external_id?,
                     icon: value.icon?,
+                    managed_by: value.managed_by?,
                     name: value.name?,
                     position: value.position?,
                     updated_at: value.updated_at?,
@@ -173744,7 +180462,9 @@ pub mod types {
                 Self {
                     created_at: Ok(value.created_at),
                     description: Ok(value.description),
+                    external_id: Ok(value.external_id),
                     icon: Ok(value.icon),
+                    managed_by: Ok(value.managed_by),
                     name: Ok(value.name),
                     position: Ok(value.position),
                     updated_at: Ok(value.updated_at),
@@ -174473,6 +181193,14 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            managed_by: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
             position: ::std::result::Result<
                 ::std::option::Option<i64>,
@@ -174493,6 +181221,8 @@ pub mod types {
                     backstage_id: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
                     description: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
+                    managed_by: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     position: Err("no value supplied for position".to_string()),
                     properties: Ok(Default::default()),
@@ -174534,6 +181264,30 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
+                    });
+                self
+            }
+            pub fn managed_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.managed_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for managed_by: {e}")
                     });
                 self
             }
@@ -174597,6 +181351,8 @@ pub mod types {
                     backstage_id: value.backstage_id?,
                     created_at: value.created_at?,
                     description: value.description?,
+                    external_id: value.external_id?,
+                    managed_by: value.managed_by?,
                     name: value.name?,
                     position: value.position?,
                     properties: value.properties?,
@@ -174610,6 +181366,8 @@ pub mod types {
                     backstage_id: Ok(value.backstage_id),
                     created_at: Ok(value.created_at),
                     description: Ok(value.description),
+                    external_id: Ok(value.external_id),
+                    managed_by: Ok(value.managed_by),
                     name: Ok(value.name),
                     position: Ok(value.position),
                     properties: Ok(value.properties),
@@ -176692,8 +183450,16 @@ pub mod types {
                 ::std::string::String,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             kind: ::std::result::Result<::std::string::String, ::std::string::String>,
             kind_catalog_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            managed_by: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
@@ -176722,8 +183488,10 @@ pub mod types {
                     catalog_id: Err("no value supplied for catalog_id".to_string()),
                     catalog_type: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
+                    external_id: Ok(Default::default()),
                     kind: Err("no value supplied for kind".to_string()),
                     kind_catalog_id: Ok(Default::default()),
+                    managed_by: Ok(Default::default()),
                     multiple: Err("no value supplied for multiple".to_string()),
                     name: Err("no value supplied for name".to_string()),
                     position: Err("no value supplied for position".to_string()),
@@ -176770,6 +183538,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
+                    });
+                self
+            }
             pub fn kind<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -176793,6 +183573,18 @@ pub mod types {
                         format!(
                             "error converting supplied value for kind_catalog_id: {e}"
                         )
+                    });
+                self
+            }
+            pub fn managed_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.managed_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for managed_by: {e}")
                     });
                 self
             }
@@ -176878,8 +183670,10 @@ pub mod types {
                     catalog_id: value.catalog_id?,
                     catalog_type: value.catalog_type?,
                     created_at: value.created_at?,
+                    external_id: value.external_id?,
                     kind: value.kind?,
                     kind_catalog_id: value.kind_catalog_id?,
+                    managed_by: value.managed_by?,
                     multiple: value.multiple?,
                     name: value.name?,
                     position: value.position?,
@@ -176895,8 +183689,10 @@ pub mod types {
                     catalog_id: Ok(value.catalog_id),
                     catalog_type: Ok(value.catalog_type),
                     created_at: Ok(value.created_at),
+                    external_id: Ok(value.external_id),
                     kind: Ok(value.kind),
                     kind_catalog_id: Ok(value.kind_catalog_id),
+                    managed_by: Ok(value.managed_by),
                     multiple: Ok(value.multiple),
                     name: Ok(value.name),
                     position: Ok(value.position),
@@ -177412,8 +184208,16 @@ pub mod types {
                 ::std::string::String,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             kind: ::std::result::Result<::std::string::String, ::std::string::String>,
             kind_catalog_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            managed_by: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
@@ -177442,8 +184246,10 @@ pub mod types {
                     catalog_id: Err("no value supplied for catalog_id".to_string()),
                     catalog_type: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
+                    external_id: Ok(Default::default()),
                     kind: Err("no value supplied for kind".to_string()),
                     kind_catalog_id: Ok(Default::default()),
+                    managed_by: Ok(Default::default()),
                     multiple: Err("no value supplied for multiple".to_string()),
                     name: Err("no value supplied for name".to_string()),
                     position: Err("no value supplied for position".to_string()),
@@ -177490,6 +184296,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
+                    });
+                self
+            }
             pub fn kind<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -177513,6 +184331,18 @@ pub mod types {
                         format!(
                             "error converting supplied value for kind_catalog_id: {e}"
                         )
+                    });
+                self
+            }
+            pub fn managed_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.managed_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for managed_by: {e}")
                     });
                 self
             }
@@ -177598,8 +184428,10 @@ pub mod types {
                     catalog_id: value.catalog_id?,
                     catalog_type: value.catalog_type?,
                     created_at: value.created_at?,
+                    external_id: value.external_id?,
                     kind: value.kind?,
                     kind_catalog_id: value.kind_catalog_id?,
+                    managed_by: value.managed_by?,
                     multiple: value.multiple?,
                     name: value.name?,
                     position: value.position?,
@@ -177615,8 +184447,10 @@ pub mod types {
                     catalog_id: Ok(value.catalog_id),
                     catalog_type: Ok(value.catalog_type),
                     created_at: Ok(value.created_at),
+                    external_id: Ok(value.external_id),
                     kind: Ok(value.kind),
                     kind_catalog_id: Ok(value.kind_catalog_id),
+                    managed_by: Ok(value.managed_by),
                     multiple: Ok(value.multiple),
                     name: Ok(value.name),
                     position: Ok(value.position),
@@ -210517,6 +217351,10 @@ pub mod types {
                 ::std::string::String,
                 ::std::string::String,
             >,
+            owner_group_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
             ping_url: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -210558,6 +217396,7 @@ pub mod types {
                     notification_target_type: Err(
                         "no value supplied for notification_target_type".to_string(),
                     ),
+                    owner_group_ids: Ok(Default::default()),
                     ping_url: Ok(Default::default()),
                     secret: Ok(Default::default()),
                     status: Err("no value supplied for status".to_string()),
@@ -210744,6 +217583,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn owner_group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for owner_group_ids: {e}"
+                        )
+                    });
+                self
+            }
             pub fn ping_url<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -210813,6 +217666,7 @@ pub mod types {
                     name: value.name?,
                     notification_target_id: value.notification_target_id?,
                     notification_target_type: value.notification_target_type?,
+                    owner_group_ids: value.owner_group_ids?,
                     ping_url: value.ping_url?,
                     secret: value.secret?,
                     status: value.status?,
@@ -210837,6 +217691,7 @@ pub mod types {
                     name: Ok(value.name),
                     notification_target_id: Ok(value.notification_target_id),
                     notification_target_type: Ok(value.notification_target_type),
+                    owner_group_ids: Ok(value.owner_group_ids),
                     ping_url: Ok(value.ping_url),
                     secret: Ok(value.secret),
                     status: Ok(value.status),
@@ -214466,6 +221321,10 @@ pub mod types {
                 ::std::string::String,
                 ::std::string::String,
             >,
+            created_by: ::std::result::Result<
+                ::std::option::Option<super::UserFlatResponse>,
+                ::std::string::String,
+            >,
             description: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -214510,6 +221369,7 @@ pub mod types {
                     assigned_to: Ok(Default::default()),
                     assigned_to_group_ids: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
+                    created_by: Ok(Default::default()),
                     description: Ok(Default::default()),
                     due_date: Ok(Default::default()),
                     jira_issue_id: Ok(Default::default()),
@@ -214563,6 +221423,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::UserFlatResponse>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_by: {e}")
                     });
                 self
             }
@@ -214700,6 +221574,7 @@ pub mod types {
                     assigned_to: value.assigned_to?,
                     assigned_to_group_ids: value.assigned_to_group_ids?,
                     created_at: value.created_at?,
+                    created_by: value.created_by?,
                     description: value.description?,
                     due_date: value.due_date?,
                     jira_issue_id: value.jira_issue_id?,
@@ -214719,6 +221594,7 @@ pub mod types {
                     assigned_to: Ok(value.assigned_to),
                     assigned_to_group_ids: Ok(value.assigned_to_group_ids),
                     created_at: Ok(value.created_at),
+                    created_by: Ok(value.created_by),
                     description: Ok(value.description),
                     due_date: Ok(value.due_date),
                     jira_issue_id: Ok(value.jira_issue_id),
@@ -224321,6 +231197,711 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct InviteToMicrosoftTeamsChannelRootlyTaskParams {
+            channel: ::std::result::Result<
+                super::InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel,
+                ::std::string::String,
+            >,
+            escalation_policy_target: ::std::result::Result<
+                ::std::option::Option<
+                    super::InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget,
+                >,
+                ::std::string::String,
+            >,
+            group_target: ::std::result::Result<
+                ::std::option::Option<
+                    super::InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget,
+                >,
+                ::std::string::String,
+            >,
+            schedule_target: ::std::result::Result<
+                ::std::option::Option<
+                    super::InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget,
+                >,
+                ::std::string::String,
+            >,
+            service_target: ::std::result::Result<
+                ::std::option::Option<
+                    super::InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget,
+                >,
+                ::std::string::String,
+            >,
+            task_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            team: ::std::result::Result<
+                super::InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam,
+                ::std::string::String,
+            >,
+            user_target: ::std::result::Result<
+                ::std::option::Option<
+                    super::InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for InviteToMicrosoftTeamsChannelRootlyTaskParams {
+            fn default() -> Self {
+                Self {
+                    channel: Err("no value supplied for channel".to_string()),
+                    escalation_policy_target: Ok(Default::default()),
+                    group_target: Ok(Default::default()),
+                    schedule_target: Ok(Default::default()),
+                    service_target: Ok(Default::default()),
+                    task_type: Ok(Default::default()),
+                    team: Err("no value supplied for team".to_string()),
+                    user_target: Ok(Default::default()),
+                }
+            }
+        }
+        impl InviteToMicrosoftTeamsChannelRootlyTaskParams {
+            pub fn channel<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.channel = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for channel: {e}")
+                    });
+                self
+            }
+            pub fn escalation_policy_target<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.escalation_policy_target = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for escalation_policy_target: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn group_target<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.group_target = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for group_target: {e}")
+                    });
+                self
+            }
+            pub fn schedule_target<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_target = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_target: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn service_target<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.service_target = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for service_target: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn task_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.task_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for task_type: {e}")
+                    });
+                self
+            }
+            pub fn team<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.team = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for team: {e}")
+                    });
+                self
+            }
+            pub fn user_target<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_target = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_target: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<InviteToMicrosoftTeamsChannelRootlyTaskParams>
+        for super::InviteToMicrosoftTeamsChannelRootlyTaskParams {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: InviteToMicrosoftTeamsChannelRootlyTaskParams,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    channel: value.channel?,
+                    escalation_policy_target: value.escalation_policy_target?,
+                    group_target: value.group_target?,
+                    schedule_target: value.schedule_target?,
+                    service_target: value.service_target?,
+                    task_type: value.task_type?,
+                    team: value.team?,
+                    user_target: value.user_target?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::InviteToMicrosoftTeamsChannelRootlyTaskParams>
+        for InviteToMicrosoftTeamsChannelRootlyTaskParams {
+            fn from(
+                value: super::InviteToMicrosoftTeamsChannelRootlyTaskParams,
+            ) -> Self {
+                Self {
+                    channel: Ok(value.channel),
+                    escalation_policy_target: Ok(value.escalation_policy_target),
+                    group_target: Ok(value.group_target),
+                    schedule_target: Ok(value.schedule_target),
+                    service_target: Ok(value.service_target),
+                    task_type: Ok(value.task_type),
+                    team: Ok(value.team),
+                    user_target: Ok(value.user_target),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+            fn default() -> Self {
+                Self {
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                }
+            }
+        }
+        impl InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel,
+        > for super::InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    name: value.name?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel,
+        > for InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel {
+            fn from(
+                value: super::InviteToMicrosoftTeamsChannelRootlyTaskParamsChannel,
+            ) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+            fn default() -> Self {
+                Self {
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                }
+            }
+        }
+        impl InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget,
+        >
+        for super::InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    name: value.name?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget,
+        > for InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget {
+            fn from(
+                value: super::InviteToMicrosoftTeamsChannelRootlyTaskParamsEscalationPolicyTarget,
+            ) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+            fn default() -> Self {
+                Self {
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                }
+            }
+        }
+        impl InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget,
+        > for super::InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    name: value.name?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget,
+        > for InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget {
+            fn from(
+                value: super::InviteToMicrosoftTeamsChannelRootlyTaskParamsGroupTarget,
+            ) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+            fn default() -> Self {
+                Self {
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                }
+            }
+        }
+        impl InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget,
+        > for super::InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    name: value.name?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget,
+        > for InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget {
+            fn from(
+                value: super::InviteToMicrosoftTeamsChannelRootlyTaskParamsScheduleTarget,
+            ) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+            fn default() -> Self {
+                Self {
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                }
+            }
+        }
+        impl InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget,
+        > for super::InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    name: value.name?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget,
+        > for InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget {
+            fn from(
+                value: super::InviteToMicrosoftTeamsChannelRootlyTaskParamsServiceTarget,
+            ) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+            fn default() -> Self {
+                Self {
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                }
+            }
+        }
+        impl InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam>
+        for super::InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    name: value.name?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam,
+        > for InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam {
+            fn from(
+                value: super::InviteToMicrosoftTeamsChannelRootlyTaskParamsTeam,
+            ) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
+            fn default() -> Self {
+                Self {
+                    id: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                }
+            }
+        }
+        impl InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget,
+        > for super::InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    name: value.name?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget,
+        > for InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget {
+            fn from(
+                value: super::InviteToMicrosoftTeamsChannelRootlyTaskParamsUserTarget,
+            ) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct InviteToMicrosoftTeamsChannelTaskParams {
             channel: ::std::result::Result<
                 super::InviteToMicrosoftTeamsChannelTaskParamsChannel,
@@ -233740,6 +241321,178 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct NewBulkImport {
+            data: ::std::result::Result<super::NewBulkImportData, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewBulkImport {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl NewBulkImport {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewBulkImportData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewBulkImport> for super::NewBulkImport {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewBulkImport,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::NewBulkImport> for NewBulkImport {
+            fn from(value: super::NewBulkImport) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewBulkImportData {
+            attributes: ::std::result::Result<
+                super::NewBulkImportDataAttributes,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewBulkImportData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                }
+            }
+        }
+        impl NewBulkImportData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewBulkImportDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewBulkImportData> for super::NewBulkImportData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewBulkImportData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewBulkImportData> for NewBulkImportData {
+            fn from(value: super::NewBulkImportData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewBulkImportDataAttributes {
+            entity_type: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            file_url: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            notification_email: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewBulkImportDataAttributes {
+            fn default() -> Self {
+                Self {
+                    entity_type: Err("no value supplied for entity_type".to_string()),
+                    file_url: Err("no value supplied for file_url".to_string()),
+                    notification_email: Err(
+                        "no value supplied for notification_email".to_string(),
+                    ),
+                }
+            }
+        }
+        impl NewBulkImportDataAttributes {
+            pub fn entity_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.entity_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for entity_type: {e}")
+                    });
+                self
+            }
+            pub fn file_url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.file_url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for file_url: {e}")
+                    });
+                self
+            }
+            pub fn notification_email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.notification_email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for notification_email: {e}"
+                        )
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewBulkImportDataAttributes>
+        for super::NewBulkImportDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewBulkImportDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    entity_type: value.entity_type?,
+                    file_url: value.file_url?,
+                    notification_email: value.notification_email?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewBulkImportDataAttributes>
+        for NewBulkImportDataAttributes {
+            fn from(value: super::NewBulkImportDataAttributes) -> Self {
+                Self {
+                    entity_type: Ok(value.entity_type),
+                    file_url: Ok(value.file_url),
+                    notification_email: Ok(value.notification_email),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct NewCatalog {
             data: ::std::result::Result<super::NewCatalogData, ::std::string::String>,
         }
@@ -234192,6 +241945,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             icon: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -234206,6 +241963,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     description: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     icon: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     position: Ok(Default::default()),
@@ -234222,6 +241980,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
                     });
                 self
             }
@@ -234270,6 +242040,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     description: value.description?,
+                    external_id: value.external_id?,
                     icon: value.icon?,
                     name: value.name?,
                     position: value.position?,
@@ -234281,6 +242052,7 @@ pub mod types {
             fn from(value: super::NewCatalogDataAttributes) -> Self {
                 Self {
                     description: Ok(value.description),
+                    external_id: Ok(value.external_id),
                     icon: Ok(value.icon),
                     name: Ok(value.name),
                     position: Ok(value.position),
@@ -234400,6 +242172,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
             position: ::std::result::Result<
                 ::std::option::Option<i64>,
@@ -234415,6 +242191,7 @@ pub mod types {
                 Self {
                     backstage_id: Ok(Default::default()),
                     description: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     position: Ok(Default::default()),
                     properties: Ok(Default::default()),
@@ -234443,6 +242220,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
                     });
                 self
             }
@@ -234494,6 +242283,7 @@ pub mod types {
                 Ok(Self {
                     backstage_id: value.backstage_id?,
                     description: value.description?,
+                    external_id: value.external_id?,
                     name: value.name?,
                     position: value.position?,
                     properties: value.properties?,
@@ -234506,6 +242296,7 @@ pub mod types {
                 Self {
                     backstage_id: Ok(value.backstage_id),
                     description: Ok(value.description),
+                    external_id: Ok(value.external_id),
                     name: Ok(value.name),
                     position: Ok(value.position),
                     properties: Ok(value.properties),
@@ -234900,6 +242691,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             kind: ::std::result::Result<::std::string::String, ::std::string::String>,
             kind_catalog_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
@@ -234923,6 +242718,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     catalog_type: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     kind: Err("no value supplied for kind".to_string()),
                     kind_catalog_id: Ok(Default::default()),
                     multiple: Ok(Default::default()),
@@ -234942,6 +242738,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for catalog_type: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
                     });
                 self
             }
@@ -235028,6 +242836,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     catalog_type: value.catalog_type?,
+                    external_id: value.external_id?,
                     kind: value.kind?,
                     kind_catalog_id: value.kind_catalog_id?,
                     multiple: value.multiple?,
@@ -235042,6 +242851,7 @@ pub mod types {
             fn from(value: super::NewCatalogFieldDataAttributes) -> Self {
                 Self {
                     catalog_type: Ok(value.catalog_type),
+                    external_id: Ok(value.external_id),
                     kind: Ok(value.kind),
                     kind_catalog_id: Ok(value.kind_catalog_id),
                     multiple: Ok(value.multiple),
@@ -235161,6 +242971,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             kind: ::std::result::Result<::std::string::String, ::std::string::String>,
             kind_catalog_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
@@ -235184,6 +242998,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     catalog_type: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     kind: Err("no value supplied for kind".to_string()),
                     kind_catalog_id: Ok(Default::default()),
                     multiple: Ok(Default::default()),
@@ -235203,6 +243018,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for catalog_type: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
                     });
                 self
             }
@@ -235289,6 +243116,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     catalog_type: value.catalog_type?,
+                    external_id: value.external_id?,
                     kind: value.kind?,
                     kind_catalog_id: value.kind_catalog_id?,
                     multiple: value.multiple?,
@@ -235303,6 +243131,7 @@ pub mod types {
             fn from(value: super::NewCatalogPropertyDataAttributes) -> Self {
                 Self {
                     catalog_type: Ok(value.catalog_type),
+                    external_id: Ok(value.external_id),
                     kind: Ok(value.kind),
                     kind_catalog_id: Ok(value.kind_catalog_id),
                     multiple: Ok(value.multiple),
@@ -244001,6 +251830,10 @@ pub mod types {
                 ::std::string::String,
                 ::std::string::String,
             >,
+            owner_group_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default for NewHeartbeatDataAttributes {
             fn default() -> Self {
@@ -244023,6 +251856,7 @@ pub mod types {
                     notification_target_type: Err(
                         "no value supplied for notification_target_type".to_string(),
                     ),
+                    owner_group_ids: Ok(Default::default()),
                 }
             }
         }
@@ -244155,6 +251989,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn owner_group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for owner_group_ids: {e}"
+                        )
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<NewHeartbeatDataAttributes>
         for super::NewHeartbeatDataAttributes {
@@ -244173,6 +252021,7 @@ pub mod types {
                     name: value.name?,
                     notification_target_id: value.notification_target_id?,
                     notification_target_type: value.notification_target_type?,
+                    owner_group_ids: value.owner_group_ids?,
                 })
             }
         }
@@ -244190,6 +252039,7 @@ pub mod types {
                     name: Ok(value.name),
                     notification_target_id: Ok(value.notification_target_id),
                     notification_target_type: Ok(value.notification_target_type),
+                    owner_group_ids: Ok(value.owner_group_ids),
                 }
             }
         }
@@ -261297,6 +269147,12 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct NewWebhooksEndpointDataAttributes {
+            custom_headers: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::NewWebhooksEndpointDataAttributesCustomHeadersItem,
+                >,
+                ::std::string::String,
+            >,
             enabled: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -261315,6 +269171,7 @@ pub mod types {
         impl ::std::default::Default for NewWebhooksEndpointDataAttributes {
             fn default() -> Self {
                 Self {
+                    custom_headers: Ok(Default::default()),
                     enabled: Ok(Default::default()),
                     event_types: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
@@ -261324,6 +269181,24 @@ pub mod types {
             }
         }
         impl NewWebhooksEndpointDataAttributes {
+            pub fn custom_headers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::NewWebhooksEndpointDataAttributesCustomHeadersItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.custom_headers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for custom_headers: {e}"
+                        )
+                    });
+                self
+            }
             pub fn enabled<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<bool>>,
@@ -261392,6 +269267,7 @@ pub mod types {
                 value: NewWebhooksEndpointDataAttributes,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    custom_headers: value.custom_headers?,
                     enabled: value.enabled?,
                     event_types: value.event_types?,
                     name: value.name?,
@@ -261404,11 +269280,86 @@ pub mod types {
         for NewWebhooksEndpointDataAttributes {
             fn from(value: super::NewWebhooksEndpointDataAttributes) -> Self {
                 Self {
+                    custom_headers: Ok(value.custom_headers),
                     enabled: Ok(value.enabled),
                     event_types: Ok(value.event_types),
                     name: Ok(value.name),
                     secret: Ok(value.secret),
                     url: Ok(value.url),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewWebhooksEndpointDataAttributesCustomHeadersItem {
+            name: ::std::result::Result<
+                super::NewWebhooksEndpointDataAttributesCustomHeadersItemName,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<
+                super::NewWebhooksEndpointDataAttributesCustomHeadersItemValue,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for NewWebhooksEndpointDataAttributesCustomHeadersItem {
+            fn default() -> Self {
+                Self {
+                    name: Err("no value supplied for name".to_string()),
+                    value: Err("no value supplied for value".to_string()),
+                }
+            }
+        }
+        impl NewWebhooksEndpointDataAttributesCustomHeadersItem {
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::NewWebhooksEndpointDataAttributesCustomHeadersItemName,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::NewWebhooksEndpointDataAttributesCustomHeadersItemValue,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewWebhooksEndpointDataAttributesCustomHeadersItem>
+        for super::NewWebhooksEndpointDataAttributesCustomHeadersItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewWebhooksEndpointDataAttributesCustomHeadersItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    name: value.name?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::NewWebhooksEndpointDataAttributesCustomHeadersItem,
+        > for NewWebhooksEndpointDataAttributesCustomHeadersItem {
+            fn from(
+                value: super::NewWebhooksEndpointDataAttributesCustomHeadersItem,
+            ) -> Self {
+                Self {
+                    name: Ok(value.name),
+                    value: Ok(value.value),
                 }
             }
         }
@@ -261448,6 +269399,401 @@ pub mod types {
         impl ::std::convert::From<super::NewWorkflow> for NewWorkflow {
             fn from(value: super::NewWorkflow) -> Self {
                 Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewWorkflowActionItemFormFieldCondition {
+            data: ::std::result::Result<
+                super::NewWorkflowActionItemFormFieldConditionData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewWorkflowActionItemFormFieldCondition {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl NewWorkflowActionItemFormFieldCondition {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::NewWorkflowActionItemFormFieldConditionData,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewWorkflowActionItemFormFieldCondition>
+        for super::NewWorkflowActionItemFormFieldCondition {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewWorkflowActionItemFormFieldCondition,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::NewWorkflowActionItemFormFieldCondition>
+        for NewWorkflowActionItemFormFieldCondition {
+            fn from(value: super::NewWorkflowActionItemFormFieldCondition) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewWorkflowActionItemFormFieldConditionData {
+            attributes: ::std::result::Result<
+                super::NewWorkflowActionItemFormFieldConditionDataAttributes,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewWorkflowActionItemFormFieldConditionData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl NewWorkflowActionItemFormFieldConditionData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::NewWorkflowActionItemFormFieldConditionDataAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewWorkflowActionItemFormFieldConditionData>
+        for super::NewWorkflowActionItemFormFieldConditionData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewWorkflowActionItemFormFieldConditionData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewWorkflowActionItemFormFieldConditionData>
+        for NewWorkflowActionItemFormFieldConditionData {
+            fn from(value: super::NewWorkflowActionItemFormFieldConditionData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewWorkflowActionItemFormFieldConditionDataAttributes {
+            action_item_condition: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            form_field_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            selected_catalog_entity_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_cause_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_environment_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_functionality_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_group_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_incident_type_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_option_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_service_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_user_ids: ::std::result::Result<
+                ::std::vec::Vec<i64>,
+                ::std::string::String,
+            >,
+            values: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for NewWorkflowActionItemFormFieldConditionDataAttributes {
+            fn default() -> Self {
+                Self {
+                    action_item_condition: Err(
+                        "no value supplied for action_item_condition".to_string(),
+                    ),
+                    form_field_id: Err(
+                        "no value supplied for form_field_id".to_string(),
+                    ),
+                    selected_catalog_entity_ids: Ok(Default::default()),
+                    selected_cause_ids: Ok(Default::default()),
+                    selected_environment_ids: Ok(Default::default()),
+                    selected_functionality_ids: Ok(Default::default()),
+                    selected_group_ids: Ok(Default::default()),
+                    selected_incident_type_ids: Ok(Default::default()),
+                    selected_option_ids: Ok(Default::default()),
+                    selected_service_ids: Ok(Default::default()),
+                    selected_user_ids: Ok(Default::default()),
+                    values: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewWorkflowActionItemFormFieldConditionDataAttributes {
+            pub fn action_item_condition<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.action_item_condition = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for action_item_condition: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn form_field_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.form_field_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for form_field_id: {e}")
+                    });
+                self
+            }
+            pub fn selected_catalog_entity_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_catalog_entity_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_catalog_entity_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_cause_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_cause_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_cause_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_environment_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_environment_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_environment_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_functionality_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_functionality_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_functionality_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_group_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_incident_type_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_incident_type_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_incident_type_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_option_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_option_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_option_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_service_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_service_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_service_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_user_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_user_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_user_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn values<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.values = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for values: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            NewWorkflowActionItemFormFieldConditionDataAttributes,
+        > for super::NewWorkflowActionItemFormFieldConditionDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewWorkflowActionItemFormFieldConditionDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    action_item_condition: value.action_item_condition?,
+                    form_field_id: value.form_field_id?,
+                    selected_catalog_entity_ids: value.selected_catalog_entity_ids?,
+                    selected_cause_ids: value.selected_cause_ids?,
+                    selected_environment_ids: value.selected_environment_ids?,
+                    selected_functionality_ids: value.selected_functionality_ids?,
+                    selected_group_ids: value.selected_group_ids?,
+                    selected_incident_type_ids: value.selected_incident_type_ids?,
+                    selected_option_ids: value.selected_option_ids?,
+                    selected_service_ids: value.selected_service_ids?,
+                    selected_user_ids: value.selected_user_ids?,
+                    values: value.values?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::NewWorkflowActionItemFormFieldConditionDataAttributes,
+        > for NewWorkflowActionItemFormFieldConditionDataAttributes {
+            fn from(
+                value: super::NewWorkflowActionItemFormFieldConditionDataAttributes,
+            ) -> Self {
+                Self {
+                    action_item_condition: Ok(value.action_item_condition),
+                    form_field_id: Ok(value.form_field_id),
+                    selected_catalog_entity_ids: Ok(value.selected_catalog_entity_ids),
+                    selected_cause_ids: Ok(value.selected_cause_ids),
+                    selected_environment_ids: Ok(value.selected_environment_ids),
+                    selected_functionality_ids: Ok(value.selected_functionality_ids),
+                    selected_group_ids: Ok(value.selected_group_ids),
+                    selected_incident_type_ids: Ok(value.selected_incident_type_ids),
+                    selected_option_ids: Ok(value.selected_option_ids),
+                    selected_service_ids: Ok(value.selected_service_ids),
+                    selected_user_ids: Ok(value.selected_user_ids),
+                    values: Ok(value.values),
+                }
             }
         }
         #[derive(Clone, Debug)]
@@ -289775,6 +298121,151 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct SlackChannel {
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            slack_channel_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            slack_channel_name: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            slack_team_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for SlackChannel {
+            fn default() -> Self {
+                Self {
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    slack_channel_id: Err(
+                        "no value supplied for slack_channel_id".to_string(),
+                    ),
+                    slack_channel_name: Err(
+                        "no value supplied for slack_channel_name".to_string(),
+                    ),
+                    slack_team_id: Err(
+                        "no value supplied for slack_team_id".to_string(),
+                    ),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
+                }
+            }
+        }
+        impl SlackChannel {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn slack_channel_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slack_channel_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for slack_channel_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn slack_channel_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slack_channel_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for slack_channel_name: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn slack_team_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slack_team_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slack_team_id: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<SlackChannel> for super::SlackChannel {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: SlackChannel,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    id: value.id?,
+                    slack_channel_id: value.slack_channel_id?,
+                    slack_channel_name: value.slack_channel_name?,
+                    slack_team_id: value.slack_team_id?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::SlackChannel> for SlackChannel {
+            fn from(value: super::SlackChannel) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    id: Ok(value.id),
+                    slack_channel_id: Ok(value.slack_channel_id),
+                    slack_channel_name: Ok(value.slack_channel_name),
+                    slack_team_id: Ok(value.slack_team_id),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct SnapshotDatadogGraphTaskParams {
             dashboards: ::std::result::Result<
                 ::std::vec::Vec<super::SnapshotDatadogGraphTaskParamsDashboardsItem>,
@@ -301505,6 +309996,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             icon: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -301522,6 +310017,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     description: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     icon: Ok(Default::default()),
                     name: Ok(Default::default()),
                     position: Ok(Default::default()),
@@ -301538,6 +310034,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
                     });
                 self
             }
@@ -301586,6 +310094,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     description: value.description?,
+                    external_id: value.external_id?,
                     icon: value.icon?,
                     name: value.name?,
                     position: value.position?,
@@ -301597,6 +310106,7 @@ pub mod types {
             fn from(value: super::UpdateCatalogDataAttributes) -> Self {
                 Self {
                     description: Ok(value.description),
+                    external_id: Ok(value.external_id),
                     icon: Ok(value.icon),
                     name: Ok(value.name),
                     position: Ok(value.position),
@@ -301718,6 +310228,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             name: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -301736,6 +310250,7 @@ pub mod types {
                 Self {
                     backstage_id: Ok(Default::default()),
                     description: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     name: Ok(Default::default()),
                     position: Ok(Default::default()),
                     properties: Ok(Default::default()),
@@ -301764,6 +310279,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
                     });
                 self
             }
@@ -301817,6 +310344,7 @@ pub mod types {
                 Ok(Self {
                     backstage_id: value.backstage_id?,
                     description: value.description?,
+                    external_id: value.external_id?,
                     name: value.name?,
                     position: value.position?,
                     properties: value.properties?,
@@ -301829,6 +310357,7 @@ pub mod types {
                 Self {
                     backstage_id: Ok(value.backstage_id),
                     description: Ok(value.description),
+                    external_id: Ok(value.external_id),
                     name: Ok(value.name),
                     position: Ok(value.position),
                     properties: Ok(value.properties),
@@ -302189,6 +310718,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             kind: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -302214,6 +310747,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     catalog_type: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     kind: Ok(Default::default()),
                     kind_catalog_id: Ok(Default::default()),
                     name: Ok(Default::default()),
@@ -302232,6 +310766,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for catalog_type: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
                     });
                 self
             }
@@ -302306,6 +310852,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     catalog_type: value.catalog_type?,
+                    external_id: value.external_id?,
                     kind: value.kind?,
                     kind_catalog_id: value.kind_catalog_id?,
                     name: value.name?,
@@ -302319,6 +310866,7 @@ pub mod types {
             fn from(value: super::UpdateCatalogFieldDataAttributes) -> Self {
                 Self {
                     catalog_type: Ok(value.catalog_type),
+                    external_id: Ok(value.external_id),
                     kind: Ok(value.kind),
                     kind_catalog_id: Ok(value.kind_catalog_id),
                     name: Ok(value.name),
@@ -302439,6 +310987,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             kind: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -302464,6 +311016,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     catalog_type: Ok(Default::default()),
+                    external_id: Ok(Default::default()),
                     kind: Ok(Default::default()),
                     kind_catalog_id: Ok(Default::default()),
                     name: Ok(Default::default()),
@@ -302482,6 +311035,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for catalog_type: {e}")
+                    });
+                self
+            }
+            pub fn external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for external_id: {e}")
                     });
                 self
             }
@@ -302556,6 +311121,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     catalog_type: value.catalog_type?,
+                    external_id: value.external_id?,
                     kind: value.kind?,
                     kind_catalog_id: value.kind_catalog_id?,
                     name: value.name?,
@@ -302569,6 +311135,7 @@ pub mod types {
             fn from(value: super::UpdateCatalogPropertyDataAttributes) -> Self {
                 Self {
                     catalog_type: Ok(value.catalog_type),
+                    external_id: Ok(value.external_id),
                     kind: Ok(value.kind),
                     kind_catalog_id: Ok(value.kind_catalog_id),
                     name: Ok(value.name),
@@ -314095,6 +322662,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            owner_group_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default for UpdateHeartbeatDataAttributes {
             fn default() -> Self {
@@ -314109,6 +322680,7 @@ pub mod types {
                     name: Ok(Default::default()),
                     notification_target_id: Ok(Default::default()),
                     notification_target_type: Ok(Default::default()),
+                    owner_group_ids: Ok(Default::default()),
                 }
             }
         }
@@ -314241,6 +322813,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn owner_group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for owner_group_ids: {e}"
+                        )
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<UpdateHeartbeatDataAttributes>
         for super::UpdateHeartbeatDataAttributes {
@@ -314259,6 +322845,7 @@ pub mod types {
                     name: value.name?,
                     notification_target_id: value.notification_target_id?,
                     notification_target_type: value.notification_target_type?,
+                    owner_group_ids: value.owner_group_ids?,
                 })
             }
         }
@@ -314276,6 +322863,7 @@ pub mod types {
                     name: Ok(value.name),
                     notification_target_id: Ok(value.notification_target_id),
                     notification_target_type: Ok(value.notification_target_type),
+                    owner_group_ids: Ok(value.owner_group_ids),
                 }
             }
         }
@@ -336884,6 +345472,12 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct UpdateWebhooksEndpointDataAttributes {
+            custom_headers: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::UpdateWebhooksEndpointDataAttributesCustomHeadersItem,
+                >,
+                ::std::string::String,
+            >,
             enabled: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -336900,6 +345494,7 @@ pub mod types {
         impl ::std::default::Default for UpdateWebhooksEndpointDataAttributes {
             fn default() -> Self {
                 Self {
+                    custom_headers: Ok(Default::default()),
                     enabled: Ok(Default::default()),
                     event_types: Ok(Default::default()),
                     name: Ok(Default::default()),
@@ -336907,6 +345502,24 @@ pub mod types {
             }
         }
         impl UpdateWebhooksEndpointDataAttributes {
+            pub fn custom_headers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::UpdateWebhooksEndpointDataAttributesCustomHeadersItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.custom_headers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for custom_headers: {e}"
+                        )
+                    });
+                self
+            }
             pub fn enabled<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<bool>>,
@@ -336951,6 +345564,7 @@ pub mod types {
                 value: UpdateWebhooksEndpointDataAttributes,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    custom_headers: value.custom_headers?,
                     enabled: value.enabled?,
                     event_types: value.event_types?,
                     name: value.name?,
@@ -336961,9 +345575,85 @@ pub mod types {
         for UpdateWebhooksEndpointDataAttributes {
             fn from(value: super::UpdateWebhooksEndpointDataAttributes) -> Self {
                 Self {
+                    custom_headers: Ok(value.custom_headers),
                     enabled: Ok(value.enabled),
                     event_types: Ok(value.event_types),
                     name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateWebhooksEndpointDataAttributesCustomHeadersItem {
+            name: ::std::result::Result<
+                super::UpdateWebhooksEndpointDataAttributesCustomHeadersItemName,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<
+                super::UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for UpdateWebhooksEndpointDataAttributesCustomHeadersItem {
+            fn default() -> Self {
+                Self {
+                    name: Err("no value supplied for name".to_string()),
+                    value: Err("no value supplied for value".to_string()),
+                }
+            }
+        }
+        impl UpdateWebhooksEndpointDataAttributesCustomHeadersItem {
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::UpdateWebhooksEndpointDataAttributesCustomHeadersItemName,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::UpdateWebhooksEndpointDataAttributesCustomHeadersItemValue,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            UpdateWebhooksEndpointDataAttributesCustomHeadersItem,
+        > for super::UpdateWebhooksEndpointDataAttributesCustomHeadersItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateWebhooksEndpointDataAttributesCustomHeadersItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    name: value.name?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::UpdateWebhooksEndpointDataAttributesCustomHeadersItem,
+        > for UpdateWebhooksEndpointDataAttributesCustomHeadersItem {
+            fn from(
+                value: super::UpdateWebhooksEndpointDataAttributesCustomHeadersItem,
+            ) -> Self {
+                Self {
+                    name: Ok(value.name),
+                    value: Ok(value.value),
                 }
             }
         }
@@ -337006,6 +345696,382 @@ pub mod types {
         impl ::std::convert::From<super::UpdateWorkflow> for UpdateWorkflow {
             fn from(value: super::UpdateWorkflow) -> Self {
                 Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateWorkflowActionItemFormFieldCondition {
+            data: ::std::result::Result<
+                super::UpdateWorkflowActionItemFormFieldConditionData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateWorkflowActionItemFormFieldCondition {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl UpdateWorkflowActionItemFormFieldCondition {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::UpdateWorkflowActionItemFormFieldConditionData,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateWorkflowActionItemFormFieldCondition>
+        for super::UpdateWorkflowActionItemFormFieldCondition {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateWorkflowActionItemFormFieldCondition,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::UpdateWorkflowActionItemFormFieldCondition>
+        for UpdateWorkflowActionItemFormFieldCondition {
+            fn from(value: super::UpdateWorkflowActionItemFormFieldCondition) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateWorkflowActionItemFormFieldConditionData {
+            attributes: ::std::result::Result<
+                super::UpdateWorkflowActionItemFormFieldConditionDataAttributes,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for UpdateWorkflowActionItemFormFieldConditionData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl UpdateWorkflowActionItemFormFieldConditionData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::UpdateWorkflowActionItemFormFieldConditionDataAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateWorkflowActionItemFormFieldConditionData>
+        for super::UpdateWorkflowActionItemFormFieldConditionData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateWorkflowActionItemFormFieldConditionData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateWorkflowActionItemFormFieldConditionData>
+        for UpdateWorkflowActionItemFormFieldConditionData {
+            fn from(
+                value: super::UpdateWorkflowActionItemFormFieldConditionData,
+            ) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateWorkflowActionItemFormFieldConditionDataAttributes {
+            action_item_condition: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            selected_catalog_entity_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_cause_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_environment_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_functionality_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_group_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_incident_type_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_option_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_service_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_user_ids: ::std::result::Result<
+                ::std::vec::Vec<i64>,
+                ::std::string::String,
+            >,
+            values: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for UpdateWorkflowActionItemFormFieldConditionDataAttributes {
+            fn default() -> Self {
+                Self {
+                    action_item_condition: Ok(
+                        super::defaults::update_workflow_action_item_form_field_condition_data_attributes_action_item_condition(),
+                    ),
+                    selected_catalog_entity_ids: Ok(Default::default()),
+                    selected_cause_ids: Ok(Default::default()),
+                    selected_environment_ids: Ok(Default::default()),
+                    selected_functionality_ids: Ok(Default::default()),
+                    selected_group_ids: Ok(Default::default()),
+                    selected_incident_type_ids: Ok(Default::default()),
+                    selected_option_ids: Ok(Default::default()),
+                    selected_service_ids: Ok(Default::default()),
+                    selected_user_ids: Ok(Default::default()),
+                    values: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateWorkflowActionItemFormFieldConditionDataAttributes {
+            pub fn action_item_condition<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.action_item_condition = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for action_item_condition: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_catalog_entity_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_catalog_entity_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_catalog_entity_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_cause_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_cause_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_cause_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_environment_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_environment_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_environment_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_functionality_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_functionality_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_functionality_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_group_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_incident_type_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_incident_type_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_incident_type_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_option_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_option_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_option_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_service_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_service_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_service_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_user_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_user_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_user_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn values<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.values = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for values: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            UpdateWorkflowActionItemFormFieldConditionDataAttributes,
+        > for super::UpdateWorkflowActionItemFormFieldConditionDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateWorkflowActionItemFormFieldConditionDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    action_item_condition: value.action_item_condition?,
+                    selected_catalog_entity_ids: value.selected_catalog_entity_ids?,
+                    selected_cause_ids: value.selected_cause_ids?,
+                    selected_environment_ids: value.selected_environment_ids?,
+                    selected_functionality_ids: value.selected_functionality_ids?,
+                    selected_group_ids: value.selected_group_ids?,
+                    selected_incident_type_ids: value.selected_incident_type_ids?,
+                    selected_option_ids: value.selected_option_ids?,
+                    selected_service_ids: value.selected_service_ids?,
+                    selected_user_ids: value.selected_user_ids?,
+                    values: value.values?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::UpdateWorkflowActionItemFormFieldConditionDataAttributes,
+        > for UpdateWorkflowActionItemFormFieldConditionDataAttributes {
+            fn from(
+                value: super::UpdateWorkflowActionItemFormFieldConditionDataAttributes,
+            ) -> Self {
+                Self {
+                    action_item_condition: Ok(value.action_item_condition),
+                    selected_catalog_entity_ids: Ok(value.selected_catalog_entity_ids),
+                    selected_cause_ids: Ok(value.selected_cause_ids),
+                    selected_environment_ids: Ok(value.selected_environment_ids),
+                    selected_functionality_ids: Ok(value.selected_functionality_ids),
+                    selected_group_ids: Ok(value.selected_group_ids),
+                    selected_incident_type_ids: Ok(value.selected_incident_type_ids),
+                    selected_option_ids: Ok(value.selected_option_ids),
+                    selected_service_ids: Ok(value.selected_service_ids),
+                    selected_user_ids: Ok(value.selected_user_ids),
+                    values: Ok(value.values),
+                }
             }
         }
         #[derive(Clone, Debug)]
@@ -338981,226 +348047,232 @@ pub mod types {
                 ::std::string::String,
             >,
             subtype_89: ::std::result::Result<
-                ::std::option::Option<super::InviteToSlackChannelPagerdutyTaskParams>,
+                ::std::option::Option<
+                    super::InviteToMicrosoftTeamsChannelRootlyTaskParams,
+                >,
                 ::std::string::String,
             >,
             subtype_90: ::std::result::Result<
-                ::std::option::Option<super::InviteToSlackChannelTaskParams>,
+                ::std::option::Option<super::InviteToSlackChannelPagerdutyTaskParams>,
                 ::std::string::String,
             >,
             subtype_91: ::std::result::Result<
-                ::std::option::Option<super::InviteToSlackChannelVictorOpsTaskParams>,
+                ::std::option::Option<super::InviteToSlackChannelTaskParams>,
                 ::std::string::String,
             >,
             subtype_92: ::std::result::Result<
-                ::std::option::Option<super::PageOpsgenieOnCallRespondersTaskParams>,
+                ::std::option::Option<super::InviteToSlackChannelVictorOpsTaskParams>,
                 ::std::string::String,
             >,
             subtype_93: ::std::result::Result<
-                ::std::option::Option<super::CreateOpsgenieAlertTaskParams>,
+                ::std::option::Option<super::PageOpsgenieOnCallRespondersTaskParams>,
                 ::std::string::String,
             >,
             subtype_94: ::std::result::Result<
-                ::std::option::Option<super::CreateJsmopsAlertTaskParams>,
+                ::std::option::Option<super::CreateOpsgenieAlertTaskParams>,
                 ::std::string::String,
             >,
             subtype_95: ::std::result::Result<
-                ::std::option::Option<super::PageJsmopsOnCallRespondersTaskParams>,
+                ::std::option::Option<super::CreateJsmopsAlertTaskParams>,
                 ::std::string::String,
             >,
             subtype_96: ::std::result::Result<
-                ::std::option::Option<super::UpdateOpsgenieAlertTaskParams>,
+                ::std::option::Option<super::PageJsmopsOnCallRespondersTaskParams>,
                 ::std::string::String,
             >,
             subtype_97: ::std::result::Result<
-                ::std::option::Option<super::UpdateOpsgenieIncidentTaskParams>,
+                ::std::option::Option<super::UpdateOpsgenieAlertTaskParams>,
                 ::std::string::String,
             >,
             subtype_98: ::std::result::Result<
-                ::std::option::Option<super::PageRootlyOnCallRespondersTaskParams>,
+                ::std::option::Option<super::UpdateOpsgenieIncidentTaskParams>,
                 ::std::string::String,
             >,
             subtype_99: ::std::result::Result<
-                ::std::option::Option<super::PagePagerdutyOnCallRespondersTaskParams>,
+                ::std::option::Option<super::PageRootlyOnCallRespondersTaskParams>,
                 ::std::string::String,
             >,
             subtype_100: ::std::result::Result<
-                ::std::option::Option<super::PageVictorOpsOnCallRespondersTaskParams>,
+                ::std::option::Option<super::PagePagerdutyOnCallRespondersTaskParams>,
                 ::std::string::String,
             >,
             subtype_101: ::std::result::Result<
-                ::std::option::Option<super::UpdateVictorOpsIncidentTaskParams>,
+                ::std::option::Option<super::PageVictorOpsOnCallRespondersTaskParams>,
                 ::std::string::String,
             >,
             subtype_102: ::std::result::Result<
-                ::std::option::Option<super::PrintTaskParams>,
+                ::std::option::Option<super::UpdateVictorOpsIncidentTaskParams>,
                 ::std::string::String,
             >,
             subtype_103: ::std::result::Result<
-                ::std::option::Option<super::PublishIncidentTaskParams>,
+                ::std::option::Option<super::PrintTaskParams>,
                 ::std::string::String,
             >,
             subtype_104: ::std::result::Result<
-                ::std::option::Option<super::RedisClientTaskParams>,
+                ::std::option::Option<super::PublishIncidentTaskParams>,
                 ::std::string::String,
             >,
             subtype_105: ::std::result::Result<
-                ::std::option::Option<super::RenameSlackChannelTaskParams>,
+                ::std::option::Option<super::RedisClientTaskParams>,
                 ::std::string::String,
             >,
             subtype_106: ::std::result::Result<
-                ::std::option::Option<super::ChangeSlackChannelPrivacyTaskParams>,
+                ::std::option::Option<super::RenameSlackChannelTaskParams>,
                 ::std::string::String,
             >,
             subtype_107: ::std::result::Result<
-                ::std::option::Option<super::RunCommandHerokuTaskParams>,
+                ::std::option::Option<super::ChangeSlackChannelPrivacyTaskParams>,
                 ::std::string::String,
             >,
             subtype_108: ::std::result::Result<
-                ::std::option::Option<super::SendEmailTaskParams>,
+                ::std::option::Option<super::RunCommandHerokuTaskParams>,
                 ::std::string::String,
             >,
             subtype_109: ::std::result::Result<
-                ::std::option::Option<super::SendDashboardReportTaskParams>,
+                ::std::option::Option<super::SendEmailTaskParams>,
                 ::std::string::String,
             >,
             subtype_110: ::std::result::Result<
-                ::std::option::Option<super::CreateSlackChannelTaskParams>,
+                ::std::option::Option<super::SendDashboardReportTaskParams>,
                 ::std::string::String,
             >,
             subtype_111: ::std::result::Result<
-                ::std::option::Option<super::SendSlackMessageTaskParams>,
+                ::std::option::Option<super::CreateSlackChannelTaskParams>,
                 ::std::string::String,
             >,
             subtype_112: ::std::result::Result<
-                ::std::option::Option<super::SendSmsTaskParams>,
+                ::std::option::Option<super::SendSlackMessageTaskParams>,
                 ::std::string::String,
             >,
             subtype_113: ::std::result::Result<
-                ::std::option::Option<super::SendWhatsappMessageTaskParams>,
+                ::std::option::Option<super::SendSmsTaskParams>,
                 ::std::string::String,
             >,
             subtype_114: ::std::result::Result<
-                ::std::option::Option<super::SnapshotDatadogGraphTaskParams>,
+                ::std::option::Option<super::SendWhatsappMessageTaskParams>,
                 ::std::string::String,
             >,
             subtype_115: ::std::result::Result<
-                ::std::option::Option<super::SnapshotGrafanaDashboardTaskParams>,
+                ::std::option::Option<super::SnapshotDatadogGraphTaskParams>,
                 ::std::string::String,
             >,
             subtype_116: ::std::result::Result<
-                ::std::option::Option<super::SnapshotLookerLookTaskParams>,
+                ::std::option::Option<super::SnapshotGrafanaDashboardTaskParams>,
                 ::std::string::String,
             >,
             subtype_117: ::std::result::Result<
-                ::std::option::Option<super::SnapshotNewRelicGraphTaskParams>,
+                ::std::option::Option<super::SnapshotLookerLookTaskParams>,
                 ::std::string::String,
             >,
             subtype_118: ::std::result::Result<
-                ::std::option::Option<super::TweetTwitterMessageTaskParams>,
+                ::std::option::Option<super::SnapshotNewRelicGraphTaskParams>,
                 ::std::string::String,
             >,
             subtype_119: ::std::result::Result<
-                ::std::option::Option<super::UpdateAirtableTableRecordTaskParams>,
+                ::std::option::Option<super::TweetTwitterMessageTaskParams>,
                 ::std::string::String,
             >,
             subtype_120: ::std::result::Result<
-                ::std::option::Option<super::UpdateAsanaTaskTaskParams>,
+                ::std::option::Option<super::UpdateAirtableTableRecordTaskParams>,
                 ::std::string::String,
             >,
             subtype_121: ::std::result::Result<
-                ::std::option::Option<super::UpdateGithubIssueTaskParams>,
+                ::std::option::Option<super::UpdateAsanaTaskTaskParams>,
                 ::std::string::String,
             >,
             subtype_122: ::std::result::Result<
-                ::std::option::Option<super::UpdateGitlabIssueTaskParams>,
+                ::std::option::Option<super::UpdateGithubIssueTaskParams>,
                 ::std::string::String,
             >,
             subtype_123: ::std::result::Result<
-                ::std::option::Option<super::UpdateIncidentTaskParams>,
+                ::std::option::Option<super::UpdateGitlabIssueTaskParams>,
                 ::std::string::String,
             >,
             subtype_124: ::std::result::Result<
-                ::std::option::Option<super::UpdateIncidentPostmortemTaskParams>,
+                ::std::option::Option<super::UpdateIncidentTaskParams>,
                 ::std::string::String,
             >,
             subtype_125: ::std::result::Result<
-                ::std::option::Option<super::UpdateJiraIssueTaskParams>,
+                ::std::option::Option<super::UpdateIncidentPostmortemTaskParams>,
                 ::std::string::String,
             >,
             subtype_126: ::std::result::Result<
-                ::std::option::Option<super::UpdateLinearIssueTaskParams>,
+                ::std::option::Option<super::UpdateJiraIssueTaskParams>,
                 ::std::string::String,
             >,
             subtype_127: ::std::result::Result<
-                ::std::option::Option<super::UpdateServiceNowIncidentTaskParams>,
+                ::std::option::Option<super::UpdateLinearIssueTaskParams>,
                 ::std::string::String,
             >,
             subtype_128: ::std::result::Result<
-                ::std::option::Option<super::UpdateShortcutStoryTaskParams>,
+                ::std::option::Option<super::UpdateServiceNowIncidentTaskParams>,
                 ::std::string::String,
             >,
             subtype_129: ::std::result::Result<
-                ::std::option::Option<super::UpdateShortcutTaskTaskParams>,
+                ::std::option::Option<super::UpdateShortcutStoryTaskParams>,
                 ::std::string::String,
             >,
             subtype_130: ::std::result::Result<
-                ::std::option::Option<super::UpdateSlackChannelTopicTaskParams>,
+                ::std::option::Option<super::UpdateShortcutTaskTaskParams>,
                 ::std::string::String,
             >,
             subtype_131: ::std::result::Result<
-                ::std::option::Option<super::UpdateStatusTaskParams>,
+                ::std::option::Option<super::UpdateSlackChannelTopicTaskParams>,
                 ::std::string::String,
             >,
             subtype_132: ::std::result::Result<
-                ::std::option::Option<super::UpdateIncidentStatusTimestampTaskParams>,
+                ::std::option::Option<super::UpdateStatusTaskParams>,
                 ::std::string::String,
             >,
             subtype_133: ::std::result::Result<
-                ::std::option::Option<super::UpdateTrelloCardTaskParams>,
+                ::std::option::Option<super::UpdateIncidentStatusTimestampTaskParams>,
                 ::std::string::String,
             >,
             subtype_134: ::std::result::Result<
-                ::std::option::Option<super::UpdateClickupTaskTaskParams>,
+                ::std::option::Option<super::UpdateTrelloCardTaskParams>,
                 ::std::string::String,
             >,
             subtype_135: ::std::result::Result<
-                ::std::option::Option<super::UpdateMotionTaskTaskParams>,
+                ::std::option::Option<super::UpdateClickupTaskTaskParams>,
                 ::std::string::String,
             >,
             subtype_136: ::std::result::Result<
-                ::std::option::Option<super::UpdateZendeskTicketTaskParams>,
+                ::std::option::Option<super::UpdateMotionTaskTaskParams>,
                 ::std::string::String,
             >,
             subtype_137: ::std::result::Result<
-                ::std::option::Option<super::UpdateAttachedAlertsTaskParams>,
+                ::std::option::Option<super::UpdateZendeskTicketTaskParams>,
                 ::std::string::String,
             >,
             subtype_138: ::std::result::Result<
-                ::std::option::Option<super::TriggerWorkflowTaskParams>,
+                ::std::option::Option<super::UpdateAttachedAlertsTaskParams>,
                 ::std::string::String,
             >,
             subtype_139: ::std::result::Result<
-                ::std::option::Option<super::SendSlackBlocksTaskParams>,
+                ::std::option::Option<super::TriggerWorkflowTaskParams>,
                 ::std::string::String,
             >,
             subtype_140: ::std::result::Result<
-                ::std::option::Option<super::CreateOpenaiChatCompletionTaskParams>,
+                ::std::option::Option<super::SendSlackBlocksTaskParams>,
                 ::std::string::String,
             >,
             subtype_141: ::std::result::Result<
-                ::std::option::Option<super::CreateWatsonxChatCompletionTaskParams>,
+                ::std::option::Option<super::CreateOpenaiChatCompletionTaskParams>,
                 ::std::string::String,
             >,
             subtype_142: ::std::result::Result<
-                ::std::option::Option<super::CreateGoogleGeminiChatCompletionTaskParams>,
+                ::std::option::Option<super::CreateWatsonxChatCompletionTaskParams>,
                 ::std::string::String,
             >,
             subtype_143: ::std::result::Result<
-                ::std::option::Option<super::CreateMistralChatCompletionTaskParams>,
+                ::std::option::Option<super::CreateGoogleGeminiChatCompletionTaskParams>,
                 ::std::string::String,
             >,
             subtype_144: ::std::result::Result<
+                ::std::option::Option<super::CreateMistralChatCompletionTaskParams>,
+                ::std::string::String,
+            >,
+            subtype_145: ::std::result::Result<
                 ::std::option::Option<super::CreateAnthropicChatCompletionTaskParams>,
                 ::std::string::String,
             >,
@@ -339353,6 +348425,7 @@ pub mod types {
                     subtype_142: Ok(Default::default()),
                     subtype_143: Ok(Default::default()),
                     subtype_144: Ok(Default::default()),
+                    subtype_145: Ok(Default::default()),
                 }
             }
         }
@@ -340608,7 +349681,9 @@ pub mod types {
             pub fn subtype_89<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::InviteToSlackChannelPagerdutyTaskParams>,
+                    ::std::option::Option<
+                        super::InviteToMicrosoftTeamsChannelRootlyTaskParams,
+                    >,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340622,7 +349697,7 @@ pub mod types {
             pub fn subtype_90<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::InviteToSlackChannelTaskParams>,
+                    ::std::option::Option<super::InviteToSlackChannelPagerdutyTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340636,7 +349711,7 @@ pub mod types {
             pub fn subtype_91<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::InviteToSlackChannelVictorOpsTaskParams>,
+                    ::std::option::Option<super::InviteToSlackChannelTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340650,7 +349725,7 @@ pub mod types {
             pub fn subtype_92<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::PageOpsgenieOnCallRespondersTaskParams>,
+                    ::std::option::Option<super::InviteToSlackChannelVictorOpsTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340664,7 +349739,7 @@ pub mod types {
             pub fn subtype_93<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::CreateOpsgenieAlertTaskParams>,
+                    ::std::option::Option<super::PageOpsgenieOnCallRespondersTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340678,7 +349753,7 @@ pub mod types {
             pub fn subtype_94<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::CreateJsmopsAlertTaskParams>,
+                    ::std::option::Option<super::CreateOpsgenieAlertTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340692,7 +349767,7 @@ pub mod types {
             pub fn subtype_95<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::PageJsmopsOnCallRespondersTaskParams>,
+                    ::std::option::Option<super::CreateJsmopsAlertTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340706,7 +349781,7 @@ pub mod types {
             pub fn subtype_96<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateOpsgenieAlertTaskParams>,
+                    ::std::option::Option<super::PageJsmopsOnCallRespondersTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340720,7 +349795,7 @@ pub mod types {
             pub fn subtype_97<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateOpsgenieIncidentTaskParams>,
+                    ::std::option::Option<super::UpdateOpsgenieAlertTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340734,7 +349809,7 @@ pub mod types {
             pub fn subtype_98<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::PageRootlyOnCallRespondersTaskParams>,
+                    ::std::option::Option<super::UpdateOpsgenieIncidentTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340748,7 +349823,7 @@ pub mod types {
             pub fn subtype_99<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::PagePagerdutyOnCallRespondersTaskParams>,
+                    ::std::option::Option<super::PageRootlyOnCallRespondersTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340762,7 +349837,7 @@ pub mod types {
             pub fn subtype_100<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::PageVictorOpsOnCallRespondersTaskParams>,
+                    ::std::option::Option<super::PagePagerdutyOnCallRespondersTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340776,7 +349851,7 @@ pub mod types {
             pub fn subtype_101<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateVictorOpsIncidentTaskParams>,
+                    ::std::option::Option<super::PageVictorOpsOnCallRespondersTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340790,7 +349865,7 @@ pub mod types {
             pub fn subtype_102<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::PrintTaskParams>,
+                    ::std::option::Option<super::UpdateVictorOpsIncidentTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340804,7 +349879,7 @@ pub mod types {
             pub fn subtype_103<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::PublishIncidentTaskParams>,
+                    ::std::option::Option<super::PrintTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340818,7 +349893,7 @@ pub mod types {
             pub fn subtype_104<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::RedisClientTaskParams>,
+                    ::std::option::Option<super::PublishIncidentTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340832,7 +349907,7 @@ pub mod types {
             pub fn subtype_105<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::RenameSlackChannelTaskParams>,
+                    ::std::option::Option<super::RedisClientTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340846,7 +349921,7 @@ pub mod types {
             pub fn subtype_106<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::ChangeSlackChannelPrivacyTaskParams>,
+                    ::std::option::Option<super::RenameSlackChannelTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340860,7 +349935,7 @@ pub mod types {
             pub fn subtype_107<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::RunCommandHerokuTaskParams>,
+                    ::std::option::Option<super::ChangeSlackChannelPrivacyTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340874,7 +349949,7 @@ pub mod types {
             pub fn subtype_108<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SendEmailTaskParams>,
+                    ::std::option::Option<super::RunCommandHerokuTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340888,7 +349963,7 @@ pub mod types {
             pub fn subtype_109<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SendDashboardReportTaskParams>,
+                    ::std::option::Option<super::SendEmailTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340902,7 +349977,7 @@ pub mod types {
             pub fn subtype_110<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::CreateSlackChannelTaskParams>,
+                    ::std::option::Option<super::SendDashboardReportTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340916,7 +349991,7 @@ pub mod types {
             pub fn subtype_111<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SendSlackMessageTaskParams>,
+                    ::std::option::Option<super::CreateSlackChannelTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340930,7 +350005,7 @@ pub mod types {
             pub fn subtype_112<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SendSmsTaskParams>,
+                    ::std::option::Option<super::SendSlackMessageTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340944,7 +350019,7 @@ pub mod types {
             pub fn subtype_113<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SendWhatsappMessageTaskParams>,
+                    ::std::option::Option<super::SendSmsTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340958,7 +350033,7 @@ pub mod types {
             pub fn subtype_114<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SnapshotDatadogGraphTaskParams>,
+                    ::std::option::Option<super::SendWhatsappMessageTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340972,7 +350047,7 @@ pub mod types {
             pub fn subtype_115<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SnapshotGrafanaDashboardTaskParams>,
+                    ::std::option::Option<super::SnapshotDatadogGraphTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -340986,7 +350061,7 @@ pub mod types {
             pub fn subtype_116<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SnapshotLookerLookTaskParams>,
+                    ::std::option::Option<super::SnapshotGrafanaDashboardTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341000,7 +350075,7 @@ pub mod types {
             pub fn subtype_117<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SnapshotNewRelicGraphTaskParams>,
+                    ::std::option::Option<super::SnapshotLookerLookTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341014,7 +350089,7 @@ pub mod types {
             pub fn subtype_118<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::TweetTwitterMessageTaskParams>,
+                    ::std::option::Option<super::SnapshotNewRelicGraphTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341028,7 +350103,7 @@ pub mod types {
             pub fn subtype_119<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateAirtableTableRecordTaskParams>,
+                    ::std::option::Option<super::TweetTwitterMessageTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341042,7 +350117,7 @@ pub mod types {
             pub fn subtype_120<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateAsanaTaskTaskParams>,
+                    ::std::option::Option<super::UpdateAirtableTableRecordTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341056,7 +350131,7 @@ pub mod types {
             pub fn subtype_121<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateGithubIssueTaskParams>,
+                    ::std::option::Option<super::UpdateAsanaTaskTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341070,7 +350145,7 @@ pub mod types {
             pub fn subtype_122<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateGitlabIssueTaskParams>,
+                    ::std::option::Option<super::UpdateGithubIssueTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341084,7 +350159,7 @@ pub mod types {
             pub fn subtype_123<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateIncidentTaskParams>,
+                    ::std::option::Option<super::UpdateGitlabIssueTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341098,7 +350173,7 @@ pub mod types {
             pub fn subtype_124<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateIncidentPostmortemTaskParams>,
+                    ::std::option::Option<super::UpdateIncidentTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341112,7 +350187,7 @@ pub mod types {
             pub fn subtype_125<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateJiraIssueTaskParams>,
+                    ::std::option::Option<super::UpdateIncidentPostmortemTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341126,7 +350201,7 @@ pub mod types {
             pub fn subtype_126<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateLinearIssueTaskParams>,
+                    ::std::option::Option<super::UpdateJiraIssueTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341140,7 +350215,7 @@ pub mod types {
             pub fn subtype_127<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateServiceNowIncidentTaskParams>,
+                    ::std::option::Option<super::UpdateLinearIssueTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341154,7 +350229,7 @@ pub mod types {
             pub fn subtype_128<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateShortcutStoryTaskParams>,
+                    ::std::option::Option<super::UpdateServiceNowIncidentTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341168,7 +350243,7 @@ pub mod types {
             pub fn subtype_129<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateShortcutTaskTaskParams>,
+                    ::std::option::Option<super::UpdateShortcutStoryTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341182,7 +350257,7 @@ pub mod types {
             pub fn subtype_130<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateSlackChannelTopicTaskParams>,
+                    ::std::option::Option<super::UpdateShortcutTaskTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341196,7 +350271,7 @@ pub mod types {
             pub fn subtype_131<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateStatusTaskParams>,
+                    ::std::option::Option<super::UpdateSlackChannelTopicTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341210,7 +350285,7 @@ pub mod types {
             pub fn subtype_132<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateIncidentStatusTimestampTaskParams>,
+                    ::std::option::Option<super::UpdateStatusTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341224,7 +350299,7 @@ pub mod types {
             pub fn subtype_133<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateTrelloCardTaskParams>,
+                    ::std::option::Option<super::UpdateIncidentStatusTimestampTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341238,7 +350313,7 @@ pub mod types {
             pub fn subtype_134<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateClickupTaskTaskParams>,
+                    ::std::option::Option<super::UpdateTrelloCardTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341252,7 +350327,7 @@ pub mod types {
             pub fn subtype_135<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateMotionTaskTaskParams>,
+                    ::std::option::Option<super::UpdateClickupTaskTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341266,7 +350341,7 @@ pub mod types {
             pub fn subtype_136<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateZendeskTicketTaskParams>,
+                    ::std::option::Option<super::UpdateMotionTaskTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341280,7 +350355,7 @@ pub mod types {
             pub fn subtype_137<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::UpdateAttachedAlertsTaskParams>,
+                    ::std::option::Option<super::UpdateZendeskTicketTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341294,7 +350369,7 @@ pub mod types {
             pub fn subtype_138<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::TriggerWorkflowTaskParams>,
+                    ::std::option::Option<super::UpdateAttachedAlertsTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341308,7 +350383,7 @@ pub mod types {
             pub fn subtype_139<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::SendSlackBlocksTaskParams>,
+                    ::std::option::Option<super::TriggerWorkflowTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341322,7 +350397,7 @@ pub mod types {
             pub fn subtype_140<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::CreateOpenaiChatCompletionTaskParams>,
+                    ::std::option::Option<super::SendSlackBlocksTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341336,7 +350411,7 @@ pub mod types {
             pub fn subtype_141<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::CreateWatsonxChatCompletionTaskParams>,
+                    ::std::option::Option<super::CreateOpenaiChatCompletionTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341350,9 +350425,7 @@ pub mod types {
             pub fn subtype_142<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        super::CreateGoogleGeminiChatCompletionTaskParams,
-                    >,
+                    ::std::option::Option<super::CreateWatsonxChatCompletionTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341366,7 +350439,9 @@ pub mod types {
             pub fn subtype_143<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::CreateMistralChatCompletionTaskParams>,
+                    ::std::option::Option<
+                        super::CreateGoogleGeminiChatCompletionTaskParams,
+                    >,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341380,7 +350455,7 @@ pub mod types {
             pub fn subtype_144<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
-                    ::std::option::Option<super::CreateAnthropicChatCompletionTaskParams>,
+                    ::std::option::Option<super::CreateMistralChatCompletionTaskParams>,
                 >,
                 T::Error: ::std::fmt::Display,
             {
@@ -341388,6 +350463,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for subtype_144: {e}")
+                    });
+                self
+            }
+            pub fn subtype_145<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::CreateAnthropicChatCompletionTaskParams>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.subtype_145 = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for subtype_145: {e}")
                     });
                 self
             }
@@ -341544,6 +350633,7 @@ pub mod types {
                     subtype_142: value.subtype_142?,
                     subtype_143: value.subtype_143?,
                     subtype_144: value.subtype_144?,
+                    subtype_145: value.subtype_145?,
                 })
             }
         }
@@ -341696,6 +350786,7 @@ pub mod types {
                     subtype_142: Ok(value.subtype_142),
                     subtype_143: Ok(value.subtype_143),
                     subtype_144: Ok(value.subtype_144),
+                    subtype_145: Ok(value.subtype_145),
                 }
             }
         }
@@ -342704,6 +351795,26 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            phone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            phone_2: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            preferred_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            slack_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             time_zone: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -342723,6 +351834,11 @@ pub mod types {
                     full_name_with_team: Ok(Default::default()),
                     id: Err("no value supplied for id".to_string()),
                     last_name: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                    phone: Ok(Default::default()),
+                    phone_2: Ok(Default::default()),
+                    preferred_name: Ok(Default::default()),
+                    slack_id: Ok(Default::default()),
                     time_zone: Ok(Default::default()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
                 }
@@ -342813,6 +351929,68 @@ pub mod types {
                     });
                 self
             }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn phone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.phone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for phone: {e}")
+                    });
+                self
+            }
+            pub fn phone_2<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.phone_2 = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for phone_2: {e}")
+                    });
+                self
+            }
+            pub fn preferred_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.preferred_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for preferred_name: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn slack_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slack_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slack_id: {e}")
+                    });
+                self
+            }
             pub fn time_zone<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -342851,6 +352029,11 @@ pub mod types {
                     full_name_with_team: value.full_name_with_team?,
                     id: value.id?,
                     last_name: value.last_name?,
+                    name: value.name?,
+                    phone: value.phone?,
+                    phone_2: value.phone_2?,
+                    preferred_name: value.preferred_name?,
+                    slack_id: value.slack_id?,
                     time_zone: value.time_zone?,
                     updated_at: value.updated_at?,
                 })
@@ -342866,6 +352049,11 @@ pub mod types {
                     full_name_with_team: Ok(value.full_name_with_team),
                     id: Ok(value.id),
                     last_name: Ok(value.last_name),
+                    name: Ok(value.name),
+                    phone: Ok(value.phone),
+                    phone_2: Ok(value.phone_2),
+                    preferred_name: Ok(value.preferred_name),
+                    slack_id: Ok(value.slack_id),
                     time_zone: Ok(value.time_zone),
                     updated_at: Ok(value.updated_at),
                 }
@@ -344840,6 +354028,10 @@ pub mod types {
                 ::std::string::String,
                 ::std::string::String,
             >,
+            custom_headers: ::std::result::Result<
+                ::std::vec::Vec<super::WebhooksEndpointCustomHeadersItem>,
+                ::std::string::String,
+            >,
             enabled: ::std::result::Result<bool, ::std::string::String>,
             event_types: ::std::result::Result<
                 ::std::vec::Vec<::std::string::String>,
@@ -344861,6 +354053,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     created_at: Err("no value supplied for created_at".to_string()),
+                    custom_headers: Ok(Default::default()),
                     enabled: Err("no value supplied for enabled".to_string()),
                     event_types: Err("no value supplied for event_types".to_string()),
                     name: Err("no value supplied for name".to_string()),
@@ -344881,6 +354074,22 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn custom_headers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::WebhooksEndpointCustomHeadersItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.custom_headers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for custom_headers: {e}"
+                        )
                     });
                 self
             }
@@ -344976,6 +354185,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     created_at: value.created_at?,
+                    custom_headers: value.custom_headers?,
                     enabled: value.enabled?,
                     event_types: value.event_types?,
                     name: value.name?,
@@ -344990,6 +354200,7 @@ pub mod types {
             fn from(value: super::WebhooksEndpoint) -> Self {
                 Self {
                     created_at: Ok(value.created_at),
+                    custom_headers: Ok(value.custom_headers),
                     enabled: Ok(value.enabled),
                     event_types: Ok(value.event_types),
                     name: Ok(value.name),
@@ -344997,6 +354208,74 @@ pub mod types {
                     slug: Ok(value.slug),
                     updated_at: Ok(value.updated_at),
                     url: Ok(value.url),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct WebhooksEndpointCustomHeadersItem {
+            name: ::std::result::Result<
+                super::WebhooksEndpointCustomHeadersItemName,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<
+                super::WebhooksEndpointCustomHeadersItemValue,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for WebhooksEndpointCustomHeadersItem {
+            fn default() -> Self {
+                Self {
+                    name: Err("no value supplied for name".to_string()),
+                    value: Err("no value supplied for value".to_string()),
+                }
+            }
+        }
+        impl WebhooksEndpointCustomHeadersItem {
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::WebhooksEndpointCustomHeadersItemName>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::WebhooksEndpointCustomHeadersItemValue,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<WebhooksEndpointCustomHeadersItem>
+        for super::WebhooksEndpointCustomHeadersItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: WebhooksEndpointCustomHeadersItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    name: value.name?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::WebhooksEndpointCustomHeadersItem>
+        for WebhooksEndpointCustomHeadersItem {
+            fn from(value: super::WebhooksEndpointCustomHeadersItem) -> Self {
+                Self {
+                    name: Ok(value.name),
+                    value: Ok(value.value),
                 }
             }
         }
@@ -345899,6 +355178,647 @@ pub mod types {
                     updated_at: Ok(value.updated_at),
                     wait: Ok(value.wait),
                     workflow_group_id: Ok(value.workflow_group_id),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct WorkflowActionItemFormFieldCondition {
+            action_item_condition: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            form_field_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            selected_catalog_entity_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_cause_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_environment_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_functionality_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_group_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_incident_type_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_option_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_service_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            selected_user_ids: ::std::result::Result<
+                ::std::vec::Vec<i64>,
+                ::std::string::String,
+            >,
+            values: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            workflow_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for WorkflowActionItemFormFieldCondition {
+            fn default() -> Self {
+                Self {
+                    action_item_condition: Err(
+                        "no value supplied for action_item_condition".to_string(),
+                    ),
+                    form_field_id: Err(
+                        "no value supplied for form_field_id".to_string(),
+                    ),
+                    selected_catalog_entity_ids: Err(
+                        "no value supplied for selected_catalog_entity_ids".to_string(),
+                    ),
+                    selected_cause_ids: Ok(Default::default()),
+                    selected_environment_ids: Ok(Default::default()),
+                    selected_functionality_ids: Ok(Default::default()),
+                    selected_group_ids: Ok(Default::default()),
+                    selected_incident_type_ids: Ok(Default::default()),
+                    selected_option_ids: Err(
+                        "no value supplied for selected_option_ids".to_string(),
+                    ),
+                    selected_service_ids: Ok(Default::default()),
+                    selected_user_ids: Err(
+                        "no value supplied for selected_user_ids".to_string(),
+                    ),
+                    values: Ok(Default::default()),
+                    workflow_id: Err("no value supplied for workflow_id".to_string()),
+                }
+            }
+        }
+        impl WorkflowActionItemFormFieldCondition {
+            pub fn action_item_condition<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.action_item_condition = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for action_item_condition: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn form_field_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.form_field_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for form_field_id: {e}")
+                    });
+                self
+            }
+            pub fn selected_catalog_entity_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_catalog_entity_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_catalog_entity_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_cause_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_cause_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_cause_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_environment_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_environment_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_environment_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_functionality_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_functionality_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_functionality_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_group_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_incident_type_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_incident_type_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_incident_type_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_option_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_option_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_option_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_service_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_service_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_service_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn selected_user_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.selected_user_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for selected_user_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn values<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.values = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for values: {e}")
+                    });
+                self
+            }
+            pub fn workflow_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.workflow_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for workflow_id: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<WorkflowActionItemFormFieldCondition>
+        for super::WorkflowActionItemFormFieldCondition {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: WorkflowActionItemFormFieldCondition,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    action_item_condition: value.action_item_condition?,
+                    form_field_id: value.form_field_id?,
+                    selected_catalog_entity_ids: value.selected_catalog_entity_ids?,
+                    selected_cause_ids: value.selected_cause_ids?,
+                    selected_environment_ids: value.selected_environment_ids?,
+                    selected_functionality_ids: value.selected_functionality_ids?,
+                    selected_group_ids: value.selected_group_ids?,
+                    selected_incident_type_ids: value.selected_incident_type_ids?,
+                    selected_option_ids: value.selected_option_ids?,
+                    selected_service_ids: value.selected_service_ids?,
+                    selected_user_ids: value.selected_user_ids?,
+                    values: value.values?,
+                    workflow_id: value.workflow_id?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::WorkflowActionItemFormFieldCondition>
+        for WorkflowActionItemFormFieldCondition {
+            fn from(value: super::WorkflowActionItemFormFieldCondition) -> Self {
+                Self {
+                    action_item_condition: Ok(value.action_item_condition),
+                    form_field_id: Ok(value.form_field_id),
+                    selected_catalog_entity_ids: Ok(value.selected_catalog_entity_ids),
+                    selected_cause_ids: Ok(value.selected_cause_ids),
+                    selected_environment_ids: Ok(value.selected_environment_ids),
+                    selected_functionality_ids: Ok(value.selected_functionality_ids),
+                    selected_group_ids: Ok(value.selected_group_ids),
+                    selected_incident_type_ids: Ok(value.selected_incident_type_ids),
+                    selected_option_ids: Ok(value.selected_option_ids),
+                    selected_service_ids: Ok(value.selected_service_ids),
+                    selected_user_ids: Ok(value.selected_user_ids),
+                    values: Ok(value.values),
+                    workflow_id: Ok(value.workflow_id),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct WorkflowActionItemFormFieldConditionList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::WorkflowActionItemFormFieldConditionListDataItem>,
+                ::std::string::String,
+            >,
+            included: ::std::result::Result<
+                ::std::vec::Vec<super::JsonapiIncludedResource>,
+                ::std::string::String,
+            >,
+            links: ::std::result::Result<super::Links, ::std::string::String>,
+            meta: ::std::result::Result<super::Meta, ::std::string::String>,
+        }
+        impl ::std::default::Default for WorkflowActionItemFormFieldConditionList {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    included: Ok(Default::default()),
+                    links: Err("no value supplied for links".to_string()),
+                    meta: Err("no value supplied for meta".to_string()),
+                }
+            }
+        }
+        impl WorkflowActionItemFormFieldConditionList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::WorkflowActionItemFormFieldConditionListDataItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn included<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::JsonapiIncludedResource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.included = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for included: {e}")
+                    });
+                self
+            }
+            pub fn links<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::Links>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.links = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for links: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::Meta>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<WorkflowActionItemFormFieldConditionList>
+        for super::WorkflowActionItemFormFieldConditionList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: WorkflowActionItemFormFieldConditionList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    included: value.included?,
+                    links: value.links?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::WorkflowActionItemFormFieldConditionList>
+        for WorkflowActionItemFormFieldConditionList {
+            fn from(value: super::WorkflowActionItemFormFieldConditionList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    included: Ok(value.included),
+                    links: Ok(value.links),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct WorkflowActionItemFormFieldConditionListDataItem {
+            attributes: ::std::result::Result<
+                super::WorkflowActionItemFormFieldCondition,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default
+        for WorkflowActionItemFormFieldConditionListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl WorkflowActionItemFormFieldConditionListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::WorkflowActionItemFormFieldCondition>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<WorkflowActionItemFormFieldConditionListDataItem>
+        for super::WorkflowActionItemFormFieldConditionListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: WorkflowActionItemFormFieldConditionListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::WorkflowActionItemFormFieldConditionListDataItem,
+        > for WorkflowActionItemFormFieldConditionListDataItem {
+            fn from(
+                value: super::WorkflowActionItemFormFieldConditionListDataItem,
+            ) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct WorkflowActionItemFormFieldConditionResponse {
+            data: ::std::result::Result<
+                super::WorkflowActionItemFormFieldConditionResponseData,
+                ::std::string::String,
+            >,
+            included: ::std::result::Result<
+                ::std::vec::Vec<super::JsonapiIncludedResource>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for WorkflowActionItemFormFieldConditionResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    included: Ok(Default::default()),
+                }
+            }
+        }
+        impl WorkflowActionItemFormFieldConditionResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::WorkflowActionItemFormFieldConditionResponseData,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn included<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::JsonapiIncludedResource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.included = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for included: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<WorkflowActionItemFormFieldConditionResponse>
+        for super::WorkflowActionItemFormFieldConditionResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: WorkflowActionItemFormFieldConditionResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    included: value.included?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::WorkflowActionItemFormFieldConditionResponse>
+        for WorkflowActionItemFormFieldConditionResponse {
+            fn from(value: super::WorkflowActionItemFormFieldConditionResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    included: Ok(value.included),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct WorkflowActionItemFormFieldConditionResponseData {
+            attributes: ::std::result::Result<
+                super::WorkflowActionItemFormFieldCondition,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default
+        for WorkflowActionItemFormFieldConditionResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl WorkflowActionItemFormFieldConditionResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::WorkflowActionItemFormFieldCondition>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<WorkflowActionItemFormFieldConditionResponseData>
+        for super::WorkflowActionItemFormFieldConditionResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: WorkflowActionItemFormFieldConditionResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::WorkflowActionItemFormFieldConditionResponseData,
+        > for WorkflowActionItemFormFieldConditionResponseData {
+            fn from(
+                value: super::WorkflowActionItemFormFieldConditionResponseData,
+            ) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
                 }
             }
         }
@@ -349153,6 +359073,9 @@ pub mod types {
         pub(super) fn update_schedule_rotation_data_attributes_time_zone() -> ::std::string::String {
             "Etc/UTC".to_string()
         }
+        pub(super) fn update_workflow_action_item_form_field_condition_data_attributes_action_item_condition() -> ::std::string::String {
+            "ANY".to_string()
+        }
         pub(super) fn update_workflow_custom_field_selection_data_attributes_incident_condition() -> ::std::string::String {
             "ANY".to_string()
         }
@@ -350039,6 +359962,23 @@ let response = client.create_alert()
     pub fn create_alert(&self) -> builder::CreateAlert<'_> {
         builder::CreateAlert::new(self)
     }
+    /**Get a receipt
+
+Retrieve the delivery receipt for a notification by ID, including its state and (when applicable) failure reason and referenced resource.
+
+Sends a `GET` request to `/v1/alerts/receipts/{id}`
+
+Arguments:
+- `id`: Receipt ID
+```ignore
+let response = client.get_receipt()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_receipt(&self) -> builder::GetReceipt<'_> {
+        builder::GetReceipt::new(self)
+    }
     /**List alert events
 
 List alert_events
@@ -350469,6 +360409,44 @@ let response = client.delete_authorization()
     pub fn delete_authorization(&self) -> builder::DeleteAuthorization<'_> {
         builder::DeleteAuthorization::new(self)
     }
+    /**Create a bulk import
+
+Create a new bulk import for incidents. Requires global API key authentication.
+
+Sends a `POST` request to `/v1/bulk_imports`
+
+```ignore
+let response = client.create_bulk_import()
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn create_bulk_import(&self) -> builder::CreateBulkImport<'_> {
+        builder::CreateBulkImport::new(self)
+    }
+    /**Get bulk import status
+
+Retrieves the current status of a bulk import job.
+
+**Use this endpoint to:**
+- Poll for import progress
+- Check validation errors if status is `validation_failed`
+- Get final results when status is `completed` or `failed`
+
+
+Sends a `GET` request to `/v1/bulk_imports/{id}`
+
+Arguments:
+- `id`: Bulk import ID returned from the create endpoint
+```ignore
+let response = client.get_bulk_import()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_bulk_import(&self) -> builder::GetBulkImport<'_> {
+        builder::GetBulkImport::new(self)
+    }
     /**List catalog checklist templates
 
 List catalog checklist templates
@@ -350867,6 +360845,8 @@ Arguments:
 - `filter_created_at_gte`
 - `filter_created_at_lt`
 - `filter_created_at_lte`
+- `filter_external_id`
+- `filter_managed_by`
 - `filter_name`
 - `filter_search`
 - `filter_slug`
@@ -350880,6 +360860,8 @@ let response = client.list_catalogs()
     .filter_created_at_gte(filter_created_at_gte)
     .filter_created_at_lt(filter_created_at_lt)
     .filter_created_at_lte(filter_created_at_lte)
+    .filter_external_id(filter_external_id)
+    .filter_managed_by(filter_managed_by)
     .filter_name(filter_name)
     .filter_search(filter_search)
     .filter_slug(filter_slug)
@@ -350921,6 +360903,8 @@ Arguments:
 - `filter_created_at_gte`
 - `filter_created_at_lt`
 - `filter_created_at_lte`
+- `filter_external_id`
+- `filter_managed_by`
 - `filter_name`
 - `filter_search`
 - `filter_slug`
@@ -350936,6 +360920,8 @@ let response = client.list_catalog_entities()
     .filter_created_at_gte(filter_created_at_gte)
     .filter_created_at_lt(filter_created_at_lt)
     .filter_created_at_lte(filter_created_at_lte)
+    .filter_external_id(filter_external_id)
+    .filter_managed_by(filter_managed_by)
     .filter_name(filter_name)
     .filter_search(filter_search)
     .filter_slug(filter_slug)
@@ -350964,6 +360950,42 @@ let response = client.create_catalog_entity()
 ```*/
     pub fn create_catalog_entity(&self) -> builder::CreateCatalogEntity<'_> {
         builder::CreateCatalogEntity::new(self)
+    }
+    /**Bulk delete Catalog Entities
+
+Delete catalog entities by external_id list, or prune by managed_by source. Two mutually exclusive modes.
+
+Sends a `POST` request to `/v1/catalogs/{catalog_id}/entities/bulk_delete`
+
+```ignore
+let response = client.bulk_delete_catalog_entities()
+    .catalog_id(catalog_id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn bulk_delete_catalog_entities(
+        &self,
+    ) -> builder::BulkDeleteCatalogEntities<'_> {
+        builder::BulkDeleteCatalogEntities::new(self)
+    }
+    /**Bulk upsert Catalog Entities
+
+Create or update multiple catalog entities by external_id. Only attributes present in the payload are written (managed-fields semantics). Transactional: all succeed or all fail.
+
+Sends a `POST` request to `/v1/catalogs/{catalog_id}/entities/bulk_upsert`
+
+```ignore
+let response = client.bulk_upsert_catalog_entities()
+    .catalog_id(catalog_id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn bulk_upsert_catalog_entities(
+        &self,
+    ) -> builder::BulkUpsertCatalogEntities<'_> {
+        builder::BulkUpsertCatalogEntities::new(self)
     }
     /**List Catalog Properties (alias for fields)
 
@@ -358831,6 +368853,58 @@ let response = client.delete_webhooks_endpoint()
     pub fn delete_webhooks_endpoint(&self) -> builder::DeleteWebhooksEndpoint<'_> {
         builder::DeleteWebhooksEndpoint::new(self)
     }
+    /**Retrieves a workflow action item form field condition
+
+Retrieves a specific workflow action item form field condition by id
+
+Sends a `GET` request to `/v1/workflow_action_item_form_field_conditions/{id}`
+
+```ignore
+let response = client.get_workflow_action_item_form_field_condition()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_workflow_action_item_form_field_condition(
+        &self,
+    ) -> builder::GetWorkflowActionItemFormFieldCondition<'_> {
+        builder::GetWorkflowActionItemFormFieldCondition::new(self)
+    }
+    /**Update a workflow action item form field condition
+
+Update a specific workflow action item form field condition by id
+
+Sends a `PUT` request to `/v1/workflow_action_item_form_field_conditions/{id}`
+
+```ignore
+let response = client.update_workflow_action_item_form_field_condition()
+    .id(id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn update_workflow_action_item_form_field_condition(
+        &self,
+    ) -> builder::UpdateWorkflowActionItemFormFieldCondition<'_> {
+        builder::UpdateWorkflowActionItemFormFieldCondition::new(self)
+    }
+    /**Delete a workflow action item form field condition
+
+Delete a specific workflow action item form field condition by id
+
+Sends a `DELETE` request to `/v1/workflow_action_item_form_field_conditions/{id}`
+
+```ignore
+let response = client.delete_workflow_action_item_form_field_condition()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn delete_workflow_action_item_form_field_condition(
+        &self,
+    ) -> builder::DeleteWorkflowActionItemFormFieldCondition<'_> {
+        builder::DeleteWorkflowActionItemFormFieldCondition::new(self)
+    }
     /**[DEPRECATED] Retrieves a workflow custom field selection
 
 [DEPRECATED] Use form field endpoints instead. Retrieves a specific workflow custom field selection by id
@@ -359166,6 +369240,44 @@ let response = client.delete_workflow()
 ```*/
     pub fn delete_workflow(&self) -> builder::DeleteWorkflow<'_> {
         builder::DeleteWorkflow::new(self)
+    }
+    /**List workflow action item form field conditions
+
+List workflow action item form field conditions
+
+Sends a `GET` request to `/v1/workflows/{workflow_id}/action_item_form_field_conditions`
+
+```ignore
+let response = client.list_workflow_action_item_form_field_conditions()
+    .workflow_id(workflow_id)
+    .include(include)
+    .page_number(page_number)
+    .page_size(page_size)
+    .send()
+    .await;
+```*/
+    pub fn list_workflow_action_item_form_field_conditions(
+        &self,
+    ) -> builder::ListWorkflowActionItemFormFieldConditions<'_> {
+        builder::ListWorkflowActionItemFormFieldConditions::new(self)
+    }
+    /**Creates a workflow action item form field condition
+
+Creates a new workflow action item form field condition from provided data
+
+Sends a `POST` request to `/v1/workflows/{workflow_id}/action_item_form_field_conditions`
+
+```ignore
+let response = client.create_workflow_action_item_form_field_condition()
+    .workflow_id(workflow_id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn create_workflow_action_item_form_field_condition(
+        &self,
+    ) -> builder::CreateWorkflowActionItemFormFieldCondition<'_> {
+        builder::CreateWorkflowActionItemFormFieldCondition::new(self)
     }
     /**[DEPRECATED] List workflow custom field selections
 
@@ -364457,6 +374569,72 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::get_receipt`]
+
+[`Client::get_receipt`]: super::Client::get_receipt*/
+    #[derive(Debug, Clone)]
+    pub struct GetReceipt<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> GetReceipt<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/alerts/receipts/{id}`
+        pub async fn send(self) -> Result<ResponseValue<types::Receipt>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/alerts/receipts/{}", client.baseurl, encode_path(& id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_receipt",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::list_alert_events`]
 
 [`Client::list_alert_events`]: super::Client::list_alert_events*/
@@ -367166,6 +377344,137 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::create_bulk_import`]
+
+[`Client::create_bulk_import`]: super::Client::create_bulk_import*/
+    #[derive(Debug, Clone)]
+    pub struct CreateBulkImport<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::NewBulkImport, String>,
+    }
+    impl<'a> CreateBulkImport<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewBulkImport>,
+            <V as std::convert::TryInto<types::NewBulkImport>>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `NewBulkImport` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewBulkImport,
+            ) -> types::builder::NewBulkImport,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/bulk_imports`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| {
+                    types::NewBulkImport::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/bulk_imports", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_bulk_import",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_bulk_import`]
+
+[`Client::get_bulk_import`]: super::Client::get_bulk_import*/
+    #[derive(Debug, Clone)]
+    pub struct GetBulkImport<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> GetBulkImport<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/bulk_imports/{id}`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/bulk_imports/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client.client.get(url).headers(header_map).build()?;
+            let info = OperationInfo {
+                operation_id: "get_bulk_import",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::list_catalog_checklist_templates`]
 
 [`Client::list_catalog_checklist_templates`]: super::Client::list_catalog_checklist_templates*/
@@ -369299,6 +379608,8 @@ pub mod builder {
         filter_created_at_gte: Result<Option<::std::string::String>, String>,
         filter_created_at_lt: Result<Option<::std::string::String>, String>,
         filter_created_at_lte: Result<Option<::std::string::String>, String>,
+        filter_external_id: Result<Option<::std::string::String>, String>,
+        filter_managed_by: Result<Option<::std::string::String>, String>,
         filter_name: Result<Option<::std::string::String>, String>,
         filter_search: Result<Option<::std::string::String>, String>,
         filter_slug: Result<Option<::std::string::String>, String>,
@@ -369315,6 +379626,8 @@ pub mod builder {
                 filter_created_at_gte: Ok(None),
                 filter_created_at_lt: Ok(None),
                 filter_created_at_lte: Ok(None),
+                filter_external_id: Ok(None),
+                filter_managed_by: Ok(None),
                 filter_name: Ok(None),
                 filter_search: Ok(None),
                 filter_slug: Ok(None),
@@ -369372,6 +379685,32 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_created_at_lte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_external_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_external_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_external_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_managed_by<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_managed_by = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_managed_by failed"
                         .to_string()
                 });
             self
@@ -369469,6 +379808,8 @@ pub mod builder {
                 filter_created_at_gte,
                 filter_created_at_lt,
                 filter_created_at_lte,
+                filter_external_id,
+                filter_managed_by,
                 filter_name,
                 filter_search,
                 filter_slug,
@@ -369485,6 +379826,8 @@ pub mod builder {
                 .map_err(Error::InvalidRequest)?;
             let filter_created_at_lte = filter_created_at_lte
                 .map_err(Error::InvalidRequest)?;
+            let filter_external_id = filter_external_id.map_err(Error::InvalidRequest)?;
+            let filter_managed_by = filter_managed_by.map_err(Error::InvalidRequest)?;
             let filter_name = filter_name.map_err(Error::InvalidRequest)?;
             let filter_search = filter_search.map_err(Error::InvalidRequest)?;
             let filter_slug = filter_slug.map_err(Error::InvalidRequest)?;
@@ -369531,6 +379874,18 @@ pub mod builder {
                     &progenitor_client::QueryParam::new(
                         "filter[created_at][lte]",
                         &filter_created_at_lte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[external_id]",
+                        &filter_external_id,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[managed_by]",
+                        &filter_managed_by,
                     ),
                 )
                 .query(&progenitor_client::QueryParam::new("filter[name]", &filter_name))
@@ -369647,6 +380002,8 @@ pub mod builder {
         filter_created_at_gte: Result<Option<::std::string::String>, String>,
         filter_created_at_lt: Result<Option<::std::string::String>, String>,
         filter_created_at_lte: Result<Option<::std::string::String>, String>,
+        filter_external_id: Result<Option<::std::string::String>, String>,
+        filter_managed_by: Result<Option<::std::string::String>, String>,
         filter_name: Result<Option<::std::string::String>, String>,
         filter_search: Result<Option<::std::string::String>, String>,
         filter_slug: Result<Option<::std::string::String>, String>,
@@ -369665,6 +380022,8 @@ pub mod builder {
                 filter_created_at_gte: Ok(None),
                 filter_created_at_lt: Ok(None),
                 filter_created_at_lte: Ok(None),
+                filter_external_id: Ok(None),
+                filter_managed_by: Ok(None),
                 filter_name: Ok(None),
                 filter_search: Ok(None),
                 filter_slug: Ok(None),
@@ -369747,6 +380106,32 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_created_at_lte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_external_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_external_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_external_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_managed_by<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_managed_by = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_managed_by failed"
                         .to_string()
                 });
             self
@@ -369848,6 +380233,8 @@ pub mod builder {
                 filter_created_at_gte,
                 filter_created_at_lt,
                 filter_created_at_lte,
+                filter_external_id,
+                filter_managed_by,
                 filter_name,
                 filter_search,
                 filter_slug,
@@ -369867,6 +380254,8 @@ pub mod builder {
                 .map_err(Error::InvalidRequest)?;
             let filter_created_at_lte = filter_created_at_lte
                 .map_err(Error::InvalidRequest)?;
+            let filter_external_id = filter_external_id.map_err(Error::InvalidRequest)?;
+            let filter_managed_by = filter_managed_by.map_err(Error::InvalidRequest)?;
             let filter_name = filter_name.map_err(Error::InvalidRequest)?;
             let filter_search = filter_search.map_err(Error::InvalidRequest)?;
             let filter_slug = filter_slug.map_err(Error::InvalidRequest)?;
@@ -369922,6 +380311,18 @@ pub mod builder {
                     &progenitor_client::QueryParam::new(
                         "filter[created_at][lte]",
                         &filter_created_at_lte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[external_id]",
+                        &filter_external_id,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[managed_by]",
+                        &filter_managed_by,
                     ),
                 )
                 .query(&progenitor_client::QueryParam::new("filter[name]", &filter_name))
@@ -370044,6 +380445,197 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 201u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::bulk_delete_catalog_entities`]
+
+[`Client::bulk_delete_catalog_entities`]: super::Client::bulk_delete_catalog_entities*/
+    #[derive(Debug, Clone)]
+    pub struct BulkDeleteCatalogEntities<'a> {
+        client: &'a super::Client,
+        catalog_id: Result<::std::string::String, String>,
+        body: Result<types::BulkDestroyCatalogEntities, String>,
+    }
+    impl<'a> BulkDeleteCatalogEntities<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                catalog_id: Err("catalog_id was not initialized".to_string()),
+                body: Err("body was not initialized".to_string()),
+            }
+        }
+        pub fn catalog_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.catalog_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for catalog_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::BulkDestroyCatalogEntities>,
+        {
+            self.body = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `BulkDestroyCatalogEntities` for body failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `POST` request to `/v1/catalogs/{catalog_id}/entities/bulk_delete`
+        pub async fn send(
+            self,
+        ) -> Result<
+            ResponseValue<types::BulkDestroyCatalogEntitiesResponse>,
+            Error<()>,
+        > {
+            let Self { client, catalog_id, body } = self;
+            let catalog_id = catalog_id.map_err(Error::InvalidRequest)?;
+            let body = body.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/catalogs/{}/entities/bulk_delete", client.baseurl, encode_path(&
+                catalog_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "bulk_delete_catalog_entities",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::bulk_upsert_catalog_entities`]
+
+[`Client::bulk_upsert_catalog_entities`]: super::Client::bulk_upsert_catalog_entities*/
+    #[derive(Debug, Clone)]
+    pub struct BulkUpsertCatalogEntities<'a> {
+        client: &'a super::Client,
+        catalog_id: Result<::std::string::String, String>,
+        body: Result<types::builder::BulkUpsertCatalogEntities, String>,
+    }
+    impl<'a> BulkUpsertCatalogEntities<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                catalog_id: Err("catalog_id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn catalog_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.catalog_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for catalog_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::BulkUpsertCatalogEntities>,
+            <V as std::convert::TryInto<
+                types::BulkUpsertCatalogEntities,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!(
+                        "conversion to `BulkUpsertCatalogEntities` for body failed: {}",
+                        s
+                    )
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::BulkUpsertCatalogEntities,
+            ) -> types::builder::BulkUpsertCatalogEntities,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/catalogs/{catalog_id}/entities/bulk_upsert`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::BulkUpsertCatalogEntitiesResponse>, Error<()>> {
+            let Self { client, catalog_id, body } = self;
+            let catalog_id = catalog_id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::BulkUpsertCatalogEntities::try_from(v)
+                        .map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/catalogs/{}/entities/bulk_upsert", client.baseurl, encode_path(&
+                catalog_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "bulk_upsert_catalog_entities",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }
@@ -417461,6 +428053,255 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::get_workflow_action_item_form_field_condition`]
+
+[`Client::get_workflow_action_item_form_field_condition`]: super::Client::get_workflow_action_item_form_field_condition*/
+    #[derive(Debug, Clone)]
+    pub struct GetWorkflowActionItemFormFieldCondition<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> GetWorkflowActionItemFormFieldCondition<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/workflow_action_item_form_field_conditions/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<
+            ResponseValue<types::WorkflowActionItemFormFieldConditionResponse>,
+            Error<()>,
+        > {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/workflow_action_item_form_field_conditions/{}", client.baseurl,
+                encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_workflow_action_item_form_field_condition",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::update_workflow_action_item_form_field_condition`]
+
+[`Client::update_workflow_action_item_form_field_condition`]: super::Client::update_workflow_action_item_form_field_condition*/
+    #[derive(Debug, Clone)]
+    pub struct UpdateWorkflowActionItemFormFieldCondition<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+        body: Result<types::builder::UpdateWorkflowActionItemFormFieldCondition, String>,
+    }
+    impl<'a> UpdateWorkflowActionItemFormFieldCondition<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateWorkflowActionItemFormFieldCondition>,
+            <V as std::convert::TryInto<
+                types::UpdateWorkflowActionItemFormFieldCondition,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!(
+                        "conversion to `UpdateWorkflowActionItemFormFieldCondition` for body failed: {}",
+                        s
+                    )
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateWorkflowActionItemFormFieldCondition,
+            ) -> types::builder::UpdateWorkflowActionItemFormFieldCondition,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PUT` request to `/v1/workflow_action_item_form_field_conditions/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<
+            ResponseValue<types::WorkflowActionItemFormFieldConditionResponse>,
+            Error<()>,
+        > {
+            let Self { client, id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateWorkflowActionItemFormFieldCondition::try_from(v)
+                        .map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/workflow_action_item_form_field_conditions/{}", client.baseurl,
+                encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .put(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "update_workflow_action_item_form_field_condition",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::delete_workflow_action_item_form_field_condition`]
+
+[`Client::delete_workflow_action_item_form_field_condition`]: super::Client::delete_workflow_action_item_form_field_condition*/
+    #[derive(Debug, Clone)]
+    pub struct DeleteWorkflowActionItemFormFieldCondition<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> DeleteWorkflowActionItemFormFieldCondition<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `DELETE` request to `/v1/workflow_action_item_form_field_conditions/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<
+            ResponseValue<types::WorkflowActionItemFormFieldConditionResponse>,
+            Error<()>,
+        > {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/workflow_action_item_form_field_conditions/{}", client.baseurl,
+                encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .delete(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "delete_workflow_action_item_form_field_condition",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::get_workflow_custom_field_selection`]
 
 [`Client::get_workflow_custom_field_selection`]: super::Client::get_workflow_custom_field_selection*/
@@ -419322,6 +430163,229 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_workflow_action_item_form_field_conditions`]
+
+[`Client::list_workflow_action_item_form_field_conditions`]: super::Client::list_workflow_action_item_form_field_conditions*/
+    #[derive(Debug, Clone)]
+    pub struct ListWorkflowActionItemFormFieldConditions<'a> {
+        client: &'a super::Client,
+        workflow_id: Result<::std::string::String, String>,
+        include: Result<Option<::std::string::String>, String>,
+        page_number: Result<Option<i64>, String>,
+        page_size: Result<Option<i64>, String>,
+    }
+    impl<'a> ListWorkflowActionItemFormFieldConditions<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                workflow_id: Err("workflow_id was not initialized".to_string()),
+                include: Ok(None),
+                page_number: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn workflow_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.workflow_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for workflow_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn include<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.include = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for include failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_number<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_number = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/workflows/{workflow_id}/action_item_form_field_conditions`
+        pub async fn send(
+            self,
+        ) -> Result<
+            ResponseValue<types::WorkflowActionItemFormFieldConditionList>,
+            Error<()>,
+        > {
+            let Self { client, workflow_id, include, page_number, page_size } = self;
+            let workflow_id = workflow_id.map_err(Error::InvalidRequest)?;
+            let include = include.map_err(Error::InvalidRequest)?;
+            let page_number = page_number.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/workflows/{}/action_item_form_field_conditions", client.baseurl,
+                encode_path(& workflow_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(&progenitor_client::QueryParam::new("include", &include))
+                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_workflow_action_item_form_field_conditions",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::create_workflow_action_item_form_field_condition`]
+
+[`Client::create_workflow_action_item_form_field_condition`]: super::Client::create_workflow_action_item_form_field_condition*/
+    #[derive(Debug, Clone)]
+    pub struct CreateWorkflowActionItemFormFieldCondition<'a> {
+        client: &'a super::Client,
+        workflow_id: Result<::std::string::String, String>,
+        body: Result<types::builder::NewWorkflowActionItemFormFieldCondition, String>,
+    }
+    impl<'a> CreateWorkflowActionItemFormFieldCondition<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                workflow_id: Err("workflow_id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn workflow_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.workflow_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for workflow_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewWorkflowActionItemFormFieldCondition>,
+            <V as std::convert::TryInto<
+                types::NewWorkflowActionItemFormFieldCondition,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!(
+                        "conversion to `NewWorkflowActionItemFormFieldCondition` for body failed: {}",
+                        s
+                    )
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewWorkflowActionItemFormFieldCondition,
+            ) -> types::builder::NewWorkflowActionItemFormFieldCondition,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/workflows/{workflow_id}/action_item_form_field_conditions`
+        pub async fn send(
+            self,
+        ) -> Result<
+            ResponseValue<types::WorkflowActionItemFormFieldConditionResponse>,
+            Error<()>,
+        > {
+            let Self { client, workflow_id, body } = self;
+            let workflow_id = workflow_id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::NewWorkflowActionItemFormFieldCondition::try_from(v)
+                        .map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/workflows/{}/action_item_form_field_conditions", client.baseurl,
+                encode_path(& workflow_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_workflow_action_item_form_field_condition",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }
