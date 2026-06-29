@@ -2638,6 +2638,198 @@
             }
           },
           {
+            "name": "filter[status][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[status][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[status][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[status][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[source][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[source][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[source][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[source][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[services][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[services][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[services][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[services][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[groups][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[groups][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[groups][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[groups][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environments][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environments][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environments][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environments][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[labels][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[labels][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[labels][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[labels][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "page[after]",
             "in": "query",
             "required": false,
@@ -4000,80 +4192,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    },
-    "/v1/bulk_imports": {
-      "post": {
-        "summary": "Create a bulk import",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Bulk Imports"
-        ],
-        "description": "Create a new bulk import for incidents. Requires global API key authentication.",
-        "operationId": "createBulkImport",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "bulk import created"
-          },
-          "403": {
-            "description": "unauthorized - user lacks incident create permission"
-          },
-          "422": {
-            "description": "invalid parameters"
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/new_bulk_import"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/v1/bulk_imports/{id}": {
-      "get": {
-        "summary": "Get bulk import status",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Bulk Imports"
-        ],
-        "description": "Retrieves the current status of a bulk import job.\n\n**Use this endpoint to:**\n- Poll for import progress\n- Check validation errors if status is `validation_failed`\n- Get final results when status is `completed` or `failed`\n",
-        "operationId": "getBulkImport",
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "Bulk import ID returned from the create endpoint",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "success"
-          },
-          "404": {
-            "description": "not found"
-          },
-          "403": {
-            "description": "organization API keys feature not enabled"
           }
         }
       }
@@ -21511,6 +21629,742 @@
             }
           },
           {
+            "name": "filter[kind][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[kind][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[kind][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[kind][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[status][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[status][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[status][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[status][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[private][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[private][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[private][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[private][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[user_id][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[user_id][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[user_id][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[user_id][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[severity][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[severity][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[severity][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[severity][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[severity_id][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[severity_id][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[severity_id][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[severity_id][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[labels][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[labels][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[labels][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[labels][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[zendesk_ticket_id][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[zendesk_ticket_id][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[zendesk_ticket_id][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[zendesk_ticket_id][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[types][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[types][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[types][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[types][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[type_ids][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[type_ids][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[type_ids][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[type_ids][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environments][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environments][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environments][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environments][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environment_ids][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environment_ids][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environment_ids][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[environment_ids][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[services][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[services][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[services][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[services][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[service_ids][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[service_ids][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[service_ids][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[service_ids][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[service_names][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[service_names][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[service_names][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[service_names][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionalities][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionalities][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionalities][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionalities][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionality_ids][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionality_ids][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionality_ids][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionality_ids][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionality_names][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionality_names][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionality_names][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[functionality_names][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[causes][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[causes][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[causes][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[causes][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[cause_ids][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[cause_ids][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[cause_ids][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[cause_ids][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[teams][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[teams][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[teams][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[teams][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[team_ids][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[team_ids][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[team_ids][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[team_ids][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[team_names][eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[team_names][not_eq]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[team_names][in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[team_names][not_in]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
             "name": "sort",
             "in": "query",
             "description": "comma separated if needed. eg: created_at,updated_at",
@@ -29737,6 +30591,151 @@
         }
       }
     },
+    "/v1/schedules/{schedule_id}/shift_coverage_requests": {
+      "parameters": [
+        {
+          "name": "schedule_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "summary": "creates shift coverage requests",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "ShiftCoverageRequests"
+        ],
+        "description": "Creates coverage requests for the shifts overlapping the requested time range. A range can span multiple consecutive shifts (e.g. across a handoff), so one or more coverage requests may be created; the response is always a list. A coverage request broadcasts to schedule members so someone can volunteer to cover the shift.",
+        "operationId": "createShiftCoverageRequest",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "without override permission, can request coverage for own shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shift_coverage_request_list"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "without override permission, cannot request coverage for another user's shift",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/new_shift_coverage_request"
+              }
+            }
+          },
+          "required": true
+        }
+      },
+      "get": {
+        "summary": "list shift coverage requests",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "ShiftCoverageRequests"
+        ],
+        "description": "List active shift coverage requests for a schedule.",
+        "operationId": "listShiftCoverageRequests",
+        "responses": {
+          "200": {
+            "description": "shift_coverage_requests listed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shift_coverage_request_list"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/shift_coverage_requests/{id}": {
+      "parameters": [
+        {
+          "name": "id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "get": {
+        "summary": "retrieves a shift coverage request",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "ShiftCoverageRequests"
+        ],
+        "description": "Retrieves a specific shift coverage request.",
+        "operationId": "getShiftCoverageRequest",
+        "responses": {
+          "200": {
+            "description": "shift_coverage_request found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shift_coverage_request_response"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "deletes a shift coverage request",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "ShiftCoverageRequests"
+        ],
+        "description": "Deletes a shift coverage request.",
+        "operationId": "deleteShiftCoverageRequest",
+        "responses": {
+          "200": {
+            "description": "shift_coverage_request deleted",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/shift_coverage_request_response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/shifts": {
       "get": {
         "summary": "List shifts",
@@ -33091,7 +34090,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "update name and role simultaneously",
+            "description": "custom role with roles_permissions can update user role (IR-5606)",
             "content": {
               "application/json": {
                 "schema": {
@@ -39762,171 +40761,6 @@
           "data",
           "links",
           "meta"
-        ]
-      },
-      "bulk_import_attributes": {
-        "type": "object",
-        "properties": {
-          "entity_type": {
-            "type": "string",
-            "enum": [
-              "Incident"
-            ],
-            "description": "Type of entity being imported"
-          },
-          "status": {
-            "type": "string",
-            "enum": [
-              "pending",
-              "validating",
-              "validation_failed",
-              "importing",
-              "indexing",
-              "completed",
-              "failed"
-            ],
-            "description": "Current status of the import"
-          },
-          "file_url": {
-            "type": "string",
-            "format": "uri",
-            "description": "URL of the JSONL file being imported"
-          },
-          "notification_email": {
-            "type": "string",
-            "format": "email",
-            "description": "Email address for notifications"
-          },
-          "total_records": {
-            "type": "integer",
-            "nullable": true,
-            "description": "Total number of records in the file"
-          },
-          "processed_records": {
-            "type": "integer",
-            "description": "Number of records processed so far"
-          },
-          "failed_records": {
-            "type": "integer",
-            "description": "Number of records that failed to import"
-          },
-          "validation_errors": {
-            "type": "object",
-            "nullable": true,
-            "description": "Validation errors encountered during validation phase"
-          },
-          "error_message": {
-            "type": "string",
-            "nullable": true,
-            "description": "Error message if import failed"
-          },
-          "progress_percentage": {
-            "type": "number",
-            "format": "float",
-            "description": "Import progress percentage (0-100)"
-          },
-          "started_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true,
-            "description": "When import processing started"
-          },
-          "completed_at": {
-            "type": "string",
-            "format": "date-time",
-            "nullable": true,
-            "description": "When import completed or failed"
-          },
-          "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "When the bulk import was created"
-          },
-          "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "When the bulk import was last updated"
-          }
-        },
-        "required": [
-          "status",
-          "processed_records",
-          "failed_records",
-          "progress_percentage"
-        ]
-      },
-      "new_bulk_import": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "attributes": {
-                "type": "object",
-                "properties": {
-                  "entity_type": {
-                    "type": "string",
-                    "enum": [
-                      "Incident"
-                    ],
-                    "description": "Type of entity to import (currently only 'Incident' is supported)"
-                  },
-                  "file_url": {
-                    "type": "string",
-                    "format": "uri",
-                    "description": "URL of the JSONL file to import. Must be accessible via HTTPS."
-                  },
-                  "notification_email": {
-                    "type": "string",
-                    "format": "email",
-                    "description": "Email address to receive import status notifications"
-                  }
-                },
-                "required": [
-                  "entity_type",
-                  "file_url",
-                  "notification_email"
-                ]
-              }
-            },
-            "required": [
-              "attributes"
-            ]
-          }
-        },
-        "required": [
-          "data"
-        ]
-      },
-      "bulk_import_response": {
-        "type": "object",
-        "properties": {
-          "data": {
-            "type": "object",
-            "properties": {
-              "id": {
-                "type": "string",
-                "format": "uuid"
-              },
-              "type": {
-                "type": "string",
-                "enum": [
-                  "bulk_import"
-                ]
-              },
-              "attributes": {
-                "$ref": "#/components/schemas/bulk_import_attributes"
-              }
-            },
-            "required": [
-              "id",
-              "type",
-              "attributes"
-            ]
-          }
-        },
-        "required": [
-          "data"
         ]
       },
       "new_catalog": {
@@ -47510,7 +48344,23 @@
                           "Samoa",
                           "Pacific/Apia",
                           "Tokelau Is.",
-                          "Pacific/Fakaofo"
+                          "Pacific/Fakaofo",
+                          "America/Adak",
+                          "America/Atka",
+                          "US/Aleutian",
+                          "America/Vancouver",
+                          "Canada/Pacific",
+                          "America/Miquelon",
+                          "Australia/Eucla",
+                          "Australia/LHI",
+                          "Australia/Lord_Howe",
+                          "Chile/EasterIsland",
+                          "Pacific/Easter",
+                          "Pacific/Gambier",
+                          "Pacific/Pitcairn",
+                          "Pacific/Marquesas",
+                          "Pacific/Kiritimati",
+                          "Pacific/Norfolk"
                         ],
                         "nullable": true
                       },
@@ -47898,7 +48748,23 @@
                           "Samoa",
                           "Pacific/Apia",
                           "Tokelau Is.",
-                          "Pacific/Fakaofo"
+                          "Pacific/Fakaofo",
+                          "America/Adak",
+                          "America/Atka",
+                          "US/Aleutian",
+                          "America/Vancouver",
+                          "Canada/Pacific",
+                          "America/Miquelon",
+                          "Australia/Eucla",
+                          "Australia/LHI",
+                          "Australia/Lord_Howe",
+                          "Chile/EasterIsland",
+                          "Pacific/Easter",
+                          "Pacific/Gambier",
+                          "Pacific/Pitcairn",
+                          "Pacific/Marquesas",
+                          "Pacific/Kiritimati",
+                          "Pacific/Norfolk"
                         ],
                         "nullable": true
                       },
@@ -48279,7 +49145,23 @@
                   "Samoa",
                   "Pacific/Apia",
                   "Tokelau Is.",
-                  "Pacific/Fakaofo"
+                  "Pacific/Fakaofo",
+                  "America/Adak",
+                  "America/Atka",
+                  "US/Aleutian",
+                  "America/Vancouver",
+                  "Canada/Pacific",
+                  "America/Miquelon",
+                  "Australia/Eucla",
+                  "Australia/LHI",
+                  "Australia/Lord_Howe",
+                  "Chile/EasterIsland",
+                  "Pacific/Easter",
+                  "Pacific/Gambier",
+                  "Pacific/Pitcairn",
+                  "Pacific/Marquesas",
+                  "Pacific/Kiritimati",
+                  "Pacific/Norfolk"
                 ],
                 "nullable": true
               },
@@ -48984,7 +49866,23 @@
                                 "Samoa",
                                 "Pacific/Apia",
                                 "Tokelau Is.",
-                                "Pacific/Fakaofo"
+                                "Pacific/Fakaofo",
+                                "America/Adak",
+                                "America/Atka",
+                                "US/Aleutian",
+                                "America/Vancouver",
+                                "Canada/Pacific",
+                                "America/Miquelon",
+                                "Australia/Eucla",
+                                "Australia/LHI",
+                                "Australia/Lord_Howe",
+                                "Chile/EasterIsland",
+                                "Pacific/Easter",
+                                "Pacific/Gambier",
+                                "Pacific/Pitcairn",
+                                "Pacific/Marquesas",
+                                "Pacific/Kiritimati",
+                                "Pacific/Norfolk"
                               ]
                             },
                             "time_blocks": {
@@ -49398,7 +50296,23 @@
                       "Samoa",
                       "Pacific/Apia",
                       "Tokelau Is.",
-                      "Pacific/Fakaofo"
+                      "Pacific/Fakaofo",
+                      "America/Adak",
+                      "America/Atka",
+                      "US/Aleutian",
+                      "America/Vancouver",
+                      "Canada/Pacific",
+                      "America/Miquelon",
+                      "Australia/Eucla",
+                      "Australia/LHI",
+                      "Australia/Lord_Howe",
+                      "Chile/EasterIsland",
+                      "Pacific/Easter",
+                      "Pacific/Gambier",
+                      "Pacific/Pitcairn",
+                      "Pacific/Marquesas",
+                      "Pacific/Kiritimati",
+                      "Pacific/Norfolk"
                     ],
                     "nullable": true
                   },
@@ -50016,7 +50930,23 @@
                                 "Samoa",
                                 "Pacific/Apia",
                                 "Tokelau Is.",
-                                "Pacific/Fakaofo"
+                                "Pacific/Fakaofo",
+                                "America/Adak",
+                                "America/Atka",
+                                "US/Aleutian",
+                                "America/Vancouver",
+                                "Canada/Pacific",
+                                "America/Miquelon",
+                                "Australia/Eucla",
+                                "Australia/LHI",
+                                "Australia/Lord_Howe",
+                                "Chile/EasterIsland",
+                                "Pacific/Easter",
+                                "Pacific/Gambier",
+                                "Pacific/Pitcairn",
+                                "Pacific/Marquesas",
+                                "Pacific/Kiritimati",
+                                "Pacific/Norfolk"
                               ]
                             },
                             "time_blocks": {
@@ -50431,7 +51361,23 @@
                       "Samoa",
                       "Pacific/Apia",
                       "Tokelau Is.",
-                      "Pacific/Fakaofo"
+                      "Pacific/Fakaofo",
+                      "America/Adak",
+                      "America/Atka",
+                      "US/Aleutian",
+                      "America/Vancouver",
+                      "Canada/Pacific",
+                      "America/Miquelon",
+                      "Australia/Eucla",
+                      "Australia/LHI",
+                      "Australia/Lord_Howe",
+                      "Chile/EasterIsland",
+                      "Pacific/Easter",
+                      "Pacific/Gambier",
+                      "Pacific/Pitcairn",
+                      "Pacific/Marquesas",
+                      "Pacific/Kiritimati",
+                      "Pacific/Norfolk"
                     ],
                     "nullable": true
                   },
@@ -51033,7 +51979,23 @@
                         "Samoa",
                         "Pacific/Apia",
                         "Tokelau Is.",
-                        "Pacific/Fakaofo"
+                        "Pacific/Fakaofo",
+                        "America/Adak",
+                        "America/Atka",
+                        "US/Aleutian",
+                        "America/Vancouver",
+                        "Canada/Pacific",
+                        "America/Miquelon",
+                        "Australia/Eucla",
+                        "Australia/LHI",
+                        "Australia/Lord_Howe",
+                        "Chile/EasterIsland",
+                        "Pacific/Easter",
+                        "Pacific/Gambier",
+                        "Pacific/Pitcairn",
+                        "Pacific/Marquesas",
+                        "Pacific/Kiritimati",
+                        "Pacific/Norfolk"
                       ]
                     },
                     "time_blocks": {
@@ -51448,7 +52410,23 @@
               "Samoa",
               "Pacific/Apia",
               "Tokelau Is.",
-              "Pacific/Fakaofo"
+              "Pacific/Fakaofo",
+              "America/Adak",
+              "America/Atka",
+              "US/Aleutian",
+              "America/Vancouver",
+              "Canada/Pacific",
+              "America/Miquelon",
+              "Australia/Eucla",
+              "Australia/LHI",
+              "Australia/Lord_Howe",
+              "Chile/EasterIsland",
+              "Pacific/Easter",
+              "Pacific/Gambier",
+              "Pacific/Pitcairn",
+              "Pacific/Marquesas",
+              "Pacific/Kiritimati",
+              "Pacific/Norfolk"
             ],
             "nullable": true
           },
@@ -55992,6 +56970,14 @@
           "mark_post_mortem_as_published": {
             "type": "boolean",
             "default": true
+          },
+          "include_overview": {
+            "type": "boolean",
+            "default": true
+          },
+          "include_timeline": {
+            "type": "boolean",
+            "default": true
           }
         },
         "required": [
@@ -56224,6 +57210,11 @@
           "parent_issue_number": {
             "type": "string",
             "description": "The parent issue number for sub-issue linking",
+            "nullable": true
+          },
+          "custom_fields_mapping": {
+            "type": "string",
+            "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
             "nullable": true
           }
         },
@@ -57422,6 +58413,11 @@
           "assign_user_email": {
             "type": "string",
             "description": "The assigned user's email"
+          },
+          "custom_fields_mapping": {
+            "type": "string",
+            "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+            "nullable": true
           }
         },
         "required": [
@@ -57492,6 +58488,11 @@
           "assign_user_email": {
             "type": "string",
             "description": "The assigned user's email"
+          },
+          "custom_fields_mapping": {
+            "type": "string",
+            "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+            "nullable": true
           }
         },
         "required": [
@@ -58448,6 +59449,14 @@
               }
             },
             "description": "The Confluence template to use"
+          },
+          "include_overview": {
+            "type": "boolean",
+            "default": true
+          },
+          "include_timeline": {
+            "type": "boolean",
+            "default": true
           }
         },
         "required": [
@@ -61864,6 +62873,11 @@
                 "type": "string"
               }
             }
+          },
+          "custom_fields_mapping": {
+            "type": "string",
+            "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+            "nullable": true
           }
         },
         "required": [
@@ -62250,6 +63264,11 @@
           "assign_user_email": {
             "type": "string",
             "description": "The assigned user's email"
+          },
+          "custom_fields_mapping": {
+            "type": "string",
+            "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+            "nullable": true
           }
         },
         "required": [
@@ -75789,6 +76808,36 @@
             "description": "Microsoft Teams team ID",
             "nullable": true
           },
+          "google_chat_space_id": {
+            "type": "string",
+            "description": "Google Chat space ID",
+            "nullable": true
+          },
+          "google_chat_space_name": {
+            "type": "string",
+            "description": "Google Chat space name",
+            "nullable": true
+          },
+          "google_chat_space_url": {
+            "type": "string",
+            "description": "Google Chat space URL",
+            "nullable": true
+          },
+          "google_chat_space_short_url": {
+            "type": "string",
+            "description": "Google Chat space short URL",
+            "nullable": true
+          },
+          "google_chat_space_archived": {
+            "type": "boolean",
+            "description": "Whether the Google Chat space is archived",
+            "nullable": true
+          },
+          "google_chat_space_domain_id": {
+            "type": "string",
+            "description": "Google Chat space domain ID",
+            "nullable": true
+          },
           "webex_meeting_id": {
             "type": "string",
             "description": "Webex meeting ID",
@@ -86071,6 +87120,250 @@
             }
           }
         }
+      },
+      "new_shift_coverage_request": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "type": {
+                "type": "string",
+                "enum": [
+                  "shift_coverage_requests"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "starts_at": {
+                    "type": "string",
+                    "description": "Start datetime of the time range to request coverage for",
+                    "format": "date-time",
+                    "nullable": false
+                  },
+                  "ends_at": {
+                    "type": "string",
+                    "description": "End datetime of the time range to request coverage for",
+                    "format": "date-time",
+                    "nullable": false
+                  },
+                  "user_id": {
+                    "type": "integer",
+                    "description": "Optional. Restrict coverage to shifts assigned to this user. When omitted, every shift overlapping the time range is covered.",
+                    "nullable": false
+                  }
+                },
+                "additionalProperties": false,
+                "required": [
+                  "starts_at",
+                  "ends_at"
+                ]
+              }
+            },
+            "required": [
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "shift_coverage_request": {
+        "type": "object",
+        "properties": {
+          "schedule_id": {
+            "type": "string",
+            "description": "ID of schedule",
+            "nullable": false
+          },
+          "shift_id": {
+            "type": "string",
+            "description": "ID of the shift being covered",
+            "nullable": false
+          },
+          "original_shift_user_id": {
+            "type": "integer",
+            "description": "ID of the user whose shift is being covered",
+            "nullable": false
+          },
+          "created_by_user_id": {
+            "type": "integer",
+            "description": "ID of the user who created the coverage request",
+            "nullable": false
+          },
+          "starts_at": {
+            "type": "string",
+            "description": "Start datetime of the coverage request",
+            "nullable": false
+          },
+          "ends_at": {
+            "type": "string",
+            "description": "End datetime of the coverage request",
+            "nullable": false
+          },
+          "created_at": {
+            "type": "string",
+            "description": "Date of creation"
+          },
+          "updated_at": {
+            "type": "string",
+            "description": "Date of last update"
+          },
+          "schedule": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/schedule_response"
+              }
+            ],
+            "description": "Schedule metadata",
+            "nullable": false
+          },
+          "shift": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/shift"
+              }
+            ],
+            "description": "Shift metadata",
+            "nullable": false
+          },
+          "original_shift_user": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/user_response"
+              }
+            ],
+            "description": "User whose shift is being covered",
+            "nullable": false
+          },
+          "created_by_user": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/user_response"
+              }
+            ],
+            "description": "User who created the coverage request",
+            "nullable": false
+          }
+        },
+        "required": [
+          "schedule_id",
+          "shift_id",
+          "original_shift_user_id",
+          "created_by_user_id",
+          "starts_at",
+          "ends_at"
+        ]
+      },
+      "shift_coverage_request_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "description": "Unique ID of the coverage request"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "shift_coverage_requests"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/shift_coverage_request"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_resource"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "shift_coverage_request_list": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string",
+                  "description": "Unique ID of the coverage request"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "shift_coverage_requests"
+                  ]
+                },
+                "attributes": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/shift_coverage_request"
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "id",
+                "type",
+                "attributes"
+              ]
+            }
+          },
+          "links": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/links"
+              }
+            ]
+          },
+          "meta": {
+            "type": "object",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/meta"
+              }
+            ]
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_resource"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
       },
       "slack_channel": {
         "type": "object",

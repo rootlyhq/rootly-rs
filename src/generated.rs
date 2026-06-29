@@ -11103,235 +11103,6 @@ pub mod types {
                 })
         }
     }
-    ///`BulkImportAttributes`
-    ///
-    /// <details><summary>JSON schema</summary>
-    ///
-    /// ```json
-    ///{
-    ///  "type": "object",
-    ///  "required": [
-    ///    "failed_records",
-    ///    "processed_records",
-    ///    "progress_percentage",
-    ///    "status"
-    ///  ],
-    ///  "properties": {
-    ///    "completed_at": {
-    ///      "description": "When import completed or failed",
-    ///      "type": [
-    ///        "string",
-    ///        "null"
-    ///      ],
-    ///      "format": "date-time"
-    ///    },
-    ///    "created_at": {
-    ///      "description": "When the bulk import was created",
-    ///      "type": "string",
-    ///      "format": "date-time"
-    ///    },
-    ///    "entity_type": {
-    ///      "description": "Type of entity being imported",
-    ///      "type": "string"
-    ///    },
-    ///    "error_message": {
-    ///      "description": "Error message if import failed",
-    ///      "type": [
-    ///        "string",
-    ///        "null"
-    ///      ]
-    ///    },
-    ///    "failed_records": {
-    ///      "description": "Number of records that failed to import",
-    ///      "type": "integer"
-    ///    },
-    ///    "file_url": {
-    ///      "description": "URL of the JSONL file being imported",
-    ///      "type": "string",
-    ///      "format": "uri"
-    ///    },
-    ///    "notification_email": {
-    ///      "description": "Email address for notifications",
-    ///      "type": "string",
-    ///      "format": "email"
-    ///    },
-    ///    "processed_records": {
-    ///      "description": "Number of records processed so far",
-    ///      "type": "integer"
-    ///    },
-    ///    "progress_percentage": {
-    ///      "description": "Import progress percentage (0-100)",
-    ///      "type": "number",
-    ///      "format": "float"
-    ///    },
-    ///    "started_at": {
-    ///      "description": "When import processing started",
-    ///      "type": [
-    ///        "string",
-    ///        "null"
-    ///      ],
-    ///      "format": "date-time"
-    ///    },
-    ///    "status": {
-    ///      "description": "Current status of the import",
-    ///      "type": "string"
-    ///    },
-    ///    "total_records": {
-    ///      "description": "Total number of records in the file",
-    ///      "type": [
-    ///        "integer",
-    ///        "null"
-    ///      ]
-    ///    },
-    ///    "updated_at": {
-    ///      "description": "When the bulk import was last updated",
-    ///      "type": "string",
-    ///      "format": "date-time"
-    ///    },
-    ///    "validation_errors": {
-    ///      "description": "Validation errors encountered during validation phase",
-    ///      "type": [
-    ///        "object",
-    ///        "null"
-    ///      ]
-    ///    }
-    ///  }
-    ///}
-    /// ```
-    /// </details>
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct BulkImportAttributes {
-        ///When import completed or failed
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub completed_at: ::std::option::Option<
-            ::chrono::DateTime<::chrono::offset::Utc>,
-        >,
-        ///When the bulk import was created
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-        ///Type of entity being imported
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub entity_type: ::std::option::Option<::std::string::String>,
-        ///Error message if import failed
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub error_message: ::std::option::Option<::std::string::String>,
-        ///Number of records that failed to import
-        pub failed_records: i64,
-        ///URL of the JSONL file being imported
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub file_url: ::std::option::Option<::std::string::String>,
-        ///Email address for notifications
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub notification_email: ::std::option::Option<::std::string::String>,
-        ///Number of records processed so far
-        pub processed_records: i64,
-        ///Import progress percentage (0-100)
-        pub progress_percentage: f32,
-        ///When import processing started
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub started_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-        ///Current status of the import
-        pub status: ::std::string::String,
-        ///Total number of records in the file
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub total_records: ::std::option::Option<i64>,
-        ///When the bulk import was last updated
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-        ///Validation errors encountered during validation phase
-        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
-        pub validation_errors: ::std::option::Option<
-            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-        >,
-    }
-    impl BulkImportAttributes {
-        pub fn builder() -> builder::BulkImportAttributes {
-            Default::default()
-        }
-    }
-    ///`BulkImportResponse`
-    ///
-    /// <details><summary>JSON schema</summary>
-    ///
-    /// ```json
-    ///{
-    ///  "type": "object",
-    ///  "required": [
-    ///    "data"
-    ///  ],
-    ///  "properties": {
-    ///    "data": {
-    ///      "type": "object",
-    ///      "required": [
-    ///        "attributes",
-    ///        "id",
-    ///        "type"
-    ///      ],
-    ///      "properties": {
-    ///        "attributes": {
-    ///          "$ref": "#/components/schemas/bulk_import_attributes"
-    ///        },
-    ///        "id": {
-    ///          "type": "string",
-    ///          "format": "uuid"
-    ///        },
-    ///        "type": {
-    ///          "type": "string"
-    ///        }
-    ///      }
-    ///    }
-    ///  }
-    ///}
-    /// ```
-    /// </details>
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct BulkImportResponse {
-        pub data: BulkImportResponseData,
-    }
-    impl BulkImportResponse {
-        pub fn builder() -> builder::BulkImportResponse {
-            Default::default()
-        }
-    }
-    ///`BulkImportResponseData`
-    ///
-    /// <details><summary>JSON schema</summary>
-    ///
-    /// ```json
-    ///{
-    ///  "type": "object",
-    ///  "required": [
-    ///    "attributes",
-    ///    "id",
-    ///    "type"
-    ///  ],
-    ///  "properties": {
-    ///    "attributes": {
-    ///      "$ref": "#/components/schemas/bulk_import_attributes"
-    ///    },
-    ///    "id": {
-    ///      "type": "string",
-    ///      "format": "uuid"
-    ///    },
-    ///    "type": {
-    ///      "type": "string"
-    ///    }
-    ///  }
-    ///}
-    /// ```
-    /// </details>
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct BulkImportResponseData {
-        pub attributes: BulkImportAttributes,
-        pub id: ::uuid::Uuid,
-        #[serde(rename = "type")]
-        pub type_: ::std::string::String,
-    }
-    impl BulkImportResponseData {
-        pub fn builder() -> builder::BulkImportResponseData {
-            Default::default()
-        }
-    }
     ///`BulkUpsertCatalogEntities`
     ///
     /// <details><summary>JSON schema</summary>
@@ -18577,6 +18348,14 @@ pub mod types {
     ///      "description": "The page content",
     ///      "type": "string"
     ///    },
+    ///    "include_overview": {
+    ///      "default": true,
+    ///      "type": "boolean"
+    ///    },
+    ///    "include_timeline": {
+    ///      "default": true,
+    ///      "type": "boolean"
+    ///    },
     ///    "integration": {
     ///      "description": "Specify integration id if you have more than one Confluence instance",
     ///      "type": "object",
@@ -18637,6 +18416,10 @@ pub mod types {
         ///The page content
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub content: ::std::option::Option<::std::string::String>,
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub include_overview: bool,
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub include_timeline: bool,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub integration: ::std::option::Option<
             CreateConfluencePageTaskParamsIntegration,
@@ -19739,6 +19522,13 @@ pub mod types {
     ///      "description": "The issue body",
     ///      "type": "string"
     ///    },
+    ///    "custom_fields_mapping": {
+    ///      "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "issue_type": {
     ///      "description": "The issue type",
     ///      "type": "object",
@@ -19800,6 +19590,9 @@ pub mod types {
         ///The issue body
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub body: ::std::option::Option<::std::string::String>,
+        ///Custom field mappings. Can contain liquid markup and need to be valid JSON
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub custom_fields_mapping: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub issue_type: ::std::option::Option<CreateGithubIssueTaskParamsIssueType>,
         ///The issue labels
@@ -22030,6 +21823,13 @@ pub mod types {
     ///      "description": "The assigned user's email",
     ///      "type": "string"
     ///    },
+    ///    "custom_fields_mapping": {
+    ///      "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "description": {
     ///      "description": "The issue description",
     ///      "type": "string"
@@ -22112,6 +21912,9 @@ pub mod types {
         ///The assigned user's email
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub assign_user_email: ::std::option::Option<::std::string::String>,
+        ///Custom field mappings. Can contain liquid markup and need to be valid JSON
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub custom_fields_mapping: ::std::option::Option<::std::string::String>,
         ///The issue description
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
@@ -22344,6 +22147,13 @@ pub mod types {
     ///      "description": "The assigned user's email",
     ///      "type": "string"
     ///    },
+    ///    "custom_fields_mapping": {
+    ///      "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "description": {
     ///      "description": "The issue description",
     ///      "type": "string"
@@ -22406,6 +22216,9 @@ pub mod types {
         ///The assigned user's email
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub assign_user_email: ::std::option::Option<::std::string::String>,
+        ///Custom field mappings. Can contain liquid markup and need to be valid JSON
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub custom_fields_mapping: ::std::option::Option<::std::string::String>,
         ///The issue description
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
@@ -37004,6 +36817,48 @@ pub mod types {
     ///        "null"
     ///      ]
     ///    },
+    ///    "google_chat_space_archived": {
+    ///      "description": "Whether the Google Chat space is archived",
+    ///      "type": [
+    ///        "boolean",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "google_chat_space_domain_id": {
+    ///      "description": "Google Chat space domain ID",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "google_chat_space_id": {
+    ///      "description": "Google Chat space ID",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "google_chat_space_name": {
+    ///      "description": "Google Chat space name",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "google_chat_space_short_url": {
+    ///      "description": "Google Chat space short URL",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "google_chat_space_url": {
+    ///      "description": "Google Chat space URL",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "google_drive_id": {
     ///      "description": "Google Drive document ID",
     ///      "type": [
@@ -37826,6 +37681,24 @@ pub mod types {
         ///GitLab issue URL
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub gitlab_issue_url: ::std::option::Option<::std::string::String>,
+        ///Whether the Google Chat space is archived
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub google_chat_space_archived: ::std::option::Option<bool>,
+        ///Google Chat space domain ID
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub google_chat_space_domain_id: ::std::option::Option<::std::string::String>,
+        ///Google Chat space ID
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub google_chat_space_id: ::std::option::Option<::std::string::String>,
+        ///Google Chat space name
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub google_chat_space_name: ::std::option::Option<::std::string::String>,
+        ///Google Chat space short URL
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub google_chat_space_short_url: ::std::option::Option<::std::string::String>,
+        ///Google Chat space URL
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub google_chat_space_url: ::std::option::Option<::std::string::String>,
         ///Google Drive document ID
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub google_drive_id: ::std::option::Option<::std::string::String>,
@@ -52940,155 +52813,6 @@ pub mod types {
     }
     impl NewAuthorizationDataAttributes {
         pub fn builder() -> builder::NewAuthorizationDataAttributes {
-            Default::default()
-        }
-    }
-    ///`NewBulkImport`
-    ///
-    /// <details><summary>JSON schema</summary>
-    ///
-    /// ```json
-    ///{
-    ///  "type": "object",
-    ///  "required": [
-    ///    "data"
-    ///  ],
-    ///  "properties": {
-    ///    "data": {
-    ///      "type": "object",
-    ///      "required": [
-    ///        "attributes"
-    ///      ],
-    ///      "properties": {
-    ///        "attributes": {
-    ///          "type": "object",
-    ///          "required": [
-    ///            "entity_type",
-    ///            "file_url",
-    ///            "notification_email"
-    ///          ],
-    ///          "properties": {
-    ///            "entity_type": {
-    ///              "description": "Type of entity to import (currently only 'Incident' is supported)",
-    ///              "type": "string"
-    ///            },
-    ///            "file_url": {
-    ///              "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
-    ///              "type": "string",
-    ///              "format": "uri"
-    ///            },
-    ///            "notification_email": {
-    ///              "description": "Email address to receive import status notifications",
-    ///              "type": "string",
-    ///              "format": "email"
-    ///            }
-    ///          }
-    ///        }
-    ///      }
-    ///    }
-    ///  }
-    ///}
-    /// ```
-    /// </details>
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct NewBulkImport {
-        pub data: NewBulkImportData,
-    }
-    impl NewBulkImport {
-        pub fn builder() -> builder::NewBulkImport {
-            Default::default()
-        }
-    }
-    ///`NewBulkImportData`
-    ///
-    /// <details><summary>JSON schema</summary>
-    ///
-    /// ```json
-    ///{
-    ///  "type": "object",
-    ///  "required": [
-    ///    "attributes"
-    ///  ],
-    ///  "properties": {
-    ///    "attributes": {
-    ///      "type": "object",
-    ///      "required": [
-    ///        "entity_type",
-    ///        "file_url",
-    ///        "notification_email"
-    ///      ],
-    ///      "properties": {
-    ///        "entity_type": {
-    ///          "description": "Type of entity to import (currently only 'Incident' is supported)",
-    ///          "type": "string"
-    ///        },
-    ///        "file_url": {
-    ///          "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
-    ///          "type": "string",
-    ///          "format": "uri"
-    ///        },
-    ///        "notification_email": {
-    ///          "description": "Email address to receive import status notifications",
-    ///          "type": "string",
-    ///          "format": "email"
-    ///        }
-    ///      }
-    ///    }
-    ///  }
-    ///}
-    /// ```
-    /// </details>
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct NewBulkImportData {
-        pub attributes: NewBulkImportDataAttributes,
-    }
-    impl NewBulkImportData {
-        pub fn builder() -> builder::NewBulkImportData {
-            Default::default()
-        }
-    }
-    ///`NewBulkImportDataAttributes`
-    ///
-    /// <details><summary>JSON schema</summary>
-    ///
-    /// ```json
-    ///{
-    ///  "type": "object",
-    ///  "required": [
-    ///    "entity_type",
-    ///    "file_url",
-    ///    "notification_email"
-    ///  ],
-    ///  "properties": {
-    ///    "entity_type": {
-    ///      "description": "Type of entity to import (currently only 'Incident' is supported)",
-    ///      "type": "string"
-    ///    },
-    ///    "file_url": {
-    ///      "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
-    ///      "type": "string",
-    ///      "format": "uri"
-    ///    },
-    ///    "notification_email": {
-    ///      "description": "Email address to receive import status notifications",
-    ///      "type": "string",
-    ///      "format": "email"
-    ///    }
-    ///  }
-    ///}
-    /// ```
-    /// </details>
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct NewBulkImportDataAttributes {
-        ///Type of entity to import (currently only 'Incident' is supported)
-        pub entity_type: ::std::string::String,
-        ///URL of the JSONL file to import. Must be accessible via HTTPS.
-        pub file_url: ::std::string::String,
-        ///Email address to receive import status notifications
-        pub notification_email: ::std::string::String,
-    }
-    impl NewBulkImportDataAttributes {
-        pub fn builder() -> builder::NewBulkImportDataAttributes {
             Default::default()
         }
     }
@@ -79073,6 +78797,166 @@ pub mod types {
     }
     impl NewSeverityDataAttributesSlackChannelsItem {
         pub fn builder() -> builder::NewSeverityDataAttributesSlackChannelsItem {
+            Default::default()
+        }
+    }
+    ///`NewShiftCoverageRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "ends_at",
+    ///            "starts_at"
+    ///          ],
+    ///          "properties": {
+    ///            "ends_at": {
+    ///              "description": "End datetime of the time range to request coverage for",
+    ///              "type": "string",
+    ///              "format": "date-time"
+    ///            },
+    ///            "starts_at": {
+    ///              "description": "Start datetime of the time range to request coverage for",
+    ///              "type": "string",
+    ///              "format": "date-time"
+    ///            },
+    ///            "user_id": {
+    ///              "description": "Optional. Restrict coverage to shifts assigned to this user. When omitted, every shift overlapping the time range is covered.",
+    ///              "type": "integer"
+    ///            }
+    ///          },
+    ///          "additionalProperties": false
+    ///        },
+    ///        "type": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewShiftCoverageRequest {
+        pub data: NewShiftCoverageRequestData,
+    }
+    impl NewShiftCoverageRequest {
+        pub fn builder() -> builder::NewShiftCoverageRequest {
+            Default::default()
+        }
+    }
+    ///`NewShiftCoverageRequestData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "ends_at",
+    ///        "starts_at"
+    ///      ],
+    ///      "properties": {
+    ///        "ends_at": {
+    ///          "description": "End datetime of the time range to request coverage for",
+    ///          "type": "string",
+    ///          "format": "date-time"
+    ///        },
+    ///        "starts_at": {
+    ///          "description": "Start datetime of the time range to request coverage for",
+    ///          "type": "string",
+    ///          "format": "date-time"
+    ///        },
+    ///        "user_id": {
+    ///          "description": "Optional. Restrict coverage to shifts assigned to this user. When omitted, every shift overlapping the time range is covered.",
+    ///          "type": "integer"
+    ///        }
+    ///      },
+    ///      "additionalProperties": false
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewShiftCoverageRequestData {
+        pub attributes: NewShiftCoverageRequestDataAttributes,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl NewShiftCoverageRequestData {
+        pub fn builder() -> builder::NewShiftCoverageRequestData {
+            Default::default()
+        }
+    }
+    ///`NewShiftCoverageRequestDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "ends_at",
+    ///    "starts_at"
+    ///  ],
+    ///  "properties": {
+    ///    "ends_at": {
+    ///      "description": "End datetime of the time range to request coverage for",
+    ///      "type": "string",
+    ///      "format": "date-time"
+    ///    },
+    ///    "starts_at": {
+    ///      "description": "Start datetime of the time range to request coverage for",
+    ///      "type": "string",
+    ///      "format": "date-time"
+    ///    },
+    ///    "user_id": {
+    ///      "description": "Optional. Restrict coverage to shifts assigned to this user. When omitted, every shift overlapping the time range is covered.",
+    ///      "type": "integer"
+    ///    }
+    ///  },
+    ///  "additionalProperties": false
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewShiftCoverageRequestDataAttributes {
+        ///End datetime of the time range to request coverage for
+        pub ends_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Start datetime of the time range to request coverage for
+        pub starts_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Optional. Restrict coverage to shifts assigned to this user. When omitted, every shift overlapping the time range is covered.
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub user_id: ::std::option::Option<i64>,
+    }
+    impl NewShiftCoverageRequestDataAttributes {
+        pub fn builder() -> builder::NewShiftCoverageRequestDataAttributes {
             Default::default()
         }
     }
@@ -105181,6 +105065,359 @@ pub mod types {
             Default::default()
         }
     }
+    ///`ShiftCoverageRequest`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "created_by_user_id",
+    ///    "ends_at",
+    ///    "original_shift_user_id",
+    ///    "schedule_id",
+    ///    "shift_id",
+    ///    "starts_at"
+    ///  ],
+    ///  "properties": {
+    ///    "created_at": {
+    ///      "description": "Date of creation",
+    ///      "type": "string"
+    ///    },
+    ///    "created_by_user": {
+    ///      "description": "User who created the coverage request",
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/user_response"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "created_by_user_id": {
+    ///      "description": "ID of the user who created the coverage request",
+    ///      "type": "integer"
+    ///    },
+    ///    "ends_at": {
+    ///      "description": "End datetime of the coverage request",
+    ///      "type": "string"
+    ///    },
+    ///    "original_shift_user": {
+    ///      "description": "User whose shift is being covered",
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/user_response"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "original_shift_user_id": {
+    ///      "description": "ID of the user whose shift is being covered",
+    ///      "type": "integer"
+    ///    },
+    ///    "schedule": {
+    ///      "description": "Schedule metadata",
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/schedule_response"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "schedule_id": {
+    ///      "description": "ID of schedule",
+    ///      "type": "string"
+    ///    },
+    ///    "shift": {
+    ///      "description": "Shift metadata",
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/shift"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "shift_id": {
+    ///      "description": "ID of the shift being covered",
+    ///      "type": "string"
+    ///    },
+    ///    "starts_at": {
+    ///      "description": "Start datetime of the coverage request",
+    ///      "type": "string"
+    ///    },
+    ///    "updated_at": {
+    ///      "description": "Date of last update",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ShiftCoverageRequest {
+        ///Date of creation
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::std::string::String>,
+        ///User who created the coverage request
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by_user: ::std::option::Option<UserResponse>,
+        ///ID of the user who created the coverage request
+        pub created_by_user_id: i64,
+        ///End datetime of the coverage request
+        pub ends_at: ::std::string::String,
+        ///User whose shift is being covered
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub original_shift_user: ::std::option::Option<UserResponse>,
+        ///ID of the user whose shift is being covered
+        pub original_shift_user_id: i64,
+        ///Schedule metadata
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule: ::std::option::Option<ScheduleResponse>,
+        ///ID of schedule
+        pub schedule_id: ::std::string::String,
+        ///Shift metadata
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub shift: ::std::option::Option<Shift>,
+        ///ID of the shift being covered
+        pub shift_id: ::std::string::String,
+        ///Start datetime of the coverage request
+        pub starts_at: ::std::string::String,
+        ///Date of last update
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::std::string::String>,
+    }
+    impl ShiftCoverageRequest {
+        pub fn builder() -> builder::ShiftCoverageRequest {
+            Default::default()
+        }
+    }
+    ///`ShiftCoverageRequestList`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "type": "object",
+    ///        "required": [
+    ///          "attributes",
+    ///          "id",
+    ///          "type"
+    ///        ],
+    ///        "properties": {
+    ///          "attributes": {
+    ///            "type": "object",
+    ///            "allOf": [
+    ///              {
+    ///                "$ref": "#/components/schemas/shift_coverage_request"
+    ///              }
+    ///            ]
+    ///          },
+    ///          "id": {
+    ///            "description": "Unique ID of the coverage request",
+    ///            "type": "string"
+    ///          },
+    ///          "type": {
+    ///            "type": "string"
+    ///          }
+    ///        }
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/jsonapi_included_resource"
+    ///      }
+    ///    },
+    ///    "links": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/links"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "meta": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/meta"
+    ///        }
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ShiftCoverageRequestList {
+        pub data: ::std::vec::Vec<ShiftCoverageRequestListDataItem>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<JsonapiIncludedResource>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub links: ::std::option::Option<Links>,
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<Meta>,
+    }
+    impl ShiftCoverageRequestList {
+        pub fn builder() -> builder::ShiftCoverageRequestList {
+            Default::default()
+        }
+    }
+    ///`ShiftCoverageRequestListDataItem`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/shift_coverage_request"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "id": {
+    ///      "description": "Unique ID of the coverage request",
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ShiftCoverageRequestListDataItem {
+        pub attributes: ShiftCoverageRequest,
+        ///Unique ID of the coverage request
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ShiftCoverageRequestListDataItem {
+        pub fn builder() -> builder::ShiftCoverageRequestListDataItem {
+            Default::default()
+        }
+    }
+    ///`ShiftCoverageRequestResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "allOf": [
+    ///            {
+    ///              "$ref": "#/components/schemas/shift_coverage_request"
+    ///            }
+    ///          ]
+    ///        },
+    ///        "id": {
+    ///          "description": "Unique ID of the coverage request",
+    ///          "type": "string"
+    ///        },
+    ///        "type": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/jsonapi_included_resource"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ShiftCoverageRequestResponse {
+        pub data: ShiftCoverageRequestResponseData,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<JsonapiIncludedResource>,
+    }
+    impl ShiftCoverageRequestResponse {
+        pub fn builder() -> builder::ShiftCoverageRequestResponse {
+            Default::default()
+        }
+    }
+    ///`ShiftCoverageRequestResponseData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "allOf": [
+    ///        {
+    ///          "$ref": "#/components/schemas/shift_coverage_request"
+    ///        }
+    ///      ]
+    ///    },
+    ///    "id": {
+    ///      "description": "Unique ID of the coverage request",
+    ///      "type": "string"
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ShiftCoverageRequestResponseData {
+        pub attributes: ShiftCoverageRequest,
+        ///Unique ID of the coverage request
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ShiftCoverageRequestResponseData {
+        pub fn builder() -> builder::ShiftCoverageRequestResponseData {
+            Default::default()
+        }
+    }
     ///`ShiftList`
     ///
     /// <details><summary>JSON schema</summary>
@@ -119680,6 +119917,14 @@ pub mod types {
     ///      "description": "The Confluence page ID",
     ///      "type": "string"
     ///    },
+    ///    "include_overview": {
+    ///      "default": true,
+    ///      "type": "boolean"
+    ///    },
+    ///    "include_timeline": {
+    ///      "default": true,
+    ///      "type": "boolean"
+    ///    },
     ///    "integration": {
     ///      "description": "Specify integration id if you have more than one Confluence instance",
     ///      "type": "object",
@@ -119726,6 +119971,10 @@ pub mod types {
         pub content: ::std::option::Option<::std::string::String>,
         ///The Confluence page ID
         pub file_id: ::std::string::String,
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub include_overview: bool,
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub include_timeline: bool,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub integration: ::std::option::Option<
             UpdateConfluencePageTaskParamsIntegration,
@@ -127962,6 +128211,13 @@ pub mod types {
     ///        }
     ///      }
     ///    },
+    ///    "custom_fields_mapping": {
+    ///      "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "issue_id": {
     ///      "description": "The issue id",
     ///      "type": "string"
@@ -128027,6 +128283,9 @@ pub mod types {
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub body: ::std::option::Option<::std::string::String>,
         pub completion: UpdateGithubIssueTaskParamsCompletion,
+        ///Custom field mappings. Can contain liquid markup and need to be valid JSON
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub custom_fields_mapping: ::std::option::Option<::std::string::String>,
         ///The issue id
         pub issue_id: ::std::string::String,
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
@@ -135517,6 +135776,13 @@ pub mod types {
     ///      "description": "The assigned user's email",
     ///      "type": "string"
     ///    },
+    ///    "custom_fields_mapping": {
+    ///      "description": "Custom field mappings. Can contain liquid markup and need to be valid JSON",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
     ///    "description": {
     ///      "description": "The issue description",
     ///      "type": "string"
@@ -135594,6 +135860,9 @@ pub mod types {
         ///The assigned user's email
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub assign_user_email: ::std::option::Option<::std::string::String>,
+        ///Custom field mappings. Can contain liquid markup and need to be valid JSON
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub custom_fields_mapping: ::std::option::Option<::std::string::String>,
         ///The issue description
         #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
@@ -179078,435 +179347,6 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
-        pub struct BulkImportAttributes {
-            completed_at: ::std::result::Result<
-                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                ::std::string::String,
-            >,
-            created_at: ::std::result::Result<
-                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                ::std::string::String,
-            >,
-            entity_type: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            error_message: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            failed_records: ::std::result::Result<i64, ::std::string::String>,
-            file_url: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            notification_email: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            processed_records: ::std::result::Result<i64, ::std::string::String>,
-            progress_percentage: ::std::result::Result<f32, ::std::string::String>,
-            started_at: ::std::result::Result<
-                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                ::std::string::String,
-            >,
-            status: ::std::result::Result<::std::string::String, ::std::string::String>,
-            total_records: ::std::result::Result<
-                ::std::option::Option<i64>,
-                ::std::string::String,
-            >,
-            updated_at: ::std::result::Result<
-                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                ::std::string::String,
-            >,
-            validation_errors: ::std::result::Result<
-                ::std::option::Option<
-                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-                >,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for BulkImportAttributes {
-            fn default() -> Self {
-                Self {
-                    completed_at: Ok(Default::default()),
-                    created_at: Ok(Default::default()),
-                    entity_type: Ok(Default::default()),
-                    error_message: Ok(Default::default()),
-                    failed_records: Err(
-                        "no value supplied for failed_records".to_string(),
-                    ),
-                    file_url: Ok(Default::default()),
-                    notification_email: Ok(Default::default()),
-                    processed_records: Err(
-                        "no value supplied for processed_records".to_string(),
-                    ),
-                    progress_percentage: Err(
-                        "no value supplied for progress_percentage".to_string(),
-                    ),
-                    started_at: Ok(Default::default()),
-                    status: Err("no value supplied for status".to_string()),
-                    total_records: Ok(Default::default()),
-                    updated_at: Ok(Default::default()),
-                    validation_errors: Ok(Default::default()),
-                }
-            }
-        }
-        impl BulkImportAttributes {
-            pub fn completed_at<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.completed_at = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for completed_at: {e}")
-                    });
-                self
-            }
-            pub fn created_at<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.created_at = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for created_at: {e}")
-                    });
-                self
-            }
-            pub fn entity_type<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.entity_type = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for entity_type: {e}")
-                    });
-                self
-            }
-            pub fn error_message<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.error_message = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for error_message: {e}")
-                    });
-                self
-            }
-            pub fn failed_records<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<i64>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.failed_records = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for failed_records: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn file_url<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.file_url = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for file_url: {e}")
-                    });
-                self
-            }
-            pub fn notification_email<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.notification_email = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for notification_email: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn processed_records<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<i64>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.processed_records = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for processed_records: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn progress_percentage<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<f32>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.progress_percentage = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for progress_percentage: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn started_at<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.started_at = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for started_at: {e}")
-                    });
-                self
-            }
-            pub fn status<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.status = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for status: {e}")
-                    });
-                self
-            }
-            pub fn total_records<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<i64>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.total_records = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for total_records: {e}")
-                    });
-                self
-            }
-            pub fn updated_at<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.updated_at = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for updated_at: {e}")
-                    });
-                self
-            }
-            pub fn validation_errors<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-                    >,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.validation_errors = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for validation_errors: {e}"
-                        )
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<BulkImportAttributes>
-        for super::BulkImportAttributes {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: BulkImportAttributes,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    completed_at: value.completed_at?,
-                    created_at: value.created_at?,
-                    entity_type: value.entity_type?,
-                    error_message: value.error_message?,
-                    failed_records: value.failed_records?,
-                    file_url: value.file_url?,
-                    notification_email: value.notification_email?,
-                    processed_records: value.processed_records?,
-                    progress_percentage: value.progress_percentage?,
-                    started_at: value.started_at?,
-                    status: value.status?,
-                    total_records: value.total_records?,
-                    updated_at: value.updated_at?,
-                    validation_errors: value.validation_errors?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::BulkImportAttributes> for BulkImportAttributes {
-            fn from(value: super::BulkImportAttributes) -> Self {
-                Self {
-                    completed_at: Ok(value.completed_at),
-                    created_at: Ok(value.created_at),
-                    entity_type: Ok(value.entity_type),
-                    error_message: Ok(value.error_message),
-                    failed_records: Ok(value.failed_records),
-                    file_url: Ok(value.file_url),
-                    notification_email: Ok(value.notification_email),
-                    processed_records: Ok(value.processed_records),
-                    progress_percentage: Ok(value.progress_percentage),
-                    started_at: Ok(value.started_at),
-                    status: Ok(value.status),
-                    total_records: Ok(value.total_records),
-                    updated_at: Ok(value.updated_at),
-                    validation_errors: Ok(value.validation_errors),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct BulkImportResponse {
-            data: ::std::result::Result<
-                super::BulkImportResponseData,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for BulkImportResponse {
-            fn default() -> Self {
-                Self {
-                    data: Err("no value supplied for data".to_string()),
-                }
-            }
-        }
-        impl BulkImportResponse {
-            pub fn data<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<super::BulkImportResponseData>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.data = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for data: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<BulkImportResponse> for super::BulkImportResponse {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: BulkImportResponse,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { data: value.data? })
-            }
-        }
-        impl ::std::convert::From<super::BulkImportResponse> for BulkImportResponse {
-            fn from(value: super::BulkImportResponse) -> Self {
-                Self { data: Ok(value.data) }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct BulkImportResponseData {
-            attributes: ::std::result::Result<
-                super::BulkImportAttributes,
-                ::std::string::String,
-            >,
-            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
-            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
-        }
-        impl ::std::default::Default for BulkImportResponseData {
-            fn default() -> Self {
-                Self {
-                    attributes: Err("no value supplied for attributes".to_string()),
-                    id: Err("no value supplied for id".to_string()),
-                    type_: Err("no value supplied for type_".to_string()),
-                }
-            }
-        }
-        impl BulkImportResponseData {
-            pub fn attributes<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<super::BulkImportAttributes>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.attributes = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for attributes: {e}")
-                    });
-                self
-            }
-            pub fn id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::uuid::Uuid>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.id = value
-                    .try_into()
-                    .map_err(|e| format!("error converting supplied value for id: {e}"));
-                self
-            }
-            pub fn type_<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.type_ = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for type_: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<BulkImportResponseData>
-        for super::BulkImportResponseData {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: BulkImportResponseData,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    attributes: value.attributes?,
-                    id: value.id?,
-                    type_: value.type_?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::BulkImportResponseData>
-        for BulkImportResponseData {
-            fn from(value: super::BulkImportResponseData) -> Self {
-                Self {
-                    attributes: Ok(value.attributes),
-                    id: Ok(value.id),
-                    type_: Ok(value.type_),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
         pub struct BulkUpsertCatalogEntities {
             entities: ::std::result::Result<
                 ::std::vec::Vec<super::BulkUpsertCatalogEntitiesEntitiesItem>,
@@ -190456,6 +190296,8 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            include_overview: ::std::result::Result<bool, ::std::string::String>,
+            include_timeline: ::std::result::Result<bool, ::std::string::String>,
             integration: ::std::result::Result<
                 ::std::option::Option<super::CreateConfluencePageTaskParamsIntegration>,
                 ::std::string::String,
@@ -190487,6 +190329,8 @@ pub mod types {
                 Self {
                     ancestor: Ok(Default::default()),
                     content: Ok(Default::default()),
+                    include_overview: Ok(super::defaults::default_bool::<true>()),
+                    include_timeline: Ok(super::defaults::default_bool::<true>()),
                     integration: Ok(Default::default()),
                     mark_post_mortem_as_published: Ok(
                         super::defaults::default_bool::<true>(),
@@ -190523,6 +190367,34 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for content: {e}")
+                    });
+                self
+            }
+            pub fn include_overview<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.include_overview = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for include_overview: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn include_timeline<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.include_timeline = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for include_timeline: {e}"
+                        )
                     });
                 self
             }
@@ -190630,6 +190502,8 @@ pub mod types {
                 Ok(Self {
                     ancestor: value.ancestor?,
                     content: value.content?,
+                    include_overview: value.include_overview?,
+                    include_timeline: value.include_timeline?,
                     integration: value.integration?,
                     mark_post_mortem_as_published: value.mark_post_mortem_as_published?,
                     post_mortem_template_id: value.post_mortem_template_id?,
@@ -190646,6 +190520,8 @@ pub mod types {
                 Self {
                     ancestor: Ok(value.ancestor),
                     content: Ok(value.content),
+                    include_overview: Ok(value.include_overview),
+                    include_timeline: Ok(value.include_timeline),
                     integration: Ok(value.integration),
                     mark_post_mortem_as_published: Ok(
                         value.mark_post_mortem_as_published,
@@ -192145,6 +192021,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            custom_fields_mapping: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             issue_type: ::std::result::Result<
                 ::std::option::Option<super::CreateGithubIssueTaskParamsIssueType>,
                 ::std::string::String,
@@ -192171,6 +192051,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     body: Ok(Default::default()),
+                    custom_fields_mapping: Ok(Default::default()),
                     issue_type: Ok(Default::default()),
                     labels: Ok(Default::default()),
                     parent_issue_number: Ok(Default::default()),
@@ -192190,6 +192071,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for body: {e}")
+                    });
+                self
+            }
+            pub fn custom_fields_mapping<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.custom_fields_mapping = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for custom_fields_mapping: {e}"
+                        )
                     });
                 self
             }
@@ -192280,6 +192175,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     body: value.body?,
+                    custom_fields_mapping: value.custom_fields_mapping?,
                     issue_type: value.issue_type?,
                     labels: value.labels?,
                     parent_issue_number: value.parent_issue_number?,
@@ -192294,6 +192190,7 @@ pub mod types {
             fn from(value: super::CreateGithubIssueTaskParams) -> Self {
                 Self {
                     body: Ok(value.body),
+                    custom_fields_mapping: Ok(value.custom_fields_mapping),
                     issue_type: Ok(value.issue_type),
                     labels: Ok(value.labels),
                     parent_issue_number: Ok(value.parent_issue_number),
@@ -196511,6 +196408,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            custom_fields_mapping: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             description: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -196545,6 +196446,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     assign_user_email: Ok(Default::default()),
+                    custom_fields_mapping: Ok(Default::default()),
                     description: Ok(Default::default()),
                     labels: Ok(Default::default()),
                     priority: Ok(Default::default()),
@@ -196567,6 +196469,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for assign_user_email: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn custom_fields_mapping<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.custom_fields_mapping = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for custom_fields_mapping: {e}"
                         )
                     });
                 self
@@ -196682,6 +196598,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     assign_user_email: value.assign_user_email?,
+                    custom_fields_mapping: value.custom_fields_mapping?,
                     description: value.description?,
                     labels: value.labels?,
                     priority: value.priority?,
@@ -196698,6 +196615,7 @@ pub mod types {
             fn from(value: super::CreateLinearIssueTaskParams) -> Self {
                 Self {
                     assign_user_email: Ok(value.assign_user_email),
+                    custom_fields_mapping: Ok(value.custom_fields_mapping),
                     description: Ok(value.description),
                     labels: Ok(value.labels),
                     priority: Ok(value.priority),
@@ -197035,6 +196953,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            custom_fields_mapping: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             description: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -197065,6 +196987,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     assign_user_email: Ok(Default::default()),
+                    custom_fields_mapping: Ok(Default::default()),
                     description: Ok(Default::default()),
                     labels: Ok(Default::default()),
                     parent_issue_id: Err(
@@ -197088,6 +197011,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for assign_user_email: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn custom_fields_mapping<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.custom_fields_mapping = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for custom_fields_mapping: {e}"
                         )
                     });
                 self
@@ -197195,6 +197132,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     assign_user_email: value.assign_user_email?,
+                    custom_fields_mapping: value.custom_fields_mapping?,
                     description: value.description?,
                     labels: value.labels?,
                     parent_issue_id: value.parent_issue_id?,
@@ -197210,6 +197148,7 @@ pub mod types {
             fn from(value: super::CreateLinearSubtaskIssueTaskParams) -> Self {
                 Self {
                     assign_user_email: Ok(value.assign_user_email),
+                    custom_fields_mapping: Ok(value.custom_fields_mapping),
                     description: Ok(value.description),
                     labels: Ok(value.labels),
                     parent_issue_id: Ok(value.parent_issue_id),
@@ -218708,6 +218647,30 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            google_chat_space_archived: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            google_chat_space_domain_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            google_chat_space_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            google_chat_space_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            google_chat_space_short_url: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            google_chat_space_url: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             google_drive_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -219143,6 +219106,12 @@ pub mod types {
                     github_issue_url: Ok(Default::default()),
                     gitlab_issue_id: Ok(Default::default()),
                     gitlab_issue_url: Ok(Default::default()),
+                    google_chat_space_archived: Ok(Default::default()),
+                    google_chat_space_domain_id: Ok(Default::default()),
+                    google_chat_space_id: Ok(Default::default()),
+                    google_chat_space_name: Ok(Default::default()),
+                    google_chat_space_short_url: Ok(Default::default()),
+                    google_chat_space_url: Ok(Default::default()),
                     google_drive_id: Ok(Default::default()),
                     google_drive_parent_id: Ok(Default::default()),
                     google_drive_url: Ok(Default::default()),
@@ -219671,6 +219640,90 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for gitlab_issue_url: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn google_chat_space_archived<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.google_chat_space_archived = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for google_chat_space_archived: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn google_chat_space_domain_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.google_chat_space_domain_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for google_chat_space_domain_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn google_chat_space_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.google_chat_space_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for google_chat_space_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn google_chat_space_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.google_chat_space_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for google_chat_space_name: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn google_chat_space_short_url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.google_chat_space_short_url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for google_chat_space_short_url: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn google_chat_space_url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.google_chat_space_url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for google_chat_space_url: {e}"
                         )
                     });
                 self
@@ -221063,6 +221116,12 @@ pub mod types {
                     github_issue_url: value.github_issue_url?,
                     gitlab_issue_id: value.gitlab_issue_id?,
                     gitlab_issue_url: value.gitlab_issue_url?,
+                    google_chat_space_archived: value.google_chat_space_archived?,
+                    google_chat_space_domain_id: value.google_chat_space_domain_id?,
+                    google_chat_space_id: value.google_chat_space_id?,
+                    google_chat_space_name: value.google_chat_space_name?,
+                    google_chat_space_short_url: value.google_chat_space_short_url?,
+                    google_chat_space_url: value.google_chat_space_url?,
                     google_drive_id: value.google_drive_id?,
                     google_drive_parent_id: value.google_drive_parent_id?,
                     google_drive_url: value.google_drive_url?,
@@ -221200,6 +221259,12 @@ pub mod types {
                     github_issue_url: Ok(value.github_issue_url),
                     gitlab_issue_id: Ok(value.gitlab_issue_id),
                     gitlab_issue_url: Ok(value.gitlab_issue_url),
+                    google_chat_space_archived: Ok(value.google_chat_space_archived),
+                    google_chat_space_domain_id: Ok(value.google_chat_space_domain_id),
+                    google_chat_space_id: Ok(value.google_chat_space_id),
+                    google_chat_space_name: Ok(value.google_chat_space_name),
+                    google_chat_space_short_url: Ok(value.google_chat_space_short_url),
+                    google_chat_space_url: Ok(value.google_chat_space_url),
                     google_drive_id: Ok(value.google_drive_id),
                     google_drive_parent_id: Ok(value.google_drive_parent_id),
                     google_drive_url: Ok(value.google_drive_url),
@@ -241317,178 +241382,6 @@ pub mod types {
                     grantee_id: Ok(value.grantee_id),
                     grantee_type: Ok(value.grantee_type),
                     permissions: Ok(value.permissions),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct NewBulkImport {
-            data: ::std::result::Result<super::NewBulkImportData, ::std::string::String>,
-        }
-        impl ::std::default::Default for NewBulkImport {
-            fn default() -> Self {
-                Self {
-                    data: Err("no value supplied for data".to_string()),
-                }
-            }
-        }
-        impl NewBulkImport {
-            pub fn data<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<super::NewBulkImportData>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.data = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for data: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<NewBulkImport> for super::NewBulkImport {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: NewBulkImport,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { data: value.data? })
-            }
-        }
-        impl ::std::convert::From<super::NewBulkImport> for NewBulkImport {
-            fn from(value: super::NewBulkImport) -> Self {
-                Self { data: Ok(value.data) }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct NewBulkImportData {
-            attributes: ::std::result::Result<
-                super::NewBulkImportDataAttributes,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for NewBulkImportData {
-            fn default() -> Self {
-                Self {
-                    attributes: Err("no value supplied for attributes".to_string()),
-                }
-            }
-        }
-        impl NewBulkImportData {
-            pub fn attributes<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<super::NewBulkImportDataAttributes>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.attributes = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for attributes: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<NewBulkImportData> for super::NewBulkImportData {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: NewBulkImportData,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    attributes: value.attributes?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::NewBulkImportData> for NewBulkImportData {
-            fn from(value: super::NewBulkImportData) -> Self {
-                Self {
-                    attributes: Ok(value.attributes),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct NewBulkImportDataAttributes {
-            entity_type: ::std::result::Result<
-                ::std::string::String,
-                ::std::string::String,
-            >,
-            file_url: ::std::result::Result<
-                ::std::string::String,
-                ::std::string::String,
-            >,
-            notification_email: ::std::result::Result<
-                ::std::string::String,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for NewBulkImportDataAttributes {
-            fn default() -> Self {
-                Self {
-                    entity_type: Err("no value supplied for entity_type".to_string()),
-                    file_url: Err("no value supplied for file_url".to_string()),
-                    notification_email: Err(
-                        "no value supplied for notification_email".to_string(),
-                    ),
-                }
-            }
-        }
-        impl NewBulkImportDataAttributes {
-            pub fn entity_type<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.entity_type = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for entity_type: {e}")
-                    });
-                self
-            }
-            pub fn file_url<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.file_url = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for file_url: {e}")
-                    });
-                self
-            }
-            pub fn notification_email<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.notification_email = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for notification_email: {e}"
-                        )
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<NewBulkImportDataAttributes>
-        for super::NewBulkImportDataAttributes {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: NewBulkImportDataAttributes,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    entity_type: value.entity_type?,
-                    file_url: value.file_url?,
-                    notification_email: value.notification_email?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::NewBulkImportDataAttributes>
-        for NewBulkImportDataAttributes {
-            fn from(value: super::NewBulkImportDataAttributes) -> Self {
-                Self {
-                    entity_type: Ok(value.entity_type),
-                    file_url: Ok(value.file_url),
-                    notification_email: Ok(value.notification_email),
                 }
             }
         }
@@ -265531,6 +265424,197 @@ pub mod types {
                 Self {
                     id: Ok(value.id),
                     name: Ok(value.name),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewShiftCoverageRequest {
+            data: ::std::result::Result<
+                super::NewShiftCoverageRequestData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewShiftCoverageRequest {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl NewShiftCoverageRequest {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewShiftCoverageRequestData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewShiftCoverageRequest>
+        for super::NewShiftCoverageRequest {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewShiftCoverageRequest,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::NewShiftCoverageRequest>
+        for NewShiftCoverageRequest {
+            fn from(value: super::NewShiftCoverageRequest) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewShiftCoverageRequestData {
+            attributes: ::std::result::Result<
+                super::NewShiftCoverageRequestDataAttributes,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewShiftCoverageRequestData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl NewShiftCoverageRequestData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewShiftCoverageRequestDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewShiftCoverageRequestData>
+        for super::NewShiftCoverageRequestData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewShiftCoverageRequestData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewShiftCoverageRequestData>
+        for NewShiftCoverageRequestData {
+            fn from(value: super::NewShiftCoverageRequestData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewShiftCoverageRequestDataAttributes {
+            ends_at: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            starts_at: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewShiftCoverageRequestDataAttributes {
+            fn default() -> Self {
+                Self {
+                    ends_at: Err("no value supplied for ends_at".to_string()),
+                    starts_at: Err("no value supplied for starts_at".to_string()),
+                    user_id: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewShiftCoverageRequestDataAttributes {
+            pub fn ends_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ends_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for ends_at: {e}")
+                    });
+                self
+            }
+            pub fn starts_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.starts_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for starts_at: {e}")
+                    });
+                self
+            }
+            pub fn user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_id: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewShiftCoverageRequestDataAttributes>
+        for super::NewShiftCoverageRequestDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewShiftCoverageRequestDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    ends_at: value.ends_at?,
+                    starts_at: value.starts_at?,
+                    user_id: value.user_id?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewShiftCoverageRequestDataAttributes>
+        for NewShiftCoverageRequestDataAttributes {
+            fn from(value: super::NewShiftCoverageRequestDataAttributes) -> Self {
+                Self {
+                    ends_at: Ok(value.ends_at),
+                    starts_at: Ok(value.starts_at),
+                    user_id: Ok(value.user_id),
                 }
             }
         }
@@ -296178,6 +296262,596 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct ShiftCoverageRequest {
+            created_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            created_by_user: ::std::result::Result<
+                ::std::option::Option<super::UserResponse>,
+                ::std::string::String,
+            >,
+            created_by_user_id: ::std::result::Result<i64, ::std::string::String>,
+            ends_at: ::std::result::Result<::std::string::String, ::std::string::String>,
+            original_shift_user: ::std::result::Result<
+                ::std::option::Option<super::UserResponse>,
+                ::std::string::String,
+            >,
+            original_shift_user_id: ::std::result::Result<i64, ::std::string::String>,
+            schedule: ::std::result::Result<
+                ::std::option::Option<super::ScheduleResponse>,
+                ::std::string::String,
+            >,
+            schedule_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            shift: ::std::result::Result<
+                ::std::option::Option<super::Shift>,
+                ::std::string::String,
+            >,
+            shift_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            starts_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ShiftCoverageRequest {
+            fn default() -> Self {
+                Self {
+                    created_at: Ok(Default::default()),
+                    created_by_user: Ok(Default::default()),
+                    created_by_user_id: Err(
+                        "no value supplied for created_by_user_id".to_string(),
+                    ),
+                    ends_at: Err("no value supplied for ends_at".to_string()),
+                    original_shift_user: Ok(Default::default()),
+                    original_shift_user_id: Err(
+                        "no value supplied for original_shift_user_id".to_string(),
+                    ),
+                    schedule: Ok(Default::default()),
+                    schedule_id: Err("no value supplied for schedule_id".to_string()),
+                    shift: Ok(Default::default()),
+                    shift_id: Err("no value supplied for shift_id".to_string()),
+                    starts_at: Err("no value supplied for starts_at".to_string()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl ShiftCoverageRequest {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by_user<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::UserResponse>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn created_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ends_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ends_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for ends_at: {e}")
+                    });
+                self
+            }
+            pub fn original_shift_user<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::UserResponse>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.original_shift_user = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for original_shift_user: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn original_shift_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.original_shift_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for original_shift_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::ScheduleResponse>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for schedule: {e}")
+                    });
+                self
+            }
+            pub fn schedule_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for schedule_id: {e}")
+                    });
+                self
+            }
+            pub fn shift<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::Shift>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.shift = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for shift: {e}")
+                    });
+                self
+            }
+            pub fn shift_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.shift_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for shift_id: {e}")
+                    });
+                self
+            }
+            pub fn starts_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.starts_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for starts_at: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ShiftCoverageRequest>
+        for super::ShiftCoverageRequest {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ShiftCoverageRequest,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    created_by_user: value.created_by_user?,
+                    created_by_user_id: value.created_by_user_id?,
+                    ends_at: value.ends_at?,
+                    original_shift_user: value.original_shift_user?,
+                    original_shift_user_id: value.original_shift_user_id?,
+                    schedule: value.schedule?,
+                    schedule_id: value.schedule_id?,
+                    shift: value.shift?,
+                    shift_id: value.shift_id?,
+                    starts_at: value.starts_at?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ShiftCoverageRequest> for ShiftCoverageRequest {
+            fn from(value: super::ShiftCoverageRequest) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    created_by_user: Ok(value.created_by_user),
+                    created_by_user_id: Ok(value.created_by_user_id),
+                    ends_at: Ok(value.ends_at),
+                    original_shift_user: Ok(value.original_shift_user),
+                    original_shift_user_id: Ok(value.original_shift_user_id),
+                    schedule: Ok(value.schedule),
+                    schedule_id: Ok(value.schedule_id),
+                    shift: Ok(value.shift),
+                    shift_id: Ok(value.shift_id),
+                    starts_at: Ok(value.starts_at),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ShiftCoverageRequestList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::ShiftCoverageRequestListDataItem>,
+                ::std::string::String,
+            >,
+            included: ::std::result::Result<
+                ::std::vec::Vec<super::JsonapiIncludedResource>,
+                ::std::string::String,
+            >,
+            links: ::std::result::Result<
+                ::std::option::Option<super::Links>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::std::option::Option<super::Meta>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ShiftCoverageRequestList {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    included: Ok(Default::default()),
+                    links: Ok(Default::default()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl ShiftCoverageRequestList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::ShiftCoverageRequestListDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn included<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::JsonapiIncludedResource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.included = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for included: {e}")
+                    });
+                self
+            }
+            pub fn links<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::Links>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.links = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for links: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<super::Meta>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ShiftCoverageRequestList>
+        for super::ShiftCoverageRequestList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ShiftCoverageRequestList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    included: value.included?,
+                    links: value.links?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ShiftCoverageRequestList>
+        for ShiftCoverageRequestList {
+            fn from(value: super::ShiftCoverageRequestList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    included: Ok(value.included),
+                    links: Ok(value.links),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ShiftCoverageRequestListDataItem {
+            attributes: ::std::result::Result<
+                super::ShiftCoverageRequest,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ShiftCoverageRequestListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ShiftCoverageRequestListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ShiftCoverageRequest>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ShiftCoverageRequestListDataItem>
+        for super::ShiftCoverageRequestListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ShiftCoverageRequestListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ShiftCoverageRequestListDataItem>
+        for ShiftCoverageRequestListDataItem {
+            fn from(value: super::ShiftCoverageRequestListDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ShiftCoverageRequestResponse {
+            data: ::std::result::Result<
+                super::ShiftCoverageRequestResponseData,
+                ::std::string::String,
+            >,
+            included: ::std::result::Result<
+                ::std::vec::Vec<super::JsonapiIncludedResource>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ShiftCoverageRequestResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    included: Ok(Default::default()),
+                }
+            }
+        }
+        impl ShiftCoverageRequestResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ShiftCoverageRequestResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn included<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::JsonapiIncludedResource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.included = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for included: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ShiftCoverageRequestResponse>
+        for super::ShiftCoverageRequestResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ShiftCoverageRequestResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    included: value.included?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ShiftCoverageRequestResponse>
+        for ShiftCoverageRequestResponse {
+            fn from(value: super::ShiftCoverageRequestResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    included: Ok(value.included),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ShiftCoverageRequestResponseData {
+            attributes: ::std::result::Result<
+                super::ShiftCoverageRequest,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ShiftCoverageRequestResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ShiftCoverageRequestResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ShiftCoverageRequest>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ShiftCoverageRequestResponseData>
+        for super::ShiftCoverageRequestResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ShiftCoverageRequestResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ShiftCoverageRequestResponseData>
+        for ShiftCoverageRequestResponseData {
+            fn from(value: super::ShiftCoverageRequestResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct ShiftList {
             data: ::std::result::Result<
                 ::std::vec::Vec<super::ShiftListDataItem>,
@@ -313366,6 +314040,8 @@ pub mod types {
                 ::std::string::String,
             >,
             file_id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            include_overview: ::std::result::Result<bool, ::std::string::String>,
+            include_timeline: ::std::result::Result<bool, ::std::string::String>,
             integration: ::std::result::Result<
                 ::std::option::Option<super::UpdateConfluencePageTaskParamsIntegration>,
                 ::std::string::String,
@@ -313392,6 +314068,8 @@ pub mod types {
                 Self {
                     content: Ok(Default::default()),
                     file_id: Err("no value supplied for file_id".to_string()),
+                    include_overview: Ok(super::defaults::default_bool::<true>()),
+                    include_timeline: Ok(super::defaults::default_bool::<true>()),
                     integration: Ok(Default::default()),
                     post_mortem_template_id: Ok(Default::default()),
                     task_type: Ok(Default::default()),
@@ -313422,6 +314100,34 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for file_id: {e}")
+                    });
+                self
+            }
+            pub fn include_overview<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.include_overview = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for include_overview: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn include_timeline<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.include_timeline = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for include_timeline: {e}"
+                        )
                     });
                 self
             }
@@ -313503,6 +314209,8 @@ pub mod types {
                 Ok(Self {
                     content: value.content?,
                     file_id: value.file_id?,
+                    include_overview: value.include_overview?,
+                    include_timeline: value.include_timeline?,
                     integration: value.integration?,
                     post_mortem_template_id: value.post_mortem_template_id?,
                     task_type: value.task_type?,
@@ -313517,6 +314225,8 @@ pub mod types {
                 Self {
                     content: Ok(value.content),
                     file_id: Ok(value.file_id),
+                    include_overview: Ok(value.include_overview),
+                    include_timeline: Ok(value.include_timeline),
                     integration: Ok(value.integration),
                     post_mortem_template_id: Ok(value.post_mortem_template_id),
                     task_type: Ok(value.task_type),
@@ -321079,6 +321789,10 @@ pub mod types {
                 super::UpdateGithubIssueTaskParamsCompletion,
                 ::std::string::String,
             >,
+            custom_fields_mapping: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             issue_id: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
@@ -321113,6 +321827,7 @@ pub mod types {
                 Self {
                     body: Ok(Default::default()),
                     completion: Err("no value supplied for completion".to_string()),
+                    custom_fields_mapping: Ok(Default::default()),
                     issue_id: Err("no value supplied for issue_id".to_string()),
                     issue_type: Ok(Default::default()),
                     labels: Ok(Default::default()),
@@ -321147,6 +321862,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for completion: {e}")
+                    });
+                self
+            }
+            pub fn custom_fields_mapping<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.custom_fields_mapping = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for custom_fields_mapping: {e}"
+                        )
                     });
                 self
             }
@@ -321250,6 +321979,7 @@ pub mod types {
                 Ok(Self {
                     body: value.body?,
                     completion: value.completion?,
+                    custom_fields_mapping: value.custom_fields_mapping?,
                     issue_id: value.issue_id?,
                     issue_type: value.issue_type?,
                     labels: value.labels?,
@@ -321266,6 +321996,7 @@ pub mod types {
                 Self {
                     body: Ok(value.body),
                     completion: Ok(value.completion),
+                    custom_fields_mapping: Ok(value.custom_fields_mapping),
                     issue_id: Ok(value.issue_id),
                     issue_type: Ok(value.issue_type),
                     labels: Ok(value.labels),
@@ -329836,6 +330567,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            custom_fields_mapping: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             description: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -329873,6 +330608,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     assign_user_email: Ok(Default::default()),
+                    custom_fields_mapping: Ok(Default::default()),
                     description: Ok(Default::default()),
                     issue_id: Err("no value supplied for issue_id".to_string()),
                     labels: Ok(Default::default()),
@@ -329895,6 +330631,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for assign_user_email: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn custom_fields_mapping<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.custom_fields_mapping = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for custom_fields_mapping: {e}"
                         )
                     });
                 self
@@ -330012,6 +330762,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     assign_user_email: value.assign_user_email?,
+                    custom_fields_mapping: value.custom_fields_mapping?,
                     description: value.description?,
                     issue_id: value.issue_id?,
                     labels: value.labels?,
@@ -330028,6 +330779,7 @@ pub mod types {
             fn from(value: super::UpdateLinearIssueTaskParams) -> Self {
                 Self {
                     assign_user_email: Ok(value.assign_user_email),
+                    custom_fields_mapping: Ok(value.custom_fields_mapping),
                     description: Ok(value.description),
                     issue_id: Ok(value.issue_id),
                     labels: Ok(value.labels),
@@ -359896,15 +360648,39 @@ Arguments:
 - `filter_ended_at_lt`
 - `filter_ended_at_lte`
 - `filter_environments`
+- `filter_environments_eq`
+- `filter_environments_in`
+- `filter_environments_not_eq`
+- `filter_environments_not_in`
 - `filter_groups`
+- `filter_groups_eq`
+- `filter_groups_in`
+- `filter_groups_not_eq`
+- `filter_groups_not_in`
 - `filter_labels`
+- `filter_labels_eq`
+- `filter_labels_in`
+- `filter_labels_not_eq`
+- `filter_labels_not_in`
 - `filter_services`
+- `filter_services_eq`
+- `filter_services_in`
+- `filter_services_not_eq`
+- `filter_services_not_in`
 - `filter_source`
+- `filter_source_eq`
+- `filter_source_in`
+- `filter_source_not_eq`
+- `filter_source_not_in`
 - `filter_started_at_gt`
 - `filter_started_at_gte`
 - `filter_started_at_lt`
 - `filter_started_at_lte`
 - `filter_status`
+- `filter_status_eq`
+- `filter_status_in`
+- `filter_status_not_eq`
+- `filter_status_not_in`
 - `filter_updated_at_gt`
 - `filter_updated_at_gte`
 - `filter_updated_at_lt`
@@ -359924,15 +360700,39 @@ let response = client.list_alerts()
     .filter_ended_at_lt(filter_ended_at_lt)
     .filter_ended_at_lte(filter_ended_at_lte)
     .filter_environments(filter_environments)
+    .filter_environments_eq(filter_environments_eq)
+    .filter_environments_in(filter_environments_in)
+    .filter_environments_not_eq(filter_environments_not_eq)
+    .filter_environments_not_in(filter_environments_not_in)
     .filter_groups(filter_groups)
+    .filter_groups_eq(filter_groups_eq)
+    .filter_groups_in(filter_groups_in)
+    .filter_groups_not_eq(filter_groups_not_eq)
+    .filter_groups_not_in(filter_groups_not_in)
     .filter_labels(filter_labels)
+    .filter_labels_eq(filter_labels_eq)
+    .filter_labels_in(filter_labels_in)
+    .filter_labels_not_eq(filter_labels_not_eq)
+    .filter_labels_not_in(filter_labels_not_in)
     .filter_services(filter_services)
+    .filter_services_eq(filter_services_eq)
+    .filter_services_in(filter_services_in)
+    .filter_services_not_eq(filter_services_not_eq)
+    .filter_services_not_in(filter_services_not_in)
     .filter_source(filter_source)
+    .filter_source_eq(filter_source_eq)
+    .filter_source_in(filter_source_in)
+    .filter_source_not_eq(filter_source_not_eq)
+    .filter_source_not_in(filter_source_not_in)
     .filter_started_at_gt(filter_started_at_gt)
     .filter_started_at_gte(filter_started_at_gte)
     .filter_started_at_lt(filter_started_at_lt)
     .filter_started_at_lte(filter_started_at_lte)
     .filter_status(filter_status)
+    .filter_status_eq(filter_status_eq)
+    .filter_status_in(filter_status_in)
+    .filter_status_not_eq(filter_status_not_eq)
+    .filter_status_not_in(filter_status_not_in)
     .filter_updated_at_gt(filter_updated_at_gt)
     .filter_updated_at_gte(filter_updated_at_gte)
     .filter_updated_at_lt(filter_updated_at_lt)
@@ -360408,44 +361208,6 @@ let response = client.delete_authorization()
 ```*/
     pub fn delete_authorization(&self) -> builder::DeleteAuthorization<'_> {
         builder::DeleteAuthorization::new(self)
-    }
-    /**Create a bulk import
-
-Create a new bulk import for incidents. Requires global API key authentication.
-
-Sends a `POST` request to `/v1/bulk_imports`
-
-```ignore
-let response = client.create_bulk_import()
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn create_bulk_import(&self) -> builder::CreateBulkImport<'_> {
-        builder::CreateBulkImport::new(self)
-    }
-    /**Get bulk import status
-
-Retrieves the current status of a bulk import job.
-
-**Use this endpoint to:**
-- Poll for import progress
-- Check validation errors if status is `validation_failed`
-- Get final results when status is `completed` or `failed`
-
-
-Sends a `GET` request to `/v1/bulk_imports/{id}`
-
-Arguments:
-- `id`: Bulk import ID returned from the create endpoint
-```ignore
-let response = client.get_bulk_import()
-    .id(id)
-    .send()
-    .await;
-```*/
-    pub fn get_bulk_import(&self) -> builder::GetBulkImport<'_> {
-        builder::GetBulkImport::new(self)
     }
     /**List catalog checklist templates
 
@@ -364716,6 +365478,14 @@ Arguments:
 - `filter_acknowledged_at_lte`
 - `filter_cause`
 - `filter_cause_ids`
+- `filter_cause_ids_eq`
+- `filter_cause_ids_in`
+- `filter_cause_ids_not_eq`
+- `filter_cause_ids_not_in`
+- `filter_causes_eq`
+- `filter_causes_in`
+- `filter_causes_not_eq`
+- `filter_causes_not_in`
 - `filter_closed_at_gt`
 - `filter_closed_at_gte`
 - `filter_closed_at_lt`
@@ -364730,47 +365500,131 @@ Arguments:
 - `filter_detected_at_lt`
 - `filter_detected_at_lte`
 - `filter_environment_ids`
+- `filter_environment_ids_eq`
+- `filter_environment_ids_in`
+- `filter_environment_ids_not_eq`
+- `filter_environment_ids_not_in`
 - `filter_environments`
+- `filter_environments_eq`
+- `filter_environments_in`
+- `filter_environments_not_eq`
+- `filter_environments_not_in`
 - `filter_functionalities`
+- `filter_functionalities_eq`
+- `filter_functionalities_in`
+- `filter_functionalities_not_eq`
+- `filter_functionalities_not_in`
 - `filter_functionality_ids`
+- `filter_functionality_ids_eq`
+- `filter_functionality_ids_in`
+- `filter_functionality_ids_not_eq`
+- `filter_functionality_ids_not_in`
 - `filter_functionality_names`
+- `filter_functionality_names_eq`
+- `filter_functionality_names_in`
+- `filter_functionality_names_not_eq`
+- `filter_functionality_names_not_in`
 - `filter_in_triage_at_gt`
 - `filter_in_triage_at_gte`
 - `filter_in_triage_at_lt`
 - `filter_in_triage_at_lte`
 - `filter_kind`
+- `filter_kind_eq`
+- `filter_kind_in`
+- `filter_kind_not_eq`
+- `filter_kind_not_in`
 - `filter_labels`
+- `filter_labels_eq`
+- `filter_labels_in`
+- `filter_labels_not_eq`
+- `filter_labels_not_in`
 - `filter_mitigated_at_gt`
 - `filter_mitigated_at_gte`
 - `filter_mitigated_at_lt`
 - `filter_mitigated_at_lte`
 - `filter_private`
+- `filter_private_eq`
+- `filter_private_in`
+- `filter_private_not_eq`
+- `filter_private_not_in`
 - `filter_resolved_at_gt`
 - `filter_resolved_at_gte`
 - `filter_resolved_at_lt`
 - `filter_resolved_at_lte`
 - `filter_search`
 - `filter_service_ids`
+- `filter_service_ids_eq`
+- `filter_service_ids_in`
+- `filter_service_ids_not_eq`
+- `filter_service_ids_not_in`
 - `filter_service_names`
+- `filter_service_names_eq`
+- `filter_service_names_in`
+- `filter_service_names_not_eq`
+- `filter_service_names_not_in`
 - `filter_services`
+- `filter_services_eq`
+- `filter_services_in`
+- `filter_services_not_eq`
+- `filter_services_not_in`
 - `filter_severity`
+- `filter_severity_eq`
+- `filter_severity_in`
+- `filter_severity_not_eq`
+- `filter_severity_not_in`
 - `filter_severity_id`
+- `filter_severity_id_eq`
+- `filter_severity_id_in`
+- `filter_severity_id_not_eq`
+- `filter_severity_id_not_in`
 - `filter_slack_channel_id`
 - `filter_started_at_gt`
 - `filter_started_at_gte`
 - `filter_started_at_lt`
 - `filter_started_at_lte`
 - `filter_status`
+- `filter_status_eq`
+- `filter_status_in`
+- `filter_status_not_eq`
+- `filter_status_not_in`
 - `filter_team_ids`
+- `filter_team_ids_eq`
+- `filter_team_ids_in`
+- `filter_team_ids_not_eq`
+- `filter_team_ids_not_in`
 - `filter_team_names`
+- `filter_team_names_eq`
+- `filter_team_names_in`
+- `filter_team_names_not_eq`
+- `filter_team_names_not_in`
 - `filter_teams`
+- `filter_teams_eq`
+- `filter_teams_in`
+- `filter_teams_not_eq`
+- `filter_teams_not_in`
 - `filter_type_ids`
+- `filter_type_ids_eq`
+- `filter_type_ids_in`
+- `filter_type_ids_not_eq`
+- `filter_type_ids_not_in`
 - `filter_types`
+- `filter_types_eq`
+- `filter_types_in`
+- `filter_types_not_eq`
+- `filter_types_not_in`
 - `filter_updated_at_gt`
 - `filter_updated_at_gte`
 - `filter_updated_at_lt`
 - `filter_updated_at_lte`
 - `filter_user_id`
+- `filter_user_id_eq`
+- `filter_user_id_in`
+- `filter_user_id_not_eq`
+- `filter_user_id_not_in`
+- `filter_zendesk_ticket_id_eq`
+- `filter_zendesk_ticket_id_in`
+- `filter_zendesk_ticket_id_not_eq`
+- `filter_zendesk_ticket_id_not_in`
 - `include`: comma separated if needed. eg: sub_statuses,causes,subscribers
 - `page_after`: The cursor to fetch results using cursor pagination. A cursor is provided in meta.next_cursor in the response.
 - `page_number`
@@ -364784,6 +365638,14 @@ let response = client.list_incidents()
     .filter_acknowledged_at_lte(filter_acknowledged_at_lte)
     .filter_cause(filter_cause)
     .filter_cause_ids(filter_cause_ids)
+    .filter_cause_ids_eq(filter_cause_ids_eq)
+    .filter_cause_ids_in(filter_cause_ids_in)
+    .filter_cause_ids_not_eq(filter_cause_ids_not_eq)
+    .filter_cause_ids_not_in(filter_cause_ids_not_in)
+    .filter_causes_eq(filter_causes_eq)
+    .filter_causes_in(filter_causes_in)
+    .filter_causes_not_eq(filter_causes_not_eq)
+    .filter_causes_not_in(filter_causes_not_in)
     .filter_closed_at_gt(filter_closed_at_gt)
     .filter_closed_at_gte(filter_closed_at_gte)
     .filter_closed_at_lt(filter_closed_at_lt)
@@ -364798,47 +365660,131 @@ let response = client.list_incidents()
     .filter_detected_at_lt(filter_detected_at_lt)
     .filter_detected_at_lte(filter_detected_at_lte)
     .filter_environment_ids(filter_environment_ids)
+    .filter_environment_ids_eq(filter_environment_ids_eq)
+    .filter_environment_ids_in(filter_environment_ids_in)
+    .filter_environment_ids_not_eq(filter_environment_ids_not_eq)
+    .filter_environment_ids_not_in(filter_environment_ids_not_in)
     .filter_environments(filter_environments)
+    .filter_environments_eq(filter_environments_eq)
+    .filter_environments_in(filter_environments_in)
+    .filter_environments_not_eq(filter_environments_not_eq)
+    .filter_environments_not_in(filter_environments_not_in)
     .filter_functionalities(filter_functionalities)
+    .filter_functionalities_eq(filter_functionalities_eq)
+    .filter_functionalities_in(filter_functionalities_in)
+    .filter_functionalities_not_eq(filter_functionalities_not_eq)
+    .filter_functionalities_not_in(filter_functionalities_not_in)
     .filter_functionality_ids(filter_functionality_ids)
+    .filter_functionality_ids_eq(filter_functionality_ids_eq)
+    .filter_functionality_ids_in(filter_functionality_ids_in)
+    .filter_functionality_ids_not_eq(filter_functionality_ids_not_eq)
+    .filter_functionality_ids_not_in(filter_functionality_ids_not_in)
     .filter_functionality_names(filter_functionality_names)
+    .filter_functionality_names_eq(filter_functionality_names_eq)
+    .filter_functionality_names_in(filter_functionality_names_in)
+    .filter_functionality_names_not_eq(filter_functionality_names_not_eq)
+    .filter_functionality_names_not_in(filter_functionality_names_not_in)
     .filter_in_triage_at_gt(filter_in_triage_at_gt)
     .filter_in_triage_at_gte(filter_in_triage_at_gte)
     .filter_in_triage_at_lt(filter_in_triage_at_lt)
     .filter_in_triage_at_lte(filter_in_triage_at_lte)
     .filter_kind(filter_kind)
+    .filter_kind_eq(filter_kind_eq)
+    .filter_kind_in(filter_kind_in)
+    .filter_kind_not_eq(filter_kind_not_eq)
+    .filter_kind_not_in(filter_kind_not_in)
     .filter_labels(filter_labels)
+    .filter_labels_eq(filter_labels_eq)
+    .filter_labels_in(filter_labels_in)
+    .filter_labels_not_eq(filter_labels_not_eq)
+    .filter_labels_not_in(filter_labels_not_in)
     .filter_mitigated_at_gt(filter_mitigated_at_gt)
     .filter_mitigated_at_gte(filter_mitigated_at_gte)
     .filter_mitigated_at_lt(filter_mitigated_at_lt)
     .filter_mitigated_at_lte(filter_mitigated_at_lte)
     .filter_private(filter_private)
+    .filter_private_eq(filter_private_eq)
+    .filter_private_in(filter_private_in)
+    .filter_private_not_eq(filter_private_not_eq)
+    .filter_private_not_in(filter_private_not_in)
     .filter_resolved_at_gt(filter_resolved_at_gt)
     .filter_resolved_at_gte(filter_resolved_at_gte)
     .filter_resolved_at_lt(filter_resolved_at_lt)
     .filter_resolved_at_lte(filter_resolved_at_lte)
     .filter_search(filter_search)
     .filter_service_ids(filter_service_ids)
+    .filter_service_ids_eq(filter_service_ids_eq)
+    .filter_service_ids_in(filter_service_ids_in)
+    .filter_service_ids_not_eq(filter_service_ids_not_eq)
+    .filter_service_ids_not_in(filter_service_ids_not_in)
     .filter_service_names(filter_service_names)
+    .filter_service_names_eq(filter_service_names_eq)
+    .filter_service_names_in(filter_service_names_in)
+    .filter_service_names_not_eq(filter_service_names_not_eq)
+    .filter_service_names_not_in(filter_service_names_not_in)
     .filter_services(filter_services)
+    .filter_services_eq(filter_services_eq)
+    .filter_services_in(filter_services_in)
+    .filter_services_not_eq(filter_services_not_eq)
+    .filter_services_not_in(filter_services_not_in)
     .filter_severity(filter_severity)
+    .filter_severity_eq(filter_severity_eq)
+    .filter_severity_in(filter_severity_in)
+    .filter_severity_not_eq(filter_severity_not_eq)
+    .filter_severity_not_in(filter_severity_not_in)
     .filter_severity_id(filter_severity_id)
+    .filter_severity_id_eq(filter_severity_id_eq)
+    .filter_severity_id_in(filter_severity_id_in)
+    .filter_severity_id_not_eq(filter_severity_id_not_eq)
+    .filter_severity_id_not_in(filter_severity_id_not_in)
     .filter_slack_channel_id(filter_slack_channel_id)
     .filter_started_at_gt(filter_started_at_gt)
     .filter_started_at_gte(filter_started_at_gte)
     .filter_started_at_lt(filter_started_at_lt)
     .filter_started_at_lte(filter_started_at_lte)
     .filter_status(filter_status)
+    .filter_status_eq(filter_status_eq)
+    .filter_status_in(filter_status_in)
+    .filter_status_not_eq(filter_status_not_eq)
+    .filter_status_not_in(filter_status_not_in)
     .filter_team_ids(filter_team_ids)
+    .filter_team_ids_eq(filter_team_ids_eq)
+    .filter_team_ids_in(filter_team_ids_in)
+    .filter_team_ids_not_eq(filter_team_ids_not_eq)
+    .filter_team_ids_not_in(filter_team_ids_not_in)
     .filter_team_names(filter_team_names)
+    .filter_team_names_eq(filter_team_names_eq)
+    .filter_team_names_in(filter_team_names_in)
+    .filter_team_names_not_eq(filter_team_names_not_eq)
+    .filter_team_names_not_in(filter_team_names_not_in)
     .filter_teams(filter_teams)
+    .filter_teams_eq(filter_teams_eq)
+    .filter_teams_in(filter_teams_in)
+    .filter_teams_not_eq(filter_teams_not_eq)
+    .filter_teams_not_in(filter_teams_not_in)
     .filter_type_ids(filter_type_ids)
+    .filter_type_ids_eq(filter_type_ids_eq)
+    .filter_type_ids_in(filter_type_ids_in)
+    .filter_type_ids_not_eq(filter_type_ids_not_eq)
+    .filter_type_ids_not_in(filter_type_ids_not_in)
     .filter_types(filter_types)
+    .filter_types_eq(filter_types_eq)
+    .filter_types_in(filter_types_in)
+    .filter_types_not_eq(filter_types_not_eq)
+    .filter_types_not_in(filter_types_not_in)
     .filter_updated_at_gt(filter_updated_at_gt)
     .filter_updated_at_gte(filter_updated_at_gte)
     .filter_updated_at_lt(filter_updated_at_lt)
     .filter_updated_at_lte(filter_updated_at_lte)
     .filter_user_id(filter_user_id)
+    .filter_user_id_eq(filter_user_id_eq)
+    .filter_user_id_in(filter_user_id_in)
+    .filter_user_id_not_eq(filter_user_id_not_eq)
+    .filter_user_id_not_in(filter_user_id_not_in)
+    .filter_zendesk_ticket_id_eq(filter_zendesk_ticket_id_eq)
+    .filter_zendesk_ticket_id_in(filter_zendesk_ticket_id_in)
+    .filter_zendesk_ticket_id_not_eq(filter_zendesk_ticket_id_not_eq)
+    .filter_zendesk_ticket_id_not_in(filter_zendesk_ticket_id_not_in)
     .include(include)
     .page_after(page_after)
     .page_number(page_number)
@@ -367541,6 +368487,41 @@ let response = client.create_schedule_rotation()
     pub fn create_schedule_rotation(&self) -> builder::CreateScheduleRotation<'_> {
         builder::CreateScheduleRotation::new(self)
     }
+    /**list shift coverage requests
+
+List active shift coverage requests for a schedule.
+
+Sends a `GET` request to `/v1/schedules/{schedule_id}/shift_coverage_requests`
+
+```ignore
+let response = client.list_shift_coverage_requests()
+    .schedule_id(schedule_id)
+    .send()
+    .await;
+```*/
+    pub fn list_shift_coverage_requests(
+        &self,
+    ) -> builder::ListShiftCoverageRequests<'_> {
+        builder::ListShiftCoverageRequests::new(self)
+    }
+    /**creates shift coverage requests
+
+Creates coverage requests for the shifts overlapping the requested time range. A range can span multiple consecutive shifts (e.g. across a handoff), so one or more coverage requests may be created; the response is always a list. A coverage request broadcasts to schedule members so someone can volunteer to cover the shift.
+
+Sends a `POST` request to `/v1/schedules/{schedule_id}/shift_coverage_requests`
+
+```ignore
+let response = client.create_shift_coverage_request()
+    .schedule_id(schedule_id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn create_shift_coverage_request(
+        &self,
+    ) -> builder::CreateShiftCoverageRequest<'_> {
+        builder::CreateShiftCoverageRequest::new(self)
+    }
     /**List secrets
 
 List secrets
@@ -367886,6 +368867,38 @@ let response = client.delete_severity()
 ```*/
     pub fn delete_severity(&self) -> builder::DeleteSeverity<'_> {
         builder::DeleteSeverity::new(self)
+    }
+    /**retrieves a shift coverage request
+
+Retrieves a specific shift coverage request.
+
+Sends a `GET` request to `/v1/shift_coverage_requests/{id}`
+
+```ignore
+let response = client.get_shift_coverage_request()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_shift_coverage_request(&self) -> builder::GetShiftCoverageRequest<'_> {
+        builder::GetShiftCoverageRequest::new(self)
+    }
+    /**deletes a shift coverage request
+
+Deletes a shift coverage request.
+
+Sends a `DELETE` request to `/v1/shift_coverage_requests/{id}`
+
+```ignore
+let response = client.delete_shift_coverage_request()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn delete_shift_coverage_request(
+        &self,
+    ) -> builder::DeleteShiftCoverageRequest<'_> {
+        builder::DeleteShiftCoverageRequest::new(self)
     }
     /**List shifts
 
@@ -373885,15 +374898,39 @@ pub mod builder {
         filter_ended_at_lt: Result<Option<::std::string::String>, String>,
         filter_ended_at_lte: Result<Option<::std::string::String>, String>,
         filter_environments: Result<Option<::std::string::String>, String>,
+        filter_environments_eq: Result<Option<::std::string::String>, String>,
+        filter_environments_in: Result<Option<::std::string::String>, String>,
+        filter_environments_not_eq: Result<Option<::std::string::String>, String>,
+        filter_environments_not_in: Result<Option<::std::string::String>, String>,
         filter_groups: Result<Option<::std::string::String>, String>,
+        filter_groups_eq: Result<Option<::std::string::String>, String>,
+        filter_groups_in: Result<Option<::std::string::String>, String>,
+        filter_groups_not_eq: Result<Option<::std::string::String>, String>,
+        filter_groups_not_in: Result<Option<::std::string::String>, String>,
         filter_labels: Result<Option<::std::string::String>, String>,
+        filter_labels_eq: Result<Option<::std::string::String>, String>,
+        filter_labels_in: Result<Option<::std::string::String>, String>,
+        filter_labels_not_eq: Result<Option<::std::string::String>, String>,
+        filter_labels_not_in: Result<Option<::std::string::String>, String>,
         filter_services: Result<Option<::std::string::String>, String>,
+        filter_services_eq: Result<Option<::std::string::String>, String>,
+        filter_services_in: Result<Option<::std::string::String>, String>,
+        filter_services_not_eq: Result<Option<::std::string::String>, String>,
+        filter_services_not_in: Result<Option<::std::string::String>, String>,
         filter_source: Result<Option<::std::string::String>, String>,
+        filter_source_eq: Result<Option<::std::string::String>, String>,
+        filter_source_in: Result<Option<::std::string::String>, String>,
+        filter_source_not_eq: Result<Option<::std::string::String>, String>,
+        filter_source_not_in: Result<Option<::std::string::String>, String>,
         filter_started_at_gt: Result<Option<::std::string::String>, String>,
         filter_started_at_gte: Result<Option<::std::string::String>, String>,
         filter_started_at_lt: Result<Option<::std::string::String>, String>,
         filter_started_at_lte: Result<Option<::std::string::String>, String>,
         filter_status: Result<Option<::std::string::String>, String>,
+        filter_status_eq: Result<Option<::std::string::String>, String>,
+        filter_status_in: Result<Option<::std::string::String>, String>,
+        filter_status_not_eq: Result<Option<::std::string::String>, String>,
+        filter_status_not_in: Result<Option<::std::string::String>, String>,
         filter_updated_at_gt: Result<Option<::std::string::String>, String>,
         filter_updated_at_gte: Result<Option<::std::string::String>, String>,
         filter_updated_at_lt: Result<Option<::std::string::String>, String>,
@@ -373916,15 +374953,39 @@ pub mod builder {
                 filter_ended_at_lt: Ok(None),
                 filter_ended_at_lte: Ok(None),
                 filter_environments: Ok(None),
+                filter_environments_eq: Ok(None),
+                filter_environments_in: Ok(None),
+                filter_environments_not_eq: Ok(None),
+                filter_environments_not_in: Ok(None),
                 filter_groups: Ok(None),
+                filter_groups_eq: Ok(None),
+                filter_groups_in: Ok(None),
+                filter_groups_not_eq: Ok(None),
+                filter_groups_not_in: Ok(None),
                 filter_labels: Ok(None),
+                filter_labels_eq: Ok(None),
+                filter_labels_in: Ok(None),
+                filter_labels_not_eq: Ok(None),
+                filter_labels_not_in: Ok(None),
                 filter_services: Ok(None),
+                filter_services_eq: Ok(None),
+                filter_services_in: Ok(None),
+                filter_services_not_eq: Ok(None),
+                filter_services_not_in: Ok(None),
                 filter_source: Ok(None),
+                filter_source_eq: Ok(None),
+                filter_source_in: Ok(None),
+                filter_source_not_eq: Ok(None),
+                filter_source_not_in: Ok(None),
                 filter_started_at_gt: Ok(None),
                 filter_started_at_gte: Ok(None),
                 filter_started_at_lt: Ok(None),
                 filter_started_at_lte: Ok(None),
                 filter_status: Ok(None),
+                filter_status_eq: Ok(None),
+                filter_status_in: Ok(None),
+                filter_status_not_eq: Ok(None),
+                filter_status_not_in: Ok(None),
                 filter_updated_at_gt: Ok(None),
                 filter_updated_at_gte: Ok(None),
                 filter_updated_at_lt: Ok(None),
@@ -374052,6 +375113,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_environments_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environments_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environments_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environments_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environments_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environments_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environments_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environments_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environments_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environments_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environments_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environments_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_groups<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -374061,6 +375174,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_groups failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_groups_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_groups_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_groups_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_groups_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_groups_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_groups_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_groups_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_groups_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_groups_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_groups_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_groups_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_groups_not_in failed"
                         .to_string()
                 });
             self
@@ -374078,6 +375243,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_labels_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_labels_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_labels_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_labels_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_labels_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_labels_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_labels_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_labels_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_labels_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_labels_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_labels_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_labels_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_services<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -374091,6 +375308,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_services_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_services_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_services_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_services_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_services_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_services_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_services_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_services_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_services_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_services_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_services_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_services_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_source<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -374100,6 +375369,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_source failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_source_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_source_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_source_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_source_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_source_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_source_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_source_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_source_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_source_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_source_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_source_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_source_not_in failed"
                         .to_string()
                 });
             self
@@ -374165,6 +375486,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_status failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status_not_in failed"
                         .to_string()
                 });
             self
@@ -374280,15 +375653,39 @@ pub mod builder {
                 filter_ended_at_lt,
                 filter_ended_at_lte,
                 filter_environments,
+                filter_environments_eq,
+                filter_environments_in,
+                filter_environments_not_eq,
+                filter_environments_not_in,
                 filter_groups,
+                filter_groups_eq,
+                filter_groups_in,
+                filter_groups_not_eq,
+                filter_groups_not_in,
                 filter_labels,
+                filter_labels_eq,
+                filter_labels_in,
+                filter_labels_not_eq,
+                filter_labels_not_in,
                 filter_services,
+                filter_services_eq,
+                filter_services_in,
+                filter_services_not_eq,
+                filter_services_not_in,
                 filter_source,
+                filter_source_eq,
+                filter_source_in,
+                filter_source_not_eq,
+                filter_source_not_in,
                 filter_started_at_gt,
                 filter_started_at_gte,
                 filter_started_at_lt,
                 filter_started_at_lte,
                 filter_status,
+                filter_status_eq,
+                filter_status_in,
+                filter_status_not_eq,
+                filter_status_not_in,
                 filter_updated_at_gt,
                 filter_updated_at_gte,
                 filter_updated_at_lt,
@@ -374314,10 +375711,42 @@ pub mod builder {
                 .map_err(Error::InvalidRequest)?;
             let filter_environments = filter_environments
                 .map_err(Error::InvalidRequest)?;
+            let filter_environments_eq = filter_environments_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_environments_in = filter_environments_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_environments_not_eq = filter_environments_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_environments_not_in = filter_environments_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_groups = filter_groups.map_err(Error::InvalidRequest)?;
+            let filter_groups_eq = filter_groups_eq.map_err(Error::InvalidRequest)?;
+            let filter_groups_in = filter_groups_in.map_err(Error::InvalidRequest)?;
+            let filter_groups_not_eq = filter_groups_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_groups_not_in = filter_groups_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_labels = filter_labels.map_err(Error::InvalidRequest)?;
+            let filter_labels_eq = filter_labels_eq.map_err(Error::InvalidRequest)?;
+            let filter_labels_in = filter_labels_in.map_err(Error::InvalidRequest)?;
+            let filter_labels_not_eq = filter_labels_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_labels_not_in = filter_labels_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_services = filter_services.map_err(Error::InvalidRequest)?;
+            let filter_services_eq = filter_services_eq.map_err(Error::InvalidRequest)?;
+            let filter_services_in = filter_services_in.map_err(Error::InvalidRequest)?;
+            let filter_services_not_eq = filter_services_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_services_not_in = filter_services_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_source = filter_source.map_err(Error::InvalidRequest)?;
+            let filter_source_eq = filter_source_eq.map_err(Error::InvalidRequest)?;
+            let filter_source_in = filter_source_in.map_err(Error::InvalidRequest)?;
+            let filter_source_not_eq = filter_source_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_source_not_in = filter_source_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_started_at_gt = filter_started_at_gt
                 .map_err(Error::InvalidRequest)?;
             let filter_started_at_gte = filter_started_at_gte
@@ -374327,6 +375756,12 @@ pub mod builder {
             let filter_started_at_lte = filter_started_at_lte
                 .map_err(Error::InvalidRequest)?;
             let filter_status = filter_status.map_err(Error::InvalidRequest)?;
+            let filter_status_eq = filter_status_eq.map_err(Error::InvalidRequest)?;
+            let filter_status_in = filter_status_in.map_err(Error::InvalidRequest)?;
+            let filter_status_not_eq = filter_status_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_status_not_in = filter_status_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_updated_at_gt = filter_updated_at_gt
                 .map_err(Error::InvalidRequest)?;
             let filter_updated_at_gte = filter_updated_at_gte
@@ -374411,10 +375846,82 @@ pub mod builder {
                     ),
                 )
                 .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environments][eq]",
+                        &filter_environments_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environments][in]",
+                        &filter_environments_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environments][not_eq]",
+                        &filter_environments_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environments][not_in]",
+                        &filter_environments_not_in,
+                    ),
+                )
+                .query(
                     &progenitor_client::QueryParam::new("filter[groups]", &filter_groups),
                 )
                 .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[groups][eq]",
+                        &filter_groups_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[groups][in]",
+                        &filter_groups_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[groups][not_eq]",
+                        &filter_groups_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[groups][not_in]",
+                        &filter_groups_not_in,
+                    ),
+                )
+                .query(
                     &progenitor_client::QueryParam::new("filter[labels]", &filter_labels),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[labels][eq]",
+                        &filter_labels_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[labels][in]",
+                        &filter_labels_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[labels][not_eq]",
+                        &filter_labels_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[labels][not_in]",
+                        &filter_labels_not_in,
+                    ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
@@ -374423,7 +375930,55 @@ pub mod builder {
                     ),
                 )
                 .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[services][eq]",
+                        &filter_services_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[services][in]",
+                        &filter_services_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[services][not_eq]",
+                        &filter_services_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[services][not_in]",
+                        &filter_services_not_in,
+                    ),
+                )
+                .query(
                     &progenitor_client::QueryParam::new("filter[source]", &filter_source),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[source][eq]",
+                        &filter_source_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[source][in]",
+                        &filter_source_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[source][not_eq]",
+                        &filter_source_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[source][not_in]",
+                        &filter_source_not_in,
+                    ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
@@ -374451,6 +376006,30 @@ pub mod builder {
                 )
                 .query(
                     &progenitor_client::QueryParam::new("filter[status]", &filter_status),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[status][eq]",
+                        &filter_status_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[status][in]",
+                        &filter_status_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[status][not_eq]",
+                        &filter_status_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[status][not_in]",
+                        &filter_status_not_in,
+                    ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
@@ -377340,137 +378919,6 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::create_bulk_import`]
-
-[`Client::create_bulk_import`]: super::Client::create_bulk_import*/
-    #[derive(Debug, Clone)]
-    pub struct CreateBulkImport<'a> {
-        client: &'a super::Client,
-        body: Result<types::builder::NewBulkImport, String>,
-    }
-    impl<'a> CreateBulkImport<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::NewBulkImport>,
-            <V as std::convert::TryInto<types::NewBulkImport>>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `NewBulkImport` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::NewBulkImport,
-            ) -> types::builder::NewBulkImport,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `POST` request to `/v1/bulk_imports`
-        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
-            let Self { client, body } = self;
-            let body = body
-                .and_then(|v| {
-                    types::NewBulkImport::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/bulk_imports", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .post(url)
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "create_bulk_import",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                201u16 => Ok(ResponseValue::empty(response)),
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::get_bulk_import`]
-
-[`Client::get_bulk_import`]: super::Client::get_bulk_import*/
-    #[derive(Debug, Clone)]
-    pub struct GetBulkImport<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-    }
-    impl<'a> GetBulkImport<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/bulk_imports/{id}`
-        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
-            let Self { client, id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/bulk_imports/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client.client.get(url).headers(header_map).build()?;
-            let info = OperationInfo {
-                operation_id: "get_bulk_import",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => Ok(ResponseValue::empty(response)),
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }
@@ -402594,6 +404042,14 @@ pub mod builder {
         filter_acknowledged_at_lte: Result<Option<::std::string::String>, String>,
         filter_cause: Result<Option<::std::string::String>, String>,
         filter_cause_ids: Result<Option<::std::string::String>, String>,
+        filter_cause_ids_eq: Result<Option<::std::string::String>, String>,
+        filter_cause_ids_in: Result<Option<::std::string::String>, String>,
+        filter_cause_ids_not_eq: Result<Option<::std::string::String>, String>,
+        filter_cause_ids_not_in: Result<Option<::std::string::String>, String>,
+        filter_causes_eq: Result<Option<::std::string::String>, String>,
+        filter_causes_in: Result<Option<::std::string::String>, String>,
+        filter_causes_not_eq: Result<Option<::std::string::String>, String>,
+        filter_causes_not_in: Result<Option<::std::string::String>, String>,
         filter_closed_at_gt: Result<Option<::std::string::String>, String>,
         filter_closed_at_gte: Result<Option<::std::string::String>, String>,
         filter_closed_at_lt: Result<Option<::std::string::String>, String>,
@@ -402611,47 +404067,131 @@ pub mod builder {
         filter_detected_at_lt: Result<Option<::std::string::String>, String>,
         filter_detected_at_lte: Result<Option<::std::string::String>, String>,
         filter_environment_ids: Result<Option<::std::string::String>, String>,
+        filter_environment_ids_eq: Result<Option<::std::string::String>, String>,
+        filter_environment_ids_in: Result<Option<::std::string::String>, String>,
+        filter_environment_ids_not_eq: Result<Option<::std::string::String>, String>,
+        filter_environment_ids_not_in: Result<Option<::std::string::String>, String>,
         filter_environments: Result<Option<::std::string::String>, String>,
+        filter_environments_eq: Result<Option<::std::string::String>, String>,
+        filter_environments_in: Result<Option<::std::string::String>, String>,
+        filter_environments_not_eq: Result<Option<::std::string::String>, String>,
+        filter_environments_not_in: Result<Option<::std::string::String>, String>,
         filter_functionalities: Result<Option<::std::string::String>, String>,
+        filter_functionalities_eq: Result<Option<::std::string::String>, String>,
+        filter_functionalities_in: Result<Option<::std::string::String>, String>,
+        filter_functionalities_not_eq: Result<Option<::std::string::String>, String>,
+        filter_functionalities_not_in: Result<Option<::std::string::String>, String>,
         filter_functionality_ids: Result<Option<::std::string::String>, String>,
+        filter_functionality_ids_eq: Result<Option<::std::string::String>, String>,
+        filter_functionality_ids_in: Result<Option<::std::string::String>, String>,
+        filter_functionality_ids_not_eq: Result<Option<::std::string::String>, String>,
+        filter_functionality_ids_not_in: Result<Option<::std::string::String>, String>,
         filter_functionality_names: Result<Option<::std::string::String>, String>,
+        filter_functionality_names_eq: Result<Option<::std::string::String>, String>,
+        filter_functionality_names_in: Result<Option<::std::string::String>, String>,
+        filter_functionality_names_not_eq: Result<Option<::std::string::String>, String>,
+        filter_functionality_names_not_in: Result<Option<::std::string::String>, String>,
         filter_in_triage_at_gt: Result<Option<::std::string::String>, String>,
         filter_in_triage_at_gte: Result<Option<::std::string::String>, String>,
         filter_in_triage_at_lt: Result<Option<::std::string::String>, String>,
         filter_in_triage_at_lte: Result<Option<::std::string::String>, String>,
         filter_kind: Result<Option<::std::string::String>, String>,
+        filter_kind_eq: Result<Option<::std::string::String>, String>,
+        filter_kind_in: Result<Option<::std::string::String>, String>,
+        filter_kind_not_eq: Result<Option<::std::string::String>, String>,
+        filter_kind_not_in: Result<Option<::std::string::String>, String>,
         filter_labels: Result<Option<::std::string::String>, String>,
+        filter_labels_eq: Result<Option<::std::string::String>, String>,
+        filter_labels_in: Result<Option<::std::string::String>, String>,
+        filter_labels_not_eq: Result<Option<::std::string::String>, String>,
+        filter_labels_not_in: Result<Option<::std::string::String>, String>,
         filter_mitigated_at_gt: Result<Option<::std::string::String>, String>,
         filter_mitigated_at_gte: Result<Option<::std::string::String>, String>,
         filter_mitigated_at_lt: Result<Option<::std::string::String>, String>,
         filter_mitigated_at_lte: Result<Option<::std::string::String>, String>,
         filter_private: Result<Option<::std::string::String>, String>,
+        filter_private_eq: Result<Option<::std::string::String>, String>,
+        filter_private_in: Result<Option<::std::string::String>, String>,
+        filter_private_not_eq: Result<Option<::std::string::String>, String>,
+        filter_private_not_in: Result<Option<::std::string::String>, String>,
         filter_resolved_at_gt: Result<Option<::std::string::String>, String>,
         filter_resolved_at_gte: Result<Option<::std::string::String>, String>,
         filter_resolved_at_lt: Result<Option<::std::string::String>, String>,
         filter_resolved_at_lte: Result<Option<::std::string::String>, String>,
         filter_search: Result<Option<::std::string::String>, String>,
         filter_service_ids: Result<Option<::std::string::String>, String>,
+        filter_service_ids_eq: Result<Option<::std::string::String>, String>,
+        filter_service_ids_in: Result<Option<::std::string::String>, String>,
+        filter_service_ids_not_eq: Result<Option<::std::string::String>, String>,
+        filter_service_ids_not_in: Result<Option<::std::string::String>, String>,
         filter_service_names: Result<Option<::std::string::String>, String>,
+        filter_service_names_eq: Result<Option<::std::string::String>, String>,
+        filter_service_names_in: Result<Option<::std::string::String>, String>,
+        filter_service_names_not_eq: Result<Option<::std::string::String>, String>,
+        filter_service_names_not_in: Result<Option<::std::string::String>, String>,
         filter_services: Result<Option<::std::string::String>, String>,
+        filter_services_eq: Result<Option<::std::string::String>, String>,
+        filter_services_in: Result<Option<::std::string::String>, String>,
+        filter_services_not_eq: Result<Option<::std::string::String>, String>,
+        filter_services_not_in: Result<Option<::std::string::String>, String>,
         filter_severity: Result<Option<::std::string::String>, String>,
+        filter_severity_eq: Result<Option<::std::string::String>, String>,
+        filter_severity_in: Result<Option<::std::string::String>, String>,
+        filter_severity_not_eq: Result<Option<::std::string::String>, String>,
+        filter_severity_not_in: Result<Option<::std::string::String>, String>,
         filter_severity_id: Result<Option<::std::string::String>, String>,
+        filter_severity_id_eq: Result<Option<::std::string::String>, String>,
+        filter_severity_id_in: Result<Option<::std::string::String>, String>,
+        filter_severity_id_not_eq: Result<Option<::std::string::String>, String>,
+        filter_severity_id_not_in: Result<Option<::std::string::String>, String>,
         filter_slack_channel_id: Result<Option<::std::string::String>, String>,
         filter_started_at_gt: Result<Option<::std::string::String>, String>,
         filter_started_at_gte: Result<Option<::std::string::String>, String>,
         filter_started_at_lt: Result<Option<::std::string::String>, String>,
         filter_started_at_lte: Result<Option<::std::string::String>, String>,
         filter_status: Result<Option<::std::string::String>, String>,
+        filter_status_eq: Result<Option<::std::string::String>, String>,
+        filter_status_in: Result<Option<::std::string::String>, String>,
+        filter_status_not_eq: Result<Option<::std::string::String>, String>,
+        filter_status_not_in: Result<Option<::std::string::String>, String>,
         filter_team_ids: Result<Option<::std::string::String>, String>,
+        filter_team_ids_eq: Result<Option<::std::string::String>, String>,
+        filter_team_ids_in: Result<Option<::std::string::String>, String>,
+        filter_team_ids_not_eq: Result<Option<::std::string::String>, String>,
+        filter_team_ids_not_in: Result<Option<::std::string::String>, String>,
         filter_team_names: Result<Option<::std::string::String>, String>,
+        filter_team_names_eq: Result<Option<::std::string::String>, String>,
+        filter_team_names_in: Result<Option<::std::string::String>, String>,
+        filter_team_names_not_eq: Result<Option<::std::string::String>, String>,
+        filter_team_names_not_in: Result<Option<::std::string::String>, String>,
         filter_teams: Result<Option<::std::string::String>, String>,
+        filter_teams_eq: Result<Option<::std::string::String>, String>,
+        filter_teams_in: Result<Option<::std::string::String>, String>,
+        filter_teams_not_eq: Result<Option<::std::string::String>, String>,
+        filter_teams_not_in: Result<Option<::std::string::String>, String>,
         filter_type_ids: Result<Option<::std::string::String>, String>,
+        filter_type_ids_eq: Result<Option<::std::string::String>, String>,
+        filter_type_ids_in: Result<Option<::std::string::String>, String>,
+        filter_type_ids_not_eq: Result<Option<::std::string::String>, String>,
+        filter_type_ids_not_in: Result<Option<::std::string::String>, String>,
         filter_types: Result<Option<::std::string::String>, String>,
+        filter_types_eq: Result<Option<::std::string::String>, String>,
+        filter_types_in: Result<Option<::std::string::String>, String>,
+        filter_types_not_eq: Result<Option<::std::string::String>, String>,
+        filter_types_not_in: Result<Option<::std::string::String>, String>,
         filter_updated_at_gt: Result<Option<::std::string::String>, String>,
         filter_updated_at_gte: Result<Option<::std::string::String>, String>,
         filter_updated_at_lt: Result<Option<::std::string::String>, String>,
         filter_updated_at_lte: Result<Option<::std::string::String>, String>,
         filter_user_id: Result<Option<i64>, String>,
+        filter_user_id_eq: Result<Option<::std::string::String>, String>,
+        filter_user_id_in: Result<Option<::std::string::String>, String>,
+        filter_user_id_not_eq: Result<Option<::std::string::String>, String>,
+        filter_user_id_not_in: Result<Option<::std::string::String>, String>,
+        filter_zendesk_ticket_id_eq: Result<Option<::std::string::String>, String>,
+        filter_zendesk_ticket_id_in: Result<Option<::std::string::String>, String>,
+        filter_zendesk_ticket_id_not_eq: Result<Option<::std::string::String>, String>,
+        filter_zendesk_ticket_id_not_in: Result<Option<::std::string::String>, String>,
         include: Result<Option<::std::string::String>, String>,
         page_after: Result<Option<::std::string::String>, String>,
         page_number: Result<Option<i64>, String>,
@@ -402668,6 +404208,14 @@ pub mod builder {
                 filter_acknowledged_at_lte: Ok(None),
                 filter_cause: Ok(None),
                 filter_cause_ids: Ok(None),
+                filter_cause_ids_eq: Ok(None),
+                filter_cause_ids_in: Ok(None),
+                filter_cause_ids_not_eq: Ok(None),
+                filter_cause_ids_not_in: Ok(None),
+                filter_causes_eq: Ok(None),
+                filter_causes_in: Ok(None),
+                filter_causes_not_eq: Ok(None),
+                filter_causes_not_in: Ok(None),
                 filter_closed_at_gt: Ok(None),
                 filter_closed_at_gte: Ok(None),
                 filter_closed_at_lt: Ok(None),
@@ -402682,47 +404230,131 @@ pub mod builder {
                 filter_detected_at_lt: Ok(None),
                 filter_detected_at_lte: Ok(None),
                 filter_environment_ids: Ok(None),
+                filter_environment_ids_eq: Ok(None),
+                filter_environment_ids_in: Ok(None),
+                filter_environment_ids_not_eq: Ok(None),
+                filter_environment_ids_not_in: Ok(None),
                 filter_environments: Ok(None),
+                filter_environments_eq: Ok(None),
+                filter_environments_in: Ok(None),
+                filter_environments_not_eq: Ok(None),
+                filter_environments_not_in: Ok(None),
                 filter_functionalities: Ok(None),
+                filter_functionalities_eq: Ok(None),
+                filter_functionalities_in: Ok(None),
+                filter_functionalities_not_eq: Ok(None),
+                filter_functionalities_not_in: Ok(None),
                 filter_functionality_ids: Ok(None),
+                filter_functionality_ids_eq: Ok(None),
+                filter_functionality_ids_in: Ok(None),
+                filter_functionality_ids_not_eq: Ok(None),
+                filter_functionality_ids_not_in: Ok(None),
                 filter_functionality_names: Ok(None),
+                filter_functionality_names_eq: Ok(None),
+                filter_functionality_names_in: Ok(None),
+                filter_functionality_names_not_eq: Ok(None),
+                filter_functionality_names_not_in: Ok(None),
                 filter_in_triage_at_gt: Ok(None),
                 filter_in_triage_at_gte: Ok(None),
                 filter_in_triage_at_lt: Ok(None),
                 filter_in_triage_at_lte: Ok(None),
                 filter_kind: Ok(None),
+                filter_kind_eq: Ok(None),
+                filter_kind_in: Ok(None),
+                filter_kind_not_eq: Ok(None),
+                filter_kind_not_in: Ok(None),
                 filter_labels: Ok(None),
+                filter_labels_eq: Ok(None),
+                filter_labels_in: Ok(None),
+                filter_labels_not_eq: Ok(None),
+                filter_labels_not_in: Ok(None),
                 filter_mitigated_at_gt: Ok(None),
                 filter_mitigated_at_gte: Ok(None),
                 filter_mitigated_at_lt: Ok(None),
                 filter_mitigated_at_lte: Ok(None),
                 filter_private: Ok(None),
+                filter_private_eq: Ok(None),
+                filter_private_in: Ok(None),
+                filter_private_not_eq: Ok(None),
+                filter_private_not_in: Ok(None),
                 filter_resolved_at_gt: Ok(None),
                 filter_resolved_at_gte: Ok(None),
                 filter_resolved_at_lt: Ok(None),
                 filter_resolved_at_lte: Ok(None),
                 filter_search: Ok(None),
                 filter_service_ids: Ok(None),
+                filter_service_ids_eq: Ok(None),
+                filter_service_ids_in: Ok(None),
+                filter_service_ids_not_eq: Ok(None),
+                filter_service_ids_not_in: Ok(None),
                 filter_service_names: Ok(None),
+                filter_service_names_eq: Ok(None),
+                filter_service_names_in: Ok(None),
+                filter_service_names_not_eq: Ok(None),
+                filter_service_names_not_in: Ok(None),
                 filter_services: Ok(None),
+                filter_services_eq: Ok(None),
+                filter_services_in: Ok(None),
+                filter_services_not_eq: Ok(None),
+                filter_services_not_in: Ok(None),
                 filter_severity: Ok(None),
+                filter_severity_eq: Ok(None),
+                filter_severity_in: Ok(None),
+                filter_severity_not_eq: Ok(None),
+                filter_severity_not_in: Ok(None),
                 filter_severity_id: Ok(None),
+                filter_severity_id_eq: Ok(None),
+                filter_severity_id_in: Ok(None),
+                filter_severity_id_not_eq: Ok(None),
+                filter_severity_id_not_in: Ok(None),
                 filter_slack_channel_id: Ok(None),
                 filter_started_at_gt: Ok(None),
                 filter_started_at_gte: Ok(None),
                 filter_started_at_lt: Ok(None),
                 filter_started_at_lte: Ok(None),
                 filter_status: Ok(None),
+                filter_status_eq: Ok(None),
+                filter_status_in: Ok(None),
+                filter_status_not_eq: Ok(None),
+                filter_status_not_in: Ok(None),
                 filter_team_ids: Ok(None),
+                filter_team_ids_eq: Ok(None),
+                filter_team_ids_in: Ok(None),
+                filter_team_ids_not_eq: Ok(None),
+                filter_team_ids_not_in: Ok(None),
                 filter_team_names: Ok(None),
+                filter_team_names_eq: Ok(None),
+                filter_team_names_in: Ok(None),
+                filter_team_names_not_eq: Ok(None),
+                filter_team_names_not_in: Ok(None),
                 filter_teams: Ok(None),
+                filter_teams_eq: Ok(None),
+                filter_teams_in: Ok(None),
+                filter_teams_not_eq: Ok(None),
+                filter_teams_not_in: Ok(None),
                 filter_type_ids: Ok(None),
+                filter_type_ids_eq: Ok(None),
+                filter_type_ids_in: Ok(None),
+                filter_type_ids_not_eq: Ok(None),
+                filter_type_ids_not_in: Ok(None),
                 filter_types: Ok(None),
+                filter_types_eq: Ok(None),
+                filter_types_in: Ok(None),
+                filter_types_not_eq: Ok(None),
+                filter_types_not_in: Ok(None),
                 filter_updated_at_gt: Ok(None),
                 filter_updated_at_gte: Ok(None),
                 filter_updated_at_lt: Ok(None),
                 filter_updated_at_lte: Ok(None),
                 filter_user_id: Ok(None),
+                filter_user_id_eq: Ok(None),
+                filter_user_id_in: Ok(None),
+                filter_user_id_not_eq: Ok(None),
+                filter_user_id_not_in: Ok(None),
+                filter_zendesk_ticket_id_eq: Ok(None),
+                filter_zendesk_ticket_id_in: Ok(None),
+                filter_zendesk_ticket_id_not_eq: Ok(None),
+                filter_zendesk_ticket_id_not_in: Ok(None),
                 include: Ok(None),
                 page_after: Ok(None),
                 page_number: Ok(None),
@@ -402804,6 +404436,110 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_cause_ids failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_cause_ids_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_cause_ids_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_cause_ids_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_cause_ids_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_cause_ids_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_cause_ids_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_cause_ids_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_cause_ids_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_cause_ids_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_cause_ids_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_cause_ids_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_cause_ids_not_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_causes_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_causes_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_causes_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_causes_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_causes_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_causes_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_causes_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_causes_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_causes_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_causes_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_causes_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_causes_not_in failed"
                         .to_string()
                 });
             self
@@ -402990,6 +404726,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_environment_ids_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environment_ids_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environment_ids_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environment_ids_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environment_ids_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environment_ids_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environment_ids_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environment_ids_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environment_ids_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environment_ids_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environment_ids_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environment_ids_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_environments<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -402999,6 +404787,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_environments failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environments_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environments_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environments_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environments_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environments_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environments_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environments_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environments_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environments_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_environments_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_environments_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_environments_not_in failed"
                         .to_string()
                 });
             self
@@ -403016,6 +404856,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_functionalities_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionalities_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionalities_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionalities_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionalities_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionalities_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionalities_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionalities_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionalities_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionalities_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionalities_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionalities_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_functionality_ids<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403029,6 +404921,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_functionality_ids_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionality_ids_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionality_ids_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionality_ids_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionality_ids_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionality_ids_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionality_ids_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionality_ids_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionality_ids_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionality_ids_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionality_ids_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionality_ids_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_functionality_names<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403038,6 +404982,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_functionality_names failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionality_names_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionality_names_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionality_names_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionality_names_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionality_names_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionality_names_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionality_names_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionality_names_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionality_names_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_functionality_names_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_functionality_names_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_functionality_names_not_in failed"
                         .to_string()
                 });
             self
@@ -403107,6 +405103,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_kind_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_kind_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_kind_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_kind_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_kind_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_kind_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_kind_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_kind_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_kind_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_kind_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_kind_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_kind_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_labels<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403116,6 +405164,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_labels failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_labels_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_labels_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_labels_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_labels_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_labels_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_labels_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_labels_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_labels_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_labels_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_labels_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_labels_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_labels_not_in failed"
                         .to_string()
                 });
             self
@@ -403181,6 +405281,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_private failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_private_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_private_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_private_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_private_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_private_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_private_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_private_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_private_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_private_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_private_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_private_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_private_not_in failed"
                         .to_string()
                 });
             self
@@ -403263,6 +405415,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_service_ids_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_service_ids_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_service_ids_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_service_ids_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_service_ids_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_service_ids_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_service_ids_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_service_ids_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_service_ids_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_service_ids_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_service_ids_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_service_ids_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_service_names<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403272,6 +405476,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_service_names failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_service_names_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_service_names_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_service_names_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_service_names_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_service_names_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_service_names_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_service_names_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_service_names_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_service_names_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_service_names_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_service_names_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_service_names_not_in failed"
                         .to_string()
                 });
             self
@@ -403289,6 +405545,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_services_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_services_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_services_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_services_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_services_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_services_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_services_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_services_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_services_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_services_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_services_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_services_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_severity<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403302,6 +405610,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_severity_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_severity_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_severity_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_severity_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_severity_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_severity_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_severity_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_severity_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_severity_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_severity_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_severity_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_severity_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_severity_id<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403311,6 +405671,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_severity_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_severity_id_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_severity_id_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_severity_id_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_severity_id_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_severity_id_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_severity_id_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_severity_id_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_severity_id_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_severity_id_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_severity_id_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_severity_id_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_severity_id_not_in failed"
                         .to_string()
                 });
             self
@@ -403393,6 +405805,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_status_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_team_ids<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403402,6 +405866,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_team_ids failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_team_ids_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_team_ids_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_team_ids_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_team_ids_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_team_ids_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_team_ids_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_team_ids_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_team_ids_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_team_ids_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_team_ids_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_team_ids_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_team_ids_not_in failed"
                         .to_string()
                 });
             self
@@ -403419,6 +405935,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_team_names_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_team_names_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_team_names_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_team_names_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_team_names_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_team_names_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_team_names_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_team_names_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_team_names_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_team_names_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_team_names_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_team_names_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_teams<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403428,6 +405996,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_teams failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_teams_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_teams_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_teams_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_teams_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_teams_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_teams_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_teams_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_teams_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_teams_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_teams_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_teams_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_teams_not_in failed"
                         .to_string()
                 });
             self
@@ -403445,6 +406065,58 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_type_ids_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_type_ids_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_type_ids_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_type_ids_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_type_ids_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_type_ids_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_type_ids_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_type_ids_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_type_ids_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_type_ids_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_type_ids_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_type_ids_not_in failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_types<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -403454,6 +406126,58 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for filter_types failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_types_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_types_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_types_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_types_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_types_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_types_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_types_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_types_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_types_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_types_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_types_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_types_not_in failed"
                         .to_string()
                 });
             self
@@ -403519,6 +406243,110 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `i64` for filter_user_id failed".to_string()
+                });
+            self
+        }
+        pub fn filter_user_id_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_user_id_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_user_id_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_user_id_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_user_id_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_user_id_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_user_id_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_user_id_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_user_id_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_user_id_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_user_id_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_user_id_not_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_zendesk_ticket_id_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_zendesk_ticket_id_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_zendesk_ticket_id_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_zendesk_ticket_id_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_zendesk_ticket_id_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_zendesk_ticket_id_in failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_zendesk_ticket_id_not_eq<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_zendesk_ticket_id_not_eq = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_zendesk_ticket_id_not_eq failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_zendesk_ticket_id_not_in<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_zendesk_ticket_id_not_in = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_zendesk_ticket_id_not_in failed"
+                        .to_string()
                 });
             self
         }
@@ -403593,6 +406421,14 @@ pub mod builder {
                 filter_acknowledged_at_lte,
                 filter_cause,
                 filter_cause_ids,
+                filter_cause_ids_eq,
+                filter_cause_ids_in,
+                filter_cause_ids_not_eq,
+                filter_cause_ids_not_in,
+                filter_causes_eq,
+                filter_causes_in,
+                filter_causes_not_eq,
+                filter_causes_not_in,
                 filter_closed_at_gt,
                 filter_closed_at_gte,
                 filter_closed_at_lt,
@@ -403607,47 +406443,131 @@ pub mod builder {
                 filter_detected_at_lt,
                 filter_detected_at_lte,
                 filter_environment_ids,
+                filter_environment_ids_eq,
+                filter_environment_ids_in,
+                filter_environment_ids_not_eq,
+                filter_environment_ids_not_in,
                 filter_environments,
+                filter_environments_eq,
+                filter_environments_in,
+                filter_environments_not_eq,
+                filter_environments_not_in,
                 filter_functionalities,
+                filter_functionalities_eq,
+                filter_functionalities_in,
+                filter_functionalities_not_eq,
+                filter_functionalities_not_in,
                 filter_functionality_ids,
+                filter_functionality_ids_eq,
+                filter_functionality_ids_in,
+                filter_functionality_ids_not_eq,
+                filter_functionality_ids_not_in,
                 filter_functionality_names,
+                filter_functionality_names_eq,
+                filter_functionality_names_in,
+                filter_functionality_names_not_eq,
+                filter_functionality_names_not_in,
                 filter_in_triage_at_gt,
                 filter_in_triage_at_gte,
                 filter_in_triage_at_lt,
                 filter_in_triage_at_lte,
                 filter_kind,
+                filter_kind_eq,
+                filter_kind_in,
+                filter_kind_not_eq,
+                filter_kind_not_in,
                 filter_labels,
+                filter_labels_eq,
+                filter_labels_in,
+                filter_labels_not_eq,
+                filter_labels_not_in,
                 filter_mitigated_at_gt,
                 filter_mitigated_at_gte,
                 filter_mitigated_at_lt,
                 filter_mitigated_at_lte,
                 filter_private,
+                filter_private_eq,
+                filter_private_in,
+                filter_private_not_eq,
+                filter_private_not_in,
                 filter_resolved_at_gt,
                 filter_resolved_at_gte,
                 filter_resolved_at_lt,
                 filter_resolved_at_lte,
                 filter_search,
                 filter_service_ids,
+                filter_service_ids_eq,
+                filter_service_ids_in,
+                filter_service_ids_not_eq,
+                filter_service_ids_not_in,
                 filter_service_names,
+                filter_service_names_eq,
+                filter_service_names_in,
+                filter_service_names_not_eq,
+                filter_service_names_not_in,
                 filter_services,
+                filter_services_eq,
+                filter_services_in,
+                filter_services_not_eq,
+                filter_services_not_in,
                 filter_severity,
+                filter_severity_eq,
+                filter_severity_in,
+                filter_severity_not_eq,
+                filter_severity_not_in,
                 filter_severity_id,
+                filter_severity_id_eq,
+                filter_severity_id_in,
+                filter_severity_id_not_eq,
+                filter_severity_id_not_in,
                 filter_slack_channel_id,
                 filter_started_at_gt,
                 filter_started_at_gte,
                 filter_started_at_lt,
                 filter_started_at_lte,
                 filter_status,
+                filter_status_eq,
+                filter_status_in,
+                filter_status_not_eq,
+                filter_status_not_in,
                 filter_team_ids,
+                filter_team_ids_eq,
+                filter_team_ids_in,
+                filter_team_ids_not_eq,
+                filter_team_ids_not_in,
                 filter_team_names,
+                filter_team_names_eq,
+                filter_team_names_in,
+                filter_team_names_not_eq,
+                filter_team_names_not_in,
                 filter_teams,
+                filter_teams_eq,
+                filter_teams_in,
+                filter_teams_not_eq,
+                filter_teams_not_in,
                 filter_type_ids,
+                filter_type_ids_eq,
+                filter_type_ids_in,
+                filter_type_ids_not_eq,
+                filter_type_ids_not_in,
                 filter_types,
+                filter_types_eq,
+                filter_types_in,
+                filter_types_not_eq,
+                filter_types_not_in,
                 filter_updated_at_gt,
                 filter_updated_at_gte,
                 filter_updated_at_lt,
                 filter_updated_at_lte,
                 filter_user_id,
+                filter_user_id_eq,
+                filter_user_id_in,
+                filter_user_id_not_eq,
+                filter_user_id_not_in,
+                filter_zendesk_ticket_id_eq,
+                filter_zendesk_ticket_id_in,
+                filter_zendesk_ticket_id_not_eq,
+                filter_zendesk_ticket_id_not_in,
                 include,
                 page_after,
                 page_number,
@@ -403664,6 +406584,20 @@ pub mod builder {
                 .map_err(Error::InvalidRequest)?;
             let filter_cause = filter_cause.map_err(Error::InvalidRequest)?;
             let filter_cause_ids = filter_cause_ids.map_err(Error::InvalidRequest)?;
+            let filter_cause_ids_eq = filter_cause_ids_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_cause_ids_in = filter_cause_ids_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_cause_ids_not_eq = filter_cause_ids_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_cause_ids_not_in = filter_cause_ids_not_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_causes_eq = filter_causes_eq.map_err(Error::InvalidRequest)?;
+            let filter_causes_in = filter_causes_in.map_err(Error::InvalidRequest)?;
+            let filter_causes_not_eq = filter_causes_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_causes_not_in = filter_causes_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_closed_at_gt = filter_closed_at_gt
                 .map_err(Error::InvalidRequest)?;
             let filter_closed_at_gte = filter_closed_at_gte
@@ -403692,13 +406626,53 @@ pub mod builder {
                 .map_err(Error::InvalidRequest)?;
             let filter_environment_ids = filter_environment_ids
                 .map_err(Error::InvalidRequest)?;
+            let filter_environment_ids_eq = filter_environment_ids_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_environment_ids_in = filter_environment_ids_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_environment_ids_not_eq = filter_environment_ids_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_environment_ids_not_in = filter_environment_ids_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_environments = filter_environments
+                .map_err(Error::InvalidRequest)?;
+            let filter_environments_eq = filter_environments_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_environments_in = filter_environments_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_environments_not_eq = filter_environments_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_environments_not_in = filter_environments_not_in
                 .map_err(Error::InvalidRequest)?;
             let filter_functionalities = filter_functionalities
                 .map_err(Error::InvalidRequest)?;
+            let filter_functionalities_eq = filter_functionalities_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionalities_in = filter_functionalities_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionalities_not_eq = filter_functionalities_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionalities_not_in = filter_functionalities_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_functionality_ids = filter_functionality_ids
                 .map_err(Error::InvalidRequest)?;
+            let filter_functionality_ids_eq = filter_functionality_ids_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionality_ids_in = filter_functionality_ids_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionality_ids_not_eq = filter_functionality_ids_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionality_ids_not_in = filter_functionality_ids_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_functionality_names = filter_functionality_names
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionality_names_eq = filter_functionality_names_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionality_names_in = filter_functionality_names_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionality_names_not_eq = filter_functionality_names_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_functionality_names_not_in = filter_functionality_names_not_in
                 .map_err(Error::InvalidRequest)?;
             let filter_in_triage_at_gt = filter_in_triage_at_gt
                 .map_err(Error::InvalidRequest)?;
@@ -403709,7 +406683,17 @@ pub mod builder {
             let filter_in_triage_at_lte = filter_in_triage_at_lte
                 .map_err(Error::InvalidRequest)?;
             let filter_kind = filter_kind.map_err(Error::InvalidRequest)?;
+            let filter_kind_eq = filter_kind_eq.map_err(Error::InvalidRequest)?;
+            let filter_kind_in = filter_kind_in.map_err(Error::InvalidRequest)?;
+            let filter_kind_not_eq = filter_kind_not_eq.map_err(Error::InvalidRequest)?;
+            let filter_kind_not_in = filter_kind_not_in.map_err(Error::InvalidRequest)?;
             let filter_labels = filter_labels.map_err(Error::InvalidRequest)?;
+            let filter_labels_eq = filter_labels_eq.map_err(Error::InvalidRequest)?;
+            let filter_labels_in = filter_labels_in.map_err(Error::InvalidRequest)?;
+            let filter_labels_not_eq = filter_labels_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_labels_not_in = filter_labels_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_mitigated_at_gt = filter_mitigated_at_gt
                 .map_err(Error::InvalidRequest)?;
             let filter_mitigated_at_gte = filter_mitigated_at_gte
@@ -403719,6 +406703,12 @@ pub mod builder {
             let filter_mitigated_at_lte = filter_mitigated_at_lte
                 .map_err(Error::InvalidRequest)?;
             let filter_private = filter_private.map_err(Error::InvalidRequest)?;
+            let filter_private_eq = filter_private_eq.map_err(Error::InvalidRequest)?;
+            let filter_private_in = filter_private_in.map_err(Error::InvalidRequest)?;
+            let filter_private_not_eq = filter_private_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_private_not_in = filter_private_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_resolved_at_gt = filter_resolved_at_gt
                 .map_err(Error::InvalidRequest)?;
             let filter_resolved_at_gte = filter_resolved_at_gte
@@ -403729,11 +406719,47 @@ pub mod builder {
                 .map_err(Error::InvalidRequest)?;
             let filter_search = filter_search.map_err(Error::InvalidRequest)?;
             let filter_service_ids = filter_service_ids.map_err(Error::InvalidRequest)?;
+            let filter_service_ids_eq = filter_service_ids_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_service_ids_in = filter_service_ids_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_service_ids_not_eq = filter_service_ids_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_service_ids_not_in = filter_service_ids_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_service_names = filter_service_names
                 .map_err(Error::InvalidRequest)?;
+            let filter_service_names_eq = filter_service_names_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_service_names_in = filter_service_names_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_service_names_not_eq = filter_service_names_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_service_names_not_in = filter_service_names_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_services = filter_services.map_err(Error::InvalidRequest)?;
+            let filter_services_eq = filter_services_eq.map_err(Error::InvalidRequest)?;
+            let filter_services_in = filter_services_in.map_err(Error::InvalidRequest)?;
+            let filter_services_not_eq = filter_services_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_services_not_in = filter_services_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_severity = filter_severity.map_err(Error::InvalidRequest)?;
+            let filter_severity_eq = filter_severity_eq.map_err(Error::InvalidRequest)?;
+            let filter_severity_in = filter_severity_in.map_err(Error::InvalidRequest)?;
+            let filter_severity_not_eq = filter_severity_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_severity_not_in = filter_severity_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_severity_id = filter_severity_id.map_err(Error::InvalidRequest)?;
+            let filter_severity_id_eq = filter_severity_id_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_severity_id_in = filter_severity_id_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_severity_id_not_eq = filter_severity_id_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_severity_id_not_in = filter_severity_id_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_slack_channel_id = filter_slack_channel_id
                 .map_err(Error::InvalidRequest)?;
             let filter_started_at_gt = filter_started_at_gt
@@ -403745,11 +406771,49 @@ pub mod builder {
             let filter_started_at_lte = filter_started_at_lte
                 .map_err(Error::InvalidRequest)?;
             let filter_status = filter_status.map_err(Error::InvalidRequest)?;
+            let filter_status_eq = filter_status_eq.map_err(Error::InvalidRequest)?;
+            let filter_status_in = filter_status_in.map_err(Error::InvalidRequest)?;
+            let filter_status_not_eq = filter_status_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_status_not_in = filter_status_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_team_ids = filter_team_ids.map_err(Error::InvalidRequest)?;
+            let filter_team_ids_eq = filter_team_ids_eq.map_err(Error::InvalidRequest)?;
+            let filter_team_ids_in = filter_team_ids_in.map_err(Error::InvalidRequest)?;
+            let filter_team_ids_not_eq = filter_team_ids_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_team_ids_not_in = filter_team_ids_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_team_names = filter_team_names.map_err(Error::InvalidRequest)?;
+            let filter_team_names_eq = filter_team_names_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_team_names_in = filter_team_names_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_team_names_not_eq = filter_team_names_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_team_names_not_in = filter_team_names_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_teams = filter_teams.map_err(Error::InvalidRequest)?;
+            let filter_teams_eq = filter_teams_eq.map_err(Error::InvalidRequest)?;
+            let filter_teams_in = filter_teams_in.map_err(Error::InvalidRequest)?;
+            let filter_teams_not_eq = filter_teams_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_teams_not_in = filter_teams_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_type_ids = filter_type_ids.map_err(Error::InvalidRequest)?;
+            let filter_type_ids_eq = filter_type_ids_eq.map_err(Error::InvalidRequest)?;
+            let filter_type_ids_in = filter_type_ids_in.map_err(Error::InvalidRequest)?;
+            let filter_type_ids_not_eq = filter_type_ids_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_type_ids_not_in = filter_type_ids_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_types = filter_types.map_err(Error::InvalidRequest)?;
+            let filter_types_eq = filter_types_eq.map_err(Error::InvalidRequest)?;
+            let filter_types_in = filter_types_in.map_err(Error::InvalidRequest)?;
+            let filter_types_not_eq = filter_types_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_types_not_in = filter_types_not_in
+                .map_err(Error::InvalidRequest)?;
             let filter_updated_at_gt = filter_updated_at_gt
                 .map_err(Error::InvalidRequest)?;
             let filter_updated_at_gte = filter_updated_at_gte
@@ -403759,6 +406823,20 @@ pub mod builder {
             let filter_updated_at_lte = filter_updated_at_lte
                 .map_err(Error::InvalidRequest)?;
             let filter_user_id = filter_user_id.map_err(Error::InvalidRequest)?;
+            let filter_user_id_eq = filter_user_id_eq.map_err(Error::InvalidRequest)?;
+            let filter_user_id_in = filter_user_id_in.map_err(Error::InvalidRequest)?;
+            let filter_user_id_not_eq = filter_user_id_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_user_id_not_in = filter_user_id_not_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_zendesk_ticket_id_eq = filter_zendesk_ticket_id_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_zendesk_ticket_id_in = filter_zendesk_ticket_id_in
+                .map_err(Error::InvalidRequest)?;
+            let filter_zendesk_ticket_id_not_eq = filter_zendesk_ticket_id_not_eq
+                .map_err(Error::InvalidRequest)?;
+            let filter_zendesk_ticket_id_not_in = filter_zendesk_ticket_id_not_in
+                .map_err(Error::InvalidRequest)?;
             let include = include.map_err(Error::InvalidRequest)?;
             let page_after = page_after.map_err(Error::InvalidRequest)?;
             let page_number = page_number.map_err(Error::InvalidRequest)?;
@@ -403812,6 +406890,54 @@ pub mod builder {
                     &progenitor_client::QueryParam::new(
                         "filter[cause_ids]",
                         &filter_cause_ids,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[cause_ids][eq]",
+                        &filter_cause_ids_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[cause_ids][in]",
+                        &filter_cause_ids_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[cause_ids][not_eq]",
+                        &filter_cause_ids_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[cause_ids][not_in]",
+                        &filter_cause_ids_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[causes][eq]",
+                        &filter_causes_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[causes][in]",
+                        &filter_causes_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[causes][not_eq]",
+                        &filter_causes_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[causes][not_in]",
+                        &filter_causes_not_in,
                     ),
                 )
                 .query(
@@ -403900,8 +407026,56 @@ pub mod builder {
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
+                        "filter[environment_ids][eq]",
+                        &filter_environment_ids_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environment_ids][in]",
+                        &filter_environment_ids_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environment_ids][not_eq]",
+                        &filter_environment_ids_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environment_ids][not_in]",
+                        &filter_environment_ids_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
                         "filter[environments]",
                         &filter_environments,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environments][eq]",
+                        &filter_environments_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environments][in]",
+                        &filter_environments_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environments][not_eq]",
+                        &filter_environments_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[environments][not_in]",
+                        &filter_environments_not_in,
                     ),
                 )
                 .query(
@@ -403912,14 +407086,86 @@ pub mod builder {
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
+                        "filter[functionalities][eq]",
+                        &filter_functionalities_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionalities][in]",
+                        &filter_functionalities_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionalities][not_eq]",
+                        &filter_functionalities_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionalities][not_in]",
+                        &filter_functionalities_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
                         "filter[functionality_ids]",
                         &filter_functionality_ids,
                     ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
+                        "filter[functionality_ids][eq]",
+                        &filter_functionality_ids_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionality_ids][in]",
+                        &filter_functionality_ids_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionality_ids][not_eq]",
+                        &filter_functionality_ids_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionality_ids][not_in]",
+                        &filter_functionality_ids_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
                         "filter[functionality_names]",
                         &filter_functionality_names,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionality_names][eq]",
+                        &filter_functionality_names_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionality_names][in]",
+                        &filter_functionality_names_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionality_names][not_eq]",
+                        &filter_functionality_names_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[functionality_names][not_in]",
+                        &filter_functionality_names_not_in,
                     ),
                 )
                 .query(
@@ -403948,7 +407194,55 @@ pub mod builder {
                 )
                 .query(&progenitor_client::QueryParam::new("filter[kind]", &filter_kind))
                 .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[kind][eq]",
+                        &filter_kind_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[kind][in]",
+                        &filter_kind_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[kind][not_eq]",
+                        &filter_kind_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[kind][not_in]",
+                        &filter_kind_not_in,
+                    ),
+                )
+                .query(
                     &progenitor_client::QueryParam::new("filter[labels]", &filter_labels),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[labels][eq]",
+                        &filter_labels_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[labels][in]",
+                        &filter_labels_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[labels][not_eq]",
+                        &filter_labels_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[labels][not_in]",
+                        &filter_labels_not_in,
+                    ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
@@ -403978,6 +407272,30 @@ pub mod builder {
                     &progenitor_client::QueryParam::new(
                         "filter[private]",
                         &filter_private,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[private][eq]",
+                        &filter_private_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[private][in]",
+                        &filter_private_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[private][not_eq]",
+                        &filter_private_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[private][not_in]",
+                        &filter_private_not_in,
                     ),
                 )
                 .query(
@@ -404015,8 +407333,56 @@ pub mod builder {
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
+                        "filter[service_ids][eq]",
+                        &filter_service_ids_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[service_ids][in]",
+                        &filter_service_ids_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[service_ids][not_eq]",
+                        &filter_service_ids_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[service_ids][not_in]",
+                        &filter_service_ids_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
                         "filter[service_names]",
                         &filter_service_names,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[service_names][eq]",
+                        &filter_service_names_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[service_names][in]",
+                        &filter_service_names_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[service_names][not_eq]",
+                        &filter_service_names_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[service_names][not_in]",
+                        &filter_service_names_not_in,
                     ),
                 )
                 .query(
@@ -404027,14 +407393,86 @@ pub mod builder {
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
+                        "filter[services][eq]",
+                        &filter_services_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[services][in]",
+                        &filter_services_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[services][not_eq]",
+                        &filter_services_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[services][not_in]",
+                        &filter_services_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
                         "filter[severity]",
                         &filter_severity,
                     ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
+                        "filter[severity][eq]",
+                        &filter_severity_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[severity][in]",
+                        &filter_severity_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[severity][not_eq]",
+                        &filter_severity_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[severity][not_in]",
+                        &filter_severity_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
                         "filter[severity_id]",
                         &filter_severity_id,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[severity_id][eq]",
+                        &filter_severity_id_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[severity_id][in]",
+                        &filter_severity_id_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[severity_id][not_eq]",
+                        &filter_severity_id_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[severity_id][not_in]",
+                        &filter_severity_id_not_in,
                     ),
                 )
                 .query(
@@ -404072,8 +407510,56 @@ pub mod builder {
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
+                        "filter[status][eq]",
+                        &filter_status_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[status][in]",
+                        &filter_status_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[status][not_eq]",
+                        &filter_status_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[status][not_in]",
+                        &filter_status_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
                         "filter[team_ids]",
                         &filter_team_ids,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[team_ids][eq]",
+                        &filter_team_ids_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[team_ids][in]",
+                        &filter_team_ids_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[team_ids][not_eq]",
+                        &filter_team_ids_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[team_ids][not_in]",
+                        &filter_team_ids_not_in,
                     ),
                 )
                 .query(
@@ -404083,7 +407569,55 @@ pub mod builder {
                     ),
                 )
                 .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[team_names][eq]",
+                        &filter_team_names_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[team_names][in]",
+                        &filter_team_names_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[team_names][not_eq]",
+                        &filter_team_names_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[team_names][not_in]",
+                        &filter_team_names_not_in,
+                    ),
+                )
+                .query(
                     &progenitor_client::QueryParam::new("filter[teams]", &filter_teams),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[teams][eq]",
+                        &filter_teams_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[teams][in]",
+                        &filter_teams_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[teams][not_eq]",
+                        &filter_teams_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[teams][not_in]",
+                        &filter_teams_not_in,
+                    ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
@@ -404092,7 +407626,55 @@ pub mod builder {
                     ),
                 )
                 .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[type_ids][eq]",
+                        &filter_type_ids_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[type_ids][in]",
+                        &filter_type_ids_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[type_ids][not_eq]",
+                        &filter_type_ids_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[type_ids][not_in]",
+                        &filter_type_ids_not_in,
+                    ),
+                )
+                .query(
                     &progenitor_client::QueryParam::new("filter[types]", &filter_types),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[types][eq]",
+                        &filter_types_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[types][in]",
+                        &filter_types_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[types][not_eq]",
+                        &filter_types_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[types][not_in]",
+                        &filter_types_not_in,
+                    ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new(
@@ -404122,6 +407704,54 @@ pub mod builder {
                     &progenitor_client::QueryParam::new(
                         "filter[user_id]",
                         &filter_user_id,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[user_id][eq]",
+                        &filter_user_id_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[user_id][in]",
+                        &filter_user_id_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[user_id][not_eq]",
+                        &filter_user_id_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[user_id][not_in]",
+                        &filter_user_id_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[zendesk_ticket_id][eq]",
+                        &filter_zendesk_ticket_id_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[zendesk_ticket_id][in]",
+                        &filter_zendesk_ticket_id_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[zendesk_ticket_id][not_eq]",
+                        &filter_zendesk_ticket_id_not_eq,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[zendesk_ticket_id][not_in]",
+                        &filter_zendesk_ticket_id_not_in,
                     ),
                 )
                 .query(&progenitor_client::QueryParam::new("include", &include))
@@ -419917,6 +423547,177 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::list_shift_coverage_requests`]
+
+[`Client::list_shift_coverage_requests`]: super::Client::list_shift_coverage_requests*/
+    #[derive(Debug, Clone)]
+    pub struct ListShiftCoverageRequests<'a> {
+        client: &'a super::Client,
+        schedule_id: Result<::std::string::String, String>,
+    }
+    impl<'a> ListShiftCoverageRequests<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                schedule_id: Err("schedule_id was not initialized".to_string()),
+            }
+        }
+        pub fn schedule_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.schedule_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for schedule_id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/schedules/{schedule_id}/shift_coverage_requests`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::ShiftCoverageRequestList>, Error<()>> {
+            let Self { client, schedule_id } = self;
+            let schedule_id = schedule_id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/schedules/{}/shift_coverage_requests", client.baseurl,
+                encode_path(& schedule_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_shift_coverage_requests",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::create_shift_coverage_request`]
+
+[`Client::create_shift_coverage_request`]: super::Client::create_shift_coverage_request*/
+    #[derive(Debug, Clone)]
+    pub struct CreateShiftCoverageRequest<'a> {
+        client: &'a super::Client,
+        schedule_id: Result<::std::string::String, String>,
+        body: Result<types::builder::NewShiftCoverageRequest, String>,
+    }
+    impl<'a> CreateShiftCoverageRequest<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                schedule_id: Err("schedule_id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn schedule_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.schedule_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for schedule_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewShiftCoverageRequest>,
+            <V as std::convert::TryInto<
+                types::NewShiftCoverageRequest,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!(
+                        "conversion to `NewShiftCoverageRequest` for body failed: {}", s
+                    )
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewShiftCoverageRequest,
+            ) -> types::builder::NewShiftCoverageRequest,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/schedules/{schedule_id}/shift_coverage_requests`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::ShiftCoverageRequestList>, Error<()>> {
+            let Self { client, schedule_id, body } = self;
+            let schedule_id = schedule_id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::NewShiftCoverageRequest::try_from(v)
+                        .map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/schedules/{}/shift_coverage_requests", client.baseurl,
+                encode_path(& schedule_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_shift_coverage_request",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::list_secrets`]
 
 [`Client::list_secrets`]: super::Client::list_secrets*/
@@ -422167,6 +425968,142 @@ pub mod builder {
                 .build()?;
             let info = OperationInfo {
                 operation_id: "delete_severity",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_shift_coverage_request`]
+
+[`Client::get_shift_coverage_request`]: super::Client::get_shift_coverage_request*/
+    #[derive(Debug, Clone)]
+    pub struct GetShiftCoverageRequest<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> GetShiftCoverageRequest<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/shift_coverage_requests/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::ShiftCoverageRequestResponse>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/shift_coverage_requests/{}", client.baseurl, encode_path(& id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_shift_coverage_request",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::delete_shift_coverage_request`]
+
+[`Client::delete_shift_coverage_request`]: super::Client::delete_shift_coverage_request*/
+    #[derive(Debug, Clone)]
+    pub struct DeleteShiftCoverageRequest<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> DeleteShiftCoverageRequest<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `DELETE` request to `/v1/shift_coverage_requests/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::ShiftCoverageRequestResponse>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/shift_coverage_requests/{}", client.baseurl, encode_path(& id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .delete(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "delete_shift_coverage_request",
             };
             client.pre(&mut request, &info).await?;
             let result = client.exec(request, &info).await;
