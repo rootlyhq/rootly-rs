@@ -24042,6 +24042,43 @@
         }
       }
     },
+    "/v1/meeting_recordings/{id}/delete_session": {
+      "delete": {
+        "summary": "Delete a standalone meeting recording",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Meeting Recordings"
+        ],
+        "description": "Delete a standalone meeting recording (not linked to an incident). Only the recording owner can delete it. Active recordings (pending, recording, paused) must be stopped first. Returns 404 for incident-linked recordings or recordings owned by another user.",
+        "operationId": "deleteStandaloneMeetingRecording",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "Meeting Recording UUID",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "recording deleted"
+          },
+          "422": {
+            "description": "cannot delete active recording"
+          },
+          "404": {
+            "description": "recording not found or not owned by user"
+          }
+        }
+      }
+    },
     "/v1/meeting_recordings/{id}": {
       "get": {
         "summary": "Get a meeting recording",

@@ -366602,6 +366602,25 @@ let response = client.delete_meeting_recording()
     pub fn delete_meeting_recording(&self) -> builder::DeleteMeetingRecording<'_> {
         builder::DeleteMeetingRecording::new(self)
     }
+    /**Delete a standalone meeting recording
+
+Delete a standalone meeting recording (not linked to an incident). Only the recording owner can delete it. Active recordings (pending, recording, paused) must be stopped first. Returns 404 for incident-linked recordings or recordings owned by another user.
+
+Sends a `DELETE` request to `/v1/meeting_recordings/{id}/delete_session`
+
+Arguments:
+- `id`: Meeting Recording UUID
+```ignore
+let response = client.delete_standalone_meeting_recording()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn delete_standalone_meeting_recording(
+        &self,
+    ) -> builder::DeleteStandaloneMeetingRecording<'_> {
+        builder::DeleteStandaloneMeetingRecording::new(self)
+    }
     /**Delete video from a meeting recording
 
 Delete only the video file from a meeting recording. The transcript, summary, and all metadata are preserved. Only non-active recordings with an attached video can have their video deleted.
@@ -412346,6 +412365,64 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 200u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::delete_standalone_meeting_recording`]
+
+[`Client::delete_standalone_meeting_recording`]: super::Client::delete_standalone_meeting_recording*/
+    #[derive(Debug, Clone)]
+    pub struct DeleteStandaloneMeetingRecording<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> DeleteStandaloneMeetingRecording<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `DELETE` request to `/v1/meeting_recordings/{id}/delete_session`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/meeting_recordings/{}/delete_session", client.baseurl,
+                encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client.client.delete(url).headers(header_map).build()?;
+            let info = OperationInfo {
+                operation_id: "delete_standalone_meeting_recording",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                204u16 => Ok(ResponseValue::empty(response)),
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }
