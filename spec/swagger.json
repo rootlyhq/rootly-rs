@@ -20,7 +20,7 @@
         "tags": [
           "AI Chat"
         ],
-        "description": "Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident for context-aware responses. Requires `ai.chat:write` OAuth scope or an API key.",
+        "description": "Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. Requires `ai.chat:write` OAuth scope or an API key.",
         "operationId": "createAiChat",
         "parameters": [
           {
@@ -49,7 +49,17 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Bind session to an incident for context",
+            "description": "Bind session to an incident for context (mutually exclusive with alert_id)",
+            "required": false
+          },
+          {
+            "name": "alert_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Bind session to an alert for context (mutually exclusive with incident_id)",
             "required": false
           }
         ],
@@ -84,7 +94,7 @@
         "tags": [
           "AI Chat"
         ],
-        "description": "Send a message and receive the AI response as a Server-Sent Events stream. Events: `session_id` (initial), `text` (content chunks), `task_update` (tool progress), `error`, `done` (terminal with status). Requires `ai.chat:write` OAuth scope or an API key.",
+        "description": "Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. Events: `session_id` (initial), `text` (content chunks), `task_update` (tool progress), `error`, `done` (terminal with status). Requires `ai.chat:write` OAuth scope or an API key.",
         "operationId": "streamAiChat",
         "parameters": [
           {
@@ -113,7 +123,17 @@
               "type": "string",
               "format": "uuid"
             },
-            "description": "Bind session to an incident",
+            "description": "Bind session to an incident (mutually exclusive with alert_id)",
+            "required": false
+          },
+          {
+            "name": "alert_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Bind session to an alert (mutually exclusive with incident_id)",
             "required": false
           }
         ],

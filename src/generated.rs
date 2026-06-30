@@ -361658,16 +361658,18 @@ let response = client.delete_incident_action_item()
     }
     /**Send AI chat message
 
-Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident for context-aware responses. Requires `ai.chat:write` OAuth scope or an API key.
+Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. Requires `ai.chat:write` OAuth scope or an API key.
 
 Sends a `POST` request to `/v1/ai/chat`
 
 Arguments:
-- `incident_id`: Bind session to an incident for context
+- `alert_id`: Bind session to an alert for context (mutually exclusive with incident_id)
+- `incident_id`: Bind session to an incident for context (mutually exclusive with alert_id)
 - `message`: Message to send to the AI assistant
 - `session_id`: Resume an existing session
 ```ignore
 let response = client.create_ai_chat()
+    .alert_id(alert_id)
     .incident_id(incident_id)
     .message(message)
     .session_id(session_id)
@@ -361719,16 +361721,18 @@ let response = client.list_ai_chat_session_messages()
     }
     /**Stream AI chat response (SSE)
 
-Send a message and receive the AI response as a Server-Sent Events stream. Events: `session_id` (initial), `text` (content chunks), `task_update` (tool progress), `error`, `done` (terminal with status). Requires `ai.chat:write` OAuth scope or an API key.
+Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. Events: `session_id` (initial), `text` (content chunks), `task_update` (tool progress), `error`, `done` (terminal with status). Requires `ai.chat:write` OAuth scope or an API key.
 
 Sends a `POST` request to `/v1/ai/chat/stream`
 
 Arguments:
-- `incident_id`: Bind session to an incident
+- `alert_id`: Bind session to an alert (mutually exclusive with incident_id)
+- `incident_id`: Bind session to an incident (mutually exclusive with alert_id)
 - `message`: Message to send
 - `session_id`: Resume an existing session
 ```ignore
 let response = client.stream_ai_chat()
+    .alert_id(alert_id)
     .incident_id(incident_id)
     .message(message)
     .session_id(session_id)
@@ -372973,6 +372977,7 @@ pub mod builder {
     #[derive(Debug, Clone)]
     pub struct CreateAiChat<'a> {
         client: &'a super::Client,
+        alert_id: Result<Option<::uuid::Uuid>, String>,
         incident_id: Result<Option<::uuid::Uuid>, String>,
         message: Result<::std::string::String, String>,
         session_id: Result<Option<::uuid::Uuid>, String>,
@@ -372981,10 +372986,23 @@ pub mod builder {
         pub fn new(client: &'a super::Client) -> Self {
             Self {
                 client: client,
+                alert_id: Ok(None),
                 incident_id: Ok(None),
                 message: Err("message was not initialized".to_string()),
                 session_id: Ok(None),
             }
+        }
+        pub fn alert_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.alert_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for alert_id failed".to_string()
+                });
+            self
         }
         pub fn incident_id<V>(mut self, value: V) -> Self
         where
@@ -373026,7 +373044,8 @@ pub mod builder {
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiChatResponse>, Error<()>> {
-            let Self { client, incident_id, message, session_id } = self;
+            let Self { client, alert_id, incident_id, message, session_id } = self;
+            let alert_id = alert_id.map_err(Error::InvalidRequest)?;
             let incident_id = incident_id.map_err(Error::InvalidRequest)?;
             let message = message.map_err(Error::InvalidRequest)?;
             let session_id = session_id.map_err(Error::InvalidRequest)?;
@@ -373047,6 +373066,7 @@ pub mod builder {
                     ::reqwest::header::ACCEPT,
                     ::reqwest::header::HeaderValue::from_static("application/json"),
                 )
+                .query(&progenitor_client::QueryParam::new("alert_id", &alert_id))
                 .query(&progenitor_client::QueryParam::new("incident_id", &incident_id))
                 .query(&progenitor_client::QueryParam::new("message", &message))
                 .query(&progenitor_client::QueryParam::new("session_id", &session_id))
@@ -373223,6 +373243,7 @@ pub mod builder {
     #[derive(Debug, Clone)]
     pub struct StreamAiChat<'a> {
         client: &'a super::Client,
+        alert_id: Result<Option<::uuid::Uuid>, String>,
         incident_id: Result<Option<::uuid::Uuid>, String>,
         message: Result<::std::string::String, String>,
         session_id: Result<Option<::uuid::Uuid>, String>,
@@ -373231,10 +373252,23 @@ pub mod builder {
         pub fn new(client: &'a super::Client) -> Self {
             Self {
                 client: client,
+                alert_id: Ok(None),
                 incident_id: Ok(None),
                 message: Err("message was not initialized".to_string()),
                 session_id: Ok(None),
             }
+        }
+        pub fn alert_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.alert_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for alert_id failed".to_string()
+                });
+            self
         }
         pub fn incident_id<V>(mut self, value: V) -> Self
         where
@@ -373274,7 +373308,8 @@ pub mod builder {
         }
         ///Sends a `POST` request to `/v1/ai/chat/stream`
         pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
-            let Self { client, incident_id, message, session_id } = self;
+            let Self { client, alert_id, incident_id, message, session_id } = self;
+            let alert_id = alert_id.map_err(Error::InvalidRequest)?;
             let incident_id = incident_id.map_err(Error::InvalidRequest)?;
             let message = message.map_err(Error::InvalidRequest)?;
             let session_id = session_id.map_err(Error::InvalidRequest)?;
@@ -373291,6 +373326,7 @@ pub mod builder {
             let mut request = client
                 .client
                 .post(url)
+                .query(&progenitor_client::QueryParam::new("alert_id", &alert_id))
                 .query(&progenitor_client::QueryParam::new("incident_id", &incident_id))
                 .query(&progenitor_client::QueryParam::new("message", &message))
                 .query(&progenitor_client::QueryParam::new("session_id", &session_id))
