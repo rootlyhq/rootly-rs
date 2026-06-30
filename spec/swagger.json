@@ -9,6 +9,219 @@
     }
   },
   "paths": {
+    "/v1/ai/chat": {
+      "post": {
+        "summary": "Send AI chat message",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "AI Chat"
+        ],
+        "description": "Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident for context-aware responses. Requires `ai.chat:write` OAuth scope or an API key.",
+        "operationId": "createAiChat",
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Message to send to the AI assistant",
+            "required": true
+          },
+          {
+            "name": "session_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Resume an existing session",
+            "required": false
+          },
+          {
+            "name": "incident_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Bind session to an incident for context",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "AI chat response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_response"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "AI chat not enabled or insufficient scope"
+          },
+          "422": {
+            "description": "invalid request"
+          }
+        }
+      }
+    },
+    "/v1/ai/chat/stream": {
+      "post": {
+        "summary": "Stream AI chat response (SSE)",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "AI Chat"
+        ],
+        "description": "Send a message and receive the AI response as a Server-Sent Events stream. Events: `session_id` (initial), `text` (content chunks), `task_update` (tool progress), `error`, `done` (terminal with status). Requires `ai.chat:write` OAuth scope or an API key.",
+        "operationId": "streamAiChat",
+        "parameters": [
+          {
+            "name": "message",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Message to send",
+            "required": true
+          },
+          {
+            "name": "session_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Resume an existing session",
+            "required": false
+          },
+          {
+            "name": "incident_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Bind session to an incident",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "SSE event stream"
+          },
+          "403": {
+            "description": "AI chat not enabled"
+          }
+        }
+      }
+    },
+    "/v1/ai/chat/sessions/{session_id}/messages": {
+      "get": {
+        "summary": "List AI chat session messages",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "AI Chat"
+        ],
+        "description": "Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Requires `ai.chat:read` OAuth scope or an API key.",
+        "operationId": "listAiChatSessionMessages",
+        "parameters": [
+          {
+            "name": "session_id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Session UUID",
+            "required": true
+          },
+          {
+            "name": "page[number]",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Page number (default 1)",
+            "required": false
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Messages per page (max 100, default 50)",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "session messages",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_session_message_list"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "session not found"
+          }
+        }
+      }
+    },
+    "/v1/ai/chat/sessions/{id}": {
+      "delete": {
+        "summary": "Delete AI chat session",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "AI Chat"
+        ],
+        "description": "Permanently deletes an AI chat session and all its messages. Requires `ai.chat:write` OAuth scope or an API key.",
+        "operationId": "deleteAiChatSession",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Session UUID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "session deleted"
+          },
+          "404": {
+            "description": "session not found"
+          }
+        }
+      }
+    },
     "/v1/alerts/{alert_id}/events": {
       "parameters": [
         {
@@ -4192,6 +4405,80 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/v1/bulk_imports": {
+      "post": {
+        "summary": "Create a bulk import",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Bulk Imports"
+        ],
+        "description": "Create a new bulk import for incidents. Requires global API key authentication.",
+        "operationId": "createBulkImport",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "bulk import created"
+          },
+          "403": {
+            "description": "unauthorized - user lacks incident create permission"
+          },
+          "422": {
+            "description": "invalid parameters"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/new_bulk_import"
+              }
+            }
+          },
+          "required": true
+        }
+      }
+    },
+    "/v1/bulk_imports/{id}": {
+      "get": {
+        "summary": "Get bulk import status",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "Bulk Imports"
+        ],
+        "description": "Retrieves the current status of a bulk import job.\n\n**Use this endpoint to:**\n- Poll for import progress\n- Check validation errors if status is `validation_failed`\n- Get final results when status is `completed` or `failed`\n",
+        "operationId": "getBulkImport",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Bulk import ID returned from the create endpoint",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "success"
+          },
+          "404": {
+            "description": "not found"
+          },
+          "403": {
+            "description": "organization API keys feature not enabled"
           }
         }
       }
@@ -34570,6 +34857,117 @@
       }
     },
     "schemas": {
+      "ai_chat_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid",
+                "description": "Session UUID"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ai_chat_responses"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "session_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "AI chat session UUID"
+                  },
+                  "reply": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Assistant reply text"
+                  },
+                  "status": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Response status (present when user input is required)",
+                    "enum": [
+                      "user_input_required"
+                    ]
+                  }
+                },
+                "required": [
+                  "session_id"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          },
+          "included": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/jsonapi_included_resource"
+            }
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ai_chat_session_message": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Message UUID"
+          },
+          "role": {
+            "type": "string",
+            "description": "Message author role",
+            "enum": [
+              "user",
+              "assistant"
+            ]
+          },
+          "content": {
+            "type": "string",
+            "description": "Message content"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the message was created"
+          }
+        },
+        "required": [
+          "id",
+          "role",
+          "content",
+          "created_at"
+        ]
+      },
+      "ai_chat_session_message_list": {
+        "type": "object",
+        "properties": {
+          "messages": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ai_chat_session_message"
+            }
+          },
+          "meta": {
+            "type": "object"
+          }
+        },
+        "required": [
+          "messages"
+        ]
+      },
       "attach_alert": {
         "type": "object",
         "properties": {
@@ -40798,6 +41196,171 @@
           "data",
           "links",
           "meta"
+        ]
+      },
+      "bulk_import_attributes": {
+        "type": "object",
+        "properties": {
+          "entity_type": {
+            "type": "string",
+            "enum": [
+              "Incident"
+            ],
+            "description": "Type of entity being imported"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "validating",
+              "validation_failed",
+              "importing",
+              "indexing",
+              "completed",
+              "failed"
+            ],
+            "description": "Current status of the import"
+          },
+          "file_url": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL of the JSONL file being imported"
+          },
+          "notification_email": {
+            "type": "string",
+            "format": "email",
+            "description": "Email address for notifications"
+          },
+          "total_records": {
+            "type": "integer",
+            "nullable": true,
+            "description": "Total number of records in the file"
+          },
+          "processed_records": {
+            "type": "integer",
+            "description": "Number of records processed so far"
+          },
+          "failed_records": {
+            "type": "integer",
+            "description": "Number of records that failed to import"
+          },
+          "validation_errors": {
+            "type": "object",
+            "nullable": true,
+            "description": "Validation errors encountered during validation phase"
+          },
+          "error_message": {
+            "type": "string",
+            "nullable": true,
+            "description": "Error message if import failed"
+          },
+          "progress_percentage": {
+            "type": "number",
+            "format": "float",
+            "description": "Import progress percentage (0-100)"
+          },
+          "started_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When import processing started"
+          },
+          "completed_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When import completed or failed"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the bulk import was created"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the bulk import was last updated"
+          }
+        },
+        "required": [
+          "status",
+          "processed_records",
+          "failed_records",
+          "progress_percentage"
+        ]
+      },
+      "new_bulk_import": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "entity_type": {
+                    "type": "string",
+                    "enum": [
+                      "Incident"
+                    ],
+                    "description": "Type of entity to import (currently only 'Incident' is supported)"
+                  },
+                  "file_url": {
+                    "type": "string",
+                    "format": "uri",
+                    "description": "URL of the JSONL file to import. Must be accessible via HTTPS."
+                  },
+                  "notification_email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "Email address to receive import status notifications"
+                  }
+                },
+                "required": [
+                  "entity_type",
+                  "file_url",
+                  "notification_email"
+                ]
+              }
+            },
+            "required": [
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "bulk_import_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "bulk_import"
+                ]
+              },
+              "attributes": {
+                "$ref": "#/components/schemas/bulk_import_attributes"
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
         ]
       },
       "new_catalog": {

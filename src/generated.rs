@@ -1485,6 +1485,285 @@ pub mod types {
             Default::default()
         }
     }
+    ///`AiChatResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "session_id"
+    ///          ],
+    ///          "properties": {
+    ///            "reply": {
+    ///              "description": "Assistant reply text",
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            },
+    ///            "session_id": {
+    ///              "description": "AI chat session UUID",
+    ///              "type": "string",
+    ///              "format": "uuid"
+    ///            },
+    ///            "status": {
+    ///              "description": "Response status (present when user input is required)",
+    ///              "type": [
+    ///                "string",
+    ///                "null"
+    ///              ]
+    ///            }
+    ///          }
+    ///        },
+    ///        "id": {
+    ///          "description": "Session UUID",
+    ///          "type": "string",
+    ///          "format": "uuid"
+    ///        },
+    ///        "type": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    },
+    ///    "included": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/jsonapi_included_resource"
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatResponse {
+        pub data: AiChatResponseData,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<JsonapiIncludedResource>,
+    }
+    impl AiChatResponse {
+        pub fn builder() -> builder::AiChatResponse {
+            Default::default()
+        }
+    }
+    ///`AiChatResponseData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "session_id"
+    ///      ],
+    ///      "properties": {
+    ///        "reply": {
+    ///          "description": "Assistant reply text",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        },
+    ///        "session_id": {
+    ///          "description": "AI chat session UUID",
+    ///          "type": "string",
+    ///          "format": "uuid"
+    ///        },
+    ///        "status": {
+    ///          "description": "Response status (present when user input is required)",
+    ///          "type": [
+    ///            "string",
+    ///            "null"
+    ///          ]
+    ///        }
+    ///      }
+    ///    },
+    ///    "id": {
+    ///      "description": "Session UUID",
+    ///      "type": "string",
+    ///      "format": "uuid"
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatResponseData {
+        pub attributes: AiChatResponseDataAttributes,
+        ///Session UUID
+        pub id: ::uuid::Uuid,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiChatResponseData {
+        pub fn builder() -> builder::AiChatResponseData {
+            Default::default()
+        }
+    }
+    ///`AiChatResponseDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "session_id"
+    ///  ],
+    ///  "properties": {
+    ///    "reply": {
+    ///      "description": "Assistant reply text",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "session_id": {
+    ///      "description": "AI chat session UUID",
+    ///      "type": "string",
+    ///      "format": "uuid"
+    ///    },
+    ///    "status": {
+    ///      "description": "Response status (present when user input is required)",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatResponseDataAttributes {
+        ///Assistant reply text
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub reply: ::std::option::Option<::std::string::String>,
+        ///AI chat session UUID
+        pub session_id: ::uuid::Uuid,
+        ///Response status (present when user input is required)
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub status: ::std::option::Option<::std::string::String>,
+    }
+    impl AiChatResponseDataAttributes {
+        pub fn builder() -> builder::AiChatResponseDataAttributes {
+            Default::default()
+        }
+    }
+    ///`AiChatSessionMessage`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "content",
+    ///    "created_at",
+    ///    "id",
+    ///    "role"
+    ///  ],
+    ///  "properties": {
+    ///    "content": {
+    ///      "description": "Message content",
+    ///      "type": "string"
+    ///    },
+    ///    "created_at": {
+    ///      "description": "When the message was created",
+    ///      "type": "string",
+    ///      "format": "date-time"
+    ///    },
+    ///    "id": {
+    ///      "description": "Message UUID",
+    ///      "type": "string",
+    ///      "format": "uuid"
+    ///    },
+    ///    "role": {
+    ///      "description": "Message author role",
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSessionMessage {
+        ///Message content
+        pub content: ::std::string::String,
+        ///When the message was created
+        pub created_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Message UUID
+        pub id: ::uuid::Uuid,
+        ///Message author role
+        pub role: ::std::string::String,
+    }
+    impl AiChatSessionMessage {
+        pub fn builder() -> builder::AiChatSessionMessage {
+            Default::default()
+        }
+    }
+    ///`AiChatSessionMessageList`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "messages"
+    ///  ],
+    ///  "properties": {
+    ///    "messages": {
+    ///      "type": "array",
+    ///      "items": {
+    ///        "$ref": "#/components/schemas/ai_chat_session_message"
+    ///      }
+    ///    },
+    ///    "meta": {
+    ///      "type": "object"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSessionMessageList {
+        pub messages: ::std::vec::Vec<AiChatSessionMessage>,
+        #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
+        pub meta: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+    }
+    impl AiChatSessionMessageList {
+        pub fn builder() -> builder::AiChatSessionMessageList {
+            Default::default()
+        }
+    }
     ///`Alert`
     ///
     /// <details><summary>JSON schema</summary>
@@ -11101,6 +11380,235 @@ pub mod types {
                 .map_err(|e: self::error::ConversionError| {
                     <D::Error as ::serde::de::Error>::custom(e.to_string())
                 })
+        }
+    }
+    ///`BulkImportAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "failed_records",
+    ///    "processed_records",
+    ///    "progress_percentage",
+    ///    "status"
+    ///  ],
+    ///  "properties": {
+    ///    "completed_at": {
+    ///      "description": "When import completed or failed",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ],
+    ///      "format": "date-time"
+    ///    },
+    ///    "created_at": {
+    ///      "description": "When the bulk import was created",
+    ///      "type": "string",
+    ///      "format": "date-time"
+    ///    },
+    ///    "entity_type": {
+    ///      "description": "Type of entity being imported",
+    ///      "type": "string"
+    ///    },
+    ///    "error_message": {
+    ///      "description": "Error message if import failed",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "failed_records": {
+    ///      "description": "Number of records that failed to import",
+    ///      "type": "integer"
+    ///    },
+    ///    "file_url": {
+    ///      "description": "URL of the JSONL file being imported",
+    ///      "type": "string",
+    ///      "format": "uri"
+    ///    },
+    ///    "notification_email": {
+    ///      "description": "Email address for notifications",
+    ///      "type": "string",
+    ///      "format": "email"
+    ///    },
+    ///    "processed_records": {
+    ///      "description": "Number of records processed so far",
+    ///      "type": "integer"
+    ///    },
+    ///    "progress_percentage": {
+    ///      "description": "Import progress percentage (0-100)",
+    ///      "type": "number",
+    ///      "format": "float"
+    ///    },
+    ///    "started_at": {
+    ///      "description": "When import processing started",
+    ///      "type": [
+    ///        "string",
+    ///        "null"
+    ///      ],
+    ///      "format": "date-time"
+    ///    },
+    ///    "status": {
+    ///      "description": "Current status of the import",
+    ///      "type": "string"
+    ///    },
+    ///    "total_records": {
+    ///      "description": "Total number of records in the file",
+    ///      "type": [
+    ///        "integer",
+    ///        "null"
+    ///      ]
+    ///    },
+    ///    "updated_at": {
+    ///      "description": "When the bulk import was last updated",
+    ///      "type": "string",
+    ///      "format": "date-time"
+    ///    },
+    ///    "validation_errors": {
+    ///      "description": "Validation errors encountered during validation phase",
+    ///      "type": [
+    ///        "object",
+    ///        "null"
+    ///      ]
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkImportAttributes {
+        ///When import completed or failed
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub completed_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///When the bulk import was created
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Type of entity being imported
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub entity_type: ::std::option::Option<::std::string::String>,
+        ///Error message if import failed
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub error_message: ::std::option::Option<::std::string::String>,
+        ///Number of records that failed to import
+        pub failed_records: i64,
+        ///URL of the JSONL file being imported
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub file_url: ::std::option::Option<::std::string::String>,
+        ///Email address for notifications
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub notification_email: ::std::option::Option<::std::string::String>,
+        ///Number of records processed so far
+        pub processed_records: i64,
+        ///Import progress percentage (0-100)
+        pub progress_percentage: f32,
+        ///When import processing started
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub started_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Current status of the import
+        pub status: ::std::string::String,
+        ///Total number of records in the file
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub total_records: ::std::option::Option<i64>,
+        ///When the bulk import was last updated
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Validation errors encountered during validation phase
+        #[serde(default, skip_serializing_if = "::std::option::Option::is_none")]
+        pub validation_errors: ::std::option::Option<
+            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+        >,
+    }
+    impl BulkImportAttributes {
+        pub fn builder() -> builder::BulkImportAttributes {
+            Default::default()
+        }
+    }
+    ///`BulkImportResponse`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes",
+    ///        "id",
+    ///        "type"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "$ref": "#/components/schemas/bulk_import_attributes"
+    ///        },
+    ///        "id": {
+    ///          "type": "string",
+    ///          "format": "uuid"
+    ///        },
+    ///        "type": {
+    ///          "type": "string"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkImportResponse {
+        pub data: BulkImportResponseData,
+    }
+    impl BulkImportResponse {
+        pub fn builder() -> builder::BulkImportResponse {
+            Default::default()
+        }
+    }
+    ///`BulkImportResponseData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes",
+    ///    "id",
+    ///    "type"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "$ref": "#/components/schemas/bulk_import_attributes"
+    ///    },
+    ///    "id": {
+    ///      "type": "string",
+    ///      "format": "uuid"
+    ///    },
+    ///    "type": {
+    ///      "type": "string"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct BulkImportResponseData {
+        pub attributes: BulkImportAttributes,
+        pub id: ::uuid::Uuid,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl BulkImportResponseData {
+        pub fn builder() -> builder::BulkImportResponseData {
+            Default::default()
         }
     }
     ///`BulkUpsertCatalogEntities`
@@ -52813,6 +53321,155 @@ pub mod types {
     }
     impl NewAuthorizationDataAttributes {
         pub fn builder() -> builder::NewAuthorizationDataAttributes {
+            Default::default()
+        }
+    }
+    ///`NewBulkImport`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "data"
+    ///  ],
+    ///  "properties": {
+    ///    "data": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "attributes"
+    ///      ],
+    ///      "properties": {
+    ///        "attributes": {
+    ///          "type": "object",
+    ///          "required": [
+    ///            "entity_type",
+    ///            "file_url",
+    ///            "notification_email"
+    ///          ],
+    ///          "properties": {
+    ///            "entity_type": {
+    ///              "description": "Type of entity to import (currently only 'Incident' is supported)",
+    ///              "type": "string"
+    ///            },
+    ///            "file_url": {
+    ///              "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
+    ///              "type": "string",
+    ///              "format": "uri"
+    ///            },
+    ///            "notification_email": {
+    ///              "description": "Email address to receive import status notifications",
+    ///              "type": "string",
+    ///              "format": "email"
+    ///            }
+    ///          }
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewBulkImport {
+        pub data: NewBulkImportData,
+    }
+    impl NewBulkImport {
+        pub fn builder() -> builder::NewBulkImport {
+            Default::default()
+        }
+    }
+    ///`NewBulkImportData`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "attributes"
+    ///  ],
+    ///  "properties": {
+    ///    "attributes": {
+    ///      "type": "object",
+    ///      "required": [
+    ///        "entity_type",
+    ///        "file_url",
+    ///        "notification_email"
+    ///      ],
+    ///      "properties": {
+    ///        "entity_type": {
+    ///          "description": "Type of entity to import (currently only 'Incident' is supported)",
+    ///          "type": "string"
+    ///        },
+    ///        "file_url": {
+    ///          "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
+    ///          "type": "string",
+    ///          "format": "uri"
+    ///        },
+    ///        "notification_email": {
+    ///          "description": "Email address to receive import status notifications",
+    ///          "type": "string",
+    ///          "format": "email"
+    ///        }
+    ///      }
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewBulkImportData {
+        pub attributes: NewBulkImportDataAttributes,
+    }
+    impl NewBulkImportData {
+        pub fn builder() -> builder::NewBulkImportData {
+            Default::default()
+        }
+    }
+    ///`NewBulkImportDataAttributes`
+    ///
+    /// <details><summary>JSON schema</summary>
+    ///
+    /// ```json
+    ///{
+    ///  "type": "object",
+    ///  "required": [
+    ///    "entity_type",
+    ///    "file_url",
+    ///    "notification_email"
+    ///  ],
+    ///  "properties": {
+    ///    "entity_type": {
+    ///      "description": "Type of entity to import (currently only 'Incident' is supported)",
+    ///      "type": "string"
+    ///    },
+    ///    "file_url": {
+    ///      "description": "URL of the JSONL file to import. Must be accessible via HTTPS.",
+    ///      "type": "string",
+    ///      "format": "uri"
+    ///    },
+    ///    "notification_email": {
+    ///      "description": "Email address to receive import status notifications",
+    ///      "type": "string",
+    ///      "format": "email"
+    ///    }
+    ///  }
+    ///}
+    /// ```
+    /// </details>
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct NewBulkImportDataAttributes {
+        ///Type of entity to import (currently only 'Incident' is supported)
+        pub entity_type: ::std::string::String,
+        ///URL of the JSONL file to import. Must be accessible via HTTPS.
+        pub file_url: ::std::string::String,
+        ///Email address to receive import status notifications
+        pub notification_email: ::std::string::String,
+    }
+    impl NewBulkImportDataAttributes {
+        pub fn builder() -> builder::NewBulkImportDataAttributes {
             Default::default()
         }
     }
@@ -165203,6 +165860,389 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct AiChatResponse {
+            data: ::std::result::Result<
+                super::AiChatResponseData,
+                ::std::string::String,
+            >,
+            included: ::std::result::Result<
+                ::std::vec::Vec<super::JsonapiIncludedResource>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    included: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiChatResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiChatResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn included<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::JsonapiIncludedResource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.included = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for included: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatResponse> for super::AiChatResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    included: value.included?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatResponse> for AiChatResponse {
+            fn from(value: super::AiChatResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    included: Ok(value.included),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatResponseData {
+            attributes: ::std::result::Result<
+                super::AiChatResponseDataAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiChatResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiChatResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiChatResponseDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatResponseData> for super::AiChatResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatResponseData> for AiChatResponseData {
+            fn from(value: super::AiChatResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatResponseDataAttributes {
+            reply: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            session_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            status: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatResponseDataAttributes {
+            fn default() -> Self {
+                Self {
+                    reply: Ok(Default::default()),
+                    session_id: Err("no value supplied for session_id".to_string()),
+                    status: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiChatResponseDataAttributes {
+            pub fn reply<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.reply = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for reply: {e}")
+                    });
+                self
+            }
+            pub fn session_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.session_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for session_id: {e}")
+                    });
+                self
+            }
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatResponseDataAttributes>
+        for super::AiChatResponseDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatResponseDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    reply: value.reply?,
+                    session_id: value.session_id?,
+                    status: value.status?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatResponseDataAttributes>
+        for AiChatResponseDataAttributes {
+            fn from(value: super::AiChatResponseDataAttributes) -> Self {
+                Self {
+                    reply: Ok(value.reply),
+                    session_id: Ok(value.session_id),
+                    status: Ok(value.status),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatSessionMessage {
+            content: ::std::result::Result<::std::string::String, ::std::string::String>,
+            created_at: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            role: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiChatSessionMessage {
+            fn default() -> Self {
+                Self {
+                    content: Err("no value supplied for content".to_string()),
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    role: Err("no value supplied for role".to_string()),
+                }
+            }
+        }
+        impl AiChatSessionMessage {
+            pub fn content<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.content = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for content: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn role<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.role = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for role: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSessionMessage>
+        for super::AiChatSessionMessage {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSessionMessage,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    content: value.content?,
+                    created_at: value.created_at?,
+                    id: value.id?,
+                    role: value.role?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSessionMessage> for AiChatSessionMessage {
+            fn from(value: super::AiChatSessionMessage) -> Self {
+                Self {
+                    content: Ok(value.content),
+                    created_at: Ok(value.created_at),
+                    id: Ok(value.id),
+                    role: Ok(value.role),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatSessionMessageList {
+            messages: ::std::result::Result<
+                ::std::vec::Vec<super::AiChatSessionMessage>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatSessionMessageList {
+            fn default() -> Self {
+                Self {
+                    messages: Err("no value supplied for messages".to_string()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiChatSessionMessageList {
+            pub fn messages<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<super::AiChatSessionMessage>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.messages = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for messages: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSessionMessageList>
+        for super::AiChatSessionMessageList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSessionMessageList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    messages: value.messages?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSessionMessageList>
+        for AiChatSessionMessageList {
+            fn from(value: super::AiChatSessionMessageList) -> Self {
+                Self {
+                    messages: Ok(value.messages),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct Alert {
             alert_field_values: ::std::result::Result<
                 ::std::option::Option<::std::vec::Vec<super::AlertAlertFieldValuesItem>>,
@@ -179343,6 +180383,435 @@ pub mod types {
                     deleted_external_ids: Ok(value.deleted_external_ids),
                     failed_external_ids: Ok(value.failed_external_ids),
                     not_found_external_ids: Ok(value.not_found_external_ids),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkImportAttributes {
+            completed_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            entity_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            error_message: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            failed_records: ::std::result::Result<i64, ::std::string::String>,
+            file_url: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            notification_email: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            processed_records: ::std::result::Result<i64, ::std::string::String>,
+            progress_percentage: ::std::result::Result<f32, ::std::string::String>,
+            started_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            status: ::std::result::Result<::std::string::String, ::std::string::String>,
+            total_records: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            validation_errors: ::std::result::Result<
+                ::std::option::Option<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkImportAttributes {
+            fn default() -> Self {
+                Self {
+                    completed_at: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    entity_type: Ok(Default::default()),
+                    error_message: Ok(Default::default()),
+                    failed_records: Err(
+                        "no value supplied for failed_records".to_string(),
+                    ),
+                    file_url: Ok(Default::default()),
+                    notification_email: Ok(Default::default()),
+                    processed_records: Err(
+                        "no value supplied for processed_records".to_string(),
+                    ),
+                    progress_percentage: Err(
+                        "no value supplied for progress_percentage".to_string(),
+                    ),
+                    started_at: Ok(Default::default()),
+                    status: Err("no value supplied for status".to_string()),
+                    total_records: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                    validation_errors: Ok(Default::default()),
+                }
+            }
+        }
+        impl BulkImportAttributes {
+            pub fn completed_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.completed_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for completed_at: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn entity_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.entity_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for entity_type: {e}")
+                    });
+                self
+            }
+            pub fn error_message<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.error_message = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for error_message: {e}")
+                    });
+                self
+            }
+            pub fn failed_records<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.failed_records = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for failed_records: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn file_url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.file_url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for file_url: {e}")
+                    });
+                self
+            }
+            pub fn notification_email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.notification_email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for notification_email: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn processed_records<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.processed_records = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for processed_records: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn progress_percentage<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<f32>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.progress_percentage = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for progress_percentage: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn started_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.started_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for started_at: {e}")
+                    });
+                self
+            }
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+            pub fn total_records<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.total_records = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for total_records: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+            pub fn validation_errors<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.validation_errors = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for validation_errors: {e}"
+                        )
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkImportAttributes>
+        for super::BulkImportAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkImportAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    completed_at: value.completed_at?,
+                    created_at: value.created_at?,
+                    entity_type: value.entity_type?,
+                    error_message: value.error_message?,
+                    failed_records: value.failed_records?,
+                    file_url: value.file_url?,
+                    notification_email: value.notification_email?,
+                    processed_records: value.processed_records?,
+                    progress_percentage: value.progress_percentage?,
+                    started_at: value.started_at?,
+                    status: value.status?,
+                    total_records: value.total_records?,
+                    updated_at: value.updated_at?,
+                    validation_errors: value.validation_errors?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkImportAttributes> for BulkImportAttributes {
+            fn from(value: super::BulkImportAttributes) -> Self {
+                Self {
+                    completed_at: Ok(value.completed_at),
+                    created_at: Ok(value.created_at),
+                    entity_type: Ok(value.entity_type),
+                    error_message: Ok(value.error_message),
+                    failed_records: Ok(value.failed_records),
+                    file_url: Ok(value.file_url),
+                    notification_email: Ok(value.notification_email),
+                    processed_records: Ok(value.processed_records),
+                    progress_percentage: Ok(value.progress_percentage),
+                    started_at: Ok(value.started_at),
+                    status: Ok(value.status),
+                    total_records: Ok(value.total_records),
+                    updated_at: Ok(value.updated_at),
+                    validation_errors: Ok(value.validation_errors),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkImportResponse {
+            data: ::std::result::Result<
+                super::BulkImportResponseData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for BulkImportResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl BulkImportResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::BulkImportResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkImportResponse> for super::BulkImportResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkImportResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::BulkImportResponse> for BulkImportResponse {
+            fn from(value: super::BulkImportResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct BulkImportResponseData {
+            attributes: ::std::result::Result<
+                super::BulkImportAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for BulkImportResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl BulkImportResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::BulkImportAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<BulkImportResponseData>
+        for super::BulkImportResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: BulkImportResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::BulkImportResponseData>
+        for BulkImportResponseData {
+            fn from(value: super::BulkImportResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
                 }
             }
         }
@@ -241382,6 +242851,178 @@ pub mod types {
                     grantee_id: Ok(value.grantee_id),
                     grantee_type: Ok(value.grantee_type),
                     permissions: Ok(value.permissions),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewBulkImport {
+            data: ::std::result::Result<super::NewBulkImportData, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewBulkImport {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl NewBulkImport {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewBulkImportData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewBulkImport> for super::NewBulkImport {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewBulkImport,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::NewBulkImport> for NewBulkImport {
+            fn from(value: super::NewBulkImport) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewBulkImportData {
+            attributes: ::std::result::Result<
+                super::NewBulkImportDataAttributes,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewBulkImportData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                }
+            }
+        }
+        impl NewBulkImportData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewBulkImportDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewBulkImportData> for super::NewBulkImportData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewBulkImportData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewBulkImportData> for NewBulkImportData {
+            fn from(value: super::NewBulkImportData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewBulkImportDataAttributes {
+            entity_type: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            file_url: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            notification_email: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewBulkImportDataAttributes {
+            fn default() -> Self {
+                Self {
+                    entity_type: Err("no value supplied for entity_type".to_string()),
+                    file_url: Err("no value supplied for file_url".to_string()),
+                    notification_email: Err(
+                        "no value supplied for notification_email".to_string(),
+                    ),
+                }
+            }
+        }
+        impl NewBulkImportDataAttributes {
+            pub fn entity_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.entity_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for entity_type: {e}")
+                    });
+                self
+            }
+            pub fn file_url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.file_url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for file_url: {e}")
+                    });
+                self
+            }
+            pub fn notification_email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.notification_email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for notification_email: {e}"
+                        )
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewBulkImportDataAttributes>
+        for super::NewBulkImportDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewBulkImportDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    entity_type: value.entity_type?,
+                    file_url: value.file_url?,
+                    notification_email: value.notification_email?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewBulkImportDataAttributes>
+        for NewBulkImportDataAttributes {
+            fn from(value: super::NewBulkImportDataAttributes) -> Self {
+                Self {
+                    entity_type: Ok(value.entity_type),
+                    file_url: Ok(value.file_url),
+                    notification_email: Ok(value.notification_email),
                 }
             }
         }
@@ -360015,6 +361656,88 @@ let response = client.delete_incident_action_item()
     pub fn delete_incident_action_item(&self) -> builder::DeleteIncidentActionItem<'_> {
         builder::DeleteIncidentActionItem::new(self)
     }
+    /**Send AI chat message
+
+Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident for context-aware responses. Requires `ai.chat:write` OAuth scope or an API key.
+
+Sends a `POST` request to `/v1/ai/chat`
+
+Arguments:
+- `incident_id`: Bind session to an incident for context
+- `message`: Message to send to the AI assistant
+- `session_id`: Resume an existing session
+```ignore
+let response = client.create_ai_chat()
+    .incident_id(incident_id)
+    .message(message)
+    .session_id(session_id)
+    .send()
+    .await;
+```*/
+    pub fn create_ai_chat(&self) -> builder::CreateAiChat<'_> {
+        builder::CreateAiChat::new(self)
+    }
+    /**Delete AI chat session
+
+Permanently deletes an AI chat session and all its messages. Requires `ai.chat:write` OAuth scope or an API key.
+
+Sends a `DELETE` request to `/v1/ai/chat/sessions/{id}`
+
+Arguments:
+- `id`: Session UUID
+```ignore
+let response = client.delete_ai_chat_session()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn delete_ai_chat_session(&self) -> builder::DeleteAiChatSession<'_> {
+        builder::DeleteAiChatSession::new(self)
+    }
+    /**List AI chat session messages
+
+Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Requires `ai.chat:read` OAuth scope or an API key.
+
+Sends a `GET` request to `/v1/ai/chat/sessions/{session_id}/messages`
+
+Arguments:
+- `session_id`: Session UUID
+- `page_number`: Page number (default 1)
+- `page_size`: Messages per page (max 100, default 50)
+```ignore
+let response = client.list_ai_chat_session_messages()
+    .session_id(session_id)
+    .page_number(page_number)
+    .page_size(page_size)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_chat_session_messages(
+        &self,
+    ) -> builder::ListAiChatSessionMessages<'_> {
+        builder::ListAiChatSessionMessages::new(self)
+    }
+    /**Stream AI chat response (SSE)
+
+Send a message and receive the AI response as a Server-Sent Events stream. Events: `session_id` (initial), `text` (content chunks), `task_update` (tool progress), `error`, `done` (terminal with status). Requires `ai.chat:write` OAuth scope or an API key.
+
+Sends a `POST` request to `/v1/ai/chat/stream`
+
+Arguments:
+- `incident_id`: Bind session to an incident
+- `message`: Message to send
+- `session_id`: Resume an existing session
+```ignore
+let response = client.stream_ai_chat()
+    .incident_id(incident_id)
+    .message(message)
+    .session_id(session_id)
+    .send()
+    .await;
+```*/
+    pub fn stream_ai_chat(&self) -> builder::StreamAiChat<'_> {
+        builder::StreamAiChat::new(self)
+    }
     /**List alert events across alerts
 
 Returns a flat list of alert events across all alerts the requester can access. Designed for periodic polling: use `page[after]` with the `next_cursor` returned in the previous response to stream forward.
@@ -361208,6 +362931,44 @@ let response = client.delete_authorization()
 ```*/
     pub fn delete_authorization(&self) -> builder::DeleteAuthorization<'_> {
         builder::DeleteAuthorization::new(self)
+    }
+    /**Create a bulk import
+
+Create a new bulk import for incidents. Requires global API key authentication.
+
+Sends a `POST` request to `/v1/bulk_imports`
+
+```ignore
+let response = client.create_bulk_import()
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn create_bulk_import(&self) -> builder::CreateBulkImport<'_> {
+        builder::CreateBulkImport::new(self)
+    }
+    /**Get bulk import status
+
+Retrieves the current status of a bulk import job.
+
+**Use this endpoint to:**
+- Poll for import progress
+- Check validation errors if status is `validation_failed`
+- Get final results when status is `completed` or `failed`
+
+
+Sends a `GET` request to `/v1/bulk_imports/{id}`
+
+Arguments:
+- `id`: Bulk import ID returned from the create endpoint
+```ignore
+let response = client.get_bulk_import()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_bulk_import(&self) -> builder::GetBulkImport<'_> {
+        builder::GetBulkImport::new(self)
     }
     /**List catalog checklist templates
 
@@ -371206,6 +372967,348 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::create_ai_chat`]
+
+[`Client::create_ai_chat`]: super::Client::create_ai_chat*/
+    #[derive(Debug, Clone)]
+    pub struct CreateAiChat<'a> {
+        client: &'a super::Client,
+        incident_id: Result<Option<::uuid::Uuid>, String>,
+        message: Result<::std::string::String, String>,
+        session_id: Result<Option<::uuid::Uuid>, String>,
+    }
+    impl<'a> CreateAiChat<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                incident_id: Ok(None),
+                message: Err("message was not initialized".to_string()),
+                session_id: Ok(None),
+            }
+        }
+        pub fn incident_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.incident_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for incident_id failed".to_string()
+                });
+            self
+        }
+        pub fn message<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.message = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for message failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn session_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.session_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for session_id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai/chat`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiChatResponse>, Error<()>> {
+            let Self { client, incident_id, message, session_id } = self;
+            let incident_id = incident_id.map_err(Error::InvalidRequest)?;
+            let message = message.map_err(Error::InvalidRequest)?;
+            let session_id = session_id.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/chat", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(&progenitor_client::QueryParam::new("incident_id", &incident_id))
+                .query(&progenitor_client::QueryParam::new("message", &message))
+                .query(&progenitor_client::QueryParam::new("session_id", &session_id))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_ai_chat",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::delete_ai_chat_session`]
+
+[`Client::delete_ai_chat_session`]: super::Client::delete_ai_chat_session*/
+    #[derive(Debug, Clone)]
+    pub struct DeleteAiChatSession<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+    }
+    impl<'a> DeleteAiChatSession<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `DELETE` request to `/v1/ai/chat/sessions/{id}`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/chat/sessions/{}", client.baseurl, encode_path(& id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client.client.delete(url).headers(header_map).build()?;
+            let info = OperationInfo {
+                operation_id: "delete_ai_chat_session",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                204u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_chat_session_messages`]
+
+[`Client::list_ai_chat_session_messages`]: super::Client::list_ai_chat_session_messages*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiChatSessionMessages<'a> {
+        client: &'a super::Client,
+        session_id: Result<::uuid::Uuid, String>,
+        page_number: Result<Option<i64>, String>,
+        page_size: Result<Option<i64>, String>,
+    }
+    impl<'a> ListAiChatSessionMessages<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                session_id: Err("session_id was not initialized".to_string()),
+                page_number: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn session_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.session_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for session_id failed".to_string()
+                });
+            self
+        }
+        pub fn page_number<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_number = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/chat/sessions/{session_id}/messages`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiChatSessionMessageList>, Error<()>> {
+            let Self { client, session_id, page_number, page_size } = self;
+            let session_id = session_id.map_err(Error::InvalidRequest)?;
+            let page_number = page_number.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/chat/sessions/{}/messages", client.baseurl, encode_path(&
+                session_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_chat_session_messages",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::stream_ai_chat`]
+
+[`Client::stream_ai_chat`]: super::Client::stream_ai_chat*/
+    #[derive(Debug, Clone)]
+    pub struct StreamAiChat<'a> {
+        client: &'a super::Client,
+        incident_id: Result<Option<::uuid::Uuid>, String>,
+        message: Result<::std::string::String, String>,
+        session_id: Result<Option<::uuid::Uuid>, String>,
+    }
+    impl<'a> StreamAiChat<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                incident_id: Ok(None),
+                message: Err("message was not initialized".to_string()),
+                session_id: Ok(None),
+            }
+        }
+        pub fn incident_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.incident_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for incident_id failed".to_string()
+                });
+            self
+        }
+        pub fn message<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.message = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for message failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn session_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.session_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for session_id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai/chat/stream`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, incident_id, message, session_id } = self;
+            let incident_id = incident_id.map_err(Error::InvalidRequest)?;
+            let message = message.map_err(Error::InvalidRequest)?;
+            let session_id = session_id.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/chat/stream", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .query(&progenitor_client::QueryParam::new("incident_id", &incident_id))
+                .query(&progenitor_client::QueryParam::new("message", &message))
+                .query(&progenitor_client::QueryParam::new("session_id", &session_id))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "stream_ai_chat",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::list_alert_events_feed`]
 
 [`Client::list_alert_events_feed`]: super::Client::list_alert_events_feed*/
@@ -378938,6 +381041,137 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::create_bulk_import`]
+
+[`Client::create_bulk_import`]: super::Client::create_bulk_import*/
+    #[derive(Debug, Clone)]
+    pub struct CreateBulkImport<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::NewBulkImport, String>,
+    }
+    impl<'a> CreateBulkImport<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewBulkImport>,
+            <V as std::convert::TryInto<types::NewBulkImport>>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `NewBulkImport` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewBulkImport,
+            ) -> types::builder::NewBulkImport,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/bulk_imports`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| {
+                    types::NewBulkImport::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/bulk_imports", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_bulk_import",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_bulk_import`]
+
+[`Client::get_bulk_import`]: super::Client::get_bulk_import*/
+    #[derive(Debug, Clone)]
+    pub struct GetBulkImport<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> GetBulkImport<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/bulk_imports/{id}`
+        pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/bulk_imports/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client.client.get(url).headers(header_map).build()?;
+            let info = OperationInfo {
+                operation_id: "get_bulk_import",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => Ok(ResponseValue::empty(response)),
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }
