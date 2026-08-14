@@ -144,6 +144,47 @@ fn simplify_if_path_param(param: &mut serde_json::Value) {
     }
 }
 
+/// Progenitor requires every operation to have an ID, but the upstream spec
+/// occasionally omits one. Generate a stable ID from the HTTP method and path.
+fn add_missing_operation_ids(spec: &mut serde_json::Value) {
+    let paths = match spec.get_mut("paths") {
+        Some(serde_json::Value::Object(paths)) => paths,
+        _ => return,
+    };
+
+    for (path, methods) in paths.iter_mut() {
+        let methods = match methods.as_object_mut() {
+            Some(methods) => methods,
+            None => continue,
+        };
+
+        for method in ["get", "post", "put", "patch", "delete"] {
+            let operation = match methods.get_mut(method).and_then(|value| value.as_object_mut()) {
+                Some(operation) => operation,
+                None => continue,
+            };
+
+            operation
+                .entry("operationId")
+                .or_insert_with(|| serde_json::Value::String(operation_id(method, path)));
+        }
+    }
+}
+
+fn operation_id(method: &str, path: &str) -> String {
+    let mut id = method.to_owned();
+
+    for character in path.chars() {
+        if character.is_ascii_alphanumeric() {
+            id.push(character.to_ascii_lowercase());
+        } else if !id.ends_with('_') {
+            id.push('_');
+        }
+    }
+
+    id.trim_end_matches('_').to_owned()
+}
+
 fn main() {
     let spec_path = Path::new("spec/swagger.json");
     if !spec_path.exists() {
@@ -159,6 +200,7 @@ fn main() {
     strip_error_responses(&mut spec_value);
     strip_nullable_defaults(&mut spec_value);
     simplify_path_params(&mut spec_value);
+    add_missing_operation_ids(&mut spec_value);
 
     let spec: openapiv3::OpenAPI =
         serde_json::from_value(spec_value).expect("failed to parse spec as OpenAPI");
