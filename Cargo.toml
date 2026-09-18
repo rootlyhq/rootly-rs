@@ -14,7 +14,7 @@ keywords = ["rootly", "incident-management", "api-client", "openapi"]
 categories = ["api-bindings", "web-programming::http-client"]
 
 [dependencies]
-progenitor-client = "0.14"
+progenitor-client = "0.15"
 reqwest = { version = "0.13", default-features = false, features = ["json"] }
 serde = { version = "1", features = ["derive"] }
 serde_json = "1"
