@@ -9,9 +9,7 @@ fn sanitize_enums(value: &mut serde_json::Value) {
     match value {
         serde_json::Value::Object(map) => {
             if let Some(serde_json::Value::Array(variants)) = map.get("enum") {
-                let all_strings = variants
-                    .iter()
-                    .all(|v| v.is_string());
+                let all_strings = variants.iter().all(|v| v.is_string());
                 if all_strings {
                     map.remove("enum");
                     // Don't return — continue processing nested objects
@@ -159,7 +157,10 @@ fn add_missing_operation_ids(spec: &mut serde_json::Value) {
         };
 
         for method in ["get", "post", "put", "patch", "delete"] {
-            let operation = match methods.get_mut(method).and_then(|value| value.as_object_mut()) {
+            let operation = match methods
+                .get_mut(method)
+                .and_then(|value| value.as_object_mut())
+            {
                 Some(operation) => operation,
                 None => continue,
             };
@@ -219,9 +220,10 @@ fn main() {
     let code = prettyplease::unparse(&ast);
 
     // Strip deny_unknown_fields — the API returns fields not in the OpenAPI spec
-    let code = code
-        .replace("#[serde(deny_unknown_fields)]\n", "")
-        .replace("#[serde(untagged, deny_unknown_fields)]", "#[serde(untagged)]");
+    let code = code.replace("#[serde(deny_unknown_fields)]\n", "").replace(
+        "#[serde(untagged, deny_unknown_fields)]",
+        "#[serde(untagged)]",
+    );
 
     let output_path = Path::new("src/generated.rs");
     fs::write(output_path, &code).expect("failed to write generated.rs");
