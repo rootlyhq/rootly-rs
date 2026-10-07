@@ -1,4 +1,5 @@
 #[allow(clippy::all, unused_imports, dead_code)]
+#[rustfmt::skip]
 pub mod generated;
 
 mod client;

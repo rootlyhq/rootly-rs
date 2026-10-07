@@ -299,7 +299,7 @@ Then [Progenitor](https://github.com/oxidecomputer/progenitor) generates a fully
 
 ## Requirements
 
-- Rust 1.88+
+- Rust 1.89+
 - tokio runtime
 
 ## License
