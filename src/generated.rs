@@ -547,6 +547,52 @@ pub mod types {
             Default::default()
         }
     }
+    ///Checkpoint state after a confirm or cancel request
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatCheckpointResolution {
+        pub checkpoint_id: ::uuid::Uuid,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub replay: ::std::option::Option<::std::string::String>,
+        pub status: ::std::string::String,
+    }
+    impl AiChatCheckpointResolution {
+        pub fn builder() -> builder::AiChatCheckpointResolution {
+            Default::default()
+        }
+    }
+    ///`AiChatErrorResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatErrorResponse {
+        pub errors: ::std::vec::Vec<AiChatErrorResponseErrorsItem>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<AiChatErrorResponseMeta>,
+    }
+    impl AiChatErrorResponse {
+        pub fn builder() -> builder::AiChatErrorResponse {
+            Default::default()
+        }
+    }
+    ///`AiChatErrorResponseErrorsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatErrorResponseErrorsItem {
+        pub status: ::std::string::String,
+        pub title: ::std::string::String,
+    }
+    impl AiChatErrorResponseErrorsItem {
+        pub fn builder() -> builder::AiChatErrorResponseErrorsItem {
+            Default::default()
+        }
+    }
+    ///`AiChatErrorResponseMeta`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatErrorResponseMeta {
+        pub checkpoint_resolved: AiChatCheckpointResolution,
+    }
+    impl AiChatErrorResponseMeta {
+        pub fn builder() -> builder::AiChatErrorResponseMeta {
+            Default::default()
+        }
+    }
     ///`AiChatResponse`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatResponse {
@@ -576,12 +622,18 @@ pub mod types {
     ///`AiChatResponseDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatResponseDataAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub checkpoint_resolved: ::std::option::Option<AiChatCheckpointResolution>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub confirmation: ::std::option::Option<
+            AiChatResponseDataAttributesConfirmation,
+        >,
         ///Assistant reply text
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub reply: ::std::option::Option<::std::string::String>,
         ///AI chat session UUID
         pub session_id: ::uuid::Uuid,
-        ///Response status (present when user input is required)
+        ///Response status
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub status: ::std::option::Option<::std::string::String>,
     }
@@ -590,13 +642,39 @@ pub mod types {
             Default::default()
         }
     }
+    ///Present when an approval-gated home-chat write is waiting for confirmation
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatResponseDataAttributesConfirmation {
+        pub checkpoint_id: ::uuid::Uuid,
+        pub expires_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub missing_fields: ::std::option::Option<
+            ::std::vec::Vec<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+            >,
+        >,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub preview: ::std::option::Option<
+            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+        >,
+        pub question: ::std::string::String,
+    }
+    impl AiChatResponseDataAttributesConfirmation {
+        pub fn builder() -> builder::AiChatResponseDataAttributesConfirmation {
+            Default::default()
+        }
+    }
     ///`AiChatSessionMessage`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatSessionMessage {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub confirmation: ::std::option::Option<AiChatSessionMessageConfirmation>,
         ///Message content
         pub content: ::std::string::String,
         ///When the message was created
         pub created_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Whether the message belongs to a failed turn
+        pub failed: bool,
         ///Message UUID
         pub id: ::uuid::Uuid,
         ///Message author role
@@ -604,6 +682,31 @@ pub mod types {
     }
     impl AiChatSessionMessage {
         pub fn builder() -> builder::AiChatSessionMessage {
+            Default::default()
+        }
+    }
+    ///Approval checkpoint attached to an assistant message in home-chat history
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSessionMessageConfirmation {
+        pub checkpoint_id: ::uuid::Uuid,
+        pub expires_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub missing_fields: ::std::option::Option<
+            ::std::vec::Vec<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+            >,
+        >,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub preview: ::std::option::Option<
+            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+        >,
+        pub question: ::std::string::String,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub replay: ::std::option::Option<::std::string::String>,
+        pub status: ::std::string::String,
+    }
+    impl AiChatSessionMessageConfirmation {
+        pub fn builder() -> builder::AiChatSessionMessageConfirmation {
             Default::default()
         }
     }
@@ -886,6 +989,11 @@ pub mod types {
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub quiet_contact_types: ::std::option::Option<
             ::std::vec::Vec<::std::string::String>,
+        >,
+        ///Whether users must keep Critical Alerts or Phone Call enabled on level 1 of their audible notification rules. Defaults to true when omitted; updates that omit this key keep the stored value. Only organization owners and admins who can update the alert configuration can change it, and only while the rollout flag is on.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub require_critical_alert_or_call_on_first_audible_level: ::std::option::Option<
+            bool,
         >,
     }
     impl AlertConfigurationDefaultUserNotificationSettings {
@@ -4424,6 +4532,11 @@ pub mod types {
         pub opsgenie_team_id: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub opslevel_id: ::std::option::Option<::std::string::String>,
+        ///Owner team IDs. Replaces the functionality's owning teams when present; an empty array clears them; omit to leave them unchanged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub owner_group_ids: ::std::option::Option<
+            ::std::vec::Vec<::std::string::String>,
+        >,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub pagerduty_id: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -4558,6 +4671,11 @@ pub mod types {
         pub opsgenie_team_id: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub opslevel_id: ::std::option::Option<::std::string::String>,
+        ///Owner team IDs. Replaces the service's owning teams when present; an empty array clears them; omit to leave them unchanged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub owner_group_ids: ::std::option::Option<
+            ::std::vec::Vec<::std::string::String>,
+        >,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub pagerduty_id: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -11264,7 +11382,7 @@ pub mod types {
     pub struct FormSet {
         ///Date of creation
         pub created_at: ::std::string::String,
-        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`
+        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`
         pub forms: ::std::vec::Vec<::std::string::String>,
         ///Whether the form set is default
         pub is_default: bool,
@@ -18796,7 +18914,7 @@ pub mod types {
     ///`NewFormSetDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewFormSetDataAttributes {
-        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`
+        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`
         pub forms: ::std::vec::Vec<::std::string::String>,
         ///The name of the form set
         pub name: ::std::string::String,
@@ -19958,7 +20076,7 @@ pub mod types {
         ///When the event started. Defaults to the time of creation.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub started_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-        ///The status of the incident event
+        ///The status of the incident event. Defaults to investigating, which is only valid for incidents; scheduled maintenances must set a maintenance status (e.g. scheduled, in_progress, completed) or the request is rejected with a 422.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub status: ::std::option::Option<::std::string::String>,
         ///Affected status page components and their statuses. This field is in Early Access and is not generally available; contact Rootly Support to request access. Ignored for terminal event statuses (resolved, completed), which clear component impact. A status is required per component except for scheduled maintenance incidents.
@@ -22503,7 +22621,7 @@ pub mod types {
         ///The description of the status page
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
-        ///Enabled / Disable the status page
+        ///Deprecated. Use publication_status instead. True only when the status page is active.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub enabled: ::std::option::Option<bool>,
         ///External domain names attached to the status page
@@ -22535,6 +22653,9 @@ pub mod types {
         ///The public title of the status page
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub public_title: ::std::option::Option<::std::string::String>,
+        ///Publication status of the status page. Draft pages have never been published, active pages are live, and unpublished pages were taken down.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub publication_status: ::std::option::Option<::std::string::String>,
         ///SAML IdP certificate
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub saml_idp_cert: ::std::option::Option<::std::string::String>,
@@ -30965,7 +31086,7 @@ pub mod types {
         ///The description of the status page
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
-        ///Enabled / Disable the status page
+        ///Deprecated. Use publication_status instead. True only when the status page is active.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub enabled: ::std::option::Option<bool>,
         ///External domain names attached to the status page
@@ -30995,6 +31116,9 @@ pub mod types {
         ///The public title of the status page
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub public_title: ::std::option::Option<::std::string::String>,
+        ///Publication status of the status page. Draft pages have never been published, active pages are live, and unpublished pages were taken down.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub publication_status: ::std::option::Option<::std::string::String>,
         ///SAML IdP certificate
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub saml_idp_cert: ::std::option::Option<::std::string::String>,
@@ -32232,6 +32356,11 @@ pub mod types {
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub quiet_contact_types: ::std::option::Option<
             ::std::vec::Vec<::std::string::String>,
+        >,
+        ///Whether users must keep Critical Alerts or Phone Call enabled on level 1 of their audible notification rules. Defaults to true when omitted; updates that omit this key keep the stored value. Only organization owners and admins who can update the alert configuration can change it, and only while the rollout flag is on.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub require_critical_alert_or_call_on_first_audible_level: ::std::option::Option<
+            bool,
         >,
     }
     impl UpdateAlertConfigurationDataAttributesDefaultUserNotificationSettings {
@@ -35903,7 +36032,7 @@ pub mod types {
     ///`UpdateFormSetDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct UpdateFormSetDataAttributes {
-        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`
+        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub forms: ::std::vec::Vec<::std::string::String>,
         ///The name of the form set
@@ -40967,7 +41096,7 @@ pub mod types {
         ///The description of the status page
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
-        ///Enabled / Disable the status page
+        ///Deprecated. Use publication_status instead. True only when the status page is active.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub enabled: ::std::option::Option<bool>,
         ///External domain names attached to the status page
@@ -40999,6 +41128,9 @@ pub mod types {
         ///The public title of the status page
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub public_title: ::std::option::Option<::std::string::String>,
+        ///Publication status of the status page. Draft pages have never been published, active pages are live, and unpublished pages were taken down.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub publication_status: ::std::option::Option<::std::string::String>,
         ///SAML IdP certificate
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub saml_idp_cert: ::std::option::Option<::std::string::String>,
@@ -48007,6 +48139,267 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct AiChatCheckpointResolution {
+            checkpoint_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            replay: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            status: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiChatCheckpointResolution {
+            fn default() -> Self {
+                Self {
+                    checkpoint_id: Err(
+                        "no value supplied for checkpoint_id".to_string(),
+                    ),
+                    replay: Err("no value supplied for replay".to_string()),
+                    status: Err("no value supplied for status".to_string()),
+                }
+            }
+        }
+        impl AiChatCheckpointResolution {
+            pub fn checkpoint_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.checkpoint_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for checkpoint_id: {e}")
+                    });
+                self
+            }
+            pub fn replay<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.replay = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for replay: {e}")
+                    });
+                self
+            }
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatCheckpointResolution>
+        for super::AiChatCheckpointResolution {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatCheckpointResolution,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    checkpoint_id: value.checkpoint_id?,
+                    replay: value.replay?,
+                    status: value.status?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatCheckpointResolution>
+        for AiChatCheckpointResolution {
+            fn from(value: super::AiChatCheckpointResolution) -> Self {
+                Self {
+                    checkpoint_id: Ok(value.checkpoint_id),
+                    replay: Ok(value.replay),
+                    status: Ok(value.status),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatErrorResponse {
+            errors: ::std::result::Result<
+                ::std::vec::Vec<super::AiChatErrorResponseErrorsItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::std::option::Option<super::AiChatErrorResponseMeta>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatErrorResponse {
+            fn default() -> Self {
+                Self {
+                    errors: Err("no value supplied for errors".to_string()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiChatErrorResponse {
+            pub fn errors<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiChatErrorResponseErrorsItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.errors = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for errors: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AiChatErrorResponseMeta>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatErrorResponse>
+        for super::AiChatErrorResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatErrorResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    errors: value.errors?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatErrorResponse> for AiChatErrorResponse {
+            fn from(value: super::AiChatErrorResponse) -> Self {
+                Self {
+                    errors: Ok(value.errors),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatErrorResponseErrorsItem {
+            status: ::std::result::Result<::std::string::String, ::std::string::String>,
+            title: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiChatErrorResponseErrorsItem {
+            fn default() -> Self {
+                Self {
+                    status: Err("no value supplied for status".to_string()),
+                    title: Err("no value supplied for title".to_string()),
+                }
+            }
+        }
+        impl AiChatErrorResponseErrorsItem {
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatErrorResponseErrorsItem>
+        for super::AiChatErrorResponseErrorsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatErrorResponseErrorsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    status: value.status?,
+                    title: value.title?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatErrorResponseErrorsItem>
+        for AiChatErrorResponseErrorsItem {
+            fn from(value: super::AiChatErrorResponseErrorsItem) -> Self {
+                Self {
+                    status: Ok(value.status),
+                    title: Ok(value.title),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatErrorResponseMeta {
+            checkpoint_resolved: ::std::result::Result<
+                super::AiChatCheckpointResolution,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatErrorResponseMeta {
+            fn default() -> Self {
+                Self {
+                    checkpoint_resolved: Err(
+                        "no value supplied for checkpoint_resolved".to_string(),
+                    ),
+                }
+            }
+        }
+        impl AiChatErrorResponseMeta {
+            pub fn checkpoint_resolved<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiChatCheckpointResolution>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.checkpoint_resolved = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for checkpoint_resolved: {e}"
+                        )
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatErrorResponseMeta>
+        for super::AiChatErrorResponseMeta {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatErrorResponseMeta,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    checkpoint_resolved: value.checkpoint_resolved?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatErrorResponseMeta>
+        for AiChatErrorResponseMeta {
+            fn from(value: super::AiChatErrorResponseMeta) -> Self {
+                Self {
+                    checkpoint_resolved: Ok(value.checkpoint_resolved),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct AiChatResponse {
             data: ::std::result::Result<
                 super::AiChatResponseData,
@@ -48149,6 +48542,14 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct AiChatResponseDataAttributes {
+            checkpoint_resolved: ::std::result::Result<
+                ::std::option::Option<super::AiChatCheckpointResolution>,
+                ::std::string::String,
+            >,
+            confirmation: ::std::result::Result<
+                ::std::option::Option<super::AiChatResponseDataAttributesConfirmation>,
+                ::std::string::String,
+            >,
             reply: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -48162,6 +48563,8 @@ pub mod types {
         impl ::std::default::Default for AiChatResponseDataAttributes {
             fn default() -> Self {
                 Self {
+                    checkpoint_resolved: Ok(Default::default()),
+                    confirmation: Ok(Default::default()),
                     reply: Ok(Default::default()),
                     session_id: Err("no value supplied for session_id".to_string()),
                     status: Ok(Default::default()),
@@ -48169,6 +48572,38 @@ pub mod types {
             }
         }
         impl AiChatResponseDataAttributes {
+            pub fn checkpoint_resolved<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AiChatCheckpointResolution>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.checkpoint_resolved = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for checkpoint_resolved: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn confirmation<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::AiChatResponseDataAttributesConfirmation,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.confirmation = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for confirmation: {e}")
+                    });
+                self
+            }
             pub fn reply<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -48213,6 +48648,8 @@ pub mod types {
                 value: AiChatResponseDataAttributes,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    checkpoint_resolved: value.checkpoint_resolved?,
+                    confirmation: value.confirmation?,
                     reply: value.reply?,
                     session_id: value.session_id?,
                     status: value.status?,
@@ -48223,6 +48660,8 @@ pub mod types {
         for AiChatResponseDataAttributes {
             fn from(value: super::AiChatResponseDataAttributes) -> Self {
                 Self {
+                    checkpoint_resolved: Ok(value.checkpoint_resolved),
+                    confirmation: Ok(value.confirmation),
                     reply: Ok(value.reply),
                     session_id: Ok(value.session_id),
                     status: Ok(value.status),
@@ -48230,26 +48669,189 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct AiChatResponseDataAttributesConfirmation {
+            checkpoint_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            expires_at: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            missing_fields: ::std::result::Result<
+                ::std::option::Option<
+                    ::std::vec::Vec<
+                        ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                    >,
+                >,
+                ::std::string::String,
+            >,
+            preview: ::std::result::Result<
+                ::std::option::Option<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                ::std::string::String,
+            >,
+            question: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatResponseDataAttributesConfirmation {
+            fn default() -> Self {
+                Self {
+                    checkpoint_id: Err(
+                        "no value supplied for checkpoint_id".to_string(),
+                    ),
+                    expires_at: Err("no value supplied for expires_at".to_string()),
+                    missing_fields: Err(
+                        "no value supplied for missing_fields".to_string(),
+                    ),
+                    preview: Err("no value supplied for preview".to_string()),
+                    question: Err("no value supplied for question".to_string()),
+                }
+            }
+        }
+        impl AiChatResponseDataAttributesConfirmation {
+            pub fn checkpoint_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.checkpoint_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for checkpoint_id: {e}")
+                    });
+                self
+            }
+            pub fn expires_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.expires_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for expires_at: {e}")
+                    });
+                self
+            }
+            pub fn missing_fields<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::std::vec::Vec<
+                            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                        >,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.missing_fields = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for missing_fields: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn preview<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.preview = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for preview: {e}")
+                    });
+                self
+            }
+            pub fn question<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.question = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for question: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatResponseDataAttributesConfirmation>
+        for super::AiChatResponseDataAttributesConfirmation {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatResponseDataAttributesConfirmation,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    checkpoint_id: value.checkpoint_id?,
+                    expires_at: value.expires_at?,
+                    missing_fields: value.missing_fields?,
+                    preview: value.preview?,
+                    question: value.question?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatResponseDataAttributesConfirmation>
+        for AiChatResponseDataAttributesConfirmation {
+            fn from(value: super::AiChatResponseDataAttributesConfirmation) -> Self {
+                Self {
+                    checkpoint_id: Ok(value.checkpoint_id),
+                    expires_at: Ok(value.expires_at),
+                    missing_fields: Ok(value.missing_fields),
+                    preview: Ok(value.preview),
+                    question: Ok(value.question),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct AiChatSessionMessage {
+            confirmation: ::std::result::Result<
+                ::std::option::Option<super::AiChatSessionMessageConfirmation>,
+                ::std::string::String,
+            >,
             content: ::std::result::Result<::std::string::String, ::std::string::String>,
             created_at: ::std::result::Result<
                 ::chrono::DateTime<::chrono::offset::Utc>,
                 ::std::string::String,
             >,
+            failed: ::std::result::Result<bool, ::std::string::String>,
             id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
             role: ::std::result::Result<::std::string::String, ::std::string::String>,
         }
         impl ::std::default::Default for AiChatSessionMessage {
             fn default() -> Self {
                 Self {
+                    confirmation: Ok(Default::default()),
                     content: Err("no value supplied for content".to_string()),
                     created_at: Err("no value supplied for created_at".to_string()),
+                    failed: Err("no value supplied for failed".to_string()),
                     id: Err("no value supplied for id".to_string()),
                     role: Err("no value supplied for role".to_string()),
                 }
             }
         }
         impl AiChatSessionMessage {
+            pub fn confirmation<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AiChatSessionMessageConfirmation>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.confirmation = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for confirmation: {e}")
+                    });
+                self
+            }
             pub fn content<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -48271,6 +48873,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn failed<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.failed = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for failed: {e}")
                     });
                 self
             }
@@ -48304,8 +48918,10 @@ pub mod types {
                 value: AiChatSessionMessage,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    confirmation: value.confirmation?,
                     content: value.content?,
                     created_at: value.created_at?,
+                    failed: value.failed?,
                     id: value.id?,
                     role: value.role?,
                 })
@@ -48314,10 +48930,189 @@ pub mod types {
         impl ::std::convert::From<super::AiChatSessionMessage> for AiChatSessionMessage {
             fn from(value: super::AiChatSessionMessage) -> Self {
                 Self {
+                    confirmation: Ok(value.confirmation),
                     content: Ok(value.content),
                     created_at: Ok(value.created_at),
+                    failed: Ok(value.failed),
                     id: Ok(value.id),
                     role: Ok(value.role),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatSessionMessageConfirmation {
+            checkpoint_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            expires_at: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            missing_fields: ::std::result::Result<
+                ::std::option::Option<
+                    ::std::vec::Vec<
+                        ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                    >,
+                >,
+                ::std::string::String,
+            >,
+            preview: ::std::result::Result<
+                ::std::option::Option<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                ::std::string::String,
+            >,
+            question: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            replay: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            status: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiChatSessionMessageConfirmation {
+            fn default() -> Self {
+                Self {
+                    checkpoint_id: Err(
+                        "no value supplied for checkpoint_id".to_string(),
+                    ),
+                    expires_at: Err("no value supplied for expires_at".to_string()),
+                    missing_fields: Err(
+                        "no value supplied for missing_fields".to_string(),
+                    ),
+                    preview: Err("no value supplied for preview".to_string()),
+                    question: Err("no value supplied for question".to_string()),
+                    replay: Err("no value supplied for replay".to_string()),
+                    status: Err("no value supplied for status".to_string()),
+                }
+            }
+        }
+        impl AiChatSessionMessageConfirmation {
+            pub fn checkpoint_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.checkpoint_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for checkpoint_id: {e}")
+                    });
+                self
+            }
+            pub fn expires_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.expires_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for expires_at: {e}")
+                    });
+                self
+            }
+            pub fn missing_fields<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::std::vec::Vec<
+                            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                        >,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.missing_fields = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for missing_fields: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn preview<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.preview = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for preview: {e}")
+                    });
+                self
+            }
+            pub fn question<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.question = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for question: {e}")
+                    });
+                self
+            }
+            pub fn replay<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.replay = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for replay: {e}")
+                    });
+                self
+            }
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSessionMessageConfirmation>
+        for super::AiChatSessionMessageConfirmation {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSessionMessageConfirmation,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    checkpoint_id: value.checkpoint_id?,
+                    expires_at: value.expires_at?,
+                    missing_fields: value.missing_fields?,
+                    preview: value.preview?,
+                    question: value.question?,
+                    replay: value.replay?,
+                    status: value.status?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSessionMessageConfirmation>
+        for AiChatSessionMessageConfirmation {
+            fn from(value: super::AiChatSessionMessageConfirmation) -> Self {
+                Self {
+                    checkpoint_id: Ok(value.checkpoint_id),
+                    expires_at: Ok(value.expires_at),
+                    missing_fields: Ok(value.missing_fields),
+                    preview: Ok(value.preview),
+                    question: Ok(value.question),
+                    replay: Ok(value.replay),
+                    status: Ok(value.status),
                 }
             }
         }
@@ -49648,6 +50443,10 @@ pub mod types {
                 ::std::option::Option<::std::vec::Vec<::std::string::String>>,
                 ::std::string::String,
             >,
+            require_critical_alert_or_call_on_first_audible_level: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default
         for AlertConfigurationDefaultUserNotificationSettings {
@@ -49655,6 +50454,9 @@ pub mod types {
                 Self {
                     audible_contact_types: Ok(Default::default()),
                     quiet_contact_types: Ok(Default::default()),
+                    require_critical_alert_or_call_on_first_audible_level: Ok(
+                        Default::default(),
+                    ),
                 }
             }
         }
@@ -49691,6 +50493,23 @@ pub mod types {
                     });
                 self
             }
+            pub fn require_critical_alert_or_call_on_first_audible_level<T>(
+                mut self,
+                value: T,
+            ) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.require_critical_alert_or_call_on_first_audible_level = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for require_critical_alert_or_call_on_first_audible_level: {e}"
+                        )
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<AlertConfigurationDefaultUserNotificationSettings>
         for super::AlertConfigurationDefaultUserNotificationSettings {
@@ -49701,6 +50520,8 @@ pub mod types {
                 Ok(Self {
                     audible_contact_types: value.audible_contact_types?,
                     quiet_contact_types: value.quiet_contact_types?,
+                    require_critical_alert_or_call_on_first_audible_level: value
+                        .require_critical_alert_or_call_on_first_audible_level?,
                 })
             }
         }
@@ -49713,6 +50534,9 @@ pub mod types {
                 Self {
                     audible_contact_types: Ok(value.audible_contact_types),
                     quiet_contact_types: Ok(value.quiet_contact_types),
+                    require_critical_alert_or_call_on_first_audible_level: Ok(
+                        value.require_critical_alert_or_call_on_first_audible_level,
+                    ),
                 }
             }
         }
@@ -66621,6 +67445,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            owner_group_ids: ::std::result::Result<
+                ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+                ::std::string::String,
+            >,
             pagerduty_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -66660,6 +67488,7 @@ pub mod types {
                     opsgenie_id: Ok(Default::default()),
                     opsgenie_team_id: Ok(Default::default()),
                     opslevel_id: Ok(Default::default()),
+                    owner_group_ids: Ok(Default::default()),
                     pagerduty_id: Ok(Default::default()),
                     position: Ok(Default::default()),
                     public_description: Ok(Default::default()),
@@ -66810,6 +67639,22 @@ pub mod types {
                     });
                 self
             }
+            pub fn owner_group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for owner_group_ids: {e}"
+                        )
+                    });
+                self
+            }
             pub fn pagerduty_id<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -66907,6 +67752,7 @@ pub mod types {
                     opsgenie_id: value.opsgenie_id?,
                     opsgenie_team_id: value.opsgenie_team_id?,
                     opslevel_id: value.opslevel_id?,
+                    owner_group_ids: value.owner_group_ids?,
                     pagerduty_id: value.pagerduty_id?,
                     position: value.position?,
                     public_description: value.public_description?,
@@ -66931,6 +67777,7 @@ pub mod types {
                     opsgenie_id: Ok(value.opsgenie_id),
                     opsgenie_team_id: Ok(value.opsgenie_team_id),
                     opslevel_id: Ok(value.opslevel_id),
+                    owner_group_ids: Ok(value.owner_group_ids),
                     pagerduty_id: Ok(value.pagerduty_id),
                     position: Ok(value.position),
                     public_description: Ok(value.public_description),
@@ -67399,6 +68246,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            owner_group_ids: ::std::result::Result<
+                ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+                ::std::string::String,
+            >,
             pagerduty_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -67444,6 +68295,7 @@ pub mod types {
                     opsgenie_id: Ok(Default::default()),
                     opsgenie_team_id: Ok(Default::default()),
                     opslevel_id: Ok(Default::default()),
+                    owner_group_ids: Ok(Default::default()),
                     pagerduty_id: Ok(Default::default()),
                     position: Ok(Default::default()),
                     public_description: Ok(Default::default()),
@@ -67676,6 +68528,22 @@ pub mod types {
                     });
                 self
             }
+            pub fn owner_group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for owner_group_ids: {e}"
+                        )
+                    });
+                self
+            }
             pub fn pagerduty_id<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -67779,6 +68647,7 @@ pub mod types {
                     opsgenie_id: value.opsgenie_id?,
                     opsgenie_team_id: value.opsgenie_team_id?,
                     opslevel_id: value.opslevel_id?,
+                    owner_group_ids: value.owner_group_ids?,
                     pagerduty_id: value.pagerduty_id?,
                     position: value.position?,
                     public_description: value.public_description?,
@@ -67809,6 +68678,7 @@ pub mod types {
                     opsgenie_id: Ok(value.opsgenie_id),
                     opsgenie_team_id: Ok(value.opsgenie_team_id),
                     opslevel_id: Ok(value.opslevel_id),
+                    owner_group_ids: Ok(value.owner_group_ids),
                     pagerduty_id: Ok(value.pagerduty_id),
                     position: Ok(value.position),
                     public_description: Ok(value.public_description),
@@ -160990,6 +161860,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            publication_status: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             saml_idp_cert: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -161068,6 +161942,7 @@ pub mod types {
                     public: Ok(Default::default()),
                     public_description: Ok(Default::default()),
                     public_title: Ok(Default::default()),
+                    publication_status: Ok(Default::default()),
                     saml_idp_cert: Ok(Default::default()),
                     saml_idp_slo_service_url: Ok(Default::default()),
                     saml_idp_sso_service_url: Ok(Default::default()),
@@ -161284,6 +162159,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for public_title: {e}")
+                    });
+                self
+            }
+            pub fn publication_status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.publication_status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for publication_status: {e}"
+                        )
                     });
                 self
             }
@@ -161510,6 +162399,7 @@ pub mod types {
                     public: value.public?,
                     public_description: value.public_description?,
                     public_title: value.public_title?,
+                    publication_status: value.publication_status?,
                     saml_idp_cert: value.saml_idp_cert?,
                     saml_idp_slo_service_url: value.saml_idp_slo_service_url?,
                     saml_idp_sso_service_url: value.saml_idp_sso_service_url?,
@@ -161547,6 +162437,7 @@ pub mod types {
                     public: Ok(value.public),
                     public_description: Ok(value.public_description),
                     public_title: Ok(value.public_title),
+                    publication_status: Ok(value.publication_status),
                     saml_idp_cert: Ok(value.saml_idp_cert),
                     saml_idp_slo_service_url: Ok(value.saml_idp_slo_service_url),
                     saml_idp_sso_service_url: Ok(value.saml_idp_sso_service_url),
@@ -201094,6 +201985,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            publication_status: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             saml_idp_cert: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -201180,6 +202075,7 @@ pub mod types {
                     public: Ok(Default::default()),
                     public_description: Ok(Default::default()),
                     public_title: Ok(Default::default()),
+                    publication_status: Ok(Default::default()),
                     saml_idp_cert: Ok(Default::default()),
                     saml_idp_cert_fingerprint: Ok(Default::default()),
                     saml_idp_slo_service_url: Ok(Default::default()),
@@ -201427,6 +202323,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for public_title: {e}")
+                    });
+                self
+            }
+            pub fn publication_status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.publication_status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for publication_status: {e}"
+                        )
                     });
                 self
             }
@@ -201678,6 +202588,7 @@ pub mod types {
                     public: value.public?,
                     public_description: value.public_description?,
                     public_title: value.public_title?,
+                    publication_status: value.publication_status?,
                     saml_idp_cert: value.saml_idp_cert?,
                     saml_idp_cert_fingerprint: value.saml_idp_cert_fingerprint?,
                     saml_idp_slo_service_url: value.saml_idp_slo_service_url?,
@@ -201718,6 +202629,7 @@ pub mod types {
                     public: Ok(value.public),
                     public_description: Ok(value.public_description),
                     public_title: Ok(value.public_title),
+                    publication_status: Ok(value.publication_status),
                     saml_idp_cert: Ok(value.saml_idp_cert),
                     saml_idp_cert_fingerprint: Ok(value.saml_idp_cert_fingerprint),
                     saml_idp_slo_service_url: Ok(value.saml_idp_slo_service_url),
@@ -208085,6 +208997,10 @@ pub mod types {
                 ::std::option::Option<::std::vec::Vec<::std::string::String>>,
                 ::std::string::String,
             >,
+            require_critical_alert_or_call_on_first_audible_level: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default
         for UpdateAlertConfigurationDataAttributesDefaultUserNotificationSettings {
@@ -208092,6 +209008,9 @@ pub mod types {
                 Self {
                     audible_contact_types: Ok(Default::default()),
                     quiet_contact_types: Ok(Default::default()),
+                    require_critical_alert_or_call_on_first_audible_level: Ok(
+                        Default::default(),
+                    ),
                 }
             }
         }
@@ -208128,6 +209047,23 @@ pub mod types {
                     });
                 self
             }
+            pub fn require_critical_alert_or_call_on_first_audible_level<T>(
+                mut self,
+                value: T,
+            ) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.require_critical_alert_or_call_on_first_audible_level = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for require_critical_alert_or_call_on_first_audible_level: {e}"
+                        )
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<
             UpdateAlertConfigurationDataAttributesDefaultUserNotificationSettings,
@@ -208140,6 +209076,8 @@ pub mod types {
                 Ok(Self {
                     audible_contact_types: value.audible_contact_types?,
                     quiet_contact_types: value.quiet_contact_types?,
+                    require_critical_alert_or_call_on_first_audible_level: value
+                        .require_critical_alert_or_call_on_first_audible_level?,
                 })
             }
         }
@@ -208152,6 +209090,9 @@ pub mod types {
                 Self {
                     audible_contact_types: Ok(value.audible_contact_types),
                     quiet_contact_types: Ok(value.quiet_contact_types),
+                    require_critical_alert_or_call_on_first_audible_level: Ok(
+                        value.require_critical_alert_or_call_on_first_audible_level,
+                    ),
                 }
             }
         }
@@ -250090,6 +251031,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            publication_status: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             saml_idp_cert: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -250171,6 +251116,7 @@ pub mod types {
                     public: Ok(Default::default()),
                     public_description: Ok(Default::default()),
                     public_title: Ok(Default::default()),
+                    publication_status: Ok(Default::default()),
                     saml_idp_cert: Ok(Default::default()),
                     saml_idp_slo_service_url: Ok(Default::default()),
                     saml_idp_sso_service_url: Ok(Default::default()),
@@ -250387,6 +251333,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for public_title: {e}")
+                    });
+                self
+            }
+            pub fn publication_status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.publication_status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for publication_status: {e}"
+                        )
                     });
                 self
             }
@@ -250613,6 +251573,7 @@ pub mod types {
                     public: value.public?,
                     public_description: value.public_description?,
                     public_title: value.public_title?,
+                    publication_status: value.publication_status?,
                     saml_idp_cert: value.saml_idp_cert?,
                     saml_idp_slo_service_url: value.saml_idp_slo_service_url?,
                     saml_idp_sso_service_url: value.saml_idp_sso_service_url?,
@@ -250650,6 +251611,7 @@ pub mod types {
                     public: Ok(value.public),
                     public_description: Ok(value.public_description),
                     public_title: Ok(value.public_title),
+                    publication_status: Ok(value.publication_status),
                     saml_idp_cert: Ok(value.saml_idp_cert),
                     saml_idp_slo_service_url: Ok(value.saml_idp_slo_service_url),
                     saml_idp_sso_service_url: Ok(value.saml_idp_sso_service_url),
@@ -269265,18 +270227,22 @@ let response = client.delete_incident_action_item()
     }
     /**Send AI chat message
 
-Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. Requires `ai.chat:write` OAuth scope or an API key.
+Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Responses include `confirmation` for a pending write and `checkpoint_resolved` after resume. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The synchronous response has no `confirmation` key; only `confirmation` responses are resumable. Requires `ai.chat:write` OAuth scope or an API key.
 
 Sends a `POST` request to `/v1/ai/chat`
 
 Arguments:
 - `alert_id`: Bind session to an alert for context (mutually exclusive with incident_id)
+- `checkpoint_id`: Pending confirmation checkpoint to resolve
+- `decision`: Resolve the checkpoint with confirm or cancel
 - `incident_id`: Bind session to an incident for context (mutually exclusive with alert_id)
-- `message`: Message to send to the AI assistant
+- `message`: Message to send. Required unless checkpoint_id is supplied.
 - `session_id`: Resume an existing session
 ```ignore
 let response = client.create_ai_chat()
     .alert_id(alert_id)
+    .checkpoint_id(checkpoint_id)
+    .decision(decision)
     .incident_id(incident_id)
     .message(message)
     .session_id(session_id)
@@ -269328,18 +270294,22 @@ let response = client.list_ai_chat_session_messages()
     }
     /**Stream AI chat response (SSE)
 
-Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. Events: `session_id` (initial), `text` (content chunks), `task_update` (tool progress), `error`, `done` (terminal with status). Requires `ai.chat:write` OAuth scope or an API key.
+Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Events include `confirmation_required` for pending writes and `checkpoint_resolved` before replay. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The stream emits `done` with `status: complete` and no `confirmation_required` event; only `confirmation_required` events are resumable. Requires `ai.chat:write` OAuth scope or an API key.
 
 Sends a `POST` request to `/v1/ai/chat/stream`
 
 Arguments:
 - `alert_id`: Bind session to an alert (mutually exclusive with incident_id)
+- `checkpoint_id`: Pending confirmation checkpoint to resolve
+- `decision`: Resolve the checkpoint with confirm or cancel
 - `incident_id`: Bind session to an incident (mutually exclusive with alert_id)
-- `message`: Message to send
+- `message`: Message to send. Required unless checkpoint_id is supplied.
 - `session_id`: Resume an existing session
 ```ignore
 let response = client.stream_ai_chat()
     .alert_id(alert_id)
+    .checkpoint_id(checkpoint_id)
+    .decision(decision)
     .incident_id(incident_id)
     .message(message)
     .session_id(session_id)
@@ -277407,278 +278377,6 @@ let response = client.revoke_private_agent()
     pub fn revoke_private_agent(&self) -> builder::RevokePrivateAgent<'_> {
         builder::RevokePrivateAgent::new(self)
     }
-    /**List all problem action items
-
-List all problem action items the caller can access across the team, with filter, sort and pagination support
-
-Sends a `GET` request to `/v1/problem_action_items`
-
-```ignore
-let response = client.list_all_problem_action_items()
-    .filter_assigned_to_user_id_eq(filter_assigned_to_user_id_eq)
-    .filter_assigned_to_user_id_in(filter_assigned_to_user_id_in)
-    .filter_assigned_to_user_id_not_eq(filter_assigned_to_user_id_not_eq)
-    .filter_assigned_to_user_id_not_in(filter_assigned_to_user_id_not_in)
-    .filter_created_at_gt(filter_created_at_gt)
-    .filter_created_at_gte(filter_created_at_gte)
-    .filter_created_at_lt(filter_created_at_lt)
-    .filter_created_at_lte(filter_created_at_lte)
-    .filter_due_date_gt(filter_due_date_gt)
-    .filter_due_date_gte(filter_due_date_gte)
-    .filter_due_date_lt(filter_due_date_lt)
-    .filter_due_date_lte(filter_due_date_lte)
-    .filter_priority_eq(filter_priority_eq)
-    .filter_priority_in(filter_priority_in)
-    .filter_priority_not_eq(filter_priority_not_eq)
-    .filter_priority_not_in(filter_priority_not_in)
-    .filter_search(filter_search)
-    .filter_status_eq(filter_status_eq)
-    .filter_status_in(filter_status_in)
-    .filter_status_not_eq(filter_status_not_eq)
-    .filter_status_not_in(filter_status_not_in)
-    .page_number(page_number)
-    .page_size(page_size)
-    .problem_id(problem_id)
-    .sort(sort)
-    .send()
-    .await;
-```*/
-    pub fn list_all_problem_action_items(
-        &self,
-    ) -> builder::ListAllProblemActionItems<'_> {
-        builder::ListAllProblemActionItems::new(self)
-    }
-    /**Retrieves a problem action item
-
-Retrieves a specific problem action item by id
-
-Sends a `GET` request to `/v1/problem_action_items/{id}`
-
-```ignore
-let response = client.get_problem_action_item()
-    .id(id)
-    .send()
-    .await;
-```*/
-    pub fn get_problem_action_item(&self) -> builder::GetProblemActionItem<'_> {
-        builder::GetProblemActionItem::new(self)
-    }
-    /**Update a problem action item
-
-Updates a problem action item
-
-Sends a `PUT` request to `/v1/problem_action_items/{id}`
-
-```ignore
-let response = client.update_problem_action_item()
-    .id(id)
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn update_problem_action_item(&self) -> builder::UpdateProblemActionItem<'_> {
-        builder::UpdateProblemActionItem::new(self)
-    }
-    /**Deletes a problem action item
-
-Deletes a problem action item
-
-Sends a `DELETE` request to `/v1/problem_action_items/{id}`
-
-```ignore
-let response = client.delete_problem_action_item()
-    .id(id)
-    .send()
-    .await;
-```*/
-    pub fn delete_problem_action_item(&self) -> builder::DeleteProblemActionItem<'_> {
-        builder::DeleteProblemActionItem::new(self)
-    }
-    /**List problems
-
-Sorting by incidents_count would let callers without incident read infer relative hidden incident counts, so it is rejected.
-
-Sends a `GET` request to `/v1/problems`
-
-```ignore
-let response = client.list_problems()
-    .filter_created_at_gt(filter_created_at_gt)
-    .filter_created_at_gte(filter_created_at_gte)
-    .filter_created_at_lt(filter_created_at_lt)
-    .filter_created_at_lte(filter_created_at_lte)
-    .filter_created_by_user_id(filter_created_by_user_id)
-    .filter_due_date_gt(filter_due_date_gt)
-    .filter_due_date_gte(filter_due_date_gte)
-    .filter_due_date_lt(filter_due_date_lt)
-    .filter_due_date_lte(filter_due_date_lte)
-    .filter_owner_group_id(filter_owner_group_id)
-    .filter_owner_user_id(filter_owner_user_id)
-    .filter_priority_eq(filter_priority_eq)
-    .filter_priority_in(filter_priority_in)
-    .filter_priority_not_eq(filter_priority_not_eq)
-    .filter_priority_not_in(filter_priority_not_in)
-    .filter_search(filter_search)
-    .filter_status_eq(filter_status_eq)
-    .filter_status_in(filter_status_in)
-    .filter_status_not_eq(filter_status_not_eq)
-    .filter_status_not_in(filter_status_not_in)
-    .page_number(page_number)
-    .page_size(page_size)
-    .sort(sort)
-    .send()
-    .await;
-```*/
-    pub fn list_problems(&self) -> builder::ListProblems<'_> {
-        builder::ListProblems::new(self)
-    }
-    /**Creates a problem
-
-Creates a new problem from provided data
-
-Sends a `POST` request to `/v1/problems`
-
-```ignore
-let response = client.create_problem()
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn create_problem(&self) -> builder::CreateProblem<'_> {
-        builder::CreateProblem::new(self)
-    }
-    /**Retrieves a problem
-
-API callers lacking access to the problem's team receive an error. The API deliberately returns 404 rather than 403 so existence is not leaked.
-
-Sends a `GET` request to `/v1/problems/{id}`
-
-```ignore
-let response = client.get_problem()
-    .id(id)
-    .send()
-    .await;
-```*/
-    pub fn get_problem(&self) -> builder::GetProblem<'_> {
-        builder::GetProblem::new(self)
-    }
-    /**Update a problem
-
-When a status transition fails validation, accompanying field updates roll back with it.
-
-Sends a `PUT` request to `/v1/problems/{id}`
-
-```ignore
-let response = client.update_problem()
-    .id(id)
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn update_problem(&self) -> builder::UpdateProblem<'_> {
-        builder::UpdateProblem::new(self)
-    }
-    /**Deletes a problem
-
-Soft-deletes a problem
-
-Sends a `DELETE` request to `/v1/problems/{id}`
-
-```ignore
-let response = client.delete_problem()
-    .id(id)
-    .send()
-    .await;
-```*/
-    pub fn delete_problem(&self) -> builder::DeleteProblem<'_> {
-        builder::DeleteProblem::new(self)
-    }
-    /**Links incidents to a problem
-
-Links one or more incidents to a problem. Accepts `incident_id` (single) or `incident_ids` (array).
-
-Sends a `POST` request to `/v1/problems/{id}/incidents`
-
-```ignore
-let response = client.link_problem_incidents()
-    .id(id)
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn link_problem_incidents(&self) -> builder::LinkProblemIncidents<'_> {
-        builder::LinkProblemIncidents::new(self)
-    }
-    /**Unlinks an incident from a problem
-
-Unlinks an incident from a problem
-
-Sends a `DELETE` request to `/v1/problems/{id}/incidents/{incident_id}`
-
-```ignore
-let response = client.unlink_problem_incident()
-    .id(id)
-    .incident_id(incident_id)
-    .send()
-    .await;
-```*/
-    pub fn unlink_problem_incident(&self) -> builder::UnlinkProblemIncident<'_> {
-        builder::UnlinkProblemIncident::new(self)
-    }
-    /**List a problem's action items
-
-List action items belonging to a problem, with filter, sort and pagination support
-
-Sends a `GET` request to `/v1/problems/{problem_id}/action_items`
-
-```ignore
-let response = client.list_problem_action_items()
-    .problem_id(problem_id)
-    .filter_assigned_to_user_id_eq(filter_assigned_to_user_id_eq)
-    .filter_assigned_to_user_id_in(filter_assigned_to_user_id_in)
-    .filter_assigned_to_user_id_not_eq(filter_assigned_to_user_id_not_eq)
-    .filter_assigned_to_user_id_not_in(filter_assigned_to_user_id_not_in)
-    .filter_created_at_gt(filter_created_at_gt)
-    .filter_created_at_gte(filter_created_at_gte)
-    .filter_created_at_lt(filter_created_at_lt)
-    .filter_created_at_lte(filter_created_at_lte)
-    .filter_due_date_gt(filter_due_date_gt)
-    .filter_due_date_gte(filter_due_date_gte)
-    .filter_due_date_lt(filter_due_date_lt)
-    .filter_due_date_lte(filter_due_date_lte)
-    .filter_priority_eq(filter_priority_eq)
-    .filter_priority_in(filter_priority_in)
-    .filter_priority_not_eq(filter_priority_not_eq)
-    .filter_priority_not_in(filter_priority_not_in)
-    .filter_search(filter_search)
-    .filter_status_eq(filter_status_eq)
-    .filter_status_in(filter_status_in)
-    .filter_status_not_eq(filter_status_not_eq)
-    .filter_status_not_in(filter_status_not_in)
-    .page_number(page_number)
-    .page_size(page_size)
-    .sort(sort)
-    .send()
-    .await;
-```*/
-    pub fn list_problem_action_items(&self) -> builder::ListProblemActionItems<'_> {
-        builder::ListProblemActionItems::new(self)
-    }
-    /**Creates a problem action item
-
-Creates a new action item on a problem from provided data
-
-Sends a `POST` request to `/v1/problems/{problem_id}/action_items`
-
-```ignore
-let response = client.create_problem_action_item()
-    .problem_id(problem_id)
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn create_problem_action_item(&self) -> builder::CreateProblemActionItem<'_> {
-        builder::CreateProblemActionItem::new(self)
-    }
     /**List pulses
 
 List pulses
@@ -282292,8 +282990,10 @@ pub mod builder {
     pub struct CreateAiChat<'a> {
         client: &'a super::Client,
         alert_id: Result<Option<::uuid::Uuid>, String>,
+        checkpoint_id: Result<Option<::uuid::Uuid>, String>,
+        decision: Result<Option<::std::string::String>, String>,
         incident_id: Result<Option<::uuid::Uuid>, String>,
-        message: Result<::std::string::String, String>,
+        message: Result<Option<::std::string::String>, String>,
         session_id: Result<Option<::uuid::Uuid>, String>,
     }
     impl<'a> CreateAiChat<'a> {
@@ -282301,8 +283001,10 @@ pub mod builder {
             Self {
                 client: client,
                 alert_id: Ok(None),
+                checkpoint_id: Ok(None),
+                decision: Ok(None),
                 incident_id: Ok(None),
-                message: Err("message was not initialized".to_string()),
+                message: Ok(None),
                 session_id: Ok(None),
             }
         }
@@ -282315,6 +283017,32 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: uuid :: Uuid` for alert_id failed".to_string()
+                });
+            self
+        }
+        pub fn checkpoint_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.checkpoint_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for checkpoint_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn decision<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.decision = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for decision failed"
+                        .to_string()
                 });
             self
         }
@@ -282336,6 +283064,7 @@ pub mod builder {
         {
             self.message = value
                 .try_into()
+                .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for message failed"
                         .to_string()
@@ -282358,8 +283087,18 @@ pub mod builder {
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiChatResponse>, Error<()>> {
-            let Self { client, alert_id, incident_id, message, session_id } = self;
+            let Self {
+                client,
+                alert_id,
+                checkpoint_id,
+                decision,
+                incident_id,
+                message,
+                session_id,
+            } = self;
             let alert_id = alert_id.map_err(Error::InvalidRequest)?;
+            let checkpoint_id = checkpoint_id.map_err(Error::InvalidRequest)?;
+            let decision = decision.map_err(Error::InvalidRequest)?;
             let incident_id = incident_id.map_err(Error::InvalidRequest)?;
             let message = message.map_err(Error::InvalidRequest)?;
             let session_id = session_id.map_err(Error::InvalidRequest)?;
@@ -282381,6 +283120,10 @@ pub mod builder {
                     ::reqwest::header::HeaderValue::from_static("application/json"),
                 )
                 .query(&progenitor_client::QueryParam::new("alert_id", &alert_id))
+                .query(
+                    &progenitor_client::QueryParam::new("checkpoint_id", &checkpoint_id),
+                )
+                .query(&progenitor_client::QueryParam::new("decision", &decision))
                 .query(&progenitor_client::QueryParam::new("incident_id", &incident_id))
                 .query(&progenitor_client::QueryParam::new("message", &message))
                 .query(&progenitor_client::QueryParam::new("session_id", &session_id))
@@ -282558,8 +283301,10 @@ pub mod builder {
     pub struct StreamAiChat<'a> {
         client: &'a super::Client,
         alert_id: Result<Option<::uuid::Uuid>, String>,
+        checkpoint_id: Result<Option<::uuid::Uuid>, String>,
+        decision: Result<Option<::std::string::String>, String>,
         incident_id: Result<Option<::uuid::Uuid>, String>,
-        message: Result<::std::string::String, String>,
+        message: Result<Option<::std::string::String>, String>,
         session_id: Result<Option<::uuid::Uuid>, String>,
     }
     impl<'a> StreamAiChat<'a> {
@@ -282567,8 +283312,10 @@ pub mod builder {
             Self {
                 client: client,
                 alert_id: Ok(None),
+                checkpoint_id: Ok(None),
+                decision: Ok(None),
                 incident_id: Ok(None),
-                message: Err("message was not initialized".to_string()),
+                message: Ok(None),
                 session_id: Ok(None),
             }
         }
@@ -282581,6 +283328,32 @@ pub mod builder {
                 .map(Some)
                 .map_err(|_| {
                     "conversion to `:: uuid :: Uuid` for alert_id failed".to_string()
+                });
+            self
+        }
+        pub fn checkpoint_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.checkpoint_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for checkpoint_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn decision<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.decision = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for decision failed"
+                        .to_string()
                 });
             self
         }
@@ -282602,6 +283375,7 @@ pub mod builder {
         {
             self.message = value
                 .try_into()
+                .map(Some)
                 .map_err(|_| {
                     "conversion to `:: std :: string :: String` for message failed"
                         .to_string()
@@ -282622,8 +283396,18 @@ pub mod builder {
         }
         ///Sends a `POST` request to `/v1/ai/chat/stream`
         pub async fn send(self) -> Result<ResponseValue<()>, Error<()>> {
-            let Self { client, alert_id, incident_id, message, session_id } = self;
+            let Self {
+                client,
+                alert_id,
+                checkpoint_id,
+                decision,
+                incident_id,
+                message,
+                session_id,
+            } = self;
             let alert_id = alert_id.map_err(Error::InvalidRequest)?;
+            let checkpoint_id = checkpoint_id.map_err(Error::InvalidRequest)?;
+            let decision = decision.map_err(Error::InvalidRequest)?;
             let incident_id = incident_id.map_err(Error::InvalidRequest)?;
             let message = message.map_err(Error::InvalidRequest)?;
             let session_id = session_id.map_err(Error::InvalidRequest)?;
@@ -282641,6 +283425,10 @@ pub mod builder {
                 .client
                 .post(url)
                 .query(&progenitor_client::QueryParam::new("alert_id", &alert_id))
+                .query(
+                    &progenitor_client::QueryParam::new("checkpoint_id", &checkpoint_id),
+                )
+                .query(&progenitor_client::QueryParam::new("decision", &decision))
                 .query(&progenitor_client::QueryParam::new("incident_id", &incident_id))
                 .query(&progenitor_client::QueryParam::new("message", &message))
                 .query(&progenitor_client::QueryParam::new("session_id", &session_id))
@@ -334707,2629 +335495,6 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_all_problem_action_items`]
-
-[`Client::list_all_problem_action_items`]: super::Client::list_all_problem_action_items*/
-    #[derive(Debug, Clone)]
-    pub struct ListAllProblemActionItems<'a> {
-        client: &'a super::Client,
-        filter_assigned_to_user_id_eq: Result<Option<::std::string::String>, String>,
-        filter_assigned_to_user_id_in: Result<Option<::std::string::String>, String>,
-        filter_assigned_to_user_id_not_eq: Result<Option<::std::string::String>, String>,
-        filter_assigned_to_user_id_not_in: Result<Option<::std::string::String>, String>,
-        filter_created_at_gt: Result<Option<::std::string::String>, String>,
-        filter_created_at_gte: Result<Option<::std::string::String>, String>,
-        filter_created_at_lt: Result<Option<::std::string::String>, String>,
-        filter_created_at_lte: Result<Option<::std::string::String>, String>,
-        filter_due_date_gt: Result<Option<::std::string::String>, String>,
-        filter_due_date_gte: Result<Option<::std::string::String>, String>,
-        filter_due_date_lt: Result<Option<::std::string::String>, String>,
-        filter_due_date_lte: Result<Option<::std::string::String>, String>,
-        filter_priority_eq: Result<Option<::std::string::String>, String>,
-        filter_priority_in: Result<Option<::std::string::String>, String>,
-        filter_priority_not_eq: Result<Option<::std::string::String>, String>,
-        filter_priority_not_in: Result<Option<::std::string::String>, String>,
-        filter_search: Result<Option<::std::string::String>, String>,
-        filter_status_eq: Result<Option<::std::string::String>, String>,
-        filter_status_in: Result<Option<::std::string::String>, String>,
-        filter_status_not_eq: Result<Option<::std::string::String>, String>,
-        filter_status_not_in: Result<Option<::std::string::String>, String>,
-        page_number: Result<Option<i64>, String>,
-        page_size: Result<Option<i64>, String>,
-        problem_id: Result<Option<::std::string::String>, String>,
-        sort: Result<Option<::std::string::String>, String>,
-    }
-    impl<'a> ListAllProblemActionItems<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                filter_assigned_to_user_id_eq: Ok(None),
-                filter_assigned_to_user_id_in: Ok(None),
-                filter_assigned_to_user_id_not_eq: Ok(None),
-                filter_assigned_to_user_id_not_in: Ok(None),
-                filter_created_at_gt: Ok(None),
-                filter_created_at_gte: Ok(None),
-                filter_created_at_lt: Ok(None),
-                filter_created_at_lte: Ok(None),
-                filter_due_date_gt: Ok(None),
-                filter_due_date_gte: Ok(None),
-                filter_due_date_lt: Ok(None),
-                filter_due_date_lte: Ok(None),
-                filter_priority_eq: Ok(None),
-                filter_priority_in: Ok(None),
-                filter_priority_not_eq: Ok(None),
-                filter_priority_not_in: Ok(None),
-                filter_search: Ok(None),
-                filter_status_eq: Ok(None),
-                filter_status_in: Ok(None),
-                filter_status_not_eq: Ok(None),
-                filter_status_not_in: Ok(None),
-                page_number: Ok(None),
-                page_size: Ok(None),
-                problem_id: Ok(None),
-                sort: Ok(None),
-            }
-        }
-        pub fn filter_assigned_to_user_id_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_assigned_to_user_id_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_assigned_to_user_id_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_assigned_to_user_id_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_assigned_to_user_id_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_assigned_to_user_id_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_assigned_to_user_id_not_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_assigned_to_user_id_not_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_assigned_to_user_id_not_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_assigned_to_user_id_not_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_assigned_to_user_id_not_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_assigned_to_user_id_not_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_gt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_gt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_gt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_gte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_gte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_lt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_lt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_lt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_lte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_lte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_gt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_gt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_gt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_gte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_gte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_gte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_lt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_lt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_lt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_lte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_lte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_lte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_not_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_not_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_not_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_not_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_not_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_not_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_search<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_search = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_search failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_not_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_not_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_not_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_not_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_not_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_not_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn page_number<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_number = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
-            self
-        }
-        pub fn page_size<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_size = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
-            self
-        }
-        pub fn problem_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.problem_id = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for problem_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn sort<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.sort = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for sort failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/problem_action_items`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemActionItemList>, Error<()>> {
-            let Self {
-                client,
-                filter_assigned_to_user_id_eq,
-                filter_assigned_to_user_id_in,
-                filter_assigned_to_user_id_not_eq,
-                filter_assigned_to_user_id_not_in,
-                filter_created_at_gt,
-                filter_created_at_gte,
-                filter_created_at_lt,
-                filter_created_at_lte,
-                filter_due_date_gt,
-                filter_due_date_gte,
-                filter_due_date_lt,
-                filter_due_date_lte,
-                filter_priority_eq,
-                filter_priority_in,
-                filter_priority_not_eq,
-                filter_priority_not_in,
-                filter_search,
-                filter_status_eq,
-                filter_status_in,
-                filter_status_not_eq,
-                filter_status_not_in,
-                page_number,
-                page_size,
-                problem_id,
-                sort,
-            } = self;
-            let filter_assigned_to_user_id_eq = filter_assigned_to_user_id_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_assigned_to_user_id_in = filter_assigned_to_user_id_in
-                .map_err(Error::InvalidRequest)?;
-            let filter_assigned_to_user_id_not_eq = filter_assigned_to_user_id_not_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_assigned_to_user_id_not_in = filter_assigned_to_user_id_not_in
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_gt = filter_created_at_gt
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_gte = filter_created_at_gte
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_lt = filter_created_at_lt
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_lte = filter_created_at_lte
-                .map_err(Error::InvalidRequest)?;
-            let filter_due_date_gt = filter_due_date_gt.map_err(Error::InvalidRequest)?;
-            let filter_due_date_gte = filter_due_date_gte
-                .map_err(Error::InvalidRequest)?;
-            let filter_due_date_lt = filter_due_date_lt.map_err(Error::InvalidRequest)?;
-            let filter_due_date_lte = filter_due_date_lte
-                .map_err(Error::InvalidRequest)?;
-            let filter_priority_eq = filter_priority_eq.map_err(Error::InvalidRequest)?;
-            let filter_priority_in = filter_priority_in.map_err(Error::InvalidRequest)?;
-            let filter_priority_not_eq = filter_priority_not_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_priority_not_in = filter_priority_not_in
-                .map_err(Error::InvalidRequest)?;
-            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
-            let filter_status_eq = filter_status_eq.map_err(Error::InvalidRequest)?;
-            let filter_status_in = filter_status_in.map_err(Error::InvalidRequest)?;
-            let filter_status_not_eq = filter_status_not_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_status_not_in = filter_status_not_in
-                .map_err(Error::InvalidRequest)?;
-            let page_number = page_number.map_err(Error::InvalidRequest)?;
-            let page_size = page_size.map_err(Error::InvalidRequest)?;
-            let problem_id = problem_id.map_err(Error::InvalidRequest)?;
-            let sort = sort.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/problem_action_items", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[assigned_to_user_id][eq]",
-                        &filter_assigned_to_user_id_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[assigned_to_user_id][in]",
-                        &filter_assigned_to_user_id_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[assigned_to_user_id][not_eq]",
-                        &filter_assigned_to_user_id_not_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[assigned_to_user_id][not_in]",
-                        &filter_assigned_to_user_id_not_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][gt]",
-                        &filter_created_at_gt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][gte]",
-                        &filter_created_at_gte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][lt]",
-                        &filter_created_at_lt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][lte]",
-                        &filter_created_at_lte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][gt]",
-                        &filter_due_date_gt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][gte]",
-                        &filter_due_date_gte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][lt]",
-                        &filter_due_date_lt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][lte]",
-                        &filter_due_date_lte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][eq]",
-                        &filter_priority_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][in]",
-                        &filter_priority_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][not_eq]",
-                        &filter_priority_not_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][not_in]",
-                        &filter_priority_not_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][eq]",
-                        &filter_status_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][in]",
-                        &filter_status_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][not_eq]",
-                        &filter_status_not_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][not_in]",
-                        &filter_status_not_in,
-                    ),
-                )
-                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
-                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
-                .query(&progenitor_client::QueryParam::new("problem_id", &problem_id))
-                .query(&progenitor_client::QueryParam::new("sort", &sort))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_all_problem_action_items",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::get_problem_action_item`]
-
-[`Client::get_problem_action_item`]: super::Client::get_problem_action_item*/
-    #[derive(Debug, Clone)]
-    pub struct GetProblemActionItem<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-    }
-    impl<'a> GetProblemActionItem<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/problem_action_items/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemActionItemResponse>, Error<()>> {
-            let Self { client, id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problem_action_items/{}", client.baseurl, encode_path(& id
-                .to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "get_problem_action_item",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::update_problem_action_item`]
-
-[`Client::update_problem_action_item`]: super::Client::update_problem_action_item*/
-    #[derive(Debug, Clone)]
-    pub struct UpdateProblemActionItem<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-        body: Result<types::builder::UpdateProblemActionItem, String>,
-    }
-    impl<'a> UpdateProblemActionItem<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::UpdateProblemActionItem>,
-            <V as std::convert::TryInto<
-                types::UpdateProblemActionItem,
-            >>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!(
-                        "conversion to `UpdateProblemActionItem` for body failed: {}", s
-                    )
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::UpdateProblemActionItem,
-            ) -> types::builder::UpdateProblemActionItem,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `PUT` request to `/v1/problem_action_items/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemActionItemResponse>, Error<()>> {
-            let Self { client, id, body } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let body = body
-                .and_then(|v| {
-                    types::UpdateProblemActionItem::try_from(v)
-                        .map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problem_action_items/{}", client.baseurl, encode_path(& id
-                .to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .put(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "update_problem_action_item",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::delete_problem_action_item`]
-
-[`Client::delete_problem_action_item`]: super::Client::delete_problem_action_item*/
-    #[derive(Debug, Clone)]
-    pub struct DeleteProblemActionItem<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-    }
-    impl<'a> DeleteProblemActionItem<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `DELETE` request to `/v1/problem_action_items/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemActionItemResponse>, Error<()>> {
-            let Self { client, id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problem_action_items/{}", client.baseurl, encode_path(& id
-                .to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .delete(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "delete_problem_action_item",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_problems`]
-
-[`Client::list_problems`]: super::Client::list_problems*/
-    #[derive(Debug, Clone)]
-    pub struct ListProblems<'a> {
-        client: &'a super::Client,
-        filter_created_at_gt: Result<Option<::std::string::String>, String>,
-        filter_created_at_gte: Result<Option<::std::string::String>, String>,
-        filter_created_at_lt: Result<Option<::std::string::String>, String>,
-        filter_created_at_lte: Result<Option<::std::string::String>, String>,
-        filter_created_by_user_id: Result<Option<i64>, String>,
-        filter_due_date_gt: Result<Option<::std::string::String>, String>,
-        filter_due_date_gte: Result<Option<::std::string::String>, String>,
-        filter_due_date_lt: Result<Option<::std::string::String>, String>,
-        filter_due_date_lte: Result<Option<::std::string::String>, String>,
-        filter_owner_group_id: Result<Option<::std::string::String>, String>,
-        filter_owner_user_id: Result<Option<i64>, String>,
-        filter_priority_eq: Result<Option<::std::string::String>, String>,
-        filter_priority_in: Result<Option<::std::string::String>, String>,
-        filter_priority_not_eq: Result<Option<::std::string::String>, String>,
-        filter_priority_not_in: Result<Option<::std::string::String>, String>,
-        filter_search: Result<Option<::std::string::String>, String>,
-        filter_status_eq: Result<Option<::std::string::String>, String>,
-        filter_status_in: Result<Option<::std::string::String>, String>,
-        filter_status_not_eq: Result<Option<::std::string::String>, String>,
-        filter_status_not_in: Result<Option<::std::string::String>, String>,
-        page_number: Result<Option<i64>, String>,
-        page_size: Result<Option<i64>, String>,
-        sort: Result<Option<::std::string::String>, String>,
-    }
-    impl<'a> ListProblems<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                filter_created_at_gt: Ok(None),
-                filter_created_at_gte: Ok(None),
-                filter_created_at_lt: Ok(None),
-                filter_created_at_lte: Ok(None),
-                filter_created_by_user_id: Ok(None),
-                filter_due_date_gt: Ok(None),
-                filter_due_date_gte: Ok(None),
-                filter_due_date_lt: Ok(None),
-                filter_due_date_lte: Ok(None),
-                filter_owner_group_id: Ok(None),
-                filter_owner_user_id: Ok(None),
-                filter_priority_eq: Ok(None),
-                filter_priority_in: Ok(None),
-                filter_priority_not_eq: Ok(None),
-                filter_priority_not_in: Ok(None),
-                filter_search: Ok(None),
-                filter_status_eq: Ok(None),
-                filter_status_in: Ok(None),
-                filter_status_not_eq: Ok(None),
-                filter_status_not_in: Ok(None),
-                page_number: Ok(None),
-                page_size: Ok(None),
-                sort: Ok(None),
-            }
-        }
-        pub fn filter_created_at_gt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_gt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_gt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_gte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_gte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_lt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_lt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_lt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_lte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_lte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_by_user_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.filter_created_by_user_id = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `i64` for filter_created_by_user_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_gt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_gt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_gt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_gte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_gte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_gte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_lt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_lt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_lt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_lte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_lte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_lte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_owner_group_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_owner_group_id = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_owner_group_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_owner_user_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.filter_owner_user_id = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `i64` for filter_owner_user_id failed".to_string()
-                });
-            self
-        }
-        pub fn filter_priority_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_not_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_not_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_not_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_not_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_not_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_not_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_search<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_search = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_search failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_not_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_not_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_not_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_not_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_not_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_not_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn page_number<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_number = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
-            self
-        }
-        pub fn page_size<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_size = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
-            self
-        }
-        pub fn sort<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.sort = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for sort failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/problems`
-        pub async fn send(self) -> Result<ResponseValue<types::ProblemList>, Error<()>> {
-            let Self {
-                client,
-                filter_created_at_gt,
-                filter_created_at_gte,
-                filter_created_at_lt,
-                filter_created_at_lte,
-                filter_created_by_user_id,
-                filter_due_date_gt,
-                filter_due_date_gte,
-                filter_due_date_lt,
-                filter_due_date_lte,
-                filter_owner_group_id,
-                filter_owner_user_id,
-                filter_priority_eq,
-                filter_priority_in,
-                filter_priority_not_eq,
-                filter_priority_not_in,
-                filter_search,
-                filter_status_eq,
-                filter_status_in,
-                filter_status_not_eq,
-                filter_status_not_in,
-                page_number,
-                page_size,
-                sort,
-            } = self;
-            let filter_created_at_gt = filter_created_at_gt
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_gte = filter_created_at_gte
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_lt = filter_created_at_lt
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_lte = filter_created_at_lte
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_by_user_id = filter_created_by_user_id
-                .map_err(Error::InvalidRequest)?;
-            let filter_due_date_gt = filter_due_date_gt.map_err(Error::InvalidRequest)?;
-            let filter_due_date_gte = filter_due_date_gte
-                .map_err(Error::InvalidRequest)?;
-            let filter_due_date_lt = filter_due_date_lt.map_err(Error::InvalidRequest)?;
-            let filter_due_date_lte = filter_due_date_lte
-                .map_err(Error::InvalidRequest)?;
-            let filter_owner_group_id = filter_owner_group_id
-                .map_err(Error::InvalidRequest)?;
-            let filter_owner_user_id = filter_owner_user_id
-                .map_err(Error::InvalidRequest)?;
-            let filter_priority_eq = filter_priority_eq.map_err(Error::InvalidRequest)?;
-            let filter_priority_in = filter_priority_in.map_err(Error::InvalidRequest)?;
-            let filter_priority_not_eq = filter_priority_not_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_priority_not_in = filter_priority_not_in
-                .map_err(Error::InvalidRequest)?;
-            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
-            let filter_status_eq = filter_status_eq.map_err(Error::InvalidRequest)?;
-            let filter_status_in = filter_status_in.map_err(Error::InvalidRequest)?;
-            let filter_status_not_eq = filter_status_not_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_status_not_in = filter_status_not_in
-                .map_err(Error::InvalidRequest)?;
-            let page_number = page_number.map_err(Error::InvalidRequest)?;
-            let page_size = page_size.map_err(Error::InvalidRequest)?;
-            let sort = sort.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/problems", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][gt]",
-                        &filter_created_at_gt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][gte]",
-                        &filter_created_at_gte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][lt]",
-                        &filter_created_at_lt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][lte]",
-                        &filter_created_at_lte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_by_user_id]",
-                        &filter_created_by_user_id,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][gt]",
-                        &filter_due_date_gt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][gte]",
-                        &filter_due_date_gte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][lt]",
-                        &filter_due_date_lt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][lte]",
-                        &filter_due_date_lte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[owner_group_id]",
-                        &filter_owner_group_id,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[owner_user_id]",
-                        &filter_owner_user_id,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][eq]",
-                        &filter_priority_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][in]",
-                        &filter_priority_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][not_eq]",
-                        &filter_priority_not_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][not_in]",
-                        &filter_priority_not_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][eq]",
-                        &filter_status_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][in]",
-                        &filter_status_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][not_eq]",
-                        &filter_status_not_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][not_in]",
-                        &filter_status_not_in,
-                    ),
-                )
-                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
-                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
-                .query(&progenitor_client::QueryParam::new("sort", &sort))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_problems",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::create_problem`]
-
-[`Client::create_problem`]: super::Client::create_problem*/
-    #[derive(Debug, Clone)]
-    pub struct CreateProblem<'a> {
-        client: &'a super::Client,
-        body: Result<types::builder::NewProblem, String>,
-    }
-    impl<'a> CreateProblem<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::NewProblem>,
-            <V as std::convert::TryInto<types::NewProblem>>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `NewProblem` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::NewProblem,
-            ) -> types::builder::NewProblem,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `POST` request to `/v1/problems`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemResponse>, Error<()>> {
-            let Self { client, body } = self;
-            let body = body
-                .and_then(|v| types::NewProblem::try_from(v).map_err(|e| e.to_string()))
-                .map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/problems", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .post(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "create_problem",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                201u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::get_problem`]
-
-[`Client::get_problem`]: super::Client::get_problem*/
-    #[derive(Debug, Clone)]
-    pub struct GetProblem<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-    }
-    impl<'a> GetProblem<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/problems/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemResponse>, Error<()>> {
-            let Self { client, id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problems/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "get_problem",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::update_problem`]
-
-[`Client::update_problem`]: super::Client::update_problem*/
-    #[derive(Debug, Clone)]
-    pub struct UpdateProblem<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-        body: Result<types::builder::UpdateProblem, String>,
-    }
-    impl<'a> UpdateProblem<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::UpdateProblem>,
-            <V as std::convert::TryInto<types::UpdateProblem>>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `UpdateProblem` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::UpdateProblem,
-            ) -> types::builder::UpdateProblem,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `PUT` request to `/v1/problems/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemResponse>, Error<()>> {
-            let Self { client, id, body } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let body = body
-                .and_then(|v| {
-                    types::UpdateProblem::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problems/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .put(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "update_problem",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::delete_problem`]
-
-[`Client::delete_problem`]: super::Client::delete_problem*/
-    #[derive(Debug, Clone)]
-    pub struct DeleteProblem<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-    }
-    impl<'a> DeleteProblem<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `DELETE` request to `/v1/problems/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemResponse>, Error<()>> {
-            let Self { client, id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problems/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .delete(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "delete_problem",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::link_problem_incidents`]
-
-[`Client::link_problem_incidents`]: super::Client::link_problem_incidents*/
-    #[derive(Debug, Clone)]
-    pub struct LinkProblemIncidents<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-        body: Result<types::builder::LinkIncidents, String>,
-    }
-    impl<'a> LinkProblemIncidents<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::LinkIncidents>,
-            <V as std::convert::TryInto<types::LinkIncidents>>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `LinkIncidents` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::LinkIncidents,
-            ) -> types::builder::LinkIncidents,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `POST` request to `/v1/problems/{id}/incidents`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemResponse>, Error<()>> {
-            let Self { client, id, body } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let body = body
-                .and_then(|v| {
-                    types::LinkIncidents::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problems/{}/incidents", client.baseurl, encode_path(& id
-                .to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .post(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "link_problem_incidents",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::unlink_problem_incident`]
-
-[`Client::unlink_problem_incident`]: super::Client::unlink_problem_incident*/
-    #[derive(Debug, Clone)]
-    pub struct UnlinkProblemIncident<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-        incident_id: Result<::std::string::String, String>,
-    }
-    impl<'a> UnlinkProblemIncident<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-                incident_id: Err("incident_id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn incident_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.incident_id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for incident_id failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `DELETE` request to `/v1/problems/{id}/incidents/{incident_id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemResponse>, Error<()>> {
-            let Self { client, id, incident_id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let incident_id = incident_id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problems/{}/incidents/{}", client.baseurl, encode_path(& id
-                .to_string()), encode_path(& incident_id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .delete(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "unlink_problem_incident",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_problem_action_items`]
-
-[`Client::list_problem_action_items`]: super::Client::list_problem_action_items*/
-    #[derive(Debug, Clone)]
-    pub struct ListProblemActionItems<'a> {
-        client: &'a super::Client,
-        problem_id: Result<::std::string::String, String>,
-        filter_assigned_to_user_id_eq: Result<Option<::std::string::String>, String>,
-        filter_assigned_to_user_id_in: Result<Option<::std::string::String>, String>,
-        filter_assigned_to_user_id_not_eq: Result<Option<::std::string::String>, String>,
-        filter_assigned_to_user_id_not_in: Result<Option<::std::string::String>, String>,
-        filter_created_at_gt: Result<Option<::std::string::String>, String>,
-        filter_created_at_gte: Result<Option<::std::string::String>, String>,
-        filter_created_at_lt: Result<Option<::std::string::String>, String>,
-        filter_created_at_lte: Result<Option<::std::string::String>, String>,
-        filter_due_date_gt: Result<Option<::std::string::String>, String>,
-        filter_due_date_gte: Result<Option<::std::string::String>, String>,
-        filter_due_date_lt: Result<Option<::std::string::String>, String>,
-        filter_due_date_lte: Result<Option<::std::string::String>, String>,
-        filter_priority_eq: Result<Option<::std::string::String>, String>,
-        filter_priority_in: Result<Option<::std::string::String>, String>,
-        filter_priority_not_eq: Result<Option<::std::string::String>, String>,
-        filter_priority_not_in: Result<Option<::std::string::String>, String>,
-        filter_search: Result<Option<::std::string::String>, String>,
-        filter_status_eq: Result<Option<::std::string::String>, String>,
-        filter_status_in: Result<Option<::std::string::String>, String>,
-        filter_status_not_eq: Result<Option<::std::string::String>, String>,
-        filter_status_not_in: Result<Option<::std::string::String>, String>,
-        page_number: Result<Option<i64>, String>,
-        page_size: Result<Option<i64>, String>,
-        sort: Result<Option<::std::string::String>, String>,
-    }
-    impl<'a> ListProblemActionItems<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                problem_id: Err("problem_id was not initialized".to_string()),
-                filter_assigned_to_user_id_eq: Ok(None),
-                filter_assigned_to_user_id_in: Ok(None),
-                filter_assigned_to_user_id_not_eq: Ok(None),
-                filter_assigned_to_user_id_not_in: Ok(None),
-                filter_created_at_gt: Ok(None),
-                filter_created_at_gte: Ok(None),
-                filter_created_at_lt: Ok(None),
-                filter_created_at_lte: Ok(None),
-                filter_due_date_gt: Ok(None),
-                filter_due_date_gte: Ok(None),
-                filter_due_date_lt: Ok(None),
-                filter_due_date_lte: Ok(None),
-                filter_priority_eq: Ok(None),
-                filter_priority_in: Ok(None),
-                filter_priority_not_eq: Ok(None),
-                filter_priority_not_in: Ok(None),
-                filter_search: Ok(None),
-                filter_status_eq: Ok(None),
-                filter_status_in: Ok(None),
-                filter_status_not_eq: Ok(None),
-                filter_status_not_in: Ok(None),
-                page_number: Ok(None),
-                page_size: Ok(None),
-                sort: Ok(None),
-            }
-        }
-        pub fn problem_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.problem_id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for problem_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_assigned_to_user_id_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_assigned_to_user_id_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_assigned_to_user_id_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_assigned_to_user_id_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_assigned_to_user_id_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_assigned_to_user_id_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_assigned_to_user_id_not_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_assigned_to_user_id_not_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_assigned_to_user_id_not_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_assigned_to_user_id_not_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_assigned_to_user_id_not_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_assigned_to_user_id_not_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_gt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_gt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_gt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_gte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_gte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_lt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_lt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_lt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_created_at_lte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_created_at_lte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_gt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_gt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_gt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_gte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_gte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_gte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_lt<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_lt = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_lt failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_due_date_lte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_due_date_lte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_due_date_lte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_not_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_not_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_not_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_priority_not_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_priority_not_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_priority_not_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_search<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_search = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_search failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_not_eq<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_not_eq = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_not_eq failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status_not_in<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status_not_in = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status_not_in failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn page_number<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_number = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
-            self
-        }
-        pub fn page_size<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_size = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
-            self
-        }
-        pub fn sort<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.sort = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for sort failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/problems/{problem_id}/action_items`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemActionItemList>, Error<()>> {
-            let Self {
-                client,
-                problem_id,
-                filter_assigned_to_user_id_eq,
-                filter_assigned_to_user_id_in,
-                filter_assigned_to_user_id_not_eq,
-                filter_assigned_to_user_id_not_in,
-                filter_created_at_gt,
-                filter_created_at_gte,
-                filter_created_at_lt,
-                filter_created_at_lte,
-                filter_due_date_gt,
-                filter_due_date_gte,
-                filter_due_date_lt,
-                filter_due_date_lte,
-                filter_priority_eq,
-                filter_priority_in,
-                filter_priority_not_eq,
-                filter_priority_not_in,
-                filter_search,
-                filter_status_eq,
-                filter_status_in,
-                filter_status_not_eq,
-                filter_status_not_in,
-                page_number,
-                page_size,
-                sort,
-            } = self;
-            let problem_id = problem_id.map_err(Error::InvalidRequest)?;
-            let filter_assigned_to_user_id_eq = filter_assigned_to_user_id_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_assigned_to_user_id_in = filter_assigned_to_user_id_in
-                .map_err(Error::InvalidRequest)?;
-            let filter_assigned_to_user_id_not_eq = filter_assigned_to_user_id_not_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_assigned_to_user_id_not_in = filter_assigned_to_user_id_not_in
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_gt = filter_created_at_gt
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_gte = filter_created_at_gte
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_lt = filter_created_at_lt
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_lte = filter_created_at_lte
-                .map_err(Error::InvalidRequest)?;
-            let filter_due_date_gt = filter_due_date_gt.map_err(Error::InvalidRequest)?;
-            let filter_due_date_gte = filter_due_date_gte
-                .map_err(Error::InvalidRequest)?;
-            let filter_due_date_lt = filter_due_date_lt.map_err(Error::InvalidRequest)?;
-            let filter_due_date_lte = filter_due_date_lte
-                .map_err(Error::InvalidRequest)?;
-            let filter_priority_eq = filter_priority_eq.map_err(Error::InvalidRequest)?;
-            let filter_priority_in = filter_priority_in.map_err(Error::InvalidRequest)?;
-            let filter_priority_not_eq = filter_priority_not_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_priority_not_in = filter_priority_not_in
-                .map_err(Error::InvalidRequest)?;
-            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
-            let filter_status_eq = filter_status_eq.map_err(Error::InvalidRequest)?;
-            let filter_status_in = filter_status_in.map_err(Error::InvalidRequest)?;
-            let filter_status_not_eq = filter_status_not_eq
-                .map_err(Error::InvalidRequest)?;
-            let filter_status_not_in = filter_status_not_in
-                .map_err(Error::InvalidRequest)?;
-            let page_number = page_number.map_err(Error::InvalidRequest)?;
-            let page_size = page_size.map_err(Error::InvalidRequest)?;
-            let sort = sort.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problems/{}/action_items", client.baseurl, encode_path(&
-                problem_id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[assigned_to_user_id][eq]",
-                        &filter_assigned_to_user_id_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[assigned_to_user_id][in]",
-                        &filter_assigned_to_user_id_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[assigned_to_user_id][not_eq]",
-                        &filter_assigned_to_user_id_not_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[assigned_to_user_id][not_in]",
-                        &filter_assigned_to_user_id_not_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][gt]",
-                        &filter_created_at_gt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][gte]",
-                        &filter_created_at_gte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][lt]",
-                        &filter_created_at_lt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][lte]",
-                        &filter_created_at_lte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][gt]",
-                        &filter_due_date_gt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][gte]",
-                        &filter_due_date_gte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][lt]",
-                        &filter_due_date_lt,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[due_date][lte]",
-                        &filter_due_date_lte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][eq]",
-                        &filter_priority_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][in]",
-                        &filter_priority_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][not_eq]",
-                        &filter_priority_not_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[priority][not_in]",
-                        &filter_priority_not_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][eq]",
-                        &filter_status_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][in]",
-                        &filter_status_in,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][not_eq]",
-                        &filter_status_not_eq,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[status][not_in]",
-                        &filter_status_not_in,
-                    ),
-                )
-                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
-                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
-                .query(&progenitor_client::QueryParam::new("sort", &sort))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_problem_action_items",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::create_problem_action_item`]
-
-[`Client::create_problem_action_item`]: super::Client::create_problem_action_item*/
-    #[derive(Debug, Clone)]
-    pub struct CreateProblemActionItem<'a> {
-        client: &'a super::Client,
-        problem_id: Result<::std::string::String, String>,
-        body: Result<types::builder::NewProblemActionItem, String>,
-    }
-    impl<'a> CreateProblemActionItem<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                problem_id: Err("problem_id was not initialized".to_string()),
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn problem_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.problem_id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for problem_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::NewProblemActionItem>,
-            <V as std::convert::TryInto<
-                types::NewProblemActionItem,
-            >>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!(
-                        "conversion to `NewProblemActionItem` for body failed: {}", s
-                    )
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::NewProblemActionItem,
-            ) -> types::builder::NewProblemActionItem,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `POST` request to `/v1/problems/{problem_id}/action_items`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::ProblemActionItemResponse>, Error<()>> {
-            let Self { client, problem_id, body } = self;
-            let problem_id = problem_id.map_err(Error::InvalidRequest)?;
-            let body = body
-                .and_then(|v| {
-                    types::NewProblemActionItem::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/problems/{}/action_items", client.baseurl, encode_path(&
-                problem_id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .post(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "create_problem_action_item",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                201u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }

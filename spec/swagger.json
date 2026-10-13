@@ -24,7 +24,7 @@
         "tags": [
           "AI Chat"
         ],
-        "description": "Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. Requires `ai.chat:write` OAuth scope or an API key.",
+        "description": "Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Responses include `confirmation` for a pending write and `checkpoint_resolved` after resume. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The synchronous response has no `confirmation` key; only `confirmation` responses are resumable. Requires `ai.chat:write` OAuth scope or an API key.",
         "operationId": "createAiChat",
         "parameters": [
           {
@@ -33,8 +33,8 @@
             "schema": {
               "type": "string"
             },
-            "description": "Message to send to the AI assistant",
-            "required": true
+            "description": "Message to send. Required unless checkpoint_id is supplied.",
+            "required": false
           },
           {
             "name": "session_id",
@@ -44,6 +44,29 @@
               "format": "uuid"
             },
             "description": "Resume an existing session",
+            "required": false
+          },
+          {
+            "name": "checkpoint_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Pending confirmation checkpoint to resolve",
+            "required": false
+          },
+          {
+            "name": "decision",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "confirm",
+                "cancel"
+              ]
+            },
+            "description": "Resolve the checkpoint with confirm or cancel",
             "required": false
           },
           {
@@ -79,10 +102,44 @@
             }
           },
           "403": {
-            "description": "AI chat not enabled or insufficient scope"
+            "description": "AI chat not enabled, insufficient scope, or home-chat caller is ineligible",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
           },
           "422": {
-            "description": "invalid request"
+            "description": "invalid request, missing session_id, invalid decision, or agent error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "confirm session or checkpoint not found, or unresumable message session for an eligible home-chat caller",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "AI processing failed",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
           }
         }
       }
@@ -98,7 +155,7 @@
         "tags": [
           "AI Chat"
         ],
-        "description": "Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. Events: `session_id` (initial), `text` (content chunks), `task_update` (tool progress), `error`, `done` (terminal with status). Requires `ai.chat:write` OAuth scope or an API key.",
+        "description": "Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Events include `confirmation_required` for pending writes and `checkpoint_resolved` before replay. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The stream emits `done` with `status: complete` and no `confirmation_required` event; only `confirmation_required` events are resumable. Requires `ai.chat:write` OAuth scope or an API key.",
         "operationId": "streamAiChat",
         "parameters": [
           {
@@ -107,8 +164,8 @@
             "schema": {
               "type": "string"
             },
-            "description": "Message to send",
-            "required": true
+            "description": "Message to send. Required unless checkpoint_id is supplied.",
+            "required": false
           },
           {
             "name": "session_id",
@@ -118,6 +175,29 @@
               "format": "uuid"
             },
             "description": "Resume an existing session",
+            "required": false
+          },
+          {
+            "name": "checkpoint_id",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Pending confirmation checkpoint to resolve",
+            "required": false
+          },
+          {
+            "name": "decision",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "confirm",
+                "cancel"
+              ]
+            },
+            "description": "Resolve the checkpoint with confirm or cancel",
             "required": false
           },
           {
@@ -146,7 +226,34 @@
             "description": "SSE event stream"
           },
           "403": {
-            "description": "AI chat not enabled"
+            "description": "AI chat not enabled or home-chat caller is ineligible",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "confirm session or checkpoint not found, or unresumable message session for an eligible home-chat caller",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "session_id is missing or the confirmation decision is invalid",
+            "content": {
+              "text/event-stream": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
           }
         }
       }
@@ -295,7 +402,7 @@
         "parameters": [],
         "responses": {
           "200": {
-            "description": "alert configuration updated",
+            "description": "an explicit first-audible-level policy overrides the stored value",
             "content": {
               "application/json": {
                 "schema": {
@@ -559,6 +666,7 @@
                 "level_skipped",
                 "team_attached_from_payload",
                 "user_paged",
+                "ai_sre_delegated",
                 "emailed",
                 "slacked",
                 "ms_teams_messaged",
@@ -13684,16 +13792,6 @@
               }
             }
           },
-          "422": {
-            "description": "fixed problem gate placement rejected",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          },
           "404": {
             "description": "resource not found",
             "content": {
@@ -22300,7 +22398,7 @@
             }
           },
           "422": {
-            "description": "invalid request",
+            "description": "invalid request, such as a blank event or a scheduled maintenance event without a status",
             "content": {
               "application/json": {
                 "schema": {
@@ -29090,1200 +29188,6 @@
         }
       }
     },
-    "/v1/problems/{problem_id}/action_items": {
-      "parameters": [
-        {
-          "name": "problem_id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "post": {
-        "summary": "Creates a problem action item",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "ProblemActionItems"
-        ],
-        "description": "Creates a new action item on a problem from provided data",
-        "operationId": "createProblemActionItem",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "problem action item created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_action_item_response"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "responds with unauthorized for invalid token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/new_problem_action_item"
-              }
-            }
-          },
-          "required": true
-        }
-      },
-      "get": {
-        "summary": "List a problem's action items",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "ProblemActionItems"
-        ],
-        "description": "List action items belonging to a problem, with filter, sort and pagination support",
-        "operationId": "listProblemActionItems",
-        "parameters": [
-          {
-            "name": "page[number]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[search]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][gt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][gte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][lt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][lte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][gt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][gte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][lt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][lte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][not_eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][not_in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][not_eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][not_in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[assigned_to_user_id][eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[assigned_to_user_id][not_eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[assigned_to_user_id][in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[assigned_to_user_id][not_in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_action_item_list"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/problem_action_items/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "Retrieves a problem action item",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "ProblemActionItems"
-        ],
-        "description": "Retrieves a specific problem action item by id",
-        "operationId": "getProblemActionItem",
-        "responses": {
-          "200": {
-            "description": "assignee without problems.read can view their assigned item",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_action_item_response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "problem action item not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update a problem action item",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "ProblemActionItems"
-        ],
-        "description": "Updates a problem action item",
-        "operationId": "updateProblemActionItem",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "problem action item updated",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_action_item_response"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/update_problem_action_item"
-              }
-            }
-          },
-          "required": true
-        }
-      },
-      "delete": {
-        "summary": "Deletes a problem action item",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "ProblemActionItems"
-        ],
-        "description": "Deletes a problem action item",
-        "operationId": "deleteProblemActionItem",
-        "responses": {
-          "200": {
-            "description": "problem action item deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_action_item_response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "problem action item not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/problem_action_items": {
-      "get": {
-        "summary": "List all problem action items",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "ProblemActionItems"
-        ],
-        "description": "List all problem action items the caller can access across the team, with filter, sort and pagination support",
-        "operationId": "listAllProblemActionItems",
-        "parameters": [
-          {
-            "name": "page[number]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "problem_id",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[search]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][gt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][gte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][lt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][lte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][gt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][gte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][lt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][lte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][not_eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][not_in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][not_eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][not_in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[assigned_to_user_id][eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[assigned_to_user_id][not_eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[assigned_to_user_id][in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[assigned_to_user_id][not_in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "excludes items from other teams",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_action_item_list"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "problem-management feature flag disabled",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/problems": {
-      "post": {
-        "summary": "Creates a problem",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Problems"
-        ],
-        "description": "Creates a new problem from provided data",
-        "operationId": "createProblem",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": "problem created",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_response"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "invalid request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "responds with unauthorized for invalid token",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/new_problem"
-              }
-            }
-          },
-          "required": true
-        }
-      },
-      "get": {
-        "summary": "List problems",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Problems"
-        ],
-        "description": "Sorting by incidents_count would let callers without incident read infer relative hidden incident counts, so it is rejected.",
-        "operationId": "listProblems",
-        "parameters": [
-          {
-            "name": "page[number]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "page[size]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "sort",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[search]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[owner_user_id]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "filter[owner_group_id]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_by_user_id]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "integer"
-            }
-          },
-          {
-            "name": "filter[created_at][gt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][gte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][lt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[created_at][lte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][gt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][gte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][lt]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[due_date][lte]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][not_eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[status][not_in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][not_eq]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "filter[priority][not_in]",
-            "in": "query",
-            "required": false,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "sorted by incidents_count with incident read permission",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_list"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "incidents_count sort rejected without incident read permission",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "problem-management feature flag disabled",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/problems/{id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "get": {
-        "summary": "Retrieves a problem",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Problems"
-        ],
-        "description": "API callers lacking access to the problem's team receive an error. The API deliberately returns 404 rather than 403 so existence is not leaked.",
-        "operationId": "getProblem",
-        "responses": {
-          "200": {
-            "description": "linked incidents hidden without incident read permission",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "problem belongs to another team",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put": {
-        "summary": "Update a problem",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Problems"
-        ],
-        "description": "When a status transition fails validation, accompanying field updates roll back with it.",
-        "operationId": "updateProblem",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "status transition applies other fields atomically",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_response"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "failed transition does not persist other fields",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "problem not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/update_problem"
-              }
-            }
-          },
-          "required": true
-        }
-      },
-      "delete": {
-        "summary": "Deletes a problem",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Problems"
-        ],
-        "description": "Soft-deletes a problem",
-        "operationId": "deleteProblem",
-        "responses": {
-          "200": {
-            "description": "problem deleted",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "problem not found",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/v1/problems/{id}/incidents": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "post": {
-        "summary": "Links incidents to a problem",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Problems"
-        ],
-        "description": "Links one or more incidents to a problem. Accepts `incident_id` (single) or `incident_ids` (array).",
-        "operationId": "linkProblemIncidents",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "incident linked",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_response"
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "incident_id missing",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "incident not found or inaccessible",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        },
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/link_incidents"
-              }
-            }
-          },
-          "required": true
-        }
-      }
-    },
-    "/v1/problems/{id}/incidents/{incident_id}": {
-      "parameters": [
-        {
-          "name": "id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        },
-        {
-          "name": "incident_id",
-          "in": "path",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
-        }
-      ],
-      "delete": {
-        "summary": "Unlinks an incident from a problem",
-        "security": [
-          {
-            "bearer_auth": []
-          }
-        ],
-        "tags": [
-          "Problems"
-        ],
-        "description": "Unlinks an incident from a problem",
-        "operationId": "unlinkProblemIncident",
-        "responses": {
-          "200": {
-            "description": "incident unlinked",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/problem_response"
-                }
-              }
-            }
-          },
-          "404": {
-            "description": "incident not linked",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/v1/pulses": {
       "post": {
         "summary": "Creates a pulse",
@@ -33465,6 +32369,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/schedule_response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "schedule is the only target on an escalation step",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
                 }
               }
             }
@@ -40998,10 +39912,57 @@
                   "status": {
                     "type": "string",
                     "nullable": true,
-                    "description": "Response status (present when user input is required)",
+                    "description": "Response status",
                     "enum": [
-                      "user_input_required"
+                      "user_input_required",
+                      "fields_required",
+                      "confirmation_required",
+                      "complete",
+                      "pending",
+                      "confirmed",
+                      "cancelled",
+                      "expired"
                     ]
+                  },
+                  "confirmation": {
+                    "type": "object",
+                    "description": "Present when an approval-gated home-chat write is waiting for confirmation",
+                    "properties": {
+                      "checkpoint_id": {
+                        "type": "string",
+                        "format": "uuid"
+                      },
+                      "question": {
+                        "type": "string"
+                      },
+                      "preview": {
+                        "type": "object",
+                        "nullable": true,
+                        "additionalProperties": true
+                      },
+                      "missing_fields": {
+                        "type": "array",
+                        "nullable": true,
+                        "items": {
+                          "type": "object",
+                          "additionalProperties": true
+                        }
+                      },
+                      "expires_at": {
+                        "type": "string",
+                        "format": "date-time"
+                      }
+                    },
+                    "required": [
+                      "checkpoint_id",
+                      "question",
+                      "preview",
+                      "missing_fields",
+                      "expires_at"
+                    ]
+                  },
+                  "checkpoint_resolved": {
+                    "$ref": "#/components/schemas/ai_chat_checkpoint_resolution"
                   }
                 },
                 "required": [
@@ -41046,16 +40007,80 @@
             "type": "string",
             "description": "Message content"
           },
+          "failed": {
+            "type": "boolean",
+            "nullable": false,
+            "description": "Whether the message belongs to a failed turn"
+          },
           "created_at": {
             "type": "string",
             "format": "date-time",
             "description": "When the message was created"
+          },
+          "confirmation": {
+            "type": "object",
+            "description": "Approval checkpoint attached to an assistant message in home-chat history",
+            "properties": {
+              "checkpoint_id": {
+                "type": "string",
+                "format": "uuid"
+              },
+              "question": {
+                "type": "string"
+              },
+              "preview": {
+                "type": "object",
+                "nullable": true,
+                "additionalProperties": true
+              },
+              "missing_fields": {
+                "type": "array",
+                "nullable": true,
+                "items": {
+                  "type": "object",
+                  "additionalProperties": true
+                }
+              },
+              "expires_at": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "status": {
+                "type": "string",
+                "enum": [
+                  "pending",
+                  "confirmed",
+                  "cancelled",
+                  "expired"
+                ]
+              },
+              "replay": {
+                "type": "string",
+                "nullable": true,
+                "enum": [
+                  "in_progress",
+                  "retryable",
+                  "completed",
+                  "expired"
+                ]
+              }
+            },
+            "required": [
+              "checkpoint_id",
+              "question",
+              "preview",
+              "missing_fields",
+              "expires_at",
+              "status",
+              "replay"
+            ]
           }
         },
         "required": [
           "id",
           "role",
           "content",
+          "failed",
           "created_at"
         ]
       },
@@ -41074,6 +40099,77 @@
         },
         "required": [
           "messages"
+        ]
+      },
+      "ai_chat_checkpoint_resolution": {
+        "type": "object",
+        "description": "Checkpoint state after a confirm or cancel request",
+        "properties": {
+          "checkpoint_id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "pending",
+              "confirmed",
+              "cancelled",
+              "expired"
+            ]
+          },
+          "replay": {
+            "type": "string",
+            "nullable": true,
+            "enum": [
+              "in_progress",
+              "retryable",
+              "completed",
+              "expired"
+            ]
+          }
+        },
+        "required": [
+          "checkpoint_id",
+          "status",
+          "replay"
+        ]
+      },
+      "ai_chat_error_response": {
+        "type": "object",
+        "properties": {
+          "errors": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "title": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              },
+              "required": [
+                "title",
+                "status"
+              ]
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "checkpoint_resolved": {
+                "$ref": "#/components/schemas/ai_chat_checkpoint_resolution"
+              }
+            },
+            "required": [
+              "checkpoint_resolved"
+            ]
+          }
+        },
+        "required": [
+          "errors"
         ]
       },
       "attach_alert": {
@@ -42526,6 +41622,7 @@
               "level_skipped",
               "team_attached_from_payload",
               "user_paged",
+              "ai_sre_delegated",
               "emailed",
               "slacked",
               "ms_teams_messaged",
@@ -45929,6 +45026,10 @@
                             "call"
                           ]
                         }
+                      },
+                      "require_critical_alert_or_call_on_first_audible_level": {
+                        "type": "boolean",
+                        "description": "Whether users must keep Critical Alerts or Phone Call enabled on level 1 of their audible notification rules. Defaults to true when omitted; updates that omit this key keep the stored value. Only organization owners and admins who can update the alert configuration can change it, and only while the rollout flag is on."
                       }
                     },
                     "additionalProperties": false
@@ -46042,6 +45143,10 @@
                     "call"
                   ]
                 }
+              },
+              "require_critical_alert_or_call_on_first_audible_level": {
+                "type": "boolean",
+                "description": "Whether users must keep Critical Alerts or Phone Call enabled on level 1 of their audible notification rules. Defaults to true when omitted; updates that omit this key keep the stored value. Only organization owners and admins who can update the alert configuration can change it, and only while the rollout flag is on."
               }
             },
             "additionalProperties": false
@@ -47766,6 +46871,7 @@
               "EdgeConnector::Action",
               "Environment",
               "EscalationPolicy",
+              "EscalationPolicyLevel",
               "EscalationPolicyPath",
               "ExportJob",
               "FormField",
@@ -47813,7 +46919,8 @@
               "Secret",
               "Service",
               "Severity",
-              "StatusPage"
+              "StatusPage",
+              "Webhooks::Outgoing::Endpoint"
             ],
             "nullable": true
           },
@@ -66033,10 +65140,10 @@
                   },
                   "forms": {
                     "type": "array",
-                    "description": "The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`",
+                    "description": "The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`",
                     "items": {
                       "type": "string",
-                      "description": "The form included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`"
+                      "description": "The form included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`"
                     }
                   }
                 },
@@ -66090,10 +65197,10 @@
                   },
                   "forms": {
                     "type": "array",
-                    "description": "The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`",
+                    "description": "The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`",
                     "items": {
                       "type": "string",
-                      "description": "The form included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`"
+                      "description": "The form included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`"
                     }
                   }
                 },
@@ -66130,10 +65237,10 @@
           },
           "forms": {
             "type": "array",
-            "description": "The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`",
+            "description": "The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`",
             "items": {
               "type": "string",
-              "description": "The form included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `microsoft_teams_new_incident_form`"
+              "description": "The form included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`"
             }
           },
           "created_at": {
@@ -67092,6 +66199,14 @@
                 "service_now_ci_sys_id": {
                   "type": "string",
                   "nullable": true
+                },
+                "owner_group_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "description": "Owner team IDs. Replaces the functionality's owning teams when present; an empty array clears them; omit to leave them unchanged."
                 },
                 "fields": {
                   "type": "array",
@@ -70914,7 +70029,8 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Microsoft Teams conversation ID (19:...@thread.*) or a Liquid variable such as {{ incident.microsoft_teams_channel_id }}"
                 },
                 "name": {
                   "type": "string"
@@ -70942,7 +70058,8 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Microsoft Teams conversation ID (19:...@thread.*) or a Liquid variable such as {{ incident.microsoft_teams_channel_id }}"
                     },
                     "name": {
                       "type": "string"
@@ -71002,7 +70119,8 @@
               "type": "object",
               "properties": {
                 "id": {
-                  "type": "string"
+                  "type": "string",
+                  "description": "Microsoft Teams conversation ID (19:...@thread.*) or a Liquid variable such as {{ incident.microsoft_teams_channel_id }}"
                 },
                 "name": {
                   "type": "string"
@@ -71030,7 +70148,8 @@
                   "type": "object",
                   "properties": {
                     "id": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Microsoft Teams conversation ID (19:...@thread.*) or a Liquid variable such as {{ incident.microsoft_teams_channel_id }}"
                     },
                     "name": {
                       "type": "string"
@@ -87520,7 +86639,7 @@
                   },
                   "status": {
                     "type": "string",
-                    "description": "The status of the incident event",
+                    "description": "The status of the incident event. Defaults to investigating, which is only valid for incidents; scheduled maintenances must set a maintenance status (e.g. scheduled, in_progress, completed) or the request is rejected with a 422.",
                     "enum": [
                       "investigating",
                       "identified",
@@ -101177,6 +100296,14 @@
                   "type": "boolean",
                   "nullable": true
                 },
+                "owner_group_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  },
+                  "nullable": true,
+                  "description": "Owner team IDs. Replaces the service's owning teams when present; an empty array clears them; omit to leave them unchanged."
+                },
                 "fields": {
                   "type": "array",
                   "description": "Catalog property values (merge semantics: only mentioned fields written).",
@@ -103912,7 +103039,18 @@
                   },
                   "enabled": {
                     "type": "boolean",
-                    "description": "Enabled / Disable the status page",
+                    "description": "Deprecated. Use publication_status instead. True only when the status page is active.",
+                    "nullable": true,
+                    "deprecated": true
+                  },
+                  "publication_status": {
+                    "type": "string",
+                    "description": "Publication status of the status page. Draft pages have never been published, active pages are live, and unpublished pages were taken down.",
+                    "enum": [
+                      "draft",
+                      "active",
+                      "unpublished"
+                    ],
                     "nullable": true
                   }
                 },
@@ -104135,7 +103273,18 @@
                   },
                   "enabled": {
                     "type": "boolean",
-                    "description": "Enabled / Disable the status page",
+                    "description": "Deprecated. Use publication_status instead. True only when the status page is active.",
+                    "nullable": true,
+                    "deprecated": true
+                  },
+                  "publication_status": {
+                    "type": "string",
+                    "description": "Publication status of the status page. Draft pages have never been published, active pages are live, and unpublished pages were taken down.",
+                    "enum": [
+                      "draft",
+                      "active",
+                      "unpublished"
+                    ],
                     "nullable": true
                   }
                 },
@@ -104351,7 +103500,18 @@
           },
           "enabled": {
             "type": "boolean",
-            "description": "Enabled / Disable the status page",
+            "description": "Deprecated. Use publication_status instead. True only when the status page is active.",
+            "nullable": true,
+            "deprecated": true
+          },
+          "publication_status": {
+            "type": "string",
+            "description": "Publication status of the status page. Draft pages have never been published, active pages are live, and unpublished pages were taken down.",
+            "enum": [
+              "draft",
+              "active",
+              "unpublished"
+            ],
             "nullable": true
           },
           "created_at": {
