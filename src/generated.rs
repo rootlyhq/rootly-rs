@@ -1728,6 +1728,9 @@ pub mod types {
     ///`AlertRouteRulesItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AlertRouteRulesItem {
+        ///AI SRE provider that investigates alerts matching this rule. Null disables AI SRE for the rule
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_sre_provider: ::std::option::Option<::std::string::String>,
         pub condition_groups: ::std::vec::Vec<AlertRouteRulesItemConditionGroupsItem>,
         pub destinations: ::std::vec::Vec<AlertRouteRulesItemDestinationsItem>,
         ///Whether this is a fallback rule
@@ -1806,6 +1809,9 @@ pub mod types {
     ///`AlertRoutingRule`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AlertRoutingRule {
+        ///AI SRE provider that investigates alerts matching this rule. Null disables AI SRE for the rule
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_sre_provider: ::std::option::Option<::std::string::String>,
         ///The ID of the alerts source
         pub alerts_source_id: ::uuid::Uuid,
         ///The condition groups for the alert routing rule
@@ -9338,6 +9344,70 @@ pub mod types {
             Default::default()
         }
     }
+    ///`CurrentUser`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct CurrentUser {
+        ///Date of creation
+        pub created_at: ::std::string::String,
+        ///The email of the user
+        pub email: ::std::string::String,
+        ///Server-evaluated flags for the calling credential. Keys (e.g. `ai-native-home`) are stable API names. May be absent; treat a missing object or key as unknown, not false.
+        #[serde(
+            default,
+            skip_serializing_if = ":: std :: collections :: HashMap::is_empty"
+        )]
+        pub feature_flags: ::std::collections::HashMap<::std::string::String, bool>,
+        ///First name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub first_name: ::std::option::Option<::std::string::String>,
+        ///The full name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub full_name: ::std::option::Option<::std::string::String>,
+        ///The full name with team of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub full_name_with_team: ::std::option::Option<::std::string::String>,
+        ///Last name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub last_name: ::std::option::Option<::std::string::String>,
+        ///Configured time zone
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub time_zone: ::std::option::Option<::std::string::String>,
+        ///Date of last update
+        pub updated_at: ::std::string::String,
+    }
+    impl CurrentUser {
+        pub fn builder() -> builder::CurrentUser {
+            Default::default()
+        }
+    }
+    ///`CurrentUserResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct CurrentUserResponse {
+        pub data: CurrentUserResponseData,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<JsonapiIncludedResource>,
+    }
+    impl CurrentUserResponse {
+        pub fn builder() -> builder::CurrentUserResponse {
+            Default::default()
+        }
+    }
+    ///`CurrentUserResponseData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct CurrentUserResponseData {
+        pub attributes: CurrentUser,
+        ///Unique ID of the user
+        pub id: ::std::string::String,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<UserRelationships>,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl CurrentUserResponseData {
+        pub fn builder() -> builder::CurrentUserResponseData {
+            Default::default()
+        }
+    }
     ///`CustomField`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct CustomField {
@@ -10550,7 +10620,7 @@ pub mod types {
     ///`EscalationPolicyLevelNotificationTargetParamsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct EscalationPolicyLevelNotificationTargetParamsItem {
-        ///The ID of notification target
+        ///The ID of notification target. If ai_sre, then the AI SRE provider (eg. rootly). New ai_sre targets accept only rootly. A provider already saved on the level (rootly, devin) may be sent back unchanged. Repeated ai_sre providers are saved once.
         pub id: ::std::string::String,
         ///For targets with type=team, controls whether to notify admins, all team members, or escalate to team EP.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -16206,6 +16276,9 @@ pub mod types {
     ///`NewAlertRouteDataAttributesRulesItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAlertRouteDataAttributesRulesItem {
+        ///AI SRE provider for matching alerts. Null disables it. A value listed in x-retained-enum that is already saved on the rule may be sent back unchanged
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_sre_provider: ::std::option::Option<::std::string::String>,
         pub condition_groups: ::std::vec::Vec<
             NewAlertRouteDataAttributesRulesItemConditionGroupsItem,
         >,
@@ -16311,6 +16384,9 @@ pub mod types {
     ///`NewAlertRoutingRuleDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAlertRoutingRuleDataAttributes {
+        ///AI SRE provider for matching alerts. Null disables it. A value listed in x-retained-enum that is already saved on the rule may be sent back unchanged
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_sre_provider: ::std::option::Option<::std::string::String>,
         ///The ID of the alerts source
         pub alerts_source_id: ::uuid::Uuid,
         ///The type of condition for the alert routing rule
@@ -18241,7 +18317,7 @@ pub mod types {
     ///`NewEscalationPolicyLevelDataAttributesNotificationTargetParamsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewEscalationPolicyLevelDataAttributesNotificationTargetParamsItem {
-        ///The ID of notification target. If Slack channel, then id of the slack channel (eg. C06Q2JK7RQW). If Microsoft Teams channel, then the Rootly channel UUID.
+        ///The ID of notification target. If Slack channel, then id of the slack channel (eg. C06Q2JK7RQW). If Microsoft Teams channel, then the Rootly channel UUID. If ai_sre, then the AI SRE provider (eg. rootly). New ai_sre targets accept only rootly. A provider already saved on the level (rootly, devin) may be sent back unchanged. Repeated ai_sre providers are saved once.
         pub id: ::std::string::String,
         ///For targets with type=team, controls whether to notify admins, all team members, or escalate to team EP.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -18660,6 +18736,9 @@ pub mod types {
         pub name: ::std::string::String,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub required: ::std::vec::Vec<::std::string::String>,
+        ///The resource type this field belongs to. Defaults to `incident`. `problem` requires Problem Management to be enabled for the team and is only supported for kind `custom`. The legacy `shown`/`required` attributes are incident-only and cannot be set on a `problem` field. Creating or switching to a `problem` field provisions the team's default problem form set if it doesn't exist yet and the caller has form field create permission.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub resource_type: ::std::option::Option<::std::string::String>,
         ///Whether the form field is shown on the incident details panel
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub show_on_incident_details: ::std::option::Option<bool>,
@@ -26168,6 +26247,9 @@ pub mod types {
     ///`PatchAlertRouteDataAttributesRulesItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct PatchAlertRouteDataAttributesRulesItem {
+        ///AI SRE provider for matching alerts. Null disables it. A value listed in x-retained-enum that is already saved on the rule may be sent back unchanged
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_sre_provider: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub condition_groups: ::std::vec::Vec<
             PatchAlertRouteDataAttributesRulesItemConditionGroupsItem,
@@ -32855,6 +32937,9 @@ pub mod types {
     ///`UpdateAlertRouteDataAttributesRulesItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateAlertRouteDataAttributesRulesItem {
+        ///AI SRE provider for matching alerts. Null disables it. A value listed in x-retained-enum that is already saved on the rule may be sent back unchanged
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_sre_provider: ::std::option::Option<::std::string::String>,
         pub condition_groups: ::std::vec::Vec<
             UpdateAlertRouteDataAttributesRulesItemConditionGroupsItem,
         >,
@@ -32963,6 +33048,9 @@ pub mod types {
     ///`UpdateAlertRoutingRuleDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct UpdateAlertRoutingRuleDataAttributes {
+        ///AI SRE provider for matching alerts. Null disables it. A value listed in x-retained-enum that is already saved on the rule may be sent back unchanged
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_sre_provider: ::std::option::Option<::std::string::String>,
         ///The ID of the alerts source
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub alerts_source_id: ::std::option::Option<::uuid::Uuid>,
@@ -35294,7 +35382,7 @@ pub mod types {
     ///`UpdateEscalationPolicyLevelDataAttributesNotificationTargetParamsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateEscalationPolicyLevelDataAttributesNotificationTargetParamsItem {
-        ///The ID of notification target
+        ///The ID of notification target. If ai_sre, then the AI SRE provider (eg. rootly). New ai_sre targets accept only rootly. A provider already saved on the level (rootly, devin) may be sent back unchanged. Repeated ai_sre providers are saved once.
         pub id: ::std::string::String,
         ///For targets with type=team, controls whether to notify admins, all team members, or escalate to team EP.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -35741,7 +35829,7 @@ pub mod types {
         ///The input kind of the form field
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub input_kind: ::std::option::Option<::std::string::String>,
-        ///The kind of the form field
+        ///The kind of the form field. Problem fields only accept `custom`; built-in and gate problem kinds are accepted only when unchanged.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub kind: ::std::option::Option<::std::string::String>,
         ///The name of the form field
@@ -35749,6 +35837,9 @@ pub mod types {
         pub name: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub required: ::std::vec::Vec<::std::string::String>,
+        ///The resource type this field belongs to. Can only be changed while the field has no form placements. Changing to `problem` requires Problem Management to be enabled for the team and is only supported for kind `custom`. The legacy `shown`/`required` attributes are incident-only and must be empty to change a field to `problem`. Creating or switching to a `problem` field provisions the team's default problem form set if it doesn't exist yet and the caller has form field create permission.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub resource_type: ::std::option::Option<::std::string::String>,
         ///Whether the form field is shown on the incident details panel
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub show_on_incident_details: ::std::option::Option<bool>,
@@ -54782,6 +54873,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct AlertRouteRulesItem {
+            ai_sre_provider: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             condition_groups: ::std::result::Result<
                 ::std::vec::Vec<super::AlertRouteRulesItemConditionGroupsItem>,
                 ::std::string::String,
@@ -54800,6 +54895,7 @@ pub mod types {
         impl ::std::default::Default for AlertRouteRulesItem {
             fn default() -> Self {
                 Self {
+                    ai_sre_provider: Ok(Default::default()),
                     condition_groups: Err(
                         "no value supplied for condition_groups".to_string(),
                     ),
@@ -54811,6 +54907,20 @@ pub mod types {
             }
         }
         impl AlertRouteRulesItem {
+            pub fn ai_sre_provider<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_sre_provider = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_sre_provider: {e}"
+                        )
+                    });
+                self
+            }
             pub fn condition_groups<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -54885,6 +54995,7 @@ pub mod types {
                 value: AlertRouteRulesItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_sre_provider: value.ai_sre_provider?,
                     condition_groups: value.condition_groups?,
                     destinations: value.destinations?,
                     fallback_rule: value.fallback_rule?,
@@ -54896,6 +55007,7 @@ pub mod types {
         impl ::std::convert::From<super::AlertRouteRulesItem> for AlertRouteRulesItem {
             fn from(value: super::AlertRouteRulesItem) -> Self {
                 Self {
+                    ai_sre_provider: Ok(value.ai_sre_provider),
                     condition_groups: Ok(value.condition_groups),
                     destinations: Ok(value.destinations),
                     fallback_rule: Ok(value.fallback_rule),
@@ -55264,6 +55376,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct AlertRoutingRule {
+            ai_sre_provider: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             alerts_source_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
             condition_groups: ::std::result::Result<
                 ::std::vec::Vec<super::AlertRoutingRuleConditionGroupsItem>,
@@ -55296,6 +55412,7 @@ pub mod types {
         impl ::std::default::Default for AlertRoutingRule {
             fn default() -> Self {
                 Self {
+                    ai_sre_provider: Ok(Default::default()),
                     alerts_source_id: Err(
                         "no value supplied for alerts_source_id".to_string(),
                     ),
@@ -55314,6 +55431,20 @@ pub mod types {
             }
         }
         impl AlertRoutingRule {
+            pub fn ai_sre_provider<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_sre_provider = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_sre_provider: {e}"
+                        )
+                    });
+                self
+            }
             pub fn alerts_source_id<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::uuid::Uuid>,
@@ -55453,6 +55584,7 @@ pub mod types {
                 value: AlertRoutingRule,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_sre_provider: value.ai_sre_provider?,
                     alerts_source_id: value.alerts_source_id?,
                     condition_groups: value.condition_groups?,
                     condition_type: value.condition_type?,
@@ -55469,6 +55601,7 @@ pub mod types {
         impl ::std::convert::From<super::AlertRoutingRule> for AlertRoutingRule {
             fn from(value: super::AlertRoutingRule) -> Self {
                 Self {
+                    ai_sre_provider: Ok(value.ai_sre_provider),
                     alerts_source_id: Ok(value.alerts_source_id),
                     condition_groups: Ok(value.condition_groups),
                     condition_type: Ok(value.condition_type),
@@ -94531,6 +94664,366 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct CurrentUser {
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            email: ::std::result::Result<::std::string::String, ::std::string::String>,
+            feature_flags: ::std::result::Result<
+                ::std::collections::HashMap<::std::string::String, bool>,
+                ::std::string::String,
+            >,
+            first_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            full_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            full_name_with_team: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            last_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            time_zone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for CurrentUser {
+            fn default() -> Self {
+                Self {
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    email: Err("no value supplied for email".to_string()),
+                    feature_flags: Ok(Default::default()),
+                    first_name: Ok(Default::default()),
+                    full_name: Ok(Default::default()),
+                    full_name_with_team: Ok(Default::default()),
+                    last_name: Ok(Default::default()),
+                    time_zone: Ok(Default::default()),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
+                }
+            }
+        }
+        impl CurrentUser {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for email: {e}")
+                    });
+                self
+            }
+            pub fn feature_flags<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::collections::HashMap<::std::string::String, bool>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.feature_flags = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for feature_flags: {e}")
+                    });
+                self
+            }
+            pub fn first_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.first_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for first_name: {e}")
+                    });
+                self
+            }
+            pub fn full_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.full_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for full_name: {e}")
+                    });
+                self
+            }
+            pub fn full_name_with_team<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.full_name_with_team = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for full_name_with_team: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn last_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for last_name: {e}")
+                    });
+                self
+            }
+            pub fn time_zone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.time_zone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for time_zone: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<CurrentUser> for super::CurrentUser {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: CurrentUser,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    email: value.email?,
+                    feature_flags: value.feature_flags?,
+                    first_name: value.first_name?,
+                    full_name: value.full_name?,
+                    full_name_with_team: value.full_name_with_team?,
+                    last_name: value.last_name?,
+                    time_zone: value.time_zone?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::CurrentUser> for CurrentUser {
+            fn from(value: super::CurrentUser) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    email: Ok(value.email),
+                    feature_flags: Ok(value.feature_flags),
+                    first_name: Ok(value.first_name),
+                    full_name: Ok(value.full_name),
+                    full_name_with_team: Ok(value.full_name_with_team),
+                    last_name: Ok(value.last_name),
+                    time_zone: Ok(value.time_zone),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct CurrentUserResponse {
+            data: ::std::result::Result<
+                super::CurrentUserResponseData,
+                ::std::string::String,
+            >,
+            included: ::std::result::Result<
+                ::std::vec::Vec<super::JsonapiIncludedResource>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for CurrentUserResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    included: Ok(Default::default()),
+                }
+            }
+        }
+        impl CurrentUserResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::CurrentUserResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn included<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::JsonapiIncludedResource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.included = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for included: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<CurrentUserResponse>
+        for super::CurrentUserResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: CurrentUserResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    included: value.included?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::CurrentUserResponse> for CurrentUserResponse {
+            fn from(value: super::CurrentUserResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    included: Ok(value.included),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct CurrentUserResponseData {
+            attributes: ::std::result::Result<super::CurrentUser, ::std::string::String>,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            relationships: ::std::result::Result<
+                ::std::option::Option<super::UserRelationships>,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for CurrentUserResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    relationships: Ok(Default::default()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl CurrentUserResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::CurrentUser>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn relationships<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::UserRelationships>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.relationships = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for relationships: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<CurrentUserResponseData>
+        for super::CurrentUserResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: CurrentUserResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    relationships: value.relationships?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::CurrentUserResponseData>
+        for CurrentUserResponseData {
+            fn from(value: super::CurrentUserResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    relationships: Ok(value.relationships),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct CustomField {
             created_at: ::std::result::Result<
                 ::std::string::String,
@@ -131080,6 +131573,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct NewAlertRouteDataAttributesRulesItem {
+            ai_sre_provider: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             condition_groups: ::std::result::Result<
                 ::std::vec::Vec<
                     super::NewAlertRouteDataAttributesRulesItemConditionGroupsItem,
@@ -131102,6 +131599,7 @@ pub mod types {
         impl ::std::default::Default for NewAlertRouteDataAttributesRulesItem {
             fn default() -> Self {
                 Self {
+                    ai_sre_provider: Ok(Default::default()),
                     condition_groups: Err(
                         "no value supplied for condition_groups".to_string(),
                     ),
@@ -131113,6 +131611,20 @@ pub mod types {
             }
         }
         impl NewAlertRouteDataAttributesRulesItem {
+            pub fn ai_sre_provider<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_sre_provider = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_sre_provider: {e}"
+                        )
+                    });
+                self
+            }
             pub fn condition_groups<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -131191,6 +131703,7 @@ pub mod types {
                 value: NewAlertRouteDataAttributesRulesItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_sre_provider: value.ai_sre_provider?,
                     condition_groups: value.condition_groups?,
                     destinations: value.destinations?,
                     fallback_rule: value.fallback_rule?,
@@ -131203,6 +131716,7 @@ pub mod types {
         for NewAlertRouteDataAttributesRulesItem {
             fn from(value: super::NewAlertRouteDataAttributesRulesItem) -> Self {
                 Self {
+                    ai_sre_provider: Ok(value.ai_sre_provider),
                     condition_groups: Ok(value.condition_groups),
                     destinations: Ok(value.destinations),
                     fallback_rule: Ok(value.fallback_rule),
@@ -131675,6 +132189,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct NewAlertRoutingRuleDataAttributes {
+            ai_sre_provider: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             alerts_source_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
             condition_type: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
@@ -131705,6 +132223,7 @@ pub mod types {
         impl ::std::default::Default for NewAlertRoutingRuleDataAttributes {
             fn default() -> Self {
                 Self {
+                    ai_sre_provider: Ok(Default::default()),
                     alerts_source_id: Err(
                         "no value supplied for alerts_source_id".to_string(),
                     ),
@@ -131719,6 +132238,20 @@ pub mod types {
             }
         }
         impl NewAlertRoutingRuleDataAttributes {
+            pub fn ai_sre_provider<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_sre_provider = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_sre_provider: {e}"
+                        )
+                    });
+                self
+            }
             pub fn alerts_source_id<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::uuid::Uuid>,
@@ -131835,6 +132368,7 @@ pub mod types {
                 value: NewAlertRoutingRuleDataAttributes,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_sre_provider: value.ai_sre_provider?,
                     alerts_source_id: value.alerts_source_id?,
                     condition_type: value.condition_type?,
                     conditions: value.conditions?,
@@ -131850,6 +132384,7 @@ pub mod types {
         for NewAlertRoutingRuleDataAttributes {
             fn from(value: super::NewAlertRoutingRuleDataAttributes) -> Self {
                 Self {
+                    ai_sre_provider: Ok(value.ai_sre_provider),
                     alerts_source_id: Ok(value.alerts_source_id),
                     condition_type: Ok(value.condition_type),
                     conditions: Ok(value.conditions),
@@ -142404,6 +142939,10 @@ pub mod types {
                 ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
+            resource_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             show_on_incident_details: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -142436,6 +142975,7 @@ pub mod types {
                     kind: Err("no value supplied for kind".to_string()),
                     name: Err("no value supplied for name".to_string()),
                     required: Ok(Default::default()),
+                    resource_type: Ok(Default::default()),
                     show_on_incident_details: Ok(Default::default()),
                     shown: Ok(Default::default()),
                     slug: Ok(Default::default()),
@@ -142545,6 +143085,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn resource_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.resource_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for resource_type: {e}")
+                    });
+                self
+            }
             pub fn show_on_incident_details<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<bool>>,
@@ -142626,6 +143178,7 @@ pub mod types {
                     kind: value.kind?,
                     name: value.name?,
                     required: value.required?,
+                    resource_type: value.resource_type?,
                     show_on_incident_details: value.show_on_incident_details?,
                     shown: value.shown?,
                     slug: value.slug?,
@@ -142648,6 +143201,7 @@ pub mod types {
                     kind: Ok(value.kind),
                     name: Ok(value.name),
                     required: Ok(value.required),
+                    resource_type: Ok(value.resource_type),
                     show_on_incident_details: Ok(value.show_on_incident_details),
                     shown: Ok(value.shown),
                     slug: Ok(value.slug),
@@ -174735,6 +175289,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct PatchAlertRouteDataAttributesRulesItem {
+            ai_sre_provider: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             condition_groups: ::std::result::Result<
                 ::std::vec::Vec<
                     super::PatchAlertRouteDataAttributesRulesItemConditionGroupsItem,
@@ -174768,6 +175326,7 @@ pub mod types {
         impl ::std::default::Default for PatchAlertRouteDataAttributesRulesItem {
             fn default() -> Self {
                 Self {
+                    ai_sre_provider: Ok(Default::default()),
                     condition_groups: Ok(Default::default()),
                     destinations: Ok(Default::default()),
                     destroy: Ok(Default::default()),
@@ -174779,6 +175338,20 @@ pub mod types {
             }
         }
         impl PatchAlertRouteDataAttributesRulesItem {
+            pub fn ai_sre_provider<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_sre_provider = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_sre_provider: {e}"
+                        )
+                    });
+                self
+            }
             pub fn condition_groups<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -174879,6 +175452,7 @@ pub mod types {
                 value: PatchAlertRouteDataAttributesRulesItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_sre_provider: value.ai_sre_provider?,
                     condition_groups: value.condition_groups?,
                     destinations: value.destinations?,
                     destroy: value.destroy?,
@@ -174893,6 +175467,7 @@ pub mod types {
         for PatchAlertRouteDataAttributesRulesItem {
             fn from(value: super::PatchAlertRouteDataAttributesRulesItem) -> Self {
                 Self {
+                    ai_sre_provider: Ok(value.ai_sre_provider),
                     condition_groups: Ok(value.condition_groups),
                     destinations: Ok(value.destinations),
                     destroy: Ok(value.destroy),
@@ -211069,6 +211644,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct UpdateAlertRouteDataAttributesRulesItem {
+            ai_sre_provider: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             condition_groups: ::std::result::Result<
                 ::std::vec::Vec<
                     super::UpdateAlertRouteDataAttributesRulesItemConditionGroupsItem,
@@ -211091,6 +211670,7 @@ pub mod types {
         impl ::std::default::Default for UpdateAlertRouteDataAttributesRulesItem {
             fn default() -> Self {
                 Self {
+                    ai_sre_provider: Ok(Default::default()),
                     condition_groups: Err(
                         "no value supplied for condition_groups".to_string(),
                     ),
@@ -211102,6 +211682,20 @@ pub mod types {
             }
         }
         impl UpdateAlertRouteDataAttributesRulesItem {
+            pub fn ai_sre_provider<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_sre_provider = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_sre_provider: {e}"
+                        )
+                    });
+                self
+            }
             pub fn condition_groups<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -211180,6 +211774,7 @@ pub mod types {
                 value: UpdateAlertRouteDataAttributesRulesItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_sre_provider: value.ai_sre_provider?,
                     condition_groups: value.condition_groups?,
                     destinations: value.destinations?,
                     fallback_rule: value.fallback_rule?,
@@ -211192,6 +211787,7 @@ pub mod types {
         for UpdateAlertRouteDataAttributesRulesItem {
             fn from(value: super::UpdateAlertRouteDataAttributesRulesItem) -> Self {
                 Self {
+                    ai_sre_provider: Ok(value.ai_sre_provider),
                     condition_groups: Ok(value.condition_groups),
                     destinations: Ok(value.destinations),
                     fallback_rule: Ok(value.fallback_rule),
@@ -211682,6 +212278,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct UpdateAlertRoutingRuleDataAttributes {
+            ai_sre_provider: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             alerts_source_id: ::std::result::Result<
                 ::std::option::Option<::uuid::Uuid>,
                 ::std::string::String,
@@ -211722,6 +212322,7 @@ pub mod types {
         impl ::std::default::Default for UpdateAlertRoutingRuleDataAttributes {
             fn default() -> Self {
                 Self {
+                    ai_sre_provider: Ok(Default::default()),
                     alerts_source_id: Ok(Default::default()),
                     condition_type: Ok(Default::default()),
                     conditions: Ok(Default::default()),
@@ -211734,6 +212335,20 @@ pub mod types {
             }
         }
         impl UpdateAlertRoutingRuleDataAttributes {
+            pub fn ai_sre_provider<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_sre_provider = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_sre_provider: {e}"
+                        )
+                    });
+                self
+            }
             pub fn alerts_source_id<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
@@ -211852,6 +212467,7 @@ pub mod types {
                 value: UpdateAlertRoutingRuleDataAttributes,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_sre_provider: value.ai_sre_provider?,
                     alerts_source_id: value.alerts_source_id?,
                     condition_type: value.condition_type?,
                     conditions: value.conditions?,
@@ -211867,6 +212483,7 @@ pub mod types {
         for UpdateAlertRoutingRuleDataAttributes {
             fn from(value: super::UpdateAlertRoutingRuleDataAttributes) -> Self {
                 Self {
+                    ai_sre_provider: Ok(value.ai_sre_provider),
                     alerts_source_id: Ok(value.alerts_source_id),
                     condition_type: Ok(value.condition_type),
                     conditions: Ok(value.conditions),
@@ -224476,6 +225093,10 @@ pub mod types {
                 ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
+            resource_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             show_on_incident_details: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -224508,6 +225129,7 @@ pub mod types {
                     kind: Ok(Default::default()),
                     name: Ok(Default::default()),
                     required: Ok(Default::default()),
+                    resource_type: Ok(Default::default()),
                     show_on_incident_details: Ok(Default::default()),
                     shown: Ok(Default::default()),
                     slug: Ok(Default::default()),
@@ -224617,6 +225239,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn resource_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.resource_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for resource_type: {e}")
+                    });
+                self
+            }
             pub fn show_on_incident_details<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<bool>>,
@@ -224698,6 +225332,7 @@ pub mod types {
                     kind: value.kind?,
                     name: value.name?,
                     required: value.required?,
+                    resource_type: value.resource_type?,
                     show_on_incident_details: value.show_on_incident_details?,
                     shown: value.shown?,
                     slug: value.slug?,
@@ -224720,6 +225355,7 @@ pub mod types {
                     kind: Ok(value.kind),
                     name: Ok(value.name),
                     required: Ok(value.required),
+                    resource_type: Ok(value.resource_type),
                     show_on_incident_details: Ok(value.show_on_incident_details),
                     shown: Ok(value.shown),
                     slug: Ok(value.slug),
@@ -270294,7 +270930,7 @@ let response = client.list_ai_chat_session_messages()
     }
     /**Stream AI chat response (SSE)
 
-Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Events include `confirmation_required` for pending writes and `checkpoint_resolved` before replay. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The stream emits `done` with `status: complete` and no `confirmation_required` event; only `confirmation_required` events are resumable. Requires `ai.chat:write` OAuth scope or an API key.
+Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Events include `confirmation_required` for pending writes and `checkpoint_resolved` before replay. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The stream emits `done` with `status: complete` and no `confirmation_required` event; only `confirmation_required` events are resumable. `status` events carry a short progress line (`{status}`) such as the running tool's title or its progress message; they never include tool arguments or results. Requires `ai.chat:write` OAuth scope or an API key.
 
 Sends a `POST` request to `/v1/ai/chat/stream`
 
@@ -274637,6 +275273,7 @@ Arguments:
 - `filter_name_in`
 - `filter_name_not_eq`
 - `filter_name_not_in`
+- `filter_resource_type`: Filter by resource type: `incident` or `problem`. Comma-separate multiple values. `problem` returns no fields unless Problem Management is enabled for the team.
 - `filter_search`
 - `filter_slug`
 - `filter_slug_eq`
@@ -274667,6 +275304,7 @@ let response = client.list_form_fields()
     .filter_name_in(filter_name_in)
     .filter_name_not_eq(filter_name_not_eq)
     .filter_name_not_in(filter_name_not_in)
+    .filter_resource_type(filter_resource_type)
     .filter_search(filter_search)
     .filter_slug(filter_slug)
     .filter_slug_eq(filter_slug_eq)
@@ -310721,6 +311359,7 @@ pub mod builder {
         filter_name_in: Result<Option<::std::string::String>, String>,
         filter_name_not_eq: Result<Option<::std::string::String>, String>,
         filter_name_not_in: Result<Option<::std::string::String>, String>,
+        filter_resource_type: Result<Option<::std::string::String>, String>,
         filter_search: Result<Option<::std::string::String>, String>,
         filter_slug: Result<Option<::std::string::String>, String>,
         filter_slug_eq: Result<Option<::std::string::String>, String>,
@@ -310754,6 +311393,7 @@ pub mod builder {
                 filter_name_in: Ok(None),
                 filter_name_not_eq: Ok(None),
                 filter_name_not_in: Ok(None),
+                filter_resource_type: Ok(None),
                 filter_search: Ok(None),
                 filter_slug: Ok(None),
                 filter_slug_eq: Ok(None),
@@ -311011,6 +311651,19 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_resource_type<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_resource_type = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_resource_type failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_search<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -311147,6 +311800,7 @@ pub mod builder {
                 filter_name_in,
                 filter_name_not_eq,
                 filter_name_not_in,
+                filter_resource_type,
                 filter_search,
                 filter_slug,
                 filter_slug_eq,
@@ -311182,6 +311836,8 @@ pub mod builder {
             let filter_name_in = filter_name_in.map_err(Error::InvalidRequest)?;
             let filter_name_not_eq = filter_name_not_eq.map_err(Error::InvalidRequest)?;
             let filter_name_not_in = filter_name_not_in.map_err(Error::InvalidRequest)?;
+            let filter_resource_type = filter_resource_type
+                .map_err(Error::InvalidRequest)?;
             let filter_search = filter_search.map_err(Error::InvalidRequest)?;
             let filter_slug = filter_slug.map_err(Error::InvalidRequest)?;
             let filter_slug_eq = filter_slug_eq.map_err(Error::InvalidRequest)?;
@@ -311310,6 +311966,12 @@ pub mod builder {
                     &progenitor_client::QueryParam::new(
                         "filter[name][not_in]",
                         &filter_name_not_in,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[resource_type]",
+                        &filter_resource_type,
                     ),
                 )
                 .query(
@@ -352342,7 +353004,7 @@ pub mod builder {
         ///Sends a `GET` request to `/v1/users/me`
         pub async fn send(
             self,
-        ) -> Result<ResponseValue<types::UserResponse>, Error<()>> {
+        ) -> Result<ResponseValue<types::CurrentUserResponse>, Error<()>> {
             let Self { client } = self;
             let url = format!("{}/v1/users/me", client.baseurl,);
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
