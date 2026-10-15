@@ -258,6 +258,63 @@
         }
       }
     },
+    "/v1/ai/chat/sessions": {
+      "get": {
+        "summary": "List AI home chat sessions",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "AI Chat"
+        ],
+        "description": "Returns the caller's active, unbound AI home chat sessions newest-first, cursor-paginated by `before`. Requires `ai.chat:read` OAuth scope or a personal API key, and the caller must be eligible for home chat.",
+        "operationId": "listAiChatSessions",
+        "parameters": [
+          {
+            "name": "before",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque cursor from a previous page's meta.pagination.next_before",
+            "required": false
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Sessions per page (max 50, default 20)",
+            "required": false
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "home chat sessions",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_session_list"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "AI chat disabled for the team, OAuth token missing ai.chat:read, or caller not eligible for home chat (e.g. non-personal credentials)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/ai/chat/sessions/{session_id}/messages": {
       "get": {
         "summary": "List AI chat session messages",
@@ -1735,6 +1792,16 @@
               }
             }
           },
+          "403": {
+            "description": "non-paging rule not available for the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          },
           "401": {
             "description": "unauthorized",
             "content": {
@@ -1857,6 +1924,16 @@
                 }
               }
             }
+          },
+          "403": {
+            "description": "non-paging rule not available for the organization",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
           }
         },
         "requestBody": {
@@ -1896,6 +1973,16 @@
           },
           "422": {
             "description": "invalid request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "non-paging rule not available for the organization",
             "content": {
               "application/json": {
                 "schema": {
@@ -6740,6 +6827,16 @@
         "responses": {
           "200": {
             "description": "catalog_property deleted"
+          },
+          "422": {
+            "description": "catalog_property used by a dynamic alert routing destination",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
           }
         }
       }
@@ -40121,6 +40218,77 @@
           "messages"
         ]
       },
+      "ai_chat_session": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Session UUID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Session title (user-supplied, generated, or placeholder)"
+          },
+          "last_active_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the session was last active"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the session was created"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "last_active_at",
+          "created_at"
+        ]
+      },
+      "ai_chat_session_list": {
+        "type": "object",
+        "properties": {
+          "sessions": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ai_chat_session"
+            }
+          },
+          "meta": {
+            "type": "object",
+            "properties": {
+              "pagination": {
+                "type": "object",
+                "properties": {
+                  "next_before": {
+                    "type": "string",
+                    "nullable": true,
+                    "description": "Opaque cursor for the next page"
+                  },
+                  "has_more": {
+                    "type": "boolean",
+                    "description": "Whether another page of sessions exists"
+                  }
+                },
+                "required": [
+                  "next_before",
+                  "has_more"
+                ]
+              }
+            },
+            "required": [
+              "pagination"
+            ]
+          }
+        },
+        "required": [
+          "sessions",
+          "meta"
+        ]
+      },
       "ai_chat_checkpoint_resolution": {
         "type": "object",
         "description": "Checkpoint state after a confirm or cancel request",
@@ -43348,6 +43516,11 @@
                           "description": "Whether this is a fallback rule",
                           "default": false
                         },
+                        "non_paging": {
+                          "type": "boolean",
+                          "description": "Whether alerts matching this rule are left unpaged. A non-paging rule takes no destinations. Only available when dynamic alert routing is enabled for the organization",
+                          "default": false
+                        },
                         "ai_sre_provider": {
                           "type": "string",
                           "enum": [
@@ -43557,6 +43730,11 @@
                         "fallback_rule": {
                           "type": "boolean",
                           "description": "Whether this is a fallback rule",
+                          "default": false
+                        },
+                        "non_paging": {
+                          "type": "boolean",
+                          "description": "Whether alerts matching this rule are left unpaged. A non-paging rule takes no destinations. Only available when dynamic alert routing is enabled for the organization",
                           "default": false
                         },
                         "ai_sre_provider": {
@@ -43782,6 +43960,11 @@
                           "description": "Whether this is a fallback rule",
                           "default": false
                         },
+                        "non_paging": {
+                          "type": "boolean",
+                          "description": "Whether alerts matching this rule are left unpaged. A non-paging rule takes no destinations. Only available when dynamic alert routing is enabled for the organization",
+                          "default": false
+                        },
                         "ai_sre_provider": {
                           "type": "string",
                           "enum": [
@@ -43990,6 +44173,10 @@
                   "type": "boolean",
                   "description": "Whether this is a fallback rule",
                   "default": false
+                },
+                "non_paging": {
+                  "type": "boolean",
+                  "description": "Whether alerts matching this rule are left unpaged. Returned when the rule is non-paging or dynamic alert routing is enabled for the organization"
                 },
                 "ai_sre_provider": {
                   "type": "string",
@@ -47008,6 +47195,7 @@
               "Integrations::ZoomAccount",
               "LiveCallRouter",
               "LoginActivity",
+              "MeetingRecordingSetting",
               "Membership",
               "OauthApplication",
               "OnCallRole",
@@ -48568,6 +48756,11 @@
                     "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
                     "nullable": true
                   },
+                  "escalation_policy_id": {
+                    "type": "string",
+                    "description": "The escalation policy id of the catalog entity",
+                    "nullable": true
+                  },
                   "properties": {
                     "type": "array",
                     "description": "Array of property values for this catalog entity",
@@ -48660,6 +48853,11 @@
                     "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
                     "nullable": true
                   },
+                  "escalation_policy_id": {
+                    "type": "string",
+                    "description": "The escalation policy id of the catalog entity",
+                    "nullable": true
+                  },
                   "properties": {
                     "type": "array",
                     "description": "Array of property values for this catalog entity",
@@ -48730,6 +48928,11 @@
           "external_id": {
             "type": "string",
             "description": "An external identifier for this catalog entity. Must be unique within the catalog.",
+            "nullable": true
+          },
+          "escalation_policy_id": {
+            "type": "string",
+            "description": "The escalation policy id of the catalog entity",
             "nullable": true
           },
           "managed_by": {
@@ -80983,6 +81186,32 @@
                   "repeat_every_duration": {
                     "type": "string",
                     "description": "Repeat workflow every duration",
+                    "nullable": true
+                  },
+                  "repeat_on": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "description": "Repeat on weekdays",
+                      "enum": [
+                        "S",
+                        "M",
+                        "T",
+                        "W",
+                        "R",
+                        "F",
+                        "U"
+                      ]
+                    }
+                  },
+                  "priority": {
+                    "type": "string",
+                    "description": "Priority",
+                    "enum": [
+                      "low",
+                      "normal",
+                      "high"
+                    ],
                     "nullable": true
                   },
                   "repeat_condition_duration_since_first_run": {
