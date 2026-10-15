@@ -664,6 +664,58 @@ pub mod types {
             Default::default()
         }
     }
+    ///`AiChatSession`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSession {
+        ///When the session was created
+        pub created_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Session UUID
+        pub id: ::uuid::Uuid,
+        ///When the session was last active
+        pub last_active_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Session title (user-supplied, generated, or placeholder)
+        pub title: ::std::string::String,
+    }
+    impl AiChatSession {
+        pub fn builder() -> builder::AiChatSession {
+            Default::default()
+        }
+    }
+    ///`AiChatSessionList`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSessionList {
+        pub meta: AiChatSessionListMeta,
+        pub sessions: ::std::vec::Vec<AiChatSession>,
+    }
+    impl AiChatSessionList {
+        pub fn builder() -> builder::AiChatSessionList {
+            Default::default()
+        }
+    }
+    ///`AiChatSessionListMeta`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSessionListMeta {
+        pub pagination: AiChatSessionListMetaPagination,
+    }
+    impl AiChatSessionListMeta {
+        pub fn builder() -> builder::AiChatSessionListMeta {
+            Default::default()
+        }
+    }
+    ///`AiChatSessionListMetaPagination`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSessionListMetaPagination {
+        ///Whether another page of sessions exists
+        pub has_more: bool,
+        ///Opaque cursor for the next page
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub next_before: ::std::option::Option<::std::string::String>,
+    }
+    impl AiChatSessionListMetaPagination {
+        pub fn builder() -> builder::AiChatSessionListMetaPagination {
+            Default::default()
+        }
+    }
     ///`AiChatSessionMessage`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatSessionMessage {
@@ -1738,6 +1790,9 @@ pub mod types {
         pub fallback_rule: bool,
         ///The name of the alert routing rule
         pub name: ::std::string::String,
+        ///Whether alerts matching this rule are left unpaged. Returned when the rule is non-paging or dynamic alert routing is enabled for the organization
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub non_paging: ::std::option::Option<bool>,
         ///The position of the alert routing rule for ordering evaluation
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
@@ -5108,6 +5163,9 @@ pub mod types {
         pub created_at: ::std::string::String,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///The escalation policy id of the catalog entity
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub escalation_policy_id: ::std::option::Option<::std::string::String>,
         ///An external identifier for this catalog entity. Must be unique within the catalog.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub external_id: ::std::option::Option<::std::string::String>,
@@ -16290,6 +16348,9 @@ pub mod types {
         pub fallback_rule: bool,
         ///The name of the alert routing rule
         pub name: ::std::string::String,
+        ///Whether alerts matching this rule are left unpaged. A non-paging rule takes no destinations. Only available when dynamic alert routing is enabled for the organization
+        #[serde(default)]
+        pub non_paging: bool,
         ///The position of the alert routing rule for ordering evaluation
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
@@ -17048,6 +17109,9 @@ pub mod types {
         pub backstage_id: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///The escalation policy id of the catalog entity
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub escalation_policy_id: ::std::option::Option<::std::string::String>,
         ///An external identifier for this catalog entity. Must be unique within the catalog.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub external_id: ::std::option::Option<::std::string::String>,
@@ -26273,6 +26337,9 @@ pub mod types {
         ///The name of the alert routing rule
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub name: ::std::option::Option<::std::string::String>,
+        ///Whether alerts matching this rule are left unpaged. A non-paging rule takes no destinations. Only available when dynamic alert routing is enabled for the organization
+        #[serde(default)]
+        pub non_paging: bool,
         ///The position of the alert routing rule for ordering evaluation
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
@@ -32951,6 +33018,9 @@ pub mod types {
         pub fallback_rule: bool,
         ///The name of the alert routing rule
         pub name: ::std::string::String,
+        ///Whether alerts matching this rule are left unpaged. A non-paging rule takes no destinations. Only available when dynamic alert routing is enabled for the organization
+        #[serde(default)]
+        pub non_paging: bool,
         ///The position of the alert routing rule for ordering evaluation
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
@@ -33798,6 +33868,9 @@ pub mod types {
         pub backstage_id: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///The escalation policy id of the catalog entity
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub escalation_policy_id: ::std::option::Option<::std::string::String>,
         ///An external identifier for this catalog entity. Must be unique within the catalog.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub external_id: ::std::option::Option<::std::string::String>,
@@ -42333,6 +42406,9 @@ pub mod types {
         ///The order which the workflow should run with other workflows.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
+        ///Priority
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub priority: ::std::option::Option<::std::string::String>,
         ///The workflow will stop repeating if its runtime since it's first workflow run exceeds the duration set in this field
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub repeat_condition_duration_since_first_run: ::std::option::Option<
@@ -42344,6 +42420,8 @@ pub mod types {
         ///Repeat workflow every duration
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub repeat_every_duration: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub repeat_on: ::std::vec::Vec<::std::string::String>,
         ///When true, the workflow runs at most once per incident. Later triggers on the same incident create a canceled run instead. Manual runs and repeats are not affected. Only applies to incident workflows.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub run_once_per_resource: ::std::option::Option<bool>,
@@ -48902,6 +48980,278 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct AiChatSession {
+            created_at: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            last_active_at: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            title: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiChatSession {
+            fn default() -> Self {
+                Self {
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    last_active_at: Err(
+                        "no value supplied for last_active_at".to_string(),
+                    ),
+                    title: Err("no value supplied for title".to_string()),
+                }
+            }
+        }
+        impl AiChatSession {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn last_active_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_active_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for last_active_at: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSession> for super::AiChatSession {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSession,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    id: value.id?,
+                    last_active_at: value.last_active_at?,
+                    title: value.title?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSession> for AiChatSession {
+            fn from(value: super::AiChatSession) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    id: Ok(value.id),
+                    last_active_at: Ok(value.last_active_at),
+                    title: Ok(value.title),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatSessionList {
+            meta: ::std::result::Result<
+                super::AiChatSessionListMeta,
+                ::std::string::String,
+            >,
+            sessions: ::std::result::Result<
+                ::std::vec::Vec<super::AiChatSession>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatSessionList {
+            fn default() -> Self {
+                Self {
+                    meta: Err("no value supplied for meta".to_string()),
+                    sessions: Err("no value supplied for sessions".to_string()),
+                }
+            }
+        }
+        impl AiChatSessionList {
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiChatSessionListMeta>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+            pub fn sessions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<super::AiChatSession>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.sessions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for sessions: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSessionList> for super::AiChatSessionList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSessionList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    meta: value.meta?,
+                    sessions: value.sessions?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSessionList> for AiChatSessionList {
+            fn from(value: super::AiChatSessionList) -> Self {
+                Self {
+                    meta: Ok(value.meta),
+                    sessions: Ok(value.sessions),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatSessionListMeta {
+            pagination: ::std::result::Result<
+                super::AiChatSessionListMetaPagination,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatSessionListMeta {
+            fn default() -> Self {
+                Self {
+                    pagination: Err("no value supplied for pagination".to_string()),
+                }
+            }
+        }
+        impl AiChatSessionListMeta {
+            pub fn pagination<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiChatSessionListMetaPagination>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pagination = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pagination: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSessionListMeta>
+        for super::AiChatSessionListMeta {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSessionListMeta,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    pagination: value.pagination?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSessionListMeta>
+        for AiChatSessionListMeta {
+            fn from(value: super::AiChatSessionListMeta) -> Self {
+                Self {
+                    pagination: Ok(value.pagination),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatSessionListMetaPagination {
+            has_more: ::std::result::Result<bool, ::std::string::String>,
+            next_before: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiChatSessionListMetaPagination {
+            fn default() -> Self {
+                Self {
+                    has_more: Err("no value supplied for has_more".to_string()),
+                    next_before: Err("no value supplied for next_before".to_string()),
+                }
+            }
+        }
+        impl AiChatSessionListMetaPagination {
+            pub fn has_more<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.has_more = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for has_more: {e}")
+                    });
+                self
+            }
+            pub fn next_before<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_before = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next_before: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSessionListMetaPagination>
+        for super::AiChatSessionListMetaPagination {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSessionListMetaPagination,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    has_more: value.has_more?,
+                    next_before: value.next_before?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSessionListMetaPagination>
+        for AiChatSessionListMetaPagination {
+            fn from(value: super::AiChatSessionListMetaPagination) -> Self {
+                Self {
+                    has_more: Ok(value.has_more),
+                    next_before: Ok(value.next_before),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct AiChatSessionMessage {
             confirmation: ::std::result::Result<
                 ::std::option::Option<super::AiChatSessionMessageConfirmation>,
@@ -54887,6 +55237,10 @@ pub mod types {
             >,
             fallback_rule: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            non_paging: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             position: ::std::result::Result<
                 ::std::option::Option<i64>,
                 ::std::string::String,
@@ -54902,6 +55256,7 @@ pub mod types {
                     destinations: Err("no value supplied for destinations".to_string()),
                     fallback_rule: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
+                    non_paging: Ok(Default::default()),
                     position: Ok(Default::default()),
                 }
             }
@@ -54975,6 +55330,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn non_paging<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.non_paging = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for non_paging: {e}")
+                    });
+                self
+            }
             pub fn position<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<i64>>,
@@ -55000,6 +55367,7 @@ pub mod types {
                     destinations: value.destinations?,
                     fallback_rule: value.fallback_rule?,
                     name: value.name?,
+                    non_paging: value.non_paging?,
                     position: value.position?,
                 })
             }
@@ -55012,6 +55380,7 @@ pub mod types {
                     destinations: Ok(value.destinations),
                     fallback_rule: Ok(value.fallback_rule),
                     name: Ok(value.name),
+                    non_paging: Ok(value.non_paging),
                     position: Ok(value.position),
                 }
             }
@@ -71130,6 +71499,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            escalation_policy_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             external_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -71166,6 +71539,7 @@ pub mod types {
                     backstage_id: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
                     description: Ok(Default::default()),
+                    escalation_policy_id: Ok(Default::default()),
                     external_id: Ok(Default::default()),
                     managed_by: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
@@ -71211,6 +71585,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn escalation_policy_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.escalation_policy_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for escalation_policy_id: {e}"
+                        )
                     });
                 self
             }
@@ -71324,6 +71712,7 @@ pub mod types {
                     backstage_id: value.backstage_id?,
                     created_at: value.created_at?,
                     description: value.description?,
+                    escalation_policy_id: value.escalation_policy_id?,
                     external_id: value.external_id?,
                     managed_by: value.managed_by?,
                     name: value.name?,
@@ -71341,6 +71730,7 @@ pub mod types {
                     backstage_id: Ok(value.backstage_id),
                     created_at: Ok(value.created_at),
                     description: Ok(value.description),
+                    escalation_policy_id: Ok(value.escalation_policy_id),
                     external_id: Ok(value.external_id),
                     managed_by: Ok(value.managed_by),
                     name: Ok(value.name),
@@ -131591,6 +131981,7 @@ pub mod types {
             >,
             fallback_rule: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            non_paging: ::std::result::Result<bool, ::std::string::String>,
             position: ::std::result::Result<
                 ::std::option::Option<i64>,
                 ::std::string::String,
@@ -131606,6 +131997,7 @@ pub mod types {
                     destinations: Err("no value supplied for destinations".to_string()),
                     fallback_rule: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
+                    non_paging: Ok(Default::default()),
                     position: Ok(Default::default()),
                 }
             }
@@ -131683,6 +132075,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn non_paging<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.non_paging = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for non_paging: {e}")
+                    });
+                self
+            }
             pub fn position<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<i64>>,
@@ -131708,6 +132112,7 @@ pub mod types {
                     destinations: value.destinations?,
                     fallback_rule: value.fallback_rule?,
                     name: value.name?,
+                    non_paging: value.non_paging?,
                     position: value.position?,
                 })
             }
@@ -131721,6 +132126,7 @@ pub mod types {
                     destinations: Ok(value.destinations),
                     fallback_rule: Ok(value.fallback_rule),
                     name: Ok(value.name),
+                    non_paging: Ok(value.non_paging),
                     position: Ok(value.position),
                 }
             }
@@ -135401,6 +135807,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            escalation_policy_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             external_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -135428,6 +135838,7 @@ pub mod types {
                 Self {
                     backstage_id: Ok(Default::default()),
                     description: Ok(Default::default()),
+                    escalation_policy_id: Ok(Default::default()),
                     external_id: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     position: Ok(Default::default()),
@@ -135459,6 +135870,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn escalation_policy_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.escalation_policy_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for escalation_policy_id: {e}"
+                        )
                     });
                 self
             }
@@ -135548,6 +135973,7 @@ pub mod types {
                 Ok(Self {
                     backstage_id: value.backstage_id?,
                     description: value.description?,
+                    escalation_policy_id: value.escalation_policy_id?,
                     external_id: value.external_id?,
                     name: value.name?,
                     position: value.position?,
@@ -135563,6 +135989,7 @@ pub mod types {
                 Self {
                     backstage_id: Ok(value.backstage_id),
                     description: Ok(value.description),
+                    escalation_policy_id: Ok(value.escalation_policy_id),
                     external_id: Ok(value.external_id),
                     name: Ok(value.name),
                     position: Ok(value.position),
@@ -175318,6 +175745,7 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            non_paging: ::std::result::Result<bool, ::std::string::String>,
             position: ::std::result::Result<
                 ::std::option::Option<i64>,
                 ::std::string::String,
@@ -175333,6 +175761,7 @@ pub mod types {
                     fallback_rule: Ok(Default::default()),
                     id: Ok(Default::default()),
                     name: Ok(Default::default()),
+                    non_paging: Ok(Default::default()),
                     position: Ok(Default::default()),
                 }
             }
@@ -175432,6 +175861,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn non_paging<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.non_paging = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for non_paging: {e}")
+                    });
+                self
+            }
             pub fn position<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<i64>>,
@@ -175459,6 +175900,7 @@ pub mod types {
                     fallback_rule: value.fallback_rule?,
                     id: value.id?,
                     name: value.name?,
+                    non_paging: value.non_paging?,
                     position: value.position?,
                 })
             }
@@ -175474,6 +175916,7 @@ pub mod types {
                     fallback_rule: Ok(value.fallback_rule),
                     id: Ok(value.id),
                     name: Ok(value.name),
+                    non_paging: Ok(value.non_paging),
                     position: Ok(value.position),
                 }
             }
@@ -211662,6 +212105,7 @@ pub mod types {
             >,
             fallback_rule: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            non_paging: ::std::result::Result<bool, ::std::string::String>,
             position: ::std::result::Result<
                 ::std::option::Option<i64>,
                 ::std::string::String,
@@ -211677,6 +212121,7 @@ pub mod types {
                     destinations: Err("no value supplied for destinations".to_string()),
                     fallback_rule: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
+                    non_paging: Ok(Default::default()),
                     position: Ok(Default::default()),
                 }
             }
@@ -211754,6 +212199,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn non_paging<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.non_paging = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for non_paging: {e}")
+                    });
+                self
+            }
             pub fn position<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<i64>>,
@@ -211779,6 +212236,7 @@ pub mod types {
                     destinations: value.destinations?,
                     fallback_rule: value.fallback_rule?,
                     name: value.name?,
+                    non_paging: value.non_paging?,
                     position: value.position?,
                 })
             }
@@ -211792,6 +212250,7 @@ pub mod types {
                     destinations: Ok(value.destinations),
                     fallback_rule: Ok(value.fallback_rule),
                     name: Ok(value.name),
+                    non_paging: Ok(value.non_paging),
                     position: Ok(value.position),
                 }
             }
@@ -215820,6 +216279,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            escalation_policy_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             external_id: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -215850,6 +216313,7 @@ pub mod types {
                 Self {
                     backstage_id: Ok(Default::default()),
                     description: Ok(Default::default()),
+                    escalation_policy_id: Ok(Default::default()),
                     external_id: Ok(Default::default()),
                     name: Ok(Default::default()),
                     position: Ok(Default::default()),
@@ -215881,6 +216345,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn escalation_policy_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.escalation_policy_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for escalation_policy_id: {e}"
+                        )
                     });
                 self
             }
@@ -215972,6 +216450,7 @@ pub mod types {
                 Ok(Self {
                     backstage_id: value.backstage_id?,
                     description: value.description?,
+                    escalation_policy_id: value.escalation_policy_id?,
                     external_id: value.external_id?,
                     name: value.name?,
                     position: value.position?,
@@ -215987,6 +216466,7 @@ pub mod types {
                 Self {
                     backstage_id: Ok(value.backstage_id),
                     description: Ok(value.description),
+                    escalation_policy_id: Ok(value.escalation_policy_id),
                     external_id: Ok(value.external_id),
                     name: Ok(value.name),
                     position: Ok(value.position),
@@ -256718,6 +257198,10 @@ pub mod types {
                 ::std::option::Option<i64>,
                 ::std::string::String,
             >,
+            priority: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             repeat_condition_duration_since_first_run: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -256728,6 +257212,10 @@ pub mod types {
             >,
             repeat_every_duration: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            repeat_on: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
             run_once_per_resource: ::std::result::Result<
@@ -256783,9 +257271,11 @@ pub mod types {
                     locked: Ok(Default::default()),
                     name: Ok(Default::default()),
                     position: Ok(Default::default()),
+                    priority: Ok(Default::default()),
                     repeat_condition_duration_since_first_run: Ok(Default::default()),
                     repeat_condition_number_of_repeats: Ok(Default::default()),
                     repeat_every_duration: Ok(Default::default()),
+                    repeat_on: Ok(Default::default()),
                     run_once_per_resource: Ok(Default::default()),
                     service_ids: Ok(Default::default()),
                     severity_ids: Ok(Default::default()),
@@ -257024,6 +257514,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn priority<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.priority = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for priority: {e}")
+                    });
+                self
+            }
             pub fn repeat_condition_duration_since_first_run<T>(
                 mut self,
                 value: T,
@@ -257066,6 +257568,18 @@ pub mod types {
                         format!(
                             "error converting supplied value for repeat_every_duration: {e}"
                         )
+                    });
+                self
+            }
+            pub fn repeat_on<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.repeat_on = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for repeat_on: {e}")
                     });
                 self
             }
@@ -257202,11 +257716,13 @@ pub mod types {
                     locked: value.locked?,
                     name: value.name?,
                     position: value.position?,
+                    priority: value.priority?,
                     repeat_condition_duration_since_first_run: value
                         .repeat_condition_duration_since_first_run?,
                     repeat_condition_number_of_repeats: value
                         .repeat_condition_number_of_repeats?,
                     repeat_every_duration: value.repeat_every_duration?,
+                    repeat_on: value.repeat_on?,
                     run_once_per_resource: value.run_once_per_resource?,
                     service_ids: value.service_ids?,
                     severity_ids: value.severity_ids?,
@@ -257241,6 +257757,7 @@ pub mod types {
                     locked: Ok(value.locked),
                     name: Ok(value.name),
                     position: Ok(value.position),
+                    priority: Ok(value.priority),
                     repeat_condition_duration_since_first_run: Ok(
                         value.repeat_condition_duration_since_first_run,
                     ),
@@ -257248,6 +257765,7 @@ pub mod types {
                         value.repeat_condition_number_of_repeats,
                     ),
                     repeat_every_duration: Ok(value.repeat_every_duration),
+                    repeat_on: Ok(value.repeat_on),
                     run_once_per_resource: Ok(value.run_once_per_resource),
                     service_ids: Ok(value.service_ids),
                     severity_ids: Ok(value.severity_ids),
@@ -270888,6 +271406,25 @@ let response = client.create_ai_chat()
     pub fn create_ai_chat(&self) -> builder::CreateAiChat<'_> {
         builder::CreateAiChat::new(self)
     }
+    /**List AI home chat sessions
+
+Returns the caller's active, unbound AI home chat sessions newest-first, cursor-paginated by `before`. Requires `ai.chat:read` OAuth scope or a personal API key, and the caller must be eligible for home chat.
+
+Sends a `GET` request to `/v1/ai/chat/sessions`
+
+Arguments:
+- `before`: Opaque cursor from a previous page's meta.pagination.next_before
+- `limit`: Sessions per page (max 50, default 20)
+```ignore
+let response = client.list_ai_chat_sessions()
+    .before(before)
+    .limit(limit)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_chat_sessions(&self) -> builder::ListAiChatSessions<'_> {
+        builder::ListAiChatSessions::new(self)
+    }
     /**Delete AI chat session
 
 Permanently deletes an AI chat session and all its messages. Requires `ai.chat:write` OAuth scope or an API key.
@@ -283769,6 +284306,87 @@ pub mod builder {
                 .build()?;
             let info = OperationInfo {
                 operation_id: "create_ai_chat",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_chat_sessions`]
+
+[`Client::list_ai_chat_sessions`]: super::Client::list_ai_chat_sessions*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiChatSessions<'a> {
+        client: &'a super::Client,
+        before: Result<Option<::std::string::String>, String>,
+        limit: Result<Option<i64>, String>,
+    }
+    impl<'a> ListAiChatSessions<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                before: Ok(None),
+                limit: Ok(None),
+            }
+        }
+        pub fn before<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.before = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for before failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn limit<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.limit = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for limit failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/chat/sessions`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiChatSessionList>, Error<()>> {
+            let Self { client, before, limit } = self;
+            let before = before.map_err(Error::InvalidRequest)?;
+            let limit = limit.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/chat/sessions", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(&progenitor_client::QueryParam::new("before", &before))
+                .query(&progenitor_client::QueryParam::new("limit", &limit))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_chat_sessions",
             };
             client.pre(&mut request, &info).await?;
             let result = client.exec(request, &info).await;
