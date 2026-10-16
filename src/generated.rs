@@ -774,6 +774,22 @@ pub mod types {
             Default::default()
         }
     }
+    ///`AiChatSessionTitle`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSessionTitle {
+        ///Server-generated title, null when hidden behind the placeholder
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub generated_title: ::std::option::Option<::std::string::String>,
+        ///Session UUID
+        pub id: ::uuid::Uuid,
+        ///Session title (user-supplied, generated, or placeholder)
+        pub title: ::std::string::String,
+    }
+    impl AiChatSessionTitle {
+        pub fn builder() -> builder::AiChatSessionTitle {
+            Default::default()
+        }
+    }
     ///`Alert`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct Alert {
@@ -15562,6 +15578,9 @@ pub mod types {
         ///Number of unique speakers detected in the transcript
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub speaker_count: ::std::option::Option<i64>,
+        ///Whether speakers in this recording are stored as anonymous labels (Responder A, B, C) instead of names. Set when the recording starts and never changes afterwards.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub speakers_anonymized: ::std::option::Option<bool>,
         ///When the bot started recording (null if bot never joined)
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub started_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
@@ -15620,6 +15639,9 @@ pub mod types {
         ///Number of unique speakers detected in the transcript
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub speaker_count: ::std::option::Option<i64>,
+        ///Whether speakers in this recording are stored as anonymous labels (Responder A, B, C) instead of names. Set when the recording starts and never changes afterwards.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub speakers_anonymized: ::std::option::Option<bool>,
         ///When the bot started recording (null if bot never joined)
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub started_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
@@ -21115,7 +21137,7 @@ pub mod types {
         ///IDs of incidents to link to the problem
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub incident_ids: ::std::vec::Vec<::std::string::String>,
-        ///The next review date for a deferred problem
+        ///The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub next_review_at: ::std::option::Option<::std::string::String>,
         ///ID of the group (team) that owns the problem
@@ -26915,10 +26937,10 @@ pub mod types {
         #[serde(deserialize_with = "::std::option::Option::deserialize")]
         pub health: ::std::option::Option<PrivateAgentAttributesProvidersItemHealth>,
         pub id: ::std::string::String,
-        ///Reported local policy, not credentials or provider connection configuration. Fields are provider-type specific: Kubernetes reports namespace scope; search providers report index scope; databases report database/schema scope; HTTP reports method/path/header scope; Kafka reports topic and message-read scope; Redis and Valkey report diagnostic limits; and each provider family normally reports only its applicable numeric limits. Management responses may preserve legacy cross-family fields for backwards compatibility; capability catalog and dispatch use provider-scoped execution metadata. Invalid or absent fields are omitted.
+        ///Reported local policy, not credentials or provider connection configuration. Fields are provider-type specific: Kubernetes reports namespace scope; search providers report index scope; databases report database/schema scope; HTTP reports method/path/header scope; Kafka reports topic and message-read scope; Redis and Valkey report diagnostic limits; GitLab reports group/project scope; and each provider family normally reports only its applicable numeric limits. Management responses may preserve legacy cross-family fields for backwards compatibility; capability catalog and dispatch use provider-scoped execution metadata. Invalid or absent fields are omitted.
         #[serde(deserialize_with = "::std::option::Option::deserialize")]
         pub policy: ::std::option::Option<PrivateAgentAttributesProvidersItemPolicy>,
-        ///Provider adapter type, such as kubernetes, prometheus, loki, tempo, pyroscope, elasticsearch, opensearch, postgresql, mysql, mcp, http, kafka, redis, or valkey.
+        ///Provider adapter type, such as kubernetes, prometheus, loki, tempo, pyroscope, elasticsearch, opensearch, postgresql, mysql, mcp, http, kafka, redis, valkey, or gitlab.
         #[serde(rename = "type")]
         pub type_: ::std::string::String,
         #[serde(deserialize_with = "::std::option::Option::deserialize")]
@@ -26959,17 +26981,21 @@ pub mod types {
             Default::default()
         }
     }
-    ///Reported local policy, not credentials or provider connection configuration. Fields are provider-type specific: Kubernetes reports namespace scope; search providers report index scope; databases report database/schema scope; HTTP reports method/path/header scope; Kafka reports topic and message-read scope; Redis and Valkey report diagnostic limits; and each provider family normally reports only its applicable numeric limits. Management responses may preserve legacy cross-family fields for backwards compatibility; capability catalog and dispatch use provider-scoped execution metadata. Invalid or absent fields are omitted.
+    ///Reported local policy, not credentials or provider connection configuration. Fields are provider-type specific: Kubernetes reports namespace scope; search providers report index scope; databases report database/schema scope; HTTP reports method/path/header scope; Kafka reports topic and message-read scope; Redis and Valkey report diagnostic limits; GitLab reports group/project scope; and each provider family normally reports only its applicable numeric limits. Management responses may preserve legacy cross-family fields for backwards compatibility; capability catalog and dispatch use provider-scoped execution metadata. Invalid or absent fields are omitted.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct PrivateAgentAttributesProvidersItemPolicy {
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub allow_message_reads: ::std::option::Option<bool>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub allowed_groups: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub allowed_indices: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub allowed_methods: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub allowed_path_prefixes: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub allowed_projects: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub allowed_request_headers: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -26995,11 +27021,15 @@ pub mod types {
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub maximum_concurrency: ::std::option::Option<::std::num::NonZeroU64>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub maximum_diff_bytes: ::std::option::Option<::std::num::NonZeroU64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub maximum_documents: ::std::option::Option<::std::num::NonZeroU64>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub maximum_entries: ::std::option::Option<::std::num::NonZeroU64>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub maximum_exemplars: ::std::option::Option<::std::num::NonZeroU64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub maximum_file_bytes: ::std::option::Option<::std::num::NonZeroU64>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub maximum_indices: ::std::option::Option<::std::num::NonZeroU64>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -27259,7 +27289,7 @@ pub mod types {
         ///Number of incidents linked to the problem
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub incidents_count: ::std::option::Option<i64>,
-        ///The next review date for a deferred problem
+        ///The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub next_review_at: ::std::option::Option<::std::string::String>,
         ///ID of the group (team) that owns the problem
@@ -32342,6 +32372,18 @@ pub mod types {
     }
     impl UpdateActionItemTaskParamsAssignedToUser {
         pub fn builder() -> builder::UpdateActionItemTaskParamsAssignedToUser {
+            Default::default()
+        }
+    }
+    ///`UpdateAiChatSession`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct UpdateAiChatSession {
+        ///New title; blank or null resets to the generated title
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub title: ::std::option::Option<::std::string::String>,
+    }
+    impl UpdateAiChatSession {
+        pub fn builder() -> builder::UpdateAiChatSession {
             Default::default()
         }
     }
@@ -39198,7 +39240,7 @@ pub mod types {
         ///The impact observed so far
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub impact_so_far: ::std::option::Option<::std::string::String>,
-        ///The next review date for a deferred problem
+        ///The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub next_review_at: ::std::option::Option<::std::string::String>,
         ///ID of the group (team) that owns the problem
@@ -42406,9 +42448,6 @@ pub mod types {
         ///The order which the workflow should run with other workflows.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
-        ///Priority
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub priority: ::std::option::Option<::std::string::String>,
         ///The workflow will stop repeating if its runtime since it's first workflow run exceeds the duration set in this field
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub repeat_condition_duration_since_first_run: ::std::option::Option<
@@ -42420,8 +42459,6 @@ pub mod types {
         ///Repeat workflow every duration
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub repeat_every_duration: ::std::option::Option<::std::string::String>,
-        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
-        pub repeat_on: ::std::vec::Vec<::std::string::String>,
         ///When true, the workflow runs at most once per incident. Later triggers on the same incident create a canceled run instead. Manual runs and repeats are not affected. Only applies to incident workflows.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub run_once_per_resource: ::std::option::Option<bool>,
@@ -49622,6 +49659,85 @@ pub mod types {
                 Self {
                     messages: Ok(value.messages),
                     meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiChatSessionTitle {
+            generated_title: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            title: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiChatSessionTitle {
+            fn default() -> Self {
+                Self {
+                    generated_title: Err(
+                        "no value supplied for generated_title".to_string(),
+                    ),
+                    id: Err("no value supplied for id".to_string()),
+                    title: Err("no value supplied for title".to_string()),
+                }
+            }
+        }
+        impl AiChatSessionTitle {
+            pub fn generated_title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.generated_title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for generated_title: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSessionTitle> for super::AiChatSessionTitle {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSessionTitle,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    generated_title: value.generated_title?,
+                    id: value.id?,
+                    title: value.title?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSessionTitle> for AiChatSessionTitle {
+            fn from(value: super::AiChatSessionTitle) -> Self {
+                Self {
+                    generated_title: Ok(value.generated_title),
+                    id: Ok(value.id),
+                    title: Ok(value.title),
                 }
             }
         }
@@ -128366,6 +128482,10 @@ pub mod types {
                 ::std::option::Option<i64>,
                 ::std::string::String,
             >,
+            speakers_anonymized: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             started_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
@@ -128405,6 +128525,7 @@ pub mod types {
                         "no value supplied for session_number".to_string(),
                     ),
                     speaker_count: Ok(Default::default()),
+                    speakers_anonymized: Ok(Default::default()),
                     started_at: Ok(Default::default()),
                     status: Err("no value supplied for status".to_string()),
                     title: Ok(Default::default()),
@@ -128518,6 +128639,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn speakers_anonymized<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.speakers_anonymized = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for speakers_anonymized: {e}"
+                        )
+                    });
+                self
+            }
             pub fn started_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -128621,6 +128756,7 @@ pub mod types {
                     platform: value.platform?,
                     session_number: value.session_number?,
                     speaker_count: value.speaker_count?,
+                    speakers_anonymized: value.speakers_anonymized?,
                     started_at: value.started_at?,
                     status: value.status?,
                     title: value.title?,
@@ -128642,6 +128778,7 @@ pub mod types {
                     platform: Ok(value.platform),
                     session_number: Ok(value.session_number),
                     speaker_count: Ok(value.speaker_count),
+                    speakers_anonymized: Ok(value.speakers_anonymized),
                     started_at: Ok(value.started_at),
                     status: Ok(value.status),
                     title: Ok(value.title),
@@ -128695,6 +128832,10 @@ pub mod types {
                 ::std::option::Option<i64>,
                 ::std::string::String,
             >,
+            speakers_anonymized: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             started_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
@@ -128741,6 +128882,7 @@ pub mod types {
                         "no value supplied for session_number".to_string(),
                     ),
                     speaker_count: Ok(Default::default()),
+                    speakers_anonymized: Ok(Default::default()),
                     started_at: Ok(Default::default()),
                     status: Err("no value supplied for status".to_string()),
                     title: Ok(Default::default()),
@@ -128895,6 +129037,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn speakers_anonymized<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.speakers_anonymized = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for speakers_anonymized: {e}"
+                        )
+                    });
+                self
+            }
             pub fn started_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -129016,6 +129172,7 @@ pub mod types {
                     recordable_type: value.recordable_type?,
                     session_number: value.session_number?,
                     speaker_count: value.speaker_count?,
+                    speakers_anonymized: value.speakers_anonymized?,
                     started_at: value.started_at?,
                     status: value.status?,
                     title: value.title?,
@@ -129042,6 +129199,7 @@ pub mod types {
                     recordable_type: Ok(value.recordable_type),
                     session_number: Ok(value.session_number),
                     speaker_count: Ok(value.speaker_count),
+                    speakers_anonymized: Ok(value.speakers_anonymized),
                     started_at: Ok(value.started_at),
                     status: Ok(value.status),
                     title: Ok(value.title),
@@ -179629,6 +179787,10 @@ pub mod types {
                 ::std::option::Option<bool>,
                 ::std::string::String,
             >,
+            allowed_groups: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
             allowed_indices: ::std::result::Result<
                 ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
@@ -179638,6 +179800,10 @@ pub mod types {
                 ::std::string::String,
             >,
             allowed_path_prefixes: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            allowed_projects: ::std::result::Result<
                 ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
@@ -179689,6 +179855,10 @@ pub mod types {
                 ::std::option::Option<::std::num::NonZeroU64>,
                 ::std::string::String,
             >,
+            maximum_diff_bytes: ::std::result::Result<
+                ::std::option::Option<::std::num::NonZeroU64>,
+                ::std::string::String,
+            >,
             maximum_documents: ::std::result::Result<
                 ::std::option::Option<::std::num::NonZeroU64>,
                 ::std::string::String,
@@ -179698,6 +179868,10 @@ pub mod types {
                 ::std::string::String,
             >,
             maximum_exemplars: ::std::result::Result<
+                ::std::option::Option<::std::num::NonZeroU64>,
+                ::std::string::String,
+            >,
+            maximum_file_bytes: ::std::result::Result<
                 ::std::option::Option<::std::num::NonZeroU64>,
                 ::std::string::String,
             >,
@@ -179818,9 +179992,11 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     allow_message_reads: Ok(Default::default()),
+                    allowed_groups: Ok(Default::default()),
                     allowed_indices: Ok(Default::default()),
                     allowed_methods: Ok(Default::default()),
                     allowed_path_prefixes: Ok(Default::default()),
+                    allowed_projects: Ok(Default::default()),
                     allowed_request_headers: Ok(Default::default()),
                     allowed_schemas: Ok(Default::default()),
                     allowed_topics: Ok(Default::default()),
@@ -179833,9 +180009,11 @@ pub mod types {
                     include_message_values: Ok(Default::default()),
                     maximum_attribute_values: Ok(Default::default()),
                     maximum_concurrency: Ok(Default::default()),
+                    maximum_diff_bytes: Ok(Default::default()),
                     maximum_documents: Ok(Default::default()),
                     maximum_entries: Ok(Default::default()),
                     maximum_exemplars: Ok(Default::default()),
+                    maximum_file_bytes: Ok(Default::default()),
                     maximum_indices: Ok(Default::default()),
                     maximum_items: Ok(Default::default()),
                     maximum_label_values: Ok(Default::default()),
@@ -179882,6 +180060,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn allowed_groups<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.allowed_groups = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for allowed_groups: {e}"
+                        )
+                    });
+                self
+            }
             pub fn allowed_indices<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
@@ -179920,6 +180112,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for allowed_path_prefixes: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn allowed_projects<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.allowed_projects = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for allowed_projects: {e}"
                         )
                     });
                 self
@@ -180090,6 +180296,22 @@ pub mod types {
                     });
                 self
             }
+            pub fn maximum_diff_bytes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::num::NonZeroU64>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.maximum_diff_bytes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for maximum_diff_bytes: {e}"
+                        )
+                    });
+                self
+            }
             pub fn maximum_documents<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -180134,6 +180356,22 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for maximum_exemplars: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn maximum_file_bytes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::num::NonZeroU64>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.maximum_file_bytes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for maximum_file_bytes: {e}"
                         )
                     });
                 self
@@ -180579,9 +180817,11 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     allow_message_reads: value.allow_message_reads?,
+                    allowed_groups: value.allowed_groups?,
                     allowed_indices: value.allowed_indices?,
                     allowed_methods: value.allowed_methods?,
                     allowed_path_prefixes: value.allowed_path_prefixes?,
+                    allowed_projects: value.allowed_projects?,
                     allowed_request_headers: value.allowed_request_headers?,
                     allowed_schemas: value.allowed_schemas?,
                     allowed_topics: value.allowed_topics?,
@@ -180594,9 +180834,11 @@ pub mod types {
                     include_message_values: value.include_message_values?,
                     maximum_attribute_values: value.maximum_attribute_values?,
                     maximum_concurrency: value.maximum_concurrency?,
+                    maximum_diff_bytes: value.maximum_diff_bytes?,
                     maximum_documents: value.maximum_documents?,
                     maximum_entries: value.maximum_entries?,
                     maximum_exemplars: value.maximum_exemplars?,
+                    maximum_file_bytes: value.maximum_file_bytes?,
                     maximum_indices: value.maximum_indices?,
                     maximum_items: value.maximum_items?,
                     maximum_label_values: value.maximum_label_values?,
@@ -180633,9 +180875,11 @@ pub mod types {
             fn from(value: super::PrivateAgentAttributesProvidersItemPolicy) -> Self {
                 Self {
                     allow_message_reads: Ok(value.allow_message_reads),
+                    allowed_groups: Ok(value.allowed_groups),
                     allowed_indices: Ok(value.allowed_indices),
                     allowed_methods: Ok(value.allowed_methods),
                     allowed_path_prefixes: Ok(value.allowed_path_prefixes),
+                    allowed_projects: Ok(value.allowed_projects),
                     allowed_request_headers: Ok(value.allowed_request_headers),
                     allowed_schemas: Ok(value.allowed_schemas),
                     allowed_topics: Ok(value.allowed_topics),
@@ -180648,9 +180892,11 @@ pub mod types {
                     include_message_values: Ok(value.include_message_values),
                     maximum_attribute_values: Ok(value.maximum_attribute_values),
                     maximum_concurrency: Ok(value.maximum_concurrency),
+                    maximum_diff_bytes: Ok(value.maximum_diff_bytes),
                     maximum_documents: Ok(value.maximum_documents),
                     maximum_entries: Ok(value.maximum_entries),
                     maximum_exemplars: Ok(value.maximum_exemplars),
+                    maximum_file_bytes: Ok(value.maximum_file_bytes),
                     maximum_indices: Ok(value.maximum_indices),
                     maximum_items: Ok(value.maximum_items),
                     maximum_label_values: Ok(value.maximum_label_values),
@@ -209486,6 +209732,48 @@ pub mod types {
                     id: Ok(value.id),
                     name: Ok(value.name),
                 }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiChatSession {
+            title: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateAiChatSession {
+            fn default() -> Self {
+                Self {
+                    title: Err("no value supplied for title".to_string()),
+                }
+            }
+        }
+        impl UpdateAiChatSession {
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiChatSession>
+        for super::UpdateAiChatSession {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiChatSession,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { title: value.title? })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiChatSession> for UpdateAiChatSession {
+            fn from(value: super::UpdateAiChatSession) -> Self {
+                Self { title: Ok(value.title) }
             }
         }
         #[derive(Clone, Debug)]
@@ -257198,10 +257486,6 @@ pub mod types {
                 ::std::option::Option<i64>,
                 ::std::string::String,
             >,
-            priority: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
             repeat_condition_duration_since_first_run: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -257212,10 +257496,6 @@ pub mod types {
             >,
             repeat_every_duration: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            repeat_on: ::std::result::Result<
-                ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
             run_once_per_resource: ::std::result::Result<
@@ -257271,11 +257551,9 @@ pub mod types {
                     locked: Ok(Default::default()),
                     name: Ok(Default::default()),
                     position: Ok(Default::default()),
-                    priority: Ok(Default::default()),
                     repeat_condition_duration_since_first_run: Ok(Default::default()),
                     repeat_condition_number_of_repeats: Ok(Default::default()),
                     repeat_every_duration: Ok(Default::default()),
-                    repeat_on: Ok(Default::default()),
                     run_once_per_resource: Ok(Default::default()),
                     service_ids: Ok(Default::default()),
                     severity_ids: Ok(Default::default()),
@@ -257514,18 +257792,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn priority<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.priority = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for priority: {e}")
-                    });
-                self
-            }
             pub fn repeat_condition_duration_since_first_run<T>(
                 mut self,
                 value: T,
@@ -257568,18 +257834,6 @@ pub mod types {
                         format!(
                             "error converting supplied value for repeat_every_duration: {e}"
                         )
-                    });
-                self
-            }
-            pub fn repeat_on<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.repeat_on = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for repeat_on: {e}")
                     });
                 self
             }
@@ -257716,13 +257970,11 @@ pub mod types {
                     locked: value.locked?,
                     name: value.name?,
                     position: value.position?,
-                    priority: value.priority?,
                     repeat_condition_duration_since_first_run: value
                         .repeat_condition_duration_since_first_run?,
                     repeat_condition_number_of_repeats: value
                         .repeat_condition_number_of_repeats?,
                     repeat_every_duration: value.repeat_every_duration?,
-                    repeat_on: value.repeat_on?,
                     run_once_per_resource: value.run_once_per_resource?,
                     service_ids: value.service_ids?,
                     severity_ids: value.severity_ids?,
@@ -257757,7 +258009,6 @@ pub mod types {
                     locked: Ok(value.locked),
                     name: Ok(value.name),
                     position: Ok(value.position),
-                    priority: Ok(value.priority),
                     repeat_condition_duration_since_first_run: Ok(
                         value.repeat_condition_duration_since_first_run,
                     ),
@@ -257765,7 +258016,6 @@ pub mod types {
                         value.repeat_condition_number_of_repeats,
                     ),
                     repeat_every_duration: Ok(value.repeat_every_duration),
-                    repeat_on: Ok(value.repeat_on),
                     run_once_per_resource: Ok(value.run_once_per_resource),
                     service_ids: Ok(value.service_ids),
                     severity_ids: Ok(value.severity_ids),
@@ -271442,6 +271692,25 @@ let response = client.delete_ai_chat_session()
     pub fn delete_ai_chat_session(&self) -> builder::DeleteAiChatSession<'_> {
         builder::DeleteAiChatSession::new(self)
     }
+    /**Rename AI chat session
+
+Renames an AI home chat session; a blank or null title resets to the generated title. Requires `ai.chat:write` OAuth scope or a personal API key, and the caller must be eligible for home chat.
+
+Sends a `PATCH` request to `/v1/ai/chat/sessions/{id}`
+
+Arguments:
+- `id`: Session UUID
+- `body`
+```ignore
+let response = client.update_ai_chat_session()
+    .id(id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn update_ai_chat_session(&self) -> builder::UpdateAiChatSession<'_> {
+        builder::UpdateAiChatSession::new(self)
+    }
     /**List AI chat session messages
 
 Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Requires `ai.chat:read` OAuth scope or an API key.
@@ -284451,6 +284720,105 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 204u16 => Ok(ResponseValue::empty(response)),
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::update_ai_chat_session`]
+
+[`Client::update_ai_chat_session`]: super::Client::update_ai_chat_session*/
+    #[derive(Debug, Clone)]
+    pub struct UpdateAiChatSession<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+        body: Result<types::builder::UpdateAiChatSession, String>,
+    }
+    impl<'a> UpdateAiChatSession<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateAiChatSession>,
+            <V as std::convert::TryInto<
+                types::UpdateAiChatSession,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateAiChatSession` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateAiChatSession,
+            ) -> types::builder::UpdateAiChatSession,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PATCH` request to `/v1/ai/chat/sessions/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiChatSessionTitle>, Error<()>> {
+            let Self { client, id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateAiChatSession::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/chat/sessions/{}", client.baseurl, encode_path(& id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .patch(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "update_ai_chat_session",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }

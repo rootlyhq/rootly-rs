@@ -376,6 +376,83 @@
       }
     },
     "/v1/ai/chat/sessions/{id}": {
+      "patch": {
+        "summary": "Rename AI chat session",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "AI Chat"
+        ],
+        "description": "Renames an AI home chat session; a blank or null title resets to the generated title. Requires `ai.chat:write` OAuth scope or a personal API key, and the caller must be eligible for home chat.",
+        "operationId": "updateAiChatSession",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "description": "Session UUID",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "renamed session",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_session_title"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "AI chat disabled for the team, OAuth token missing ai.chat:write, or caller not eligible for home chat (e.g. non-personal credentials)",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "session not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "title is missing or is not a string/null",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/update_ai_chat_session"
+              }
+            }
+          },
+          "required": true
+        }
+      },
       "delete": {
         "summary": "Delete AI chat session",
         "security": [
@@ -721,10 +798,12 @@
                 "ignored_alert_request",
                 "call_lifecycle",
                 "level_skipped",
-                "team_attached_from_payload",
                 "user_paged",
                 "ai_sre_requested",
                 "ai_sre_delegated",
+                "team_attached_from_payload",
+                "team_attached_from_source",
+                "team_attached_from_heartbeat",
                 "emailed",
                 "slacked",
                 "ms_teams_messaged",
@@ -26591,7 +26670,7 @@
             }
           },
           "422": {
-            "description": "validation error (e.g. unsupported source, duplicate recording)"
+            "description": "validation error (e.g. unsupported source, duplicate recording, anonymous speakers on)"
           }
         },
         "requestBody": {
@@ -26687,7 +26766,7 @@
             }
           },
           "422": {
-            "description": "Scribe is disabled for the organization"
+            "description": "Scribe is disabled for the organization, or anonymous speakers is on"
           }
         },
         "requestBody": {
@@ -40289,6 +40368,43 @@
           "meta"
         ]
       },
+      "ai_chat_session_title": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "description": "Session UUID"
+          },
+          "title": {
+            "type": "string",
+            "description": "Session title (user-supplied, generated, or placeholder)"
+          },
+          "generated_title": {
+            "type": "string",
+            "nullable": true,
+            "description": "Server-generated title, null when hidden behind the placeholder"
+          }
+        },
+        "required": [
+          "id",
+          "title",
+          "generated_title"
+        ]
+      },
+      "update_ai_chat_session": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "nullable": true,
+            "description": "New title; blank or null resets to the generated title"
+          }
+        },
+        "required": [
+          "title"
+        ]
+      },
       "ai_chat_checkpoint_resolution": {
         "type": "object",
         "description": "Checkpoint state after a confirm or cancel request",
@@ -41808,10 +41924,12 @@
               "ignored_alert_request",
               "call_lifecycle",
               "level_skipped",
-              "team_attached_from_payload",
               "user_paged",
               "ai_sre_requested",
               "ai_sre_delegated",
+              "team_attached_from_payload",
+              "team_attached_from_source",
+              "team_attached_from_heartbeat",
               "emailed",
               "slacked",
               "ms_teams_messaged",
@@ -53147,6 +53265,7 @@
                           "stacked_column_chart",
                           "monitoring_chart",
                           "pie_chart",
+                          "breakdown_table",
                           "table",
                           "aggregate_value"
                         ]
@@ -53386,6 +53505,7 @@
                           "stacked_column_chart",
                           "monitoring_chart",
                           "pie_chart",
+                          "breakdown_table",
                           "table",
                           "aggregate_value"
                         ]
@@ -53606,6 +53726,7 @@
                   "stacked_column_chart",
                   "monitoring_chart",
                   "pie_chart",
+                  "breakdown_table",
                   "table",
                   "aggregate_value"
                 ]
@@ -54567,7 +54688,7 @@
                     },
                     "type": {
                       "type": "string",
-                      "description": "Provider adapter type, such as kubernetes, prometheus, loki, tempo, pyroscope, elasticsearch, opensearch, postgresql, mysql, mcp, http, kafka, redis, or valkey."
+                      "description": "Provider adapter type, such as kubernetes, prometheus, loki, tempo, pyroscope, elasticsearch, opensearch, postgresql, mysql, mcp, http, kafka, redis, valkey, or gitlab."
                     },
                     "version": {
                       "type": "string",
@@ -54594,7 +54715,7 @@
                       "type": "object",
                       "nullable": true,
                       "additionalProperties": false,
-                      "description": "Reported local policy, not credentials or provider connection configuration. Fields are provider-type specific: Kubernetes reports namespace scope; search providers report index scope; databases report database/schema scope; HTTP reports method/path/header scope; Kafka reports topic and message-read scope; Redis and Valkey report diagnostic limits; and each provider family normally reports only its applicable numeric limits. Management responses may preserve legacy cross-family fields for backwards compatibility; capability catalog and dispatch use provider-scoped execution metadata. Invalid or absent fields are omitted.",
+                      "description": "Reported local policy, not credentials or provider connection configuration. Fields are provider-type specific: Kubernetes reports namespace scope; search providers report index scope; databases report database/schema scope; HTTP reports method/path/header scope; Kafka reports topic and message-read scope; Redis and Valkey report diagnostic limits; GitLab reports group/project scope; and each provider family normally reports only its applicable numeric limits. Management responses may preserve legacy cross-family fields for backwards compatibility; capability catalog and dispatch use provider-scoped execution metadata. Invalid or absent fields are omitted.",
                       "properties": {
                         "digest": {
                           "type": "string"
@@ -54705,6 +54826,14 @@
                           "type": "integer",
                           "minimum": 1
                         },
+                        "maximum_file_bytes": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
+                        "maximum_diff_bytes": {
+                          "type": "integer",
+                          "minimum": 1
+                        },
                         "maximum_spans_per_span_set": {
                           "type": "integer",
                           "minimum": 1
@@ -54780,6 +54909,18 @@
                           }
                         },
                         "denied_topics": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "allowed_groups": {
+                          "type": "array",
+                          "items": {
+                            "type": "string"
+                          }
+                        },
+                        "allowed_projects": {
                           "type": "array",
                           "items": {
                             "type": "string"
@@ -81188,32 +81329,6 @@
                     "description": "Repeat workflow every duration",
                     "nullable": true
                   },
-                  "repeat_on": {
-                    "type": "array",
-                    "items": {
-                      "type": "string",
-                      "description": "Repeat on weekdays",
-                      "enum": [
-                        "S",
-                        "M",
-                        "T",
-                        "W",
-                        "R",
-                        "F",
-                        "U"
-                      ]
-                    }
-                  },
-                  "priority": {
-                    "type": "string",
-                    "description": "Priority",
-                    "enum": [
-                      "low",
-                      "normal",
-                      "high"
-                    ],
-                    "nullable": true
-                  },
                   "repeat_condition_duration_since_first_run": {
                     "type": "string",
                     "description": "The workflow will stop repeating if its runtime since it's first workflow run exceeds the duration set in this field",
@@ -90028,6 +90143,10 @@
             "type": "integer",
             "description": "Total word count across all transcript segments"
           },
+          "speakers_anonymized": {
+            "type": "boolean",
+            "description": "Whether speakers in this recording are stored as anonymous labels (Responder A, B, C) instead of names. Set when the recording starts and never changes afterwards."
+          },
           "transcript_summary": {
             "type": "string",
             "description": "AI-generated summary of the meeting transcript (null if no transcript or not yet analyzed)",
@@ -93663,7 +93782,7 @@
                   },
                   "next_review_at": {
                     "type": "string",
-                    "description": "The next review date for a deferred problem",
+                    "description": "The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later",
                     "nullable": true
                   },
                   "re_review_cadence": {
@@ -93796,7 +93915,7 @@
                   },
                   "next_review_at": {
                     "type": "string",
-                    "description": "The next review date for a deferred problem",
+                    "description": "The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later",
                     "nullable": true
                   },
                   "re_review_cadence": {
@@ -93977,7 +94096,7 @@
           },
           "next_review_at": {
             "type": "string",
-            "description": "The next review date for a deferred problem",
+            "description": "The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later",
             "nullable": true
           },
           "re_review_cadence": {
