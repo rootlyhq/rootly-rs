@@ -42834,69 +42834,123 @@
           "tool_grants": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "tool_key": {
-                  "type": "string"
-                },
-                "access": {
-                  "type": "string",
-                  "enum": [
-                    "read",
-                    "write"
-                  ],
-                  "nullable": true,
-                  "description": "Defaults to the tool's access classification (read or write) when omitted or null."
-                },
-                "pinned_params": {
+              "oneOf": [
+                {
                   "type": "object",
-                  "nullable": true,
-                  "description": "Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.",
-                  "additionalProperties": {
-                    "oneOf": [
-                      {
+                  "properties": {
+                    "tool_key": {
+                      "type": "string",
+                      "enum": [
+                        "fetch_url"
+                      ]
+                    },
+                    "access": {
+                      "type": "string",
+                      "enum": [
+                        "read"
+                      ],
+                      "nullable": true,
+                      "description": "Fetch URL grants use read access, which is the default when omitted or null."
+                    },
+                    "pinned_params": {
+                      "type": "object",
+                      "nullable": false,
+                      "description": "Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.",
+                      "properties": {
+                        "domains": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 20,
+                          "items": {
+                            "type": "string",
+                            "description": "A hostname or wildcard domain pattern."
+                          }
+                        }
+                      },
+                      "required": [
+                        "domains"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "tool_key",
+                    "access",
+                    "pinned_params"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tool_key": {
+                      "type": "string",
+                      "not": {
+                        "enum": [
+                          "fetch_url"
+                        ]
+                      }
+                    },
+                    "access": {
+                      "type": "string",
+                      "enum": [
+                        "read",
+                        "write"
+                      ],
+                      "nullable": true,
+                      "description": "Defaults to the tool's access classification (read or write) when omitted or null."
+                    },
+                    "pinned_params": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.",
+                      "additionalProperties": {
                         "oneOf": [
                           {
-                            "type": "string",
-                            "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
-                            "nullable": true
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
+                                "nullable": true
+                              },
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "boolean"
+                              }
+                            ]
                           },
                           {
-                            "type": "integer"
-                          },
-                          {
-                            "type": "boolean"
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
+                                  "nullable": true
+                                },
+                                {
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "boolean"
+                                }
+                              ]
+                            }
                           }
                         ]
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "oneOf": [
-                            {
-                              "type": "string",
-                              "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
-                              "nullable": true
-                            },
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "boolean"
-                            }
-                          ]
-                        }
                       }
-                    ]
-                  }
+                    }
+                  },
+                  "required": [
+                    "tool_key",
+                    "access",
+                    "pinned_params"
+                  ],
+                  "additionalProperties": false
                 }
-              },
-              "required": [
-                "tool_key",
-                "access",
-                "pinned_params"
-              ],
-              "additionalProperties": false
+              ]
             }
           },
           "owner_user_id": {
@@ -42920,7 +42974,7 @@
       },
       "new_ai_skill": {
         "type": "object",
-        "description": "Create a skill. New skills are disabled unless enabled is explicitly true. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. Pinned parameters apply only to write access. Read-only attributes are ignored on write.",
+        "description": "Create a skill. New skills are disabled unless enabled is explicitly true. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. fetch_url read grants use pinned domains; other pinned parameters apply only to write access. Read-only attributes are ignored on write.",
         "properties": {
           "data": {
             "type": "object",
@@ -42972,67 +43026,120 @@
                     "type": "array",
                     "description": "Replaces the editable grant list. Grants on tools the caller cannot see are kept.",
                     "items": {
-                      "type": "object",
-                      "properties": {
-                        "tool_key": {
-                          "type": "string"
-                        },
-                        "access": {
-                          "type": "string",
-                          "enum": [
-                            "read",
-                            "write"
-                          ],
-                          "nullable": true,
-                          "description": "Defaults to the tool's access classification (read or write) when omitted or null."
-                        },
-                        "pinned_params": {
+                      "oneOf": [
+                        {
                           "type": "object",
-                          "nullable": true,
-                          "description": "Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.",
-                          "additionalProperties": {
-                            "oneOf": [
-                              {
+                          "properties": {
+                            "tool_key": {
+                              "type": "string",
+                              "enum": [
+                                "fetch_url"
+                              ]
+                            },
+                            "access": {
+                              "type": "string",
+                              "enum": [
+                                "read"
+                              ],
+                              "nullable": true,
+                              "description": "Fetch URL grants use read access, which is the default when omitted or null."
+                            },
+                            "pinned_params": {
+                              "type": "object",
+                              "nullable": false,
+                              "description": "Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.",
+                              "properties": {
+                                "domains": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "items": {
+                                    "type": "string",
+                                    "description": "A hostname or wildcard domain pattern."
+                                  }
+                                }
+                              },
+                              "required": [
+                                "domains"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "tool_key",
+                            "pinned_params"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "tool_key": {
+                              "type": "string",
+                              "not": {
+                                "enum": [
+                                  "fetch_url"
+                                ]
+                              }
+                            },
+                            "access": {
+                              "type": "string",
+                              "enum": [
+                                "read",
+                                "write"
+                              ],
+                              "nullable": true,
+                              "description": "Defaults to the tool's access classification (read or write) when omitted or null."
+                            },
+                            "pinned_params": {
+                              "type": "object",
+                              "nullable": true,
+                              "description": "For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.",
+                              "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "type": "string",
-                                    "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
-                                    "nullable": true
+                                    "oneOf": [
+                                      {
+                                        "type": "string",
+                                        "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
+                                        "nullable": true
+                                      },
+                                      {
+                                        "type": "integer"
+                                      },
+                                      {
+                                        "type": "boolean"
+                                      }
+                                    ]
                                   },
                                   {
-                                    "type": "integer"
-                                  },
-                                  {
-                                    "type": "boolean"
+                                    "type": "array",
+                                    "items": {
+                                      "oneOf": [
+                                        {
+                                          "type": "string",
+                                          "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
+                                          "nullable": true
+                                        },
+                                        {
+                                          "type": "integer"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        }
+                                      ]
+                                    }
                                   }
                                 ]
-                              },
-                              {
-                                "type": "array",
-                                "items": {
-                                  "oneOf": [
-                                    {
-                                      "type": "string",
-                                      "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
-                                      "nullable": true
-                                    },
-                                    {
-                                      "type": "integer"
-                                    },
-                                    {
-                                      "type": "boolean"
-                                    }
-                                  ]
-                                }
                               }
-                            ]
-                          }
+                            }
+                          },
+                          "required": [
+                            "tool_key"
+                          ],
+                          "additionalProperties": false
                         }
-                      },
-                      "required": [
-                        "tool_key"
-                      ],
-                      "additionalProperties": false
+                      ]
                     }
                   },
                   "id": {
@@ -43108,7 +43215,7 @@
       },
       "update_ai_skill": {
         "type": "object",
-        "description": "Update only supplied attributes. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. Pinned parameters apply only to write access. Read-only attributes are ignored on write.",
+        "description": "Update only supplied attributes. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. fetch_url read grants use pinned domains; other pinned parameters apply only to write access. Read-only attributes are ignored on write.",
         "properties": {
           "data": {
             "type": "object",
@@ -43162,67 +43269,120 @@
                     "type": "array",
                     "description": "Replaces the editable grant list. Grants on tools the caller cannot see are kept.",
                     "items": {
-                      "type": "object",
-                      "properties": {
-                        "tool_key": {
-                          "type": "string"
-                        },
-                        "access": {
-                          "type": "string",
-                          "enum": [
-                            "read",
-                            "write"
-                          ],
-                          "nullable": true,
-                          "description": "Defaults to the tool's access classification (read or write) when omitted or null."
-                        },
-                        "pinned_params": {
+                      "oneOf": [
+                        {
                           "type": "object",
-                          "nullable": true,
-                          "description": "Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.",
-                          "additionalProperties": {
-                            "oneOf": [
-                              {
+                          "properties": {
+                            "tool_key": {
+                              "type": "string",
+                              "enum": [
+                                "fetch_url"
+                              ]
+                            },
+                            "access": {
+                              "type": "string",
+                              "enum": [
+                                "read"
+                              ],
+                              "nullable": true,
+                              "description": "Fetch URL grants use read access, which is the default when omitted or null."
+                            },
+                            "pinned_params": {
+                              "type": "object",
+                              "nullable": false,
+                              "description": "Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.",
+                              "properties": {
+                                "domains": {
+                                  "type": "array",
+                                  "minItems": 1,
+                                  "maxItems": 20,
+                                  "items": {
+                                    "type": "string",
+                                    "description": "A hostname or wildcard domain pattern."
+                                  }
+                                }
+                              },
+                              "required": [
+                                "domains"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "required": [
+                            "tool_key",
+                            "pinned_params"
+                          ],
+                          "additionalProperties": false
+                        },
+                        {
+                          "type": "object",
+                          "properties": {
+                            "tool_key": {
+                              "type": "string",
+                              "not": {
+                                "enum": [
+                                  "fetch_url"
+                                ]
+                              }
+                            },
+                            "access": {
+                              "type": "string",
+                              "enum": [
+                                "read",
+                                "write"
+                              ],
+                              "nullable": true,
+                              "description": "Defaults to the tool's access classification (read or write) when omitted or null."
+                            },
+                            "pinned_params": {
+                              "type": "object",
+                              "nullable": true,
+                              "description": "For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.",
+                              "additionalProperties": {
                                 "oneOf": [
                                   {
-                                    "type": "string",
-                                    "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
-                                    "nullable": true
+                                    "oneOf": [
+                                      {
+                                        "type": "string",
+                                        "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
+                                        "nullable": true
+                                      },
+                                      {
+                                        "type": "integer"
+                                      },
+                                      {
+                                        "type": "boolean"
+                                      }
+                                    ]
                                   },
                                   {
-                                    "type": "integer"
-                                  },
-                                  {
-                                    "type": "boolean"
+                                    "type": "array",
+                                    "items": {
+                                      "oneOf": [
+                                        {
+                                          "type": "string",
+                                          "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
+                                          "nullable": true
+                                        },
+                                        {
+                                          "type": "integer"
+                                        },
+                                        {
+                                          "type": "boolean"
+                                        }
+                                      ]
+                                    }
                                   }
                                 ]
-                              },
-                              {
-                                "type": "array",
-                                "items": {
-                                  "oneOf": [
-                                    {
-                                      "type": "string",
-                                      "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
-                                      "nullable": true
-                                    },
-                                    {
-                                      "type": "integer"
-                                    },
-                                    {
-                                      "type": "boolean"
-                                    }
-                                  ]
-                                }
                               }
-                            ]
-                          }
+                            }
+                          },
+                          "required": [
+                            "tool_key"
+                          ],
+                          "additionalProperties": false
                         }
-                      },
-                      "required": [
-                        "tool_key"
-                      ],
-                      "additionalProperties": false
+                      ]
                     }
                   },
                   "id": {
@@ -43391,69 +43551,123 @@
           "tool_grants": {
             "type": "array",
             "items": {
-              "type": "object",
-              "properties": {
-                "tool_key": {
-                  "type": "string"
-                },
-                "access": {
-                  "type": "string",
-                  "enum": [
-                    "read",
-                    "write"
-                  ],
-                  "nullable": true,
-                  "description": "Defaults to the tool's access classification (read or write) when omitted or null."
-                },
-                "pinned_params": {
+              "oneOf": [
+                {
                   "type": "object",
-                  "nullable": true,
-                  "description": "Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.",
-                  "additionalProperties": {
-                    "oneOf": [
-                      {
+                  "properties": {
+                    "tool_key": {
+                      "type": "string",
+                      "enum": [
+                        "fetch_url"
+                      ]
+                    },
+                    "access": {
+                      "type": "string",
+                      "enum": [
+                        "read"
+                      ],
+                      "nullable": true,
+                      "description": "Fetch URL grants use read access, which is the default when omitted or null."
+                    },
+                    "pinned_params": {
+                      "type": "object",
+                      "nullable": false,
+                      "description": "Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.",
+                      "properties": {
+                        "domains": {
+                          "type": "array",
+                          "minItems": 1,
+                          "maxItems": 20,
+                          "items": {
+                            "type": "string",
+                            "description": "A hostname or wildcard domain pattern."
+                          }
+                        }
+                      },
+                      "required": [
+                        "domains"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "tool_key",
+                    "access",
+                    "pinned_params"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "tool_key": {
+                      "type": "string",
+                      "not": {
+                        "enum": [
+                          "fetch_url"
+                        ]
+                      }
+                    },
+                    "access": {
+                      "type": "string",
+                      "enum": [
+                        "read",
+                        "write"
+                      ],
+                      "nullable": true,
+                      "description": "Defaults to the tool's access classification (read or write) when omitted or null."
+                    },
+                    "pinned_params": {
+                      "type": "object",
+                      "nullable": true,
+                      "description": "For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.",
+                      "additionalProperties": {
                         "oneOf": [
                           {
-                            "type": "string",
-                            "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
-                            "nullable": true
+                            "oneOf": [
+                              {
+                                "type": "string",
+                                "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
+                                "nullable": true
+                              },
+                              {
+                                "type": "integer"
+                              },
+                              {
+                                "type": "boolean"
+                              }
+                            ]
                           },
                           {
-                            "type": "integer"
-                          },
-                          {
-                            "type": "boolean"
+                            "type": "array",
+                            "items": {
+                              "oneOf": [
+                                {
+                                  "type": "string",
+                                  "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
+                                  "nullable": true
+                                },
+                                {
+                                  "type": "integer"
+                                },
+                                {
+                                  "type": "boolean"
+                                }
+                              ]
+                            }
                           }
                         ]
-                      },
-                      {
-                        "type": "array",
-                        "items": {
-                          "oneOf": [
-                            {
-                              "type": "string",
-                              "pattern": "^[A-Za-z0-9_.:-]{1,64}$",
-                              "nullable": true
-                            },
-                            {
-                              "type": "integer"
-                            },
-                            {
-                              "type": "boolean"
-                            }
-                          ]
-                        }
                       }
-                    ]
-                  }
+                    }
+                  },
+                  "required": [
+                    "tool_key",
+                    "access",
+                    "pinned_params"
+                  ],
+                  "additionalProperties": false
                 }
-              },
-              "required": [
-                "tool_key",
-                "access",
-                "pinned_params"
-              ],
-              "additionalProperties": false
+              ]
             }
           },
           "created_by_user_id": {
