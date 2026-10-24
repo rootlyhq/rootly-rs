@@ -296,6 +296,53 @@
         }
       }
     },
+    "/v1/ai_automations/trigger_options": {
+      "get": {
+        "summary": "Lists options for configuring AI Automation triggers",
+        "description": "Returns the source-of-truth options used by the AI Automation editor.",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "tags": [
+          "AIAutomations"
+        ],
+        "operationId": "GetAIAutomationTriggerOptions",
+        "responses": {
+          "200": {
+            "description": "OAuth Automations read scope permits access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_automation_trigger_options"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "AI Automations are disabled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "OAuth Skills read scope does not permit access",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/v1/ai_automations": {
       "get": {
         "summary": "Lists AI automations",
@@ -1127,6 +1174,105 @@
           },
           "404": {
             "description": "session not found"
+          }
+        }
+      }
+    },
+    "/v1/ai_connector_audit_events": {
+      "get": {
+        "summary": "List AI connector audit events",
+        "tags": [
+          "AI Connector Audit Events"
+        ],
+        "description": "Lists AI tool calls made through connectors and connector connection events. Responses and credentials are never included.",
+        "security": [
+          {
+            "bearer_auth": []
+          }
+        ],
+        "parameters": [
+          {
+            "name": "filter[connector_id]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[event_type]",
+            "in": "query",
+            "required": false,
+            "description": "calls, connection, or one of: call, connected, reconnected, edited, disconnected",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[outcome]",
+            "in": "query",
+            "required": false,
+            "description": "failed, or one of: success, authentication_failed, permission_denied, rate_limited, timeout, not_found, invalid_request, connector_error",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[trigger]",
+            "in": "query",
+            "required": false,
+            "description": "slack_chat, web_chat, api_chat, mobile_chat, google_chat, microsoft_teams_chat, ai_sre_investigation, workflow, automation, proactive, web, other",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[user_id]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "filter[occurred_after]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "filter[occurred_before]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page[number]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page[size]",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "audit events"
+          },
+          "400": {
+            "description": "invalid timestamp filter"
           }
         }
       }
@@ -44110,6 +44256,453 @@
         "required": [
           "data"
         ]
+      },
+      "ai_automation_trigger_options": {
+        "type": "object",
+        "description": "Options for configuring AI Automation triggers and destinations. Conditions only apply to `event` triggers and are sent as `{\"any\": [{\"all\": [{field, operator, value}]}]}`. `choice` values must match one of the field's choices (case-insensitive), `text` values are free-form, and `none` operators take no value. Skills are listed by `GET /v1/ai_skills?filter[invocable_by]=automation`; Slack channels are listed by `GET /v1/ai_automations/slack_channels`. `schedule_rrule` accepts custom RRULEs using `rrule_frequencies`. Any IANA timezone resolved by `ActiveSupport::TimeZone[...]` is accepted; `timezones` is the editor's list.",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "enum": [
+                  "ai_automation_trigger_options"
+                ]
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ai_automation_trigger_options"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "trigger_kinds": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "string",
+                          "enum": [
+                            "schedule",
+                            "event"
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "value",
+                        "label"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "events": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "string",
+                          "enum": [
+                            "incident.created",
+                            "incident.status_changed",
+                            "incident.resolved"
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "condition_fields": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "severity",
+                              "status",
+                              "to_status"
+                            ]
+                          }
+                        }
+                      },
+                      "required": [
+                        "value",
+                        "label",
+                        "condition_fields"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "conditions": {
+                    "type": "object",
+                    "properties": {
+                      "fields": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "string",
+                              "enum": [
+                                "severity",
+                                "status",
+                                "to_status"
+                              ]
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "choices": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "value": {
+                                    "type": "string"
+                                  },
+                                  "label": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  "value",
+                                  "label"
+                                ],
+                                "additionalProperties": false
+                              }
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "label",
+                            "choices"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "operators": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "string",
+                              "enum": [
+                                "eq",
+                                "neq",
+                                "contains",
+                                "present",
+                                "blank"
+                              ]
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "value_type": {
+                              "type": "string",
+                              "enum": [
+                                "choice",
+                                "text",
+                                "none"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "label",
+                            "value_type"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "fields",
+                      "operators"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "schedule": {
+                    "type": "object",
+                    "properties": {
+                      "frequencies": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "string",
+                              "enum": [
+                                "hourly",
+                                "daily",
+                                "weekdays",
+                                "weekly"
+                              ]
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "uses_hour": {
+                              "type": "boolean"
+                            },
+                            "uses_weekday": {
+                              "type": "boolean"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "label",
+                            "uses_hour",
+                            "uses_weekday"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "weekdays": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "string",
+                              "enum": [
+                                "MO",
+                                "TU",
+                                "WE",
+                                "TH",
+                                "FR",
+                                "SA",
+                                "SU"
+                              ]
+                            },
+                            "label": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "label"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "default_frequency": {
+                        "type": "string",
+                        "enum": [
+                          "hourly",
+                          "daily",
+                          "weekdays",
+                          "weekly"
+                        ]
+                      },
+                      "default_hour": {
+                        "type": "integer",
+                        "minimum": 0,
+                        "maximum": 23
+                      },
+                      "default_weekday": {
+                        "type": "string",
+                        "enum": [
+                          "MO",
+                          "TU",
+                          "WE",
+                          "TH",
+                          "FR",
+                          "SA",
+                          "SU"
+                        ]
+                      },
+                      "default_timezone": {
+                        "type": "string"
+                      },
+                      "rrule_frequencies": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "enum": [
+                            "HOURLY",
+                            "DAILY",
+                            "WEEKLY",
+                            "MONTHLY"
+                          ]
+                        }
+                      },
+                      "timezones": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "string"
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "aliases": {
+                              "type": "array",
+                              "items": {
+                                "type": "string"
+                              },
+                              "description": "Rails time zone names stored as `schedule_timezone` that resolve to this option. Any IANA name `schedule_timezone` accepts may also appear; show unmatched stored values as-is."
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "label",
+                            "aliases"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "frequencies",
+                      "weekdays",
+                      "default_frequency",
+                      "default_hour",
+                      "default_weekday",
+                      "default_timezone",
+                      "rrule_frequencies",
+                      "timezones"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "destinations": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "string",
+                          "enum": [
+                            "slack_channel",
+                            "incident_timeline",
+                            "none"
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "trigger_kinds": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "schedule",
+                              "event"
+                            ]
+                          }
+                        },
+                        "event_names": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "incident.created",
+                              "incident.status_changed",
+                              "incident.resolved"
+                            ]
+                          }
+                        },
+                        "requires_slack_channel": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "value",
+                        "label",
+                        "trigger_kinds",
+                        "event_names",
+                        "requires_slack_channel"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
+                  "limits": {
+                    "type": "object",
+                    "properties": {
+                      "max_credits_per_run": {
+                        "type": "integer",
+                        "enum": [
+                          1000
+                        ]
+                      },
+                      "max_runs_per_window": {
+                        "type": "integer",
+                        "enum": [
+                          1440
+                        ]
+                      },
+                      "run_windows": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "value": {
+                              "type": "string",
+                              "enum": [
+                                "1_hour",
+                                "1_day",
+                                "7_days"
+                              ]
+                            },
+                            "label": {
+                              "type": "string"
+                            },
+                            "seconds": {
+                              "type": "integer",
+                              "enum": [
+                                3600,
+                                86400,
+                                604800
+                              ]
+                            }
+                          },
+                          "required": [
+                            "value",
+                            "label",
+                            "seconds"
+                          ],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "required": [
+                      "max_credits_per_run",
+                      "max_runs_per_window",
+                      "run_windows"
+                    ],
+                    "additionalProperties": false
+                  }
+                },
+                "required": [
+                  "trigger_kinds",
+                  "events",
+                  "conditions",
+                  "schedule",
+                  "destinations",
+                  "limits"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "data"
+        ],
+        "additionalProperties": false
       },
       "new_ai_automation": {
         "type": "object",
@@ -111821,7 +112414,71 @@
                 "additionalProperties": {
                   "type": "boolean"
                 },
-                "description": "Server-evaluated flags for the calling credential. Keys (e.g. `ai-native-home`) are stable API names. May be absent; treat a missing object or key as unknown, not false."
+                "description": "Server-evaluated flags for the calling credential. `ai-native-home` indicates whether the AI-native home is available. `ai-skills` is true only when the organization has AI Skills enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai_skills` is expected to succeed. `ai-automations` is true only when the organization has AI Automations enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai_automations` is expected to succeed. May be absent; treat a missing object or key as unknown, not false."
+              },
+              "abilities": {
+                "type": "object",
+                "description": "AI resource permissions for the calling credential. May be absent on older servers.",
+                "properties": {
+                  "ai_skills": {
+                    "type": "object",
+                    "properties": {
+                      "read": {
+                        "type": "boolean",
+                        "description": "True when the team has AI Skills enabled, the credential is not a group API key, and its role can read AI Skills. OAuth tokens also need a scope that grants AI Skills read access (`ai.skills:read`, `ai.skills:write` or `all`)."
+                      },
+                      "create": {
+                        "type": "boolean",
+                        "description": "True when the team has AI Skills enabled, the credential is not a group API key, and its role has the AI Skills `manage` permission. OAuth tokens also need a scope that grants AI Skills write access (`ai.skills:write` or `all`)."
+                      },
+                      "update": {
+                        "type": "boolean",
+                        "description": "True when the team has AI Skills enabled, the credential is not a group API key, and its role has the AI Skills `manage` permission. OAuth tokens also need a scope that grants AI Skills write access (`ai.skills:write` or `all`)."
+                      },
+                      "delete": {
+                        "type": "boolean",
+                        "description": "True when the team has AI Skills enabled, the credential is not a group API key, and its role has the AI Skills `manage` permission. OAuth tokens also need a scope that grants AI Skills write access (`ai.skills:write` or `all`)."
+                      }
+                    },
+                    "required": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ]
+                  },
+                  "ai_automations": {
+                    "type": "object",
+                    "properties": {
+                      "read": {
+                        "type": "boolean",
+                        "description": "True when the team has AI Automations enabled, the credential is not a group API key, and its role can read AI Automations. OAuth tokens also need a scope that grants AI Automations read access (`ai.automations:read`, `ai.automations:write` or `all`)."
+                      },
+                      "create": {
+                        "type": "boolean",
+                        "description": "True when the team has AI Automations enabled, the credential is not a group API key, and its role has the AI Automations `manage` permission. OAuth tokens also need a scope that grants AI Automations write access (`ai.automations:write` or `all`)."
+                      },
+                      "update": {
+                        "type": "boolean",
+                        "description": "True when the team has AI Automations enabled, the credential is not a group API key, and its role has the AI Automations `manage` permission. OAuth tokens also need a scope that grants AI Automations write access (`ai.automations:write` or `all`)."
+                      },
+                      "delete": {
+                        "type": "boolean",
+                        "description": "True when the team has AI Automations enabled, the credential is not a group API key, and its role has the AI Automations `manage` permission. OAuth tokens also need a scope that grants AI Automations write access (`ai.automations:write` or `all`)."
+                      }
+                    },
+                    "required": [
+                      "read",
+                      "create",
+                      "update",
+                      "delete"
+                    ]
+                  }
+                },
+                "required": [
+                  "ai_skills",
+                  "ai_automations"
+                ]
               }
             }
           }
