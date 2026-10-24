@@ -547,6 +547,342 @@ pub mod types {
             Default::default()
         }
     }
+    ///`AiAutomation`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomation {
+        pub data: AiAutomationData,
+    }
+    impl AiAutomation {
+        pub fn builder() -> builder::AiAutomation {
+            Default::default()
+        }
+    }
+    ///`AiAutomationAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct AiAutomationAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub conditions: ::std::option::Option<AiAutomationAttributesConditions>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub consecutive_failures_count: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by_user_id: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_kind: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_slack_channel_id: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_slack_channel_name: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub disabled_reason: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub enabled: ::std::option::Option<bool>,
+        ///null unless trigger_kind is event.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub event_name: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub last_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Stored limit values are returned even when false and apply only when this is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub limits_enabled: ::std::option::Option<bool>,
+        ///The stored value is returned even when limits are disabled and only applies when limits_enabled is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub max_credits_per_run: ::std::option::Option<f64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub next_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub owner_user_id: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub prompt: ::std::option::Option<::std::string::String>,
+        ///The stored value is returned even when limits are disabled and only applies when limits_enabled is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub rate_limit_runs: ::std::option::Option<i64>,
+        ///The stored value is returned even when limits are disabled and only applies when limits_enabled is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub rate_limit_window: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule: ::std::option::Option<AiAutomationAttributesSchedule>,
+        ///Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_rrule: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_timezone: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub skill_ids: ::std::vec::Vec<::uuid::Uuid>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub trigger_kind: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    }
+    impl AiAutomationAttributes {
+        pub fn builder() -> builder::AiAutomationAttributes {
+            Default::default()
+        }
+    }
+    ///{} unless trigger_kind is event. Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct AiAutomationAttributesConditions {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub any: ::std::vec::Vec<AiAutomationAttributesConditionsAnyItem>,
+    }
+    impl AiAutomationAttributesConditions {
+        pub fn builder() -> builder::AiAutomationAttributesConditions {
+            Default::default()
+        }
+    }
+    ///`AiAutomationAttributesConditionsAnyItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiAutomationAttributesConditionsAnyItem {
+        pub all: ::std::vec::Vec<AiAutomationAttributesConditionsAnyItemAllItem>,
+    }
+    impl AiAutomationAttributesConditionsAnyItem {
+        pub fn builder() -> builder::AiAutomationAttributesConditionsAnyItem {
+            Default::default()
+        }
+    }
+    ///`AiAutomationAttributesConditionsAnyItemAllItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiAutomationAttributesConditionsAnyItemAllItem {
+        pub field: ::std::string::String,
+        pub operator: ::std::string::String,
+        ///Omitted for present/blank operators.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub value: ::std::option::Option<
+            AiAutomationAttributesConditionsAnyItemAllItemValue,
+        >,
+    }
+    impl AiAutomationAttributesConditionsAnyItemAllItem {
+        pub fn builder() -> builder::AiAutomationAttributesConditionsAnyItemAllItem {
+            Default::default()
+        }
+    }
+    ///Omitted for present/blank operators.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AiAutomationAttributesConditionsAnyItemAllItemValue {
+        String(::std::string::String),
+        Number(f64),
+        Boolean(bool),
+    }
+    impl ::std::fmt::Display for AiAutomationAttributesConditionsAnyItemAllItemValue {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match self {
+                Self::String(x) => x.fmt(f),
+                Self::Number(x) => x.fmt(f),
+                Self::Boolean(x) => x.fmt(f),
+            }
+        }
+    }
+    impl ::std::convert::From<f64>
+    for AiAutomationAttributesConditionsAnyItemAllItemValue {
+        fn from(value: f64) -> Self {
+            Self::Number(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for AiAutomationAttributesConditionsAnyItemAllItemValue {
+        fn from(value: bool) -> Self {
+            Self::Boolean(value)
+        }
+    }
+    ///`AiAutomationAttributesSchedule`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct AiAutomationAttributesSchedule {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub frequency: ::std::option::Option<::std::string::String>,
+        ///Not used for hourly schedules.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub hour: ::std::option::Option<i64>,
+        ///Only used for weekly schedules.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub weekday: ::std::option::Option<::std::string::String>,
+    }
+    impl AiAutomationAttributesSchedule {
+        pub fn builder() -> builder::AiAutomationAttributesSchedule {
+            Default::default()
+        }
+    }
+    ///`AiAutomationData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationData {
+        pub attributes: AiAutomationAttributes,
+        pub id: ::uuid::Uuid,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiAutomationData {
+        pub fn builder() -> builder::AiAutomationData {
+            Default::default()
+        }
+    }
+    ///`AiAutomationList`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationList {
+        pub data: ::std::vec::Vec<AiAutomationListDataItem>,
+        #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
+        pub meta: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+    }
+    impl AiAutomationList {
+        pub fn builder() -> builder::AiAutomationList {
+            Default::default()
+        }
+    }
+    ///`AiAutomationListDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationListDataItem {
+        pub attributes: AiAutomationAttributes,
+        pub id: ::uuid::Uuid,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiAutomationListDataItem {
+        pub fn builder() -> builder::AiAutomationListDataItem {
+            Default::default()
+        }
+    }
+    ///`AiAutomationRun`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationRun {
+        pub data: AiAutomationRunData,
+    }
+    impl AiAutomationRun {
+        pub fn builder() -> builder::AiAutomationRun {
+            Default::default()
+        }
+    }
+    ///`AiAutomationRunAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct AiAutomationRunAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub approval_expires_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub automation_id: ::std::option::Option<::uuid::Uuid>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub cost_cents: ::std::option::Option<f64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub error: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub finished_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Incident-linked runs are visible only when the caller's role permits access. OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub incident_id: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub output: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub scheduled_for: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub started_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub status: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub trigger_kind: ::std::option::Option<::std::string::String>,
+    }
+    impl AiAutomationRunAttributes {
+        pub fn builder() -> builder::AiAutomationRunAttributes {
+            Default::default()
+        }
+    }
+    ///`AiAutomationRunData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationRunData {
+        pub attributes: AiAutomationRunAttributes,
+        pub id: ::uuid::Uuid,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiAutomationRunData {
+        pub fn builder() -> builder::AiAutomationRunData {
+            Default::default()
+        }
+    }
+    ///`AiAutomationRunList`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationRunList {
+        pub data: ::std::vec::Vec<AiAutomationRunListDataItem>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub meta: ::std::option::Option<AiAutomationRunListMeta>,
+    }
+    impl AiAutomationRunList {
+        pub fn builder() -> builder::AiAutomationRunList {
+            Default::default()
+        }
+    }
+    ///`AiAutomationRunListDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationRunListDataItem {
+        pub attributes: AiAutomationRunAttributes,
+        pub id: ::uuid::Uuid,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiAutomationRunListDataItem {
+        pub fn builder() -> builder::AiAutomationRunListDataItem {
+            Default::default()
+        }
+    }
+    ///`AiAutomationRunListMeta`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationRunListMeta {
+        ///Present only on the last page of the current scan window; finish page pagination before following it.
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub next_scan_cursor: ::std::option::Option<::std::string::String>,
+    }
+    impl AiAutomationRunListMeta {
+        pub fn builder() -> builder::AiAutomationRunListMeta {
+            Default::default()
+        }
+    }
+    ///Channels Rootly has synced from the team's connected Slack workspace; any returned slack_channel_id is accepted as destination_slack_channel_id. When filter[search] is set, exact channel-name matches come first. When Slack channel user filtering is enabled, personal keys and OAuth tokens only see, and can only set new, channels the user can access in Slack; an update may resend the automation's current channel unchanged.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationSlackChannels {
+        pub data: ::std::vec::Vec<AiAutomationSlackChannelsDataItem>,
+        #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
+        pub meta: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+    }
+    impl AiAutomationSlackChannels {
+        pub fn builder() -> builder::AiAutomationSlackChannels {
+            Default::default()
+        }
+    }
+    ///`AiAutomationSlackChannelsDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiAutomationSlackChannelsDataItem {
+        pub attributes: AiAutomationSlackChannelsDataItemAttributes,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiAutomationSlackChannelsDataItem {
+        pub fn builder() -> builder::AiAutomationSlackChannelsDataItem {
+            Default::default()
+        }
+    }
+    ///`AiAutomationSlackChannelsDataItemAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiAutomationSlackChannelsDataItemAttributes {
+        pub name: ::std::string::String,
+        pub slack_channel_id: ::std::string::String,
+    }
+    impl AiAutomationSlackChannelsDataItemAttributes {
+        pub fn builder() -> builder::AiAutomationSlackChannelsDataItemAttributes {
+            Default::default()
+        }
+    }
     ///Checkpoint state after a confirm or cancel request
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatCheckpointResolution {
@@ -731,6 +1067,9 @@ pub mod types {
         pub id: ::uuid::Uuid,
         ///Message author role
         pub role: ::std::string::String,
+        ///AI Skill loaded during this assistant turn
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub skill: ::std::option::Option<AiChatSessionMessageSkill>,
     }
     impl AiChatSessionMessage {
         pub fn builder() -> builder::AiChatSessionMessage {
@@ -774,6 +1113,19 @@ pub mod types {
             Default::default()
         }
     }
+    ///AI Skill loaded during this assistant turn
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiChatSessionMessageSkill {
+        pub id: ::uuid::Uuid,
+        pub name: ::std::string::String,
+        pub slug: ::std::string::String,
+        pub version: i64,
+    }
+    impl AiChatSessionMessageSkill {
+        pub fn builder() -> builder::AiChatSessionMessageSkill {
+            Default::default()
+        }
+    }
     ///`AiChatSessionTitle`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatSessionTitle {
@@ -788,6 +1140,719 @@ pub mod types {
     impl AiChatSessionTitle {
         pub fn builder() -> builder::AiChatSessionTitle {
             Default::default()
+        }
+    }
+    ///`AiSkill`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct AiSkill {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub body: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by_user_id: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub current_version: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub enabled: ::std::option::Option<bool>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub invocable_by: ::std::vec::Vec<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        ///A user in this organization, or null.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub owner_user_id: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub slug: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source_template_key: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source_template_version: ::std::option::Option<i64>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub tool_grants: ::std::vec::Vec<AiSkillToolGrantsItem>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    }
+    impl AiSkill {
+        pub fn builder() -> builder::AiSkill {
+            Default::default()
+        }
+    }
+    ///`AiSkillGrantableTools`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiSkillGrantableTools {
+        pub data: ::std::vec::Vec<AiSkillGrantableToolsDataItem>,
+    }
+    impl AiSkillGrantableTools {
+        pub fn builder() -> builder::AiSkillGrantableTools {
+            Default::default()
+        }
+    }
+    ///`AiSkillGrantableToolsDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiSkillGrantableToolsDataItem {
+        pub attributes: AiSkillGrantableToolsDataItemAttributes,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiSkillGrantableToolsDataItem {
+        pub fn builder() -> builder::AiSkillGrantableToolsDataItem {
+            Default::default()
+        }
+    }
+    ///`AiSkillGrantableToolsDataItemAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiSkillGrantableToolsDataItemAttributes {
+        pub access: ::std::string::String,
+        pub category: ::std::string::String,
+        pub connector: bool,
+        pub grantable: bool,
+        pub label: ::std::string::String,
+        pub pinnable: bool,
+        pub pinnable_params: ::std::vec::Vec<
+            AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
+        >,
+        pub tool_key: ::std::string::String,
+    }
+    impl AiSkillGrantableToolsDataItemAttributes {
+        pub fn builder() -> builder::AiSkillGrantableToolsDataItemAttributes {
+            Default::default()
+        }
+    }
+    ///`AiSkillGrantableToolsDataItemAttributesPinnableParamsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
+        #[serde(
+            rename = "enum",
+            deserialize_with = "::std::option::Option::deserialize"
+        )]
+        pub enum_: ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+        pub name: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
+        pub fn builder() -> builder::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
+            Default::default()
+        }
+    }
+    ///`AiSkillList`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiSkillList {
+        pub data: ::std::vec::Vec<AiSkillListDataItem>,
+        #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
+        pub meta: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+    }
+    impl AiSkillList {
+        pub fn builder() -> builder::AiSkillList {
+            Default::default()
+        }
+    }
+    ///`AiSkillListDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiSkillListDataItem {
+        pub attributes: AiSkill,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiSkillListDataItem {
+        pub fn builder() -> builder::AiSkillListDataItem {
+            Default::default()
+        }
+    }
+    ///`AiSkillResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiSkillResponse {
+        pub data: AiSkillResponseData,
+    }
+    impl AiSkillResponse {
+        pub fn builder() -> builder::AiSkillResponse {
+            Default::default()
+        }
+    }
+    ///`AiSkillResponseData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiSkillResponseData {
+        pub attributes: AiSkill,
+        ///The skill ID. API path {id} accepts either this ID or the skill slug.
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiSkillResponseData {
+        pub fn builder() -> builder::AiSkillResponseData {
+            Default::default()
+        }
+    }
+    ///`AiSkillToolGrantsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiSkillToolGrantsItem {
+        ///Defaults to the tool's access classification (read or write) when omitted or null.
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub access: ::std::option::Option<::std::string::String>,
+        ///Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub pinned_params: ::std::option::Option<
+            ::std::collections::HashMap<
+                ::std::string::String,
+                AiSkillToolGrantsItemPinnedParamsValue,
+            >,
+        >,
+        pub tool_key: ::std::string::String,
+    }
+    impl AiSkillToolGrantsItem {
+        pub fn builder() -> builder::AiSkillToolGrantsItem {
+            Default::default()
+        }
+    }
+    ///`AiSkillToolGrantsItemPinnedParamsValue`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AiSkillToolGrantsItemPinnedParamsValue {
+        Variant0(AiSkillToolGrantsItemPinnedParamsValueVariant0),
+        Variant1(::std::vec::Vec<AiSkillToolGrantsItemPinnedParamsValueVariant1Item>),
+    }
+    impl ::std::convert::From<AiSkillToolGrantsItemPinnedParamsValueVariant0>
+    for AiSkillToolGrantsItemPinnedParamsValue {
+        fn from(value: AiSkillToolGrantsItemPinnedParamsValueVariant0) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<
+        ::std::vec::Vec<AiSkillToolGrantsItemPinnedParamsValueVariant1Item>,
+    > for AiSkillToolGrantsItemPinnedParamsValue {
+        fn from(
+            value: ::std::vec::Vec<AiSkillToolGrantsItemPinnedParamsValueVariant1Item>,
+        ) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    ///`AiSkillToolGrantsItemPinnedParamsValueVariant0`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AiSkillToolGrantsItemPinnedParamsValueVariant0 {
+        Variant0(
+            ::std::option::Option<AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0>,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0>,
+    > for AiSkillToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(
+            value: ::std::option::Option<
+                AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64> for AiSkillToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool> for AiSkillToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0>
+    for ::std::string::String {
+        fn from(value: AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`AiSkillToolGrantsItemPinnedParamsValueVariant1Item`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AiSkillToolGrantsItemPinnedParamsValueVariant1Item {
+        Variant0(
+            ::std::option::Option<
+                AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            >,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0>,
+    > for AiSkillToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(
+            value: ::std::option::Option<
+                AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64>
+    for AiSkillToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for AiSkillToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0>
+    for ::std::string::String {
+        fn from(
+            value: AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`AiSkillVersion`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct AiSkillVersion {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub body: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by_user_id: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub skill_id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub tool_grants: ::std::vec::Vec<AiSkillVersionToolGrantsItem>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub version: ::std::option::Option<i64>,
+    }
+    impl AiSkillVersion {
+        pub fn builder() -> builder::AiSkillVersion {
+            Default::default()
+        }
+    }
+    ///`AiSkillVersionList`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiSkillVersionList {
+        pub data: ::std::vec::Vec<AiSkillVersionListDataItem>,
+        #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
+        pub meta: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+    }
+    impl AiSkillVersionList {
+        pub fn builder() -> builder::AiSkillVersionList {
+            Default::default()
+        }
+    }
+    ///`AiSkillVersionListDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiSkillVersionListDataItem {
+        pub attributes: AiSkillVersion,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiSkillVersionListDataItem {
+        pub fn builder() -> builder::AiSkillVersionListDataItem {
+            Default::default()
+        }
+    }
+    ///`AiSkillVersionResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiSkillVersionResponse {
+        pub data: AiSkillVersionResponseData,
+    }
+    impl AiSkillVersionResponse {
+        pub fn builder() -> builder::AiSkillVersionResponse {
+            Default::default()
+        }
+    }
+    ///`AiSkillVersionResponseData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiSkillVersionResponseData {
+        pub attributes: AiSkillVersion,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiSkillVersionResponseData {
+        pub fn builder() -> builder::AiSkillVersionResponseData {
+            Default::default()
+        }
+    }
+    ///`AiSkillVersionToolGrantsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiSkillVersionToolGrantsItem {
+        ///Defaults to the tool's access classification (read or write) when omitted or null.
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub access: ::std::option::Option<::std::string::String>,
+        ///Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub pinned_params: ::std::option::Option<
+            ::std::collections::HashMap<
+                ::std::string::String,
+                AiSkillVersionToolGrantsItemPinnedParamsValue,
+            >,
+        >,
+        pub tool_key: ::std::string::String,
+    }
+    impl AiSkillVersionToolGrantsItem {
+        pub fn builder() -> builder::AiSkillVersionToolGrantsItem {
+            Default::default()
+        }
+    }
+    ///`AiSkillVersionToolGrantsItemPinnedParamsValue`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AiSkillVersionToolGrantsItemPinnedParamsValue {
+        Variant0(AiSkillVersionToolGrantsItemPinnedParamsValueVariant0),
+        Variant1(
+            ::std::vec::Vec<AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item>,
+        ),
+    }
+    impl ::std::convert::From<AiSkillVersionToolGrantsItemPinnedParamsValueVariant0>
+    for AiSkillVersionToolGrantsItemPinnedParamsValue {
+        fn from(value: AiSkillVersionToolGrantsItemPinnedParamsValueVariant0) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<
+        ::std::vec::Vec<AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item>,
+    > for AiSkillVersionToolGrantsItemPinnedParamsValue {
+        fn from(
+            value: ::std::vec::Vec<
+                AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item,
+            >,
+        ) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    ///`AiSkillVersionToolGrantsItemPinnedParamsValueVariant0`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AiSkillVersionToolGrantsItemPinnedParamsValueVariant0 {
+        Variant0(
+            ::std::option::Option<
+                AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+            >,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<
+            AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+        >,
+    > for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(
+            value: ::std::option::Option<
+                AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<
+        AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+    > for ::std::string::String {
+        fn from(
+            value: AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item {
+        Variant0(
+            ::std::option::Option<
+                AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            >,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<
+            AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        >,
+    > for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(
+            value: ::std::option::Option<
+                AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<
+        AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+    > for ::std::string::String {
+        fn from(
+            value: AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
         }
     }
     ///`Alert`
@@ -1801,6 +2866,9 @@ pub mod types {
         pub ai_sre_provider: ::std::option::Option<::std::string::String>,
         pub condition_groups: ::std::vec::Vec<AlertRouteRulesItemConditionGroupsItem>,
         pub destinations: ::std::vec::Vec<AlertRouteRulesItemDestinationsItem>,
+        ///[DEPRECATED] Ignored under advanced routing (rules always evaluate) - disable the alert route instead. Still honoured on legacy routing.
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub enabled: bool,
         ///Whether this is a fallback rule
         #[serde(default)]
         pub fallback_rule: bool,
@@ -1824,6 +2892,9 @@ pub mod types {
         pub conditions: ::std::vec::Vec<
             AlertRouteRulesItemConditionGroupsItemConditionsItem,
         >,
+        ///The ID of the condition group. Returned when show_nested_ids is true
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::uuid::Uuid>,
         ///The position of the condition group
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
@@ -1847,6 +2918,9 @@ pub mod types {
         ///The type of the conditionable
         #[serde(deserialize_with = "::std::option::Option::deserialize")]
         pub conditionable_type: ::std::option::Option<::std::string::String>,
+        ///The ID of the condition. Returned when show_nested_ids is true
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::uuid::Uuid>,
         pub property_field_condition_type: ::std::string::String,
         ///The name of the property field
         pub property_field_name: ::std::string::String,
@@ -1867,13 +2941,66 @@ pub mod types {
     ///`AlertRouteRulesItemDestinationsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AlertRouteRulesItemDestinationsItem {
-        ///The ID of the target
-        pub target_id: ::uuid::Uuid,
-        ///The type of the target. Please contact support if you encounter issues using `Functionality` as a target type.
+        ///Dynamic destinations only. The custom catalog's ID when catalog_type is CatalogEntity, null otherwise
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_id: ::std::option::Option<::uuid::Uuid>,
+        ///Dynamic destinations only. The catalog the matched entity belongs to
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_type: ::std::option::Option<::std::string::String>,
+        ///The ID of the destination. Returned when show_nested_ids is true
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::uuid::Uuid>,
+        ///Dynamic destinations only. How an alert value is matched to a catalog entity property. Exactly one match key is supported
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub match_keys: ::std::option::Option<
+            [AlertRouteRulesItemDestinationsItemMatchKeysItem; 1usize],
+        >,
+        ///The ID of the target. Required for every target_type except `dynamic`, which does not use it
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub target_id: ::std::option::Option<::uuid::Uuid>,
+        ///The type of the target. `dynamic` pages the escalation policy of the catalog entity matched from the alert, takes catalog_type, catalog_id and match_keys instead of target_id, and is only available when dynamic alert routing is enabled for the organization. Please contact support if you encounter issues using `Functionality` as a target type.
         pub target_type: ::std::string::String,
     }
     impl AlertRouteRulesItemDestinationsItem {
         pub fn builder() -> builder::AlertRouteRulesItemDestinationsItem {
+            Default::default()
+        }
+    }
+    ///`AlertRouteRulesItemDestinationsItemMatchKeysItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AlertRouteRulesItemDestinationsItemMatchKeysItem {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub normalizers: ::std::option::Option<
+            AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >,
+        ///The catalog property to match: `builtin:<name>` (for example `builtin:external_id`) or the ID of a text catalog field
+        pub property_ref: ::std::string::String,
+        ///Where the alert value comes from
+        pub source_kind: ::std::string::String,
+        ///A JSONPath into the payload for `payload`, an alert attribute name for `attribute`, or an alert field ID for `alert_field`
+        pub source_ref: ::std::string::String,
+    }
+    impl AlertRouteRulesItemDestinationsItemMatchKeysItem {
+        pub fn builder() -> builder::AlertRouteRulesItemDestinationsItemMatchKeysItem {
+            Default::default()
+        }
+    }
+    ///Value normalizers. Not supported yet: send the booleans as false and the strings as null or empty, or leave normalizers out
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub extract_pattern: ::std::option::Option<::std::string::String>,
+        #[serde(default)]
+        pub ignore_case: bool,
+        #[serde(default)]
+        pub ignore_whitespace: bool,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub strip_prefix: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub strip_suffix: ::std::option::Option<::std::string::String>,
+    }
+    impl AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers {
+        pub fn builder() -> builder::AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers {
             Default::default()
         }
     }
@@ -1898,7 +3025,7 @@ pub mod types {
         ///The destinations for the alert routing rule
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub destination: ::std::option::Option<AlertRoutingRuleDestination>,
-        ///Whether the alert routing rule is enabled
+        ///Defaults to true. Ignored under advanced routing (rules always evaluate) - disable the alert route instead. Honoured on legacy routing.
         pub enabled: bool,
         ///The name of the alert routing rule
         pub name: ::std::string::String,
@@ -2381,6 +3508,9 @@ pub mod types {
         ///ID for the default alert urgency assigned to this alert source
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub alert_urgency_id: ::std::option::Option<::std::string::String>,
+        ///Whether to attach the alert source's owning teams to its alerts. Attached teams are not paged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub attach_owner_groups_to_alerts: ::std::option::Option<bool>,
         ///Date of creation
         pub created_at: ::std::string::String,
         ///Toggle alert deduplication using deduplication key. If enabled, deduplication_key_kind and deduplication_key_path are required.
@@ -6474,6 +7604,59 @@ pub mod types {
             Default::default()
         }
     }
+    ///`CountObservabilityLogsResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct CountObservabilityLogsResponse {
+        pub data: ::std::vec::Vec<CountObservabilityLogsResponseDataItem>,
+        pub meta: CountObservabilityLogsResponseMeta,
+    }
+    impl CountObservabilityLogsResponse {
+        pub fn builder() -> builder::CountObservabilityLogsResponse {
+            Default::default()
+        }
+    }
+    ///`CountObservabilityLogsResponseDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct CountObservabilityLogsResponseDataItem {
+        pub attributes: CountObservabilityLogsResponseDataItemAttributes,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl CountObservabilityLogsResponseDataItem {
+        pub fn builder() -> builder::CountObservabilityLogsResponseDataItem {
+            Default::default()
+        }
+    }
+    ///`CountObservabilityLogsResponseDataItemAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct CountObservabilityLogsResponseDataItemAttributes {
+        pub count: i64,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub logs_query: ::std::option::Option<::std::string::String>,
+        pub value: ::std::string::String,
+    }
+    impl CountObservabilityLogsResponseDataItemAttributes {
+        pub fn builder() -> builder::CountObservabilityLogsResponseDataItemAttributes {
+            Default::default()
+        }
+    }
+    ///`CountObservabilityLogsResponseMeta`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct CountObservabilityLogsResponseMeta {
+        pub group_by: ::std::string::String,
+        pub query: ::std::string::String,
+        pub returned: i64,
+        pub total: i64,
+        pub truncated: bool,
+        pub warnings: ::std::vec::Vec<ObservabilityWarning>,
+        pub window: ObservabilityWindow,
+    }
+    impl CountObservabilityLogsResponseMeta {
+        pub fn builder() -> builder::CountObservabilityLogsResponseMeta {
+            Default::default()
+        }
+    }
     ///`CreateAirtableTableRecordTaskParams`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct CreateAirtableTableRecordTaskParams {
@@ -7443,6 +8626,9 @@ pub mod types {
         ///[DEPRECATED] The meeting description
         #[serde(deserialize_with = "::std::option::Option::deserialize")]
         pub description: ::std::option::Option<::std::string::String>,
+        ///Invite the signed-in Rootly bot to the meeting so it joins without waiting to be admitted. Only takes effect when the Google Meet integration's auto-join setting is on and the integration has calendar event access; setting it to false turns auto-join off for this task
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub enable_google_meet_bot_auto_join: ::std::option::Option<bool>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub post_to_incident_timeline: ::std::option::Option<bool>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -11526,12 +12712,15 @@ pub mod types {
     pub struct FormSet {
         ///Date of creation
         pub created_at: ::std::string::String,
-        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`
+        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `google_chat_scheduled_incident_form`, `microsoft_teams_new_incident_form`. A `problem` form set accepts only problem forms: `web_new_problem_form`, `web_update_problem_form`, `web_problem_in_progress_form`, `web_problem_deferred_form`, `web_problem_completed_form`, `web_problem_cancelled_form`
         pub forms: ::std::vec::Vec<::std::string::String>,
         ///Whether the form set is default
         pub is_default: bool,
         ///The name of the form set
         pub name: ::std::string::String,
+        ///The area the form set applies to. `problem` form sets are only returned when Problem Management is enabled.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub resource_type: ::std::option::Option<::std::string::String>,
         ///The slug of the form set
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub slug: ::std::option::Option<::std::string::String>,
@@ -12125,6 +13314,9 @@ pub mod types {
         ///Urgency of alerts triggered when heartbeat expires.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub alert_urgency_id: ::std::option::Option<::std::string::String>,
+        ///Whether to attach this heartbeat's owning teams to the alerts it creates. Attached teams are not paged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub attach_owner_groups_to_alerts: ::std::option::Option<bool>,
         ///Date of creation
         pub created_at: ::std::string::String,
         ///The description of the heartbeat
@@ -12858,7 +14050,7 @@ pub mod types {
         ///The Jira issue key.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub jira_issue_key: ::std::option::Option<::std::string::String>,
-        ///The Jira issue URL.
+        ///The Jira issue URL. Links saved before validation was added may not match the request format.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub jira_issue_url: ::std::option::Option<::std::string::String>,
         ///The kind of the action item
@@ -15164,6 +16356,117 @@ pub mod types {
             Default::default()
         }
     }
+    ///The single browser IP allowlist for an organization. It restricts authenticated browser requests under /account; it does not restrict API requests. Only organization owners and admins can manage it.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct IpAllowlist {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Whether the allowlist is enforced for authenticated browser requests.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub enabled: ::std::option::Option<bool>,
+        ///The complete ordered list of allowed IP addresses and CIDR ranges. PUT replaces the entire list; omitted entries on PATCH keep the stored list. Validation errors use 'line N' for the Nth entry in the list.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub entries: ::std::vec::Vec<IpAllowlistEntriesItem>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    }
+    impl IpAllowlist {
+        pub fn builder() -> builder::IpAllowlist {
+            Default::default()
+        }
+    }
+    ///`IpAllowlistEntriesItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct IpAllowlistEntriesItem {
+        ///An IPv4 or IPv6 address or CIDR range.
+        pub cidr: ::std::string::String,
+        ///An optional label for this network.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub label: ::std::option::Option<IpAllowlistEntriesItemLabel>,
+    }
+    impl IpAllowlistEntriesItem {
+        pub fn builder() -> builder::IpAllowlistEntriesItem {
+            Default::default()
+        }
+    }
+    ///An optional label for this network.
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct IpAllowlistEntriesItemLabel(::std::string::String);
+    impl ::std::ops::Deref for IpAllowlistEntriesItemLabel {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<IpAllowlistEntriesItemLabel> for ::std::string::String {
+        fn from(value: IpAllowlistEntriesItemLabel) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr for IpAllowlistEntriesItemLabel {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() > 100usize {
+                return Err("longer than 100 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str> for IpAllowlistEntriesItemLabel {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String> for IpAllowlistEntriesItemLabel {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de> for IpAllowlistEntriesItemLabel {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`IpAllowlistResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct IpAllowlistResponse {
+        pub data: IpAllowlistResponseData,
+    }
+    impl IpAllowlistResponse {
+        pub fn builder() -> builder::IpAllowlistResponse {
+            Default::default()
+        }
+    }
+    ///`IpAllowlistResponseData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct IpAllowlistResponseData {
+        pub attributes: IpAllowlist,
+        ///Unique ID of the ip_allowlists resource
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl IpAllowlistResponseData {
+        pub fn builder() -> builder::IpAllowlistResponseData {
+            Default::default()
+        }
+    }
     ///`IpRanges`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct IpRanges {
@@ -15273,6 +16576,187 @@ pub mod types {
     }
     impl Links {
         pub fn builder() -> builder::Links {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityLogsResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ListObservabilityLogsResponse {
+        pub data: ::std::vec::Vec<ListObservabilityLogsResponseDataItem>,
+        pub links: ListObservabilityLogsResponseLinks,
+        pub meta: ListObservabilityLogsResponseMeta,
+    }
+    impl ListObservabilityLogsResponse {
+        pub fn builder() -> builder::ListObservabilityLogsResponse {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityLogsResponseDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ListObservabilityLogsResponseDataItem {
+        pub attributes: ListObservabilityLogsResponseDataItemAttributes,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ListObservabilityLogsResponseDataItem {
+        pub fn builder() -> builder::ListObservabilityLogsResponseDataItem {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityLogsResponseDataItemAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct ListObservabilityLogsResponseDataItemAttributes {
+        #[serde(
+            default,
+            skip_serializing_if = ":: std :: collections :: HashMap::is_empty"
+        )]
+        pub attributes: ::std::collections::HashMap<
+            ::std::string::String,
+            ::std::string::String,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub body: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub index: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pattern_hash: ::std::option::Option<::std::string::String>,
+        #[serde(
+            default,
+            skip_serializing_if = ":: std :: collections :: HashMap::is_empty"
+        )]
+        pub resource_attributes: ::std::collections::HashMap<
+            ::std::string::String,
+            ::std::string::String,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub service: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub severity: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub span_id: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub timestamp: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub trace_id: ::std::option::Option<::std::string::String>,
+    }
+    impl ListObservabilityLogsResponseDataItemAttributes {
+        pub fn builder() -> builder::ListObservabilityLogsResponseDataItemAttributes {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityLogsResponseLinks`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct ListObservabilityLogsResponseLinks {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub next: ::std::option::Option<::std::string::String>,
+    }
+    impl ListObservabilityLogsResponseLinks {
+        pub fn builder() -> builder::ListObservabilityLogsResponseLinks {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityLogsResponseMeta`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ListObservabilityLogsResponseMeta {
+        pub page: ListObservabilityLogsResponseMetaPage,
+        pub query: ::std::string::String,
+        pub returned: i64,
+        pub truncated: bool,
+        pub warnings: ::std::vec::Vec<ObservabilityWarning>,
+        pub window: ObservabilityWindow,
+    }
+    impl ListObservabilityLogsResponseMeta {
+        pub fn builder() -> builder::ListObservabilityLogsResponseMeta {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityLogsResponseMetaPage`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct ListObservabilityLogsResponseMetaPage {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub next_cursor: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub size: ::std::option::Option<i64>,
+    }
+    impl ListObservabilityLogsResponseMetaPage {
+        pub fn builder() -> builder::ListObservabilityLogsResponseMetaPage {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityPatternsResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ListObservabilityPatternsResponse {
+        pub data: ::std::vec::Vec<ListObservabilityPatternsResponseDataItem>,
+        pub meta: ListObservabilityPatternsResponseMeta,
+    }
+    impl ListObservabilityPatternsResponse {
+        pub fn builder() -> builder::ListObservabilityPatternsResponse {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityPatternsResponseDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ListObservabilityPatternsResponseDataItem {
+        pub attributes: ListObservabilityPatternsResponseDataItemAttributes,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ListObservabilityPatternsResponseDataItem {
+        pub fn builder() -> builder::ListObservabilityPatternsResponseDataItem {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityPatternsResponseDataItemAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct ListObservabilityPatternsResponseDataItemAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub change_percent: ::std::option::Option<i64>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub detectors: ::std::vec::Vec<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub errors: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub first_seen: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub logs_query: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub max_severity: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pattern_hash: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub previous_total: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub service: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub template: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub total: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub warnings: ::std::option::Option<i64>,
+    }
+    impl ListObservabilityPatternsResponseDataItemAttributes {
+        pub fn builder() -> builder::ListObservabilityPatternsResponseDataItemAttributes {
+            Default::default()
+        }
+    }
+    ///`ListObservabilityPatternsResponseMeta`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ListObservabilityPatternsResponseMeta {
+        pub flagged: bool,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ignored_filters: ::std::option::Option<::std::string::String>,
+        pub previous_window: ObservabilityWindow,
+        pub query: ::std::string::String,
+        pub returned: i64,
+        pub sort: ::std::string::String,
+        pub truncated: bool,
+        pub warnings: ::std::vec::Vec<ObservabilityWarning>,
+        pub window: ObservabilityWindow,
+    }
+    impl ListObservabilityPatternsResponseMeta {
+        pub fn builder() -> builder::ListObservabilityPatternsResponseMeta {
             Default::default()
         }
     }
@@ -15589,7 +17073,17 @@ pub mod types {
         ///Human-readable label for the recording session
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub title: ::std::option::Option<::std::string::String>,
-        ///AI-generated summary of the meeting transcript (null if no transcript or not yet analyzed)
+        ///When the retention policy deleted the transcript, summary and video. Platform, times and duration are kept. Null if not deleted.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub transcript_deleted_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Expiry boundary for the transcript, summary and video; deletion runs after. Only set while retention deletion is on, else null.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub transcript_expires_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///AI-generated summary of the meeting transcript (null if no transcript, not yet analyzed, or deleted by the transcript retention policy)
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub transcript_summary: ::std::option::Option<::std::string::String>,
         ///When the recording session was last updated
@@ -15650,10 +17144,20 @@ pub mod types {
         ///Human-readable label for the recording session
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub title: ::std::option::Option<::std::string::String>,
-        ///Array of speaker segments when populated, empty object when no transcript exists.
+        ///Array of speaker segments when populated, empty object when no transcript exists. An empty array after the transcript retention policy deleted the transcript.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub transcript: ::std::option::Option<MeetingRecordingDetailTranscript>,
-        ///AI-generated summary of the meeting transcript (null if no transcript or not yet analyzed)
+        ///When the retention policy deleted the transcript, summary and video. Platform, times and duration are kept. Null if not deleted.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub transcript_deleted_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Expiry boundary for the transcript, summary and video; deletion runs after. Only set while retention deletion is on, else null.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub transcript_expires_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///AI-generated summary of the meeting transcript (null if no transcript, not yet analyzed, or deleted by the transcript retention policy)
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub transcript_summary: ::std::option::Option<::std::string::String>,
         ///When the recording session was last updated
@@ -15694,7 +17198,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Array of speaker segments when populated, empty object when no transcript exists.
+    ///Array of speaker segments when populated, empty object when no transcript exists. An empty array after the transcript retention policy deleted the transcript.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
     pub enum MeetingRecordingDetailTranscript {
@@ -15850,6 +17354,627 @@ pub mod types {
     impl MitigateIncidentDataAttributes {
         pub fn builder() -> builder::MitigateIncidentDataAttributes {
             Default::default()
+        }
+    }
+    ///`NewAiAutomation`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomation {
+        pub data: NewAiAutomationData,
+    }
+    impl NewAiAutomation {
+        pub fn builder() -> builder::NewAiAutomation {
+            Default::default()
+        }
+    }
+    ///`NewAiAutomationData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomationData {
+        pub attributes: NewAiAutomationDataAttributes,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl NewAiAutomationData {
+        pub fn builder() -> builder::NewAiAutomationData {
+            Default::default()
+        }
+    }
+    ///Read-only attributes are ignored on write.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomationDataAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub conditions: ::std::option::Option<NewAiAutomationDataAttributesConditions>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub consecutive_failures_count: ::std::option::Option<i64>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by_user_id: ::std::option::Option<i64>,
+        ///slack_channel requires destination_slack_channel_id. incident_timeline is only valid for event automations triggered by incident events. Defaults to none when omitted, or slack_channel when destination_slack_channel_id is provided.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_kind: ::std::option::Option<::std::string::String>,
+        ///Slack channel ID (e.g. C0123ABCD) or channel name (optional leading #) of a channel Rootly has already synced from the team's connected Slack workspace; names are matched case-insensitively and resolved to the channel ID on write. Channels created very recently may not be synced yet and are rejected until they are. Setting a channel sets destination_kind to slack_channel when destination_kind is omitted; sending a new channel with any other destination_kind is rejected. null is ignored on write; to stop posting to Slack, change destination_kind instead. When Slack channel user filtering is enabled, personal keys and OAuth tokens only see, and can only set new, channels the user can access in Slack; an update may resend the automation's current channel unchanged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_slack_channel_id: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_slack_channel_name: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub disabled_reason: ::std::option::Option<::std::string::String>,
+        ///Defaults to false.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub enabled: ::std::option::Option<bool>,
+        ///Required when trigger_kind is event. null is accepted only for schedule automations, where it is ignored.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub event_name: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub last_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Defaults to true. Stored limits are returned even when false and apply only when true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub limits_enabled: ::std::option::Option<bool>,
+        ///Defaults to no limit (null); null or 0 means no limit. Stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub max_credits_per_run: ::std::option::Option<
+            NewAiAutomationDataAttributesMaxCreditsPerRun,
+        >,
+        pub name: ::std::string::String,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub next_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub owner_user_id: ::std::option::Option<i64>,
+        pub prompt: ::std::string::String,
+        ///Defaults to 24. Stored value is returned even when limits are disabled and only applies when limits_enabled is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub rate_limit_runs: ::std::option::Option<::std::num::NonZeroU64>,
+        ///Defaults to 1_day. Stored value is returned even when limits are disabled and only applies when limits_enabled is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub rate_limit_window: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule: ::std::option::Option<NewAiAutomationDataAttributesSchedule>,
+        ///Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_rrule: ::std::option::Option<::std::string::String>,
+        ///Alias for schedule.timezone.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_timezone: ::std::option::Option<::std::string::String>,
+        ///If omitted on update, current attachments are kept. Skills that are no longer invocable by automations are detached the next time an update changes the automation; unchanged updates return the automation as-is.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub skill_ids: ::std::vec::Vec<::uuid::Uuid>,
+        ///Defaults to schedule. Switching triggers on update requires the new trigger's active configuration; fields belonging to the previous trigger are ignored.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub trigger_kind: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    }
+    impl NewAiAutomationDataAttributes {
+        pub fn builder() -> builder::NewAiAutomationDataAttributes {
+            Default::default()
+        }
+    }
+    ///Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct NewAiAutomationDataAttributesConditions {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub any: ::std::vec::Vec<NewAiAutomationDataAttributesConditionsAnyItem>,
+    }
+    impl NewAiAutomationDataAttributesConditions {
+        pub fn builder() -> builder::NewAiAutomationDataAttributesConditions {
+            Default::default()
+        }
+    }
+    ///`NewAiAutomationDataAttributesConditionsAnyItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesConditionsAnyItem {
+        pub all: ::std::vec::Vec<NewAiAutomationDataAttributesConditionsAnyItemAllItem>,
+    }
+    impl NewAiAutomationDataAttributesConditionsAnyItem {
+        pub fn builder() -> builder::NewAiAutomationDataAttributesConditionsAnyItem {
+            Default::default()
+        }
+    }
+    ///`NewAiAutomationDataAttributesConditionsAnyItemAllItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesConditionsAnyItemAllItem {
+        pub field: ::std::string::String,
+        pub operator: ::std::string::String,
+        ///Omitted for present/blank operators.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub value: ::std::option::Option<
+            NewAiAutomationDataAttributesConditionsAnyItemAllItemValue,
+        >,
+    }
+    impl NewAiAutomationDataAttributesConditionsAnyItemAllItem {
+        pub fn builder() -> builder::NewAiAutomationDataAttributesConditionsAnyItemAllItem {
+            Default::default()
+        }
+    }
+    ///Omitted for present/blank operators.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum NewAiAutomationDataAttributesConditionsAnyItemAllItemValue {
+        String(::std::string::String),
+        Number(f64),
+        Boolean(bool),
+    }
+    impl ::std::fmt::Display
+    for NewAiAutomationDataAttributesConditionsAnyItemAllItemValue {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match self {
+                Self::String(x) => x.fmt(f),
+                Self::Number(x) => x.fmt(f),
+                Self::Boolean(x) => x.fmt(f),
+            }
+        }
+    }
+    impl ::std::convert::From<f64>
+    for NewAiAutomationDataAttributesConditionsAnyItemAllItemValue {
+        fn from(value: f64) -> Self {
+            Self::Number(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for NewAiAutomationDataAttributesConditionsAnyItemAllItemValue {
+        fn from(value: bool) -> Self {
+            Self::Boolean(value)
+        }
+    }
+    ///Defaults to no limit (null); null or 0 means no limit. Stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum NewAiAutomationDataAttributesMaxCreditsPerRun {
+        Variant0(NewAiAutomationDataAttributesMaxCreditsPerRunVariant0),
+        Variant1(f64),
+        Variant2,
+    }
+    impl ::std::convert::From<NewAiAutomationDataAttributesMaxCreditsPerRunVariant0>
+    for NewAiAutomationDataAttributesMaxCreditsPerRun {
+        fn from(value: NewAiAutomationDataAttributesMaxCreditsPerRunVariant0) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<f64> for NewAiAutomationDataAttributesMaxCreditsPerRun {
+        fn from(value: f64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    ///`NewAiAutomationDataAttributesMaxCreditsPerRunVariant0`
+    #[derive(::serde::Serialize, Clone, Debug)]
+    #[serde(transparent)]
+    pub struct NewAiAutomationDataAttributesMaxCreditsPerRunVariant0(f64);
+    impl ::std::ops::Deref for NewAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
+        type Target = f64;
+        fn deref(&self) -> &f64 {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<NewAiAutomationDataAttributesMaxCreditsPerRunVariant0>
+    for f64 {
+        fn from(value: NewAiAutomationDataAttributesMaxCreditsPerRunVariant0) -> Self {
+            value.0
+        }
+    }
+    impl ::std::convert::TryFrom<f64>
+    for NewAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: f64,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if ![0.0_f64].contains(&value) {
+                Err("invalid value".into())
+            } else {
+                Ok(Self(value))
+            }
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for NewAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            Self::try_from(<f64>::deserialize(deserializer)?)
+                .map_err(|e| { <D::Error as ::serde::de::Error>::custom(e.to_string()) })
+        }
+    }
+    ///For schedule triggers, defaults to daily at 09:00. schedule.timezone defaults to UTC.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct NewAiAutomationDataAttributesSchedule {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub frequency: ::std::option::Option<::std::string::String>,
+        ///Not used for hourly schedules.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub hour: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub timezone: ::std::option::Option<::std::string::String>,
+        ///Only used for weekly schedules.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub weekday: ::std::option::Option<::std::string::String>,
+    }
+    impl NewAiAutomationDataAttributesSchedule {
+        pub fn builder() -> builder::NewAiAutomationDataAttributesSchedule {
+            Default::default()
+        }
+    }
+    ///`NewAiAutomationRun`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomationRun {
+        pub data: NewAiAutomationRunData,
+    }
+    impl NewAiAutomationRun {
+        pub fn builder() -> builder::NewAiAutomationRun {
+            Default::default()
+        }
+    }
+    ///`NewAiAutomationRunData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomationRunData {
+        pub attributes: NewAiAutomationRunDataAttributes,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl NewAiAutomationRunData {
+        pub fn builder() -> builder::NewAiAutomationRunData {
+            Default::default()
+        }
+    }
+    ///`NewAiAutomationRunDataAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct NewAiAutomationRunDataAttributes {
+        ///Incident UUID or sequential reference such as INC-123; OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub incident_id: ::std::option::Option<::std::string::String>,
+    }
+    impl NewAiAutomationRunDataAttributes {
+        pub fn builder() -> builder::NewAiAutomationRunDataAttributes {
+            Default::default()
+        }
+    }
+    ///Create a skill. New skills are disabled unless enabled is explicitly true. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. Pinned parameters apply only to write access. Read-only attributes are ignored on write.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiSkill {
+        pub data: NewAiSkillData,
+    }
+    impl NewAiSkill {
+        pub fn builder() -> builder::NewAiSkill {
+            Default::default()
+        }
+    }
+    ///`NewAiSkillData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiSkillData {
+        pub attributes: NewAiSkillDataAttributes,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl NewAiSkillData {
+        pub fn builder() -> builder::NewAiSkillData {
+            Default::default()
+        }
+    }
+    ///`NewAiSkillDataAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiSkillDataAttributes {
+        pub body: ::std::string::String,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by_user_id: ::std::option::Option<i64>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub current_version: ::std::option::Option<i64>,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub description: ::std::option::Option<::std::string::String>,
+        #[serde(default)]
+        pub enabled: bool,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub invocable_by: ::std::vec::Vec<::std::string::String>,
+        pub name: ::std::string::String,
+        ///Must be a user in this organization. On create, null or omission defaults to the caller; on update, null or an unset owner falls back to the caller, while omission preserves an existing owner.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub owner_user_id: ::std::option::Option<i64>,
+        ///Optional custom slug; generated from the name when omitted.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub slug: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source_template_key: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source_template_version: ::std::option::Option<i64>,
+        ///Replaces the editable grant list. Grants on tools the caller cannot see are kept.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub tool_grants: ::std::vec::Vec<NewAiSkillDataAttributesToolGrantsItem>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    }
+    impl NewAiSkillDataAttributes {
+        pub fn builder() -> builder::NewAiSkillDataAttributes {
+            Default::default()
+        }
+    }
+    ///`NewAiSkillDataAttributesToolGrantsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiSkillDataAttributesToolGrantsItem {
+        ///Defaults to the tool's access classification (read or write) when omitted or null.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub access: ::std::option::Option<::std::string::String>,
+        ///Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pinned_params: ::std::option::Option<
+            ::std::collections::HashMap<
+                ::std::string::String,
+                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
+            >,
+        >,
+        pub tool_key: ::std::string::String,
+    }
+    impl NewAiSkillDataAttributesToolGrantsItem {
+        pub fn builder() -> builder::NewAiSkillDataAttributesToolGrantsItem {
+            Default::default()
+        }
+    }
+    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+        Variant0(NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0),
+        Variant1(
+            ::std::vec::Vec<
+                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+            >,
+        ),
+    }
+    impl ::std::convert::From<
+        NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0,
+    > for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+        fn from(
+            value: NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<
+        ::std::vec::Vec<
+            NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+        >,
+    > for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+        fn from(
+            value: ::std::vec::Vec<
+                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+            >,
+        ) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+        Variant0(
+            ::std::option::Option<
+                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+            >,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<
+            NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+        >,
+    > for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(
+            value: ::std::option::Option<
+                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<
+        NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+    > for ::std::string::String {
+        fn from(
+            value: NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+        Variant0(
+            ::std::option::Option<
+                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            >,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<
+            NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        >,
+    > for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(
+            value: ::std::option::Option<
+                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<
+        NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+    > for ::std::string::String {
+        fn from(
+            value: NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
         }
     }
     ///`NewAlert`
@@ -16365,6 +18490,9 @@ pub mod types {
         pub destinations: ::std::vec::Vec<
             NewAlertRouteDataAttributesRulesItemDestinationsItem,
         >,
+        ///[DEPRECATED] Ignored under advanced routing (rules always evaluate) - disable the alert route instead. Still honoured on legacy routing.
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub enabled: bool,
         ///Whether this is a fallback rule
         #[serde(default)]
         pub fallback_rule: bool,
@@ -16432,13 +18560,63 @@ pub mod types {
     ///`NewAlertRouteDataAttributesRulesItemDestinationsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAlertRouteDataAttributesRulesItemDestinationsItem {
-        ///The ID of the target
-        pub target_id: ::uuid::Uuid,
-        ///The type of the target. Please contact support if you encounter issues using `Functionality` as a target type.
+        ///Dynamic destinations only. The custom catalog's ID when catalog_type is CatalogEntity, null otherwise
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_id: ::std::option::Option<::uuid::Uuid>,
+        ///Dynamic destinations only. The catalog the matched entity belongs to
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_type: ::std::option::Option<::std::string::String>,
+        ///Dynamic destinations only. How an alert value is matched to a catalog entity property. Exactly one match key is supported
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub match_keys: ::std::option::Option<
+            [NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+        >,
+        ///The ID of the target. Required for every target_type except `dynamic`, which does not use it
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub target_id: ::std::option::Option<::uuid::Uuid>,
+        ///The type of the target. `dynamic` pages the escalation policy of the catalog entity matched from the alert, takes catalog_type, catalog_id and match_keys instead of target_id, and is only available when dynamic alert routing is enabled for the organization. Please contact support if you encounter issues using `Functionality` as a target type.
         pub target_type: ::std::string::String,
     }
     impl NewAlertRouteDataAttributesRulesItemDestinationsItem {
         pub fn builder() -> builder::NewAlertRouteDataAttributesRulesItemDestinationsItem {
+            Default::default()
+        }
+    }
+    ///`NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub normalizers: ::std::option::Option<
+            NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >,
+        ///The catalog property to match: `builtin:<name>` (for example `builtin:external_id`) or the ID of a text catalog field
+        pub property_ref: ::std::string::String,
+        ///Where the alert value comes from
+        pub source_kind: ::std::string::String,
+        ///A JSONPath into the payload for `payload`, an alert attribute name for `attribute`, or an alert field ID for `alert_field`
+        pub source_ref: ::std::string::String,
+    }
+    impl NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+        pub fn builder() -> builder::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            Default::default()
+        }
+    }
+    ///Value normalizers. Not supported yet: send the booleans as false and the strings as null or empty, or leave normalizers out
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub extract_pattern: ::std::option::Option<::std::string::String>,
+        #[serde(default)]
+        pub ignore_case: bool,
+        #[serde(default)]
+        pub ignore_whitespace: bool,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub strip_prefix: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub strip_suffix: ::std::option::Option<::std::string::String>,
+    }
+    impl NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+        pub fn builder() -> builder::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
             Default::default()
         }
     }
@@ -16478,9 +18656,9 @@ pub mod types {
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub conditions: ::std::vec::Vec<NewAlertRoutingRuleDataAttributesConditionsItem>,
         pub destination: NewAlertRoutingRuleDataAttributesDestination,
-        ///Whether the alert routing rule is enabled
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub enabled: ::std::option::Option<bool>,
+        ///Defaults to true. Ignored under advanced routing (rules always evaluate) - disable the alert route instead. Honoured on legacy routing.
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub enabled: bool,
         ///The name of the alert routing rule
         pub name: ::std::string::String,
         ///The IDs of the teams which own the alert routing rule. If the user doesn't have Alert Routing Create Permission in On-Call Roles, then this field is required and can contain Team IDs the user is an admin of.
@@ -16671,6 +18849,9 @@ pub mod types {
         ///ID for the default alert urgency assigned to this alert source
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub alert_urgency_id: ::std::option::Option<::std::string::String>,
+        ///Whether to attach the alert source's owning teams to its alerts. Attached teams are not paged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub attach_owner_groups_to_alerts: ::std::option::Option<bool>,
         ///Toggle alert deduplication using deduplication key. If enabled, deduplication_key_kind and deduplication_key_path are required.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub deduplicate_alerts_by_key: ::std::option::Option<bool>,
@@ -18816,13 +20997,13 @@ pub mod types {
         ///The input kind of the form field
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub input_kind: ::std::option::Option<::std::string::String>,
-        ///The kind of the form field
+        ///The kind of the form field. Problem fields accept `custom` or a built-in problem kind (`problem_services`, `problem_environments`, `problem_functionalities`, `problem_teams`). Posting a built-in problem kind sets up that field with its fixed `multi_select` input kind and native value kind (`value_kind: inherit` is also accepted and resolves to the native value kind); if the team already has it, the existing field is returned unchanged with `200` instead of creating a duplicate, provided the API key can read form fields (otherwise `404`). `problem_environments` and `problem_functionalities` require the matching native field to be enabled for the team. If the team has no default Problem form set yet, it is provisioned with the standard built-in fields, the same as when the first custom problem field is created. Status form and core problem kinds are managed by Rootly and can't be created.
         pub kind: ::std::string::String,
         ///The name of the form field
         pub name: ::std::string::String,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub required: ::std::vec::Vec<::std::string::String>,
-        ///The resource type this field belongs to. Defaults to `incident`. `problem` requires Problem Management to be enabled for the team and is only supported for kind `custom`. The legacy `shown`/`required` attributes are incident-only and cannot be set on a `problem` field. Creating or switching to a `problem` field provisions the team's default problem form set if it doesn't exist yet and the caller has form field create permission.
+        ///The resource type this field belongs to. Defaults to `incident`. `problem` requires Problem Management to be enabled for the team and is only supported for kind `custom` and the built-in problem kinds. The legacy `shown`/`required` attributes are incident-only and cannot be set on a `problem` field. Creating or switching to a `problem` field provisions the team's default problem form set if it doesn't exist yet and the caller has form field create permission.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub resource_type: ::std::option::Option<::std::string::String>,
         ///Whether the form field is shown on the incident details panel
@@ -19079,10 +21260,13 @@ pub mod types {
     ///`NewFormSetDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewFormSetDataAttributes {
-        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`
+        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `google_chat_scheduled_incident_form`, `microsoft_teams_new_incident_form`. A `problem` form set accepts only problem forms: `web_new_problem_form`, `web_update_problem_form`, `web_problem_in_progress_form`, `web_problem_deferred_form`, `web_problem_completed_form`, `web_problem_cancelled_form`
         pub forms: ::std::vec::Vec<::std::string::String>,
         ///The name of the form set
         pub name: ::std::string::String,
+        ///The resource type this form set belongs to. Defaults to `incident`. `problem` requires Problem Management to be enabled for the team, and also provisions the team's default problem form set if it doesn't exist yet. Ignored on update. Cannot be changed after creation.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub resource_type: ::std::option::Option<::std::string::String>,
         ///Deprecated. `slug` is derived from `name`; any submitted value is ignored. This property will be removed from the request schema in a future version.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub slug: ::std::option::Option<::std::string::String>,
@@ -19314,6 +21498,9 @@ pub mod types {
         ///Urgency of alerts triggered when heartbeat expires.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub alert_urgency_id: ::std::option::Option<::std::string::String>,
+        ///Whether to attach this heartbeat's owning teams to the alerts it creates. Attached teams are not paged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub attach_owner_groups_to_alerts: ::std::option::Option<bool>,
         ///The description of the heartbeat
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
@@ -19394,7 +21581,7 @@ pub mod types {
         ///The Jira issue key.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub jira_issue_key: ::std::option::Option<::std::string::String>,
-        ///The Jira issue URL.
+        ///The Jira issue URL. Must be a single HTTPS link ending in the issue key, like https://your-site.atlassian.net/browse/KEY-123. Host not checked.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub jira_issue_url: ::std::option::Option<::std::string::String>,
         ///The kind of the action item
@@ -21137,15 +23324,9 @@ pub mod types {
         ///IDs of incidents to link to the problem
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub incident_ids: ::std::vec::Vec<::std::string::String>,
-        ///The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later
+        ///The next review date and time for a deferred problem. It must include a time; a date without a time (YYYY-MM-DD) is rejected. A timestamp with an offset or Z is stored as that instant; one without an offset is read in the acting user's time zone. Seconds are dropped (rounded down to the minute), and the result must be later than the current time
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub next_review_at: ::std::option::Option<::std::string::String>,
-        ///ID of the group (team) that owns the problem
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub owner_group_id: ::std::option::Option<::std::string::String>,
-        ///ID of the user who owns the problem
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub owner_user_id: ::std::option::Option<i64>,
         ///The priority of the problem
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub priority: ::std::option::Option<::std::string::String>,
@@ -21166,6 +23347,41 @@ pub mod types {
     }
     impl NewProblemDataAttributes {
         pub fn builder() -> builder::NewProblemDataAttributes {
+            Default::default()
+        }
+    }
+    ///`NewProblemRoleAssignment`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewProblemRoleAssignment {
+        pub data: NewProblemRoleAssignmentData,
+    }
+    impl NewProblemRoleAssignment {
+        pub fn builder() -> builder::NewProblemRoleAssignment {
+            Default::default()
+        }
+    }
+    ///`NewProblemRoleAssignmentData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewProblemRoleAssignmentData {
+        pub attributes: NewProblemRoleAssignmentDataAttributes,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl NewProblemRoleAssignmentData {
+        pub fn builder() -> builder::NewProblemRoleAssignmentData {
+            Default::default()
+        }
+    }
+    ///`NewProblemRoleAssignmentDataAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewProblemRoleAssignmentDataAttributes {
+        ///ID of the enabled problem role to assign
+        pub problem_role_id: ::std::string::String,
+        ///ID of the team member to assign the role to
+        pub user_id: i64,
+    }
+    impl NewProblemRoleAssignmentDataAttributes {
+        pub fn builder() -> builder::NewProblemRoleAssignmentDataAttributes {
             Default::default()
         }
     }
@@ -21455,6 +23671,10 @@ pub mod types {
     ///`NewRoleDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewRoleDataAttributes {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub ai_automations_permissions: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub ai_skills_permissions: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub alerts_permissions: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -22809,6 +25029,9 @@ pub mod types {
         ///The color of the header. Eg. "#0061F2"
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub header_color: ::std::option::Option<::std::string::String>,
+        ///How far back resolved incidents and completed maintenances are shown
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub incident_history_window: ::std::option::Option<::std::string::String>,
         ///Make the status page accessible to the public
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub public: ::std::option::Option<bool>,
@@ -24309,6 +26532,7 @@ pub mod types {
         ),
         CreateMistralChatCompletionTaskParams(CreateMistralChatCompletionTaskParams),
         CreateAnthropicChatCompletionTaskParams(CreateAnthropicChatCompletionTaskParams),
+        RunAiSkillTaskParams(RunAiSkillTaskParams),
     }
     impl ::std::convert::From<AddActionItemTaskParams>
     for NewWorkflowTaskDataAttributesTaskParams {
@@ -25216,6 +27440,12 @@ pub mod types {
             Self::CreateAnthropicChatCompletionTaskParams(value)
         }
     }
+    impl ::std::convert::From<RunAiSkillTaskParams>
+    for NewWorkflowTaskDataAttributesTaskParams {
+        fn from(value: RunAiSkillTaskParams) -> Self {
+            Self::RunAiSkillTaskParams(value)
+        }
+    }
     ///The severity assigned to an incident, or null when no severity is assigned
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(transparent)]
@@ -25263,6 +27493,66 @@ pub mod types {
     }
     impl NullableSeverityResponseInnerData {
         pub fn builder() -> builder::NullableSeverityResponseInnerData {
+            Default::default()
+        }
+    }
+    ///`ObservabilityErrors`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ObservabilityErrors {
+        pub errors: ::std::vec::Vec<ObservabilityErrorsErrorsItem>,
+    }
+    impl ObservabilityErrors {
+        pub fn builder() -> builder::ObservabilityErrors {
+            Default::default()
+        }
+    }
+    ///`ObservabilityErrorsErrorsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ObservabilityErrorsErrorsItem {
+        ///Stable machine-readable error code, e.g. invalid_range, outside_retention, search_requires_narrower_range, invalid_cursor, invalid_query, too_expensive, invalid_parameter, observability_unavailable, insufficient_scope, unsupported_api_key, not_found, unavailable, rate_limited
+        pub code: ::std::string::String,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source: ::std::option::Option<ObservabilityErrorsErrorsItemSource>,
+        pub status: ::std::string::String,
+        pub title: ::std::string::String,
+    }
+    impl ObservabilityErrorsErrorsItem {
+        pub fn builder() -> builder::ObservabilityErrorsErrorsItem {
+            Default::default()
+        }
+    }
+    ///`ObservabilityErrorsErrorsItemSource`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct ObservabilityErrorsErrorsItemSource {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub parameter: ::std::option::Option<::std::string::String>,
+    }
+    impl ObservabilityErrorsErrorsItemSource {
+        pub fn builder() -> builder::ObservabilityErrorsErrorsItemSource {
+            Default::default()
+        }
+    }
+    ///`ObservabilityWarning`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ObservabilityWarning {
+        pub code: ::std::string::String,
+        pub detail: ::std::string::String,
+    }
+    impl ObservabilityWarning {
+        pub fn builder() -> builder::ObservabilityWarning {
+            Default::default()
+        }
+    }
+    ///`ObservabilityWindow`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ObservabilityWindow {
+        ///Resolved window start (UTC, inclusive)
+        pub from: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Resolved window end (UTC). Inclusive for logs; exclusive for patterns, whose counts cover whole minutes in [from, to)
+        pub to: ::chrono::DateTime<::chrono::offset::Utc>,
+    }
+    impl ObservabilityWindow {
+        pub fn builder() -> builder::ObservabilityWindow {
             Default::default()
         }
     }
@@ -26331,7 +28621,7 @@ pub mod types {
         }
     }
     ///`PatchAlertRouteDataAttributesRulesItem`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct PatchAlertRouteDataAttributesRulesItem {
         ///AI SRE provider for matching alerts. Null disables it. A value listed in x-retained-enum that is already saved on the rule may be sent back unchanged
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -26350,6 +28640,9 @@ pub mod types {
             skip_serializing_if = "::std::option::Option::is_none"
         )]
         pub destroy: ::std::option::Option<bool>,
+        ///[DEPRECATED] Ignored under advanced routing (rules always evaluate) - disable the alert route instead. Still honoured on legacy routing.
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub enabled: bool,
         ///Whether this is a fallback rule
         #[serde(default)]
         pub fallback_rule: bool,
@@ -26365,6 +28658,22 @@ pub mod types {
         ///The position of the alert routing rule for ordering evaluation
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
+    }
+    impl ::std::default::Default for PatchAlertRouteDataAttributesRulesItem {
+        fn default() -> Self {
+            Self {
+                ai_sre_provider: Default::default(),
+                condition_groups: Default::default(),
+                destinations: Default::default(),
+                destroy: Default::default(),
+                enabled: defaults::default_bool::<true>(),
+                fallback_rule: Default::default(),
+                id: Default::default(),
+                name: Default::default(),
+                non_paging: Default::default(),
+                position: Default::default(),
+            }
+        }
     }
     impl PatchAlertRouteDataAttributesRulesItem {
         pub fn builder() -> builder::PatchAlertRouteDataAttributesRulesItem {
@@ -26442,7 +28751,13 @@ pub mod types {
     ///`PatchAlertRouteDataAttributesRulesItemDestinationsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct PatchAlertRouteDataAttributesRulesItemDestinationsItem {
-        ///Set to true to delete this destination
+        ///Dynamic destinations only. The custom catalog's ID when catalog_type is CatalogEntity, null otherwise
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_id: ::std::option::Option<::uuid::Uuid>,
+        ///Dynamic destinations only. The catalog the matched entity belongs to
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_type: ::std::option::Option<::std::string::String>,
+        ///Set to true to delete this destination. A dynamic destination can't be changed in place: delete it and add a new one, or send it back unchanged with its id
         #[serde(
             rename = "_destroy",
             skip_serializing_if = "::std::option::Option::is_none"
@@ -26451,15 +28766,58 @@ pub mod types {
         ///The ID of the destination. Required for updating or deleting existing destinations.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub id: ::std::option::Option<::uuid::Uuid>,
-        ///The ID of the target
+        ///Dynamic destinations only. How an alert value is matched to a catalog entity property. Exactly one match key is supported
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub match_keys: ::std::option::Option<
+            [PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+        >,
+        ///The ID of the target. Required for every target_type except `dynamic`, which does not use it
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub target_id: ::std::option::Option<::uuid::Uuid>,
-        ///The type of the target. Please contact support if you encounter issues using `Functionality` as a target type.
+        ///The type of the target. `dynamic` pages the escalation policy of the catalog entity matched from the alert, takes catalog_type, catalog_id and match_keys instead of target_id, and is only available when dynamic alert routing is enabled for the organization. Please contact support if you encounter issues using `Functionality` as a target type.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub target_type: ::std::option::Option<::std::string::String>,
     }
     impl PatchAlertRouteDataAttributesRulesItemDestinationsItem {
         pub fn builder() -> builder::PatchAlertRouteDataAttributesRulesItemDestinationsItem {
+            Default::default()
+        }
+    }
+    ///`PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub normalizers: ::std::option::Option<
+            PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >,
+        ///The catalog property to match: `builtin:<name>` (for example `builtin:external_id`) or the ID of a text catalog field
+        pub property_ref: ::std::string::String,
+        ///Where the alert value comes from
+        pub source_kind: ::std::string::String,
+        ///A JSONPath into the payload for `payload`, an alert attribute name for `attribute`, or an alert field ID for `alert_field`
+        pub source_ref: ::std::string::String,
+    }
+    impl PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+        pub fn builder() -> builder::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            Default::default()
+        }
+    }
+    ///Value normalizers. Not supported yet: send the booleans as false and the strings as null or empty, or leave normalizers out
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub extract_pattern: ::std::option::Option<::std::string::String>,
+        #[serde(default)]
+        pub ignore_case: bool,
+        #[serde(default)]
+        pub ignore_whitespace: bool,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub strip_prefix: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub strip_suffix: ::std::option::Option<::std::string::String>,
+    }
+    impl PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+        pub fn builder() -> builder::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
             Default::default()
         }
     }
@@ -27289,15 +29647,9 @@ pub mod types {
         ///Number of incidents linked to the problem
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub incidents_count: ::std::option::Option<i64>,
-        ///The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later
+        ///The next review date and time for a deferred problem. It must include a time; a date without a time (YYYY-MM-DD) is rejected. A timestamp with an offset or Z is stored as that instant; one without an offset is read in the acting user's time zone. Seconds are dropped (rounded down to the minute), and the result must be later than the current time
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub next_review_at: ::std::option::Option<::std::string::String>,
-        ///ID of the group (team) that owns the problem
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub owner_group_id: ::std::option::Option<::std::string::String>,
-        ///ID of the user who owns the problem
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub owner_user_id: ::std::option::Option<i64>,
         ///The priority of the problem
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub priority: ::std::option::Option<::std::string::String>,
@@ -27487,6 +29839,192 @@ pub mod types {
             Default::default()
         }
     }
+    ///`ProblemRole`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRole {
+        ///Date of creation
+        pub created_at: ::std::string::String,
+        ///The description of the problem role
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+        ///Whether the problem role can be assigned
+        pub enabled: bool,
+        ///The name of the problem role
+        pub name: ::std::string::String,
+        ///Position of the problem role
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub position: ::std::option::Option<i64>,
+        ///The slug of the problem role
+        pub slug: ::std::string::String,
+        ///The summary of the problem role
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub summary: ::std::option::Option<::std::string::String>,
+        ///Date of last update
+        pub updated_at: ::std::string::String,
+    }
+    impl ProblemRole {
+        pub fn builder() -> builder::ProblemRole {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleAssignment`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleAssignment {
+        ///ID of the user who made the assignment
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub assigned_by_user_id: ::std::option::Option<i64>,
+        ///Date of creation
+        pub created_at: ::std::string::String,
+        ///ID of the problem
+        pub problem_id: ::std::string::String,
+        ///The assigned problem role
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub problem_role: ::std::option::Option<ProblemRoleAssignmentProblemRole>,
+        ///ID of the assigned problem role
+        pub problem_role_id: ::std::string::String,
+        ///Date of last update
+        pub updated_at: ::std::string::String,
+        ///The assigned user
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub user: ::std::option::Option<UserFlatResponse>,
+        ///ID of the assigned user
+        pub user_id: i64,
+    }
+    impl ProblemRoleAssignment {
+        pub fn builder() -> builder::ProblemRoleAssignment {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleAssignmentList`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleAssignmentList {
+        pub data: ::std::vec::Vec<ProblemRoleAssignmentListDataItem>,
+        pub links: Links,
+        pub meta: Meta,
+    }
+    impl ProblemRoleAssignmentList {
+        pub fn builder() -> builder::ProblemRoleAssignmentList {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleAssignmentListDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleAssignmentListDataItem {
+        pub attributes: ProblemRoleAssignment,
+        ///Unique ID of the problem role assignment
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ProblemRoleAssignmentListDataItem {
+        pub fn builder() -> builder::ProblemRoleAssignmentListDataItem {
+            Default::default()
+        }
+    }
+    ///The assigned problem role
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleAssignmentProblemRole {
+        ///Date of creation
+        pub created_at: ::std::string::String,
+        ///The description of the problem role
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+        ///Whether the problem role can be assigned
+        pub enabled: bool,
+        ///Unique ID of the problem role
+        pub id: ::std::string::String,
+        ///The name of the problem role
+        pub name: ::std::string::String,
+        ///Position of the problem role
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub position: ::std::option::Option<i64>,
+        ///The slug of the problem role
+        pub slug: ::std::string::String,
+        ///The summary of the problem role
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub summary: ::std::option::Option<::std::string::String>,
+        ///Date of last update
+        pub updated_at: ::std::string::String,
+    }
+    impl ProblemRoleAssignmentProblemRole {
+        pub fn builder() -> builder::ProblemRoleAssignmentProblemRole {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleAssignmentResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleAssignmentResponse {
+        pub data: ProblemRoleAssignmentResponseData,
+    }
+    impl ProblemRoleAssignmentResponse {
+        pub fn builder() -> builder::ProblemRoleAssignmentResponse {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleAssignmentResponseData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleAssignmentResponseData {
+        pub attributes: ProblemRoleAssignment,
+        ///Unique ID of the problem role assignment
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ProblemRoleAssignmentResponseData {
+        pub fn builder() -> builder::ProblemRoleAssignmentResponseData {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleList`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleList {
+        pub data: ::std::vec::Vec<ProblemRoleListDataItem>,
+        pub links: Links,
+        pub meta: Meta,
+    }
+    impl ProblemRoleList {
+        pub fn builder() -> builder::ProblemRoleList {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleListDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleListDataItem {
+        pub attributes: ProblemRole,
+        ///Unique ID of the problem role
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ProblemRoleListDataItem {
+        pub fn builder() -> builder::ProblemRoleListDataItem {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleResponse {
+        pub data: ProblemRoleResponseData,
+    }
+    impl ProblemRoleResponse {
+        pub fn builder() -> builder::ProblemRoleResponse {
+            Default::default()
+        }
+    }
+    ///`ProblemRoleResponseData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ProblemRoleResponseData {
+        pub attributes: ProblemRole,
+        ///Unique ID of the problem role
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ProblemRoleResponseData {
+        pub fn builder() -> builder::ProblemRoleResponseData {
+            Default::default()
+        }
+    }
     ///`PublishIncidentTaskParams`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct PublishIncidentTaskParams {
@@ -27528,7 +30066,7 @@ pub mod types {
         ///When true, every run also publishes the incident's tagged services and functionalities that are components on the target page. Defaults to true when selected_component_keys is empty. This field is in Early Access and is not generally available; contact Rootly Support to request access.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub sync_incident_components: ::std::option::Option<bool>,
-        ///Impact status published for components synced from the incident. Defaults to degraded_performance. A component also listed in selected_component_keys keeps its selected_component_statuses entry.
+        ///Default impact status for components synced from the incident. The default only applies to newly synced components and to ones with no earlier status on the incident's updates on a page. A synced component with an earlier status keeps its most recent status there. Defaults to degraded_performance. A component also listed in selected_component_keys keeps its selected_component_statuses entry.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub synced_component_status: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -28465,6 +31003,10 @@ pub mod types {
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct Role {
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub ai_automations_permissions: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub ai_skills_permissions: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub alerts_permissions: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub api_keys_permissions: ::std::vec::Vec<::std::string::String>,
@@ -28679,6 +31221,28 @@ pub mod types {
     }
     impl RotateApiKeyDataAttributes {
         pub fn builder() -> builder::RotateApiKeyDataAttributes {
+            Default::default()
+        }
+    }
+    ///`RunAiSkillTaskParams`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct RunAiSkillTaskParams {
+        ///ID of an enabled AI Skill that can be invoked by AI Automations & workflows
+        pub ai_skill_id: ::std::string::String,
+        ///Where to post the reply. The reply is always available as the task output
+        #[serde(default = "defaults::run_ai_skill_task_params_destination")]
+        pub destination: ::std::string::String,
+        ///Maximum runs of this task in a rolling 24h window
+        #[serde(default = "defaults::default_nzu64::<::std::num::NonZeroU64, 50>")]
+        pub max_runs_per_day: ::std::num::NonZeroU64,
+        ///Extra instructions appended to the skill. Supports Liquid
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub prompt: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub task_type: ::std::option::Option<::std::string::String>,
+    }
+    impl RunAiSkillTaskParams {
+        pub fn builder() -> builder::RunAiSkillTaskParams {
             Default::default()
         }
     }
@@ -31286,6 +33850,9 @@ pub mod types {
         ///The color of the header. Eg. "#0061F2"
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub header_color: ::std::option::Option<::std::string::String>,
+        ///How far back resolved incidents and completed maintenances are shown
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub incident_history_window: ::std::option::Option<::std::string::String>,
         ///Make the status page accessible to the public
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub public: ::std::option::Option<bool>,
@@ -32375,6 +34942,271 @@ pub mod types {
             Default::default()
         }
     }
+    ///`UpdateAiAutomation`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiAutomation {
+        pub data: UpdateAiAutomationData,
+    }
+    impl UpdateAiAutomation {
+        pub fn builder() -> builder::UpdateAiAutomation {
+            Default::default()
+        }
+    }
+    ///`UpdateAiAutomationData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiAutomationData {
+        pub attributes: UpdateAiAutomationDataAttributes,
+        ///Must match the automation id in the path.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl UpdateAiAutomationData {
+        pub fn builder() -> builder::UpdateAiAutomationData {
+            Default::default()
+        }
+    }
+    ///Read-only attributes are ignored on write.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct UpdateAiAutomationDataAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub conditions: ::std::option::Option<
+            UpdateAiAutomationDataAttributesConditions,
+        >,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub consecutive_failures_count: ::std::option::Option<i64>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by_user_id: ::std::option::Option<i64>,
+        ///slack_channel requires destination_slack_channel_id. incident_timeline is only valid for event automations triggered by incident events.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_kind: ::std::option::Option<::std::string::String>,
+        ///Slack channel ID (e.g. C0123ABCD) or channel name (optional leading #) of a channel Rootly has already synced from the team's connected Slack workspace; names are matched case-insensitively and resolved to the channel ID on write. Channels created very recently may not be synced yet and are rejected until they are. Setting a channel sets destination_kind to slack_channel when destination_kind is omitted; sending a new channel with any other destination_kind is rejected. null is ignored on write; to stop posting to Slack, change destination_kind instead. When Slack channel user filtering is enabled, personal keys and OAuth tokens only see, and can only set new, channels the user can access in Slack; an update may resend the automation's current channel unchanged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_slack_channel_id: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub destination_slack_channel_name: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub disabled_reason: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub enabled: ::std::option::Option<bool>,
+        ///Required when trigger_kind is event. null is accepted only for schedule automations, where it is ignored.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub event_name: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub last_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Stored limit values are returned even when false and apply only when this is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub limits_enabled: ::std::option::Option<bool>,
+        ///Null or 0 means no limit. The stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub max_credits_per_run: ::std::option::Option<
+            UpdateAiAutomationDataAttributesMaxCreditsPerRun,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub next_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub owner_user_id: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub prompt: ::std::option::Option<::std::string::String>,
+        ///The stored value is returned even when limits are disabled and only applies when limits_enabled is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub rate_limit_runs: ::std::option::Option<::std::num::NonZeroU64>,
+        ///The stored value is returned even when limits are disabled and only applies when limits_enabled is true.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub rate_limit_window: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule: ::std::option::Option<UpdateAiAutomationDataAttributesSchedule>,
+        ///Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_rrule: ::std::option::Option<::std::string::String>,
+        ///Alias for schedule.timezone.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_timezone: ::std::option::Option<::std::string::String>,
+        ///If omitted on update, current attachments are kept. Skills that are no longer invocable by automations are detached the next time an update changes the automation; unchanged updates return the automation as-is.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub skill_ids: ::std::vec::Vec<::uuid::Uuid>,
+        ///Switching triggers on update requires the new trigger's active configuration; fields belonging to the previous trigger are ignored.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub trigger_kind: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    }
+    impl UpdateAiAutomationDataAttributes {
+        pub fn builder() -> builder::UpdateAiAutomationDataAttributes {
+            Default::default()
+        }
+    }
+    ///Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct UpdateAiAutomationDataAttributesConditions {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub any: ::std::vec::Vec<UpdateAiAutomationDataAttributesConditionsAnyItem>,
+    }
+    impl UpdateAiAutomationDataAttributesConditions {
+        pub fn builder() -> builder::UpdateAiAutomationDataAttributesConditions {
+            Default::default()
+        }
+    }
+    ///`UpdateAiAutomationDataAttributesConditionsAnyItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesConditionsAnyItem {
+        pub all: ::std::vec::Vec<
+            UpdateAiAutomationDataAttributesConditionsAnyItemAllItem,
+        >,
+    }
+    impl UpdateAiAutomationDataAttributesConditionsAnyItem {
+        pub fn builder() -> builder::UpdateAiAutomationDataAttributesConditionsAnyItem {
+            Default::default()
+        }
+    }
+    ///`UpdateAiAutomationDataAttributesConditionsAnyItemAllItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesConditionsAnyItemAllItem {
+        pub field: ::std::string::String,
+        pub operator: ::std::string::String,
+        ///Omitted for present/blank operators.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub value: ::std::option::Option<
+            UpdateAiAutomationDataAttributesConditionsAnyItemAllItemValue,
+        >,
+    }
+    impl UpdateAiAutomationDataAttributesConditionsAnyItemAllItem {
+        pub fn builder() -> builder::UpdateAiAutomationDataAttributesConditionsAnyItemAllItem {
+            Default::default()
+        }
+    }
+    ///Omitted for present/blank operators.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum UpdateAiAutomationDataAttributesConditionsAnyItemAllItemValue {
+        String(::std::string::String),
+        Number(f64),
+        Boolean(bool),
+    }
+    impl ::std::fmt::Display
+    for UpdateAiAutomationDataAttributesConditionsAnyItemAllItemValue {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match self {
+                Self::String(x) => x.fmt(f),
+                Self::Number(x) => x.fmt(f),
+                Self::Boolean(x) => x.fmt(f),
+            }
+        }
+    }
+    impl ::std::convert::From<f64>
+    for UpdateAiAutomationDataAttributesConditionsAnyItemAllItemValue {
+        fn from(value: f64) -> Self {
+            Self::Number(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for UpdateAiAutomationDataAttributesConditionsAnyItemAllItemValue {
+        fn from(value: bool) -> Self {
+            Self::Boolean(value)
+        }
+    }
+    ///Null or 0 means no limit. The stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum UpdateAiAutomationDataAttributesMaxCreditsPerRun {
+        Variant0(UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0),
+        Variant1(f64),
+        Variant2,
+    }
+    impl ::std::convert::From<UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0>
+    for UpdateAiAutomationDataAttributesMaxCreditsPerRun {
+        fn from(
+            value: UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<f64> for UpdateAiAutomationDataAttributesMaxCreditsPerRun {
+        fn from(value: f64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    ///`UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0`
+    #[derive(::serde::Serialize, Clone, Debug)]
+    #[serde(transparent)]
+    pub struct UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0(f64);
+    impl ::std::ops::Deref for UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
+        type Target = f64;
+        fn deref(&self) -> &f64 {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0>
+    for f64 {
+        fn from(
+            value: UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::convert::TryFrom<f64>
+    for UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: f64,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if ![0.0_f64].contains(&value) {
+                Err("invalid value".into())
+            } else {
+                Ok(Self(value))
+            }
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            Self::try_from(<f64>::deserialize(deserializer)?)
+                .map_err(|e| { <D::Error as ::serde::de::Error>::custom(e.to_string()) })
+        }
+    }
+    ///`UpdateAiAutomationDataAttributesSchedule`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct UpdateAiAutomationDataAttributesSchedule {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub frequency: ::std::option::Option<::std::string::String>,
+        ///Not used for hourly schedules.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub hour: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub timezone: ::std::option::Option<::std::string::String>,
+        ///Only used for weekly schedules.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub weekday: ::std::option::Option<::std::string::String>,
+    }
+    impl UpdateAiAutomationDataAttributesSchedule {
+        pub fn builder() -> builder::UpdateAiAutomationDataAttributesSchedule {
+            Default::default()
+        }
+    }
     ///`UpdateAiChatSession`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct UpdateAiChatSession {
@@ -32385,6 +35217,344 @@ pub mod types {
     impl UpdateAiChatSession {
         pub fn builder() -> builder::UpdateAiChatSession {
             Default::default()
+        }
+    }
+    ///Update only supplied attributes. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. Pinned parameters apply only to write access. Read-only attributes are ignored on write.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiSkill {
+        pub data: UpdateAiSkillData,
+    }
+    impl UpdateAiSkill {
+        pub fn builder() -> builder::UpdateAiSkill {
+            Default::default()
+        }
+    }
+    ///`UpdateAiSkillData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiSkillData {
+        pub attributes: UpdateAiSkillDataAttributes,
+        ///Must match the skill UUID or slug in the path.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl UpdateAiSkillData {
+        pub fn builder() -> builder::UpdateAiSkillData {
+            Default::default()
+        }
+    }
+    ///`UpdateAiSkillDataAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct UpdateAiSkillDataAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub body: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub created_by_user_id: ::std::option::Option<i64>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub current_version: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub description: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub enabled: ::std::option::Option<bool>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub invocable_by: ::std::vec::Vec<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub name: ::std::option::Option<::std::string::String>,
+        ///Must be a user in this organization. On create, null or omission defaults to the caller; on update, null or an unset owner falls back to the caller, while omission preserves an existing owner.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub owner_user_id: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub slug: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source_template_key: ::std::option::Option<::std::string::String>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source_template_version: ::std::option::Option<i64>,
+        ///Replaces the editable grant list. Grants on tools the caller cannot see are kept.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub tool_grants: ::std::vec::Vec<UpdateAiSkillDataAttributesToolGrantsItem>,
+        ///Ignored on write.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+    }
+    impl UpdateAiSkillDataAttributes {
+        pub fn builder() -> builder::UpdateAiSkillDataAttributes {
+            Default::default()
+        }
+    }
+    ///`UpdateAiSkillDataAttributesToolGrantsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiSkillDataAttributesToolGrantsItem {
+        ///Defaults to the tool's access classification (read or write) when omitted or null.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub access: ::std::option::Option<::std::string::String>,
+        ///Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pinned_params: ::std::option::Option<
+            ::std::collections::HashMap<
+                ::std::string::String,
+                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
+            >,
+        >,
+        pub tool_key: ::std::string::String,
+    }
+    impl UpdateAiSkillDataAttributesToolGrantsItem {
+        pub fn builder() -> builder::UpdateAiSkillDataAttributesToolGrantsItem {
+            Default::default()
+        }
+    }
+    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+        Variant0(UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0),
+        Variant1(
+            ::std::vec::Vec<
+                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+            >,
+        ),
+    }
+    impl ::std::convert::From<
+        UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0,
+    > for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+        fn from(
+            value: UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<
+        ::std::vec::Vec<
+            UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+        >,
+    > for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+        fn from(
+            value: ::std::vec::Vec<
+                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+            >,
+        ) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+        Variant0(
+            ::std::option::Option<
+                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+            >,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<
+            UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+        >,
+    > for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(
+            value: ::std::option::Option<
+                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<
+        UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+    > for ::std::string::String {
+        fn from(
+            value: UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+        Variant0(
+            ::std::option::Option<
+                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            >,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<
+            UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        >,
+    > for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(
+            value: ::std::option::Option<
+                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<
+        UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+    > for ::std::string::String {
+        fn from(
+            value: UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
         }
     }
     ///`UpdateAirtableTableRecordTaskParams`
@@ -33055,6 +36225,9 @@ pub mod types {
         pub destinations: ::std::vec::Vec<
             UpdateAlertRouteDataAttributesRulesItemDestinationsItem,
         >,
+        ///[DEPRECATED] Ignored under advanced routing (rules always evaluate) - disable the alert route instead. Still honoured on legacy routing.
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub enabled: bool,
         ///Whether this is a fallback rule
         #[serde(default)]
         pub fallback_rule: bool,
@@ -33122,13 +36295,63 @@ pub mod types {
     ///`UpdateAlertRouteDataAttributesRulesItemDestinationsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateAlertRouteDataAttributesRulesItemDestinationsItem {
-        ///The ID of the target
-        pub target_id: ::uuid::Uuid,
-        ///The type of the target. Please contact support if you encounter issues using `Functionality` as a target type.
+        ///Dynamic destinations only. The custom catalog's ID when catalog_type is CatalogEntity, null otherwise
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_id: ::std::option::Option<::uuid::Uuid>,
+        ///Dynamic destinations only. The catalog the matched entity belongs to
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub catalog_type: ::std::option::Option<::std::string::String>,
+        ///Dynamic destinations only. How an alert value is matched to a catalog entity property. Exactly one match key is supported
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub match_keys: ::std::option::Option<
+            [UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+        >,
+        ///The ID of the target. Required for every target_type except `dynamic`, which does not use it
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub target_id: ::std::option::Option<::uuid::Uuid>,
+        ///The type of the target. `dynamic` pages the escalation policy of the catalog entity matched from the alert, takes catalog_type, catalog_id and match_keys instead of target_id, and is only available when dynamic alert routing is enabled for the organization. Please contact support if you encounter issues using `Functionality` as a target type.
         pub target_type: ::std::string::String,
     }
     impl UpdateAlertRouteDataAttributesRulesItemDestinationsItem {
         pub fn builder() -> builder::UpdateAlertRouteDataAttributesRulesItemDestinationsItem {
+            Default::default()
+        }
+    }
+    ///`UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub normalizers: ::std::option::Option<
+            UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >,
+        ///The catalog property to match: `builtin:<name>` (for example `builtin:external_id`) or the ID of a text catalog field
+        pub property_ref: ::std::string::String,
+        ///Where the alert value comes from
+        pub source_kind: ::std::string::String,
+        ///A JSONPath into the payload for `payload`, an alert attribute name for `attribute`, or an alert field ID for `alert_field`
+        pub source_ref: ::std::string::String,
+    }
+    impl UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+        pub fn builder() -> builder::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            Default::default()
+        }
+    }
+    ///Value normalizers. Not supported yet: send the booleans as false and the strings as null or empty, or leave normalizers out
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub extract_pattern: ::std::option::Option<::std::string::String>,
+        #[serde(default)]
+        pub ignore_case: bool,
+        #[serde(default)]
+        pub ignore_whitespace: bool,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub strip_prefix: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub strip_suffix: ::std::option::Option<::std::string::String>,
+    }
+    impl UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+        pub fn builder() -> builder::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
             Default::default()
         }
     }
@@ -33158,7 +36381,7 @@ pub mod types {
         }
     }
     ///`UpdateAlertRoutingRuleDataAttributes`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateAlertRoutingRuleDataAttributes {
         ///AI SRE provider for matching alerts. Null disables it. A value listed in x-retained-enum that is already saved on the rule may be sent back unchanged
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -33177,9 +36400,9 @@ pub mod types {
         pub destination: ::std::option::Option<
             UpdateAlertRoutingRuleDataAttributesDestination,
         >,
-        ///Whether the alert routing rule is enabled
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub enabled: ::std::option::Option<bool>,
+        ///Defaults to true. Ignored under advanced routing (rules always evaluate) - disable the alert route instead. Honoured on legacy routing.
+        #[serde(default = "defaults::default_bool::<true>")]
+        pub enabled: bool,
         ///The name of the alert routing rule
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub name: ::std::option::Option<::std::string::String>,
@@ -33189,6 +36412,21 @@ pub mod types {
         ///The position of the alert routing rule for ordering evaluation
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub position: ::std::option::Option<i64>,
+    }
+    impl ::std::default::Default for UpdateAlertRoutingRuleDataAttributes {
+        fn default() -> Self {
+            Self {
+                ai_sre_provider: Default::default(),
+                alerts_source_id: Default::default(),
+                condition_type: Default::default(),
+                conditions: Default::default(),
+                destination: Default::default(),
+                enabled: defaults::default_bool::<true>(),
+                name: Default::default(),
+                owning_team_ids: Default::default(),
+                position: Default::default(),
+            }
+        }
     }
     impl UpdateAlertRoutingRuleDataAttributes {
         pub fn builder() -> builder::UpdateAlertRoutingRuleDataAttributes {
@@ -33387,6 +36625,9 @@ pub mod types {
         ///ID for the default alert urgency assigned to this alert source
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub alert_urgency_id: ::std::option::Option<::std::string::String>,
+        ///Whether to attach the alert source's owning teams to its alerts. Attached teams are not paged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub attach_owner_groups_to_alerts: ::std::option::Option<bool>,
         ///Toggle alert deduplication using deduplication key. If enabled, deduplication_key_kind and deduplication_key_path are required.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub deduplicate_alerts_by_key: ::std::option::Option<bool>,
@@ -35944,7 +39185,7 @@ pub mod types {
         ///The input kind of the form field
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub input_kind: ::std::option::Option<::std::string::String>,
-        ///The kind of the form field. Problem fields only accept `custom`; built-in and gate problem kinds are accepted only when unchanged.
+        ///The kind of the form field. Problem fields only accept `custom`; built-in and status form problem kinds are accepted only when unchanged.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub kind: ::std::option::Option<::std::string::String>,
         ///The name of the form field
@@ -36238,12 +39479,15 @@ pub mod types {
     ///`UpdateFormSetDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct UpdateFormSetDataAttributes {
-        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `microsoft_teams_new_incident_form`
+        ///The forms included in the form set. Add custom forms using the custom form's `slug` field. Or choose a built-in form: `web_new_incident_form`, `web_update_incident_form`, `web_incident_post_mortem_form`, `web_incident_mitigation_form`, `web_incident_resolution_form`, `web_incident_cancellation_form`, `web_scheduled_incident_form`, `web_update_scheduled_incident_form`, `slack_new_incident_form`, `slack_update_incident_form`, `slack_update_incident_status_form`, `slack_incident_mitigation_form`, `slack_incident_resolution_form`, `slack_incident_cancellation_form`, `slack_scheduled_incident_form`, `slack_update_scheduled_incident_form`, `google_chat_new_incident_form`, `google_chat_update_incident_form`, `google_chat_incident_mitigation_form`, `google_chat_incident_resolution_form`, `google_chat_incident_cancellation_form`, `google_chat_scheduled_incident_form`, `microsoft_teams_new_incident_form`. A `problem` form set accepts only problem forms: `web_new_problem_form`, `web_update_problem_form`, `web_problem_in_progress_form`, `web_problem_deferred_form`, `web_problem_completed_form`, `web_problem_cancelled_form`
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub forms: ::std::vec::Vec<::std::string::String>,
         ///The name of the form set
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub name: ::std::option::Option<::std::string::String>,
+        ///Accepted for read-modify-write client compatibility, but ignored. `resource_type` cannot be changed after creation.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub resource_type: ::std::option::Option<::std::string::String>,
         ///Deprecated. `slug` is derived from `name`; any submitted value is ignored. This property will be removed from the request schema in a future version.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub slug: ::std::option::Option<::std::string::String>,
@@ -36688,6 +39932,9 @@ pub mod types {
         ///Urgency of alerts triggered when heartbeat expires.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub alert_urgency_id: ::std::option::Option<::std::string::String>,
+        ///Whether to attach this heartbeat's owning teams to the alerts it creates. Attached teams are not paged.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub attach_owner_groups_to_alerts: ::std::option::Option<bool>,
         ///The description of the heartbeat
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
@@ -36780,7 +40027,7 @@ pub mod types {
         ///The Jira issue key.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub jira_issue_key: ::std::option::Option<::std::string::String>,
-        ///The Jira issue URL.
+        ///The Jira issue URL. New or changed values must be one HTTPS link ending in the key, like https://your-site.atlassian.net/browse/KEY-123. Host not checked.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub jira_issue_url: ::std::option::Option<::std::string::String>,
         ///The kind of the action item
@@ -38048,6 +41295,117 @@ pub mod types {
             Default::default()
         }
     }
+    ///Update the organization's single browser IP allowlist. Supply at least one of enabled or entries; omitted attributes keep their stored values. Supplying entries replaces the full list. Only organization owners and admins can manage the allowlist.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateIpAllowlist {
+        pub data: UpdateIpAllowlistData,
+    }
+    impl UpdateIpAllowlist {
+        pub fn builder() -> builder::UpdateIpAllowlist {
+            Default::default()
+        }
+    }
+    ///`UpdateIpAllowlistData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateIpAllowlistData {
+        pub attributes: UpdateIpAllowlistDataAttributes,
+        ///Accepted for JSON:API client compatibility, but ignored because each organization has one allowlist.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl UpdateIpAllowlistData {
+        pub fn builder() -> builder::UpdateIpAllowlistData {
+            Default::default()
+        }
+    }
+    ///`UpdateIpAllowlistDataAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+        pub struct UpdateIpAllowlistDataAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub enabled: ::std::option::Option<bool>,
+        ///The complete replacement list of allowed IP addresses and CIDR ranges.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub entries: ::std::vec::Vec<UpdateIpAllowlistDataAttributesEntriesItem>,
+    }
+    impl UpdateIpAllowlistDataAttributes {
+        pub fn builder() -> builder::UpdateIpAllowlistDataAttributes {
+            Default::default()
+        }
+    }
+    ///`UpdateIpAllowlistDataAttributesEntriesItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateIpAllowlistDataAttributesEntriesItem {
+        pub cidr: ::std::string::String,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub label: ::std::option::Option<
+            UpdateIpAllowlistDataAttributesEntriesItemLabel,
+        >,
+    }
+    impl UpdateIpAllowlistDataAttributesEntriesItem {
+        pub fn builder() -> builder::UpdateIpAllowlistDataAttributesEntriesItem {
+            Default::default()
+        }
+    }
+    ///`UpdateIpAllowlistDataAttributesEntriesItemLabel`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct UpdateIpAllowlistDataAttributesEntriesItemLabel(::std::string::String);
+    impl ::std::ops::Deref for UpdateIpAllowlistDataAttributesEntriesItemLabel {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<UpdateIpAllowlistDataAttributesEntriesItemLabel>
+    for ::std::string::String {
+        fn from(value: UpdateIpAllowlistDataAttributesEntriesItemLabel) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr for UpdateIpAllowlistDataAttributesEntriesItemLabel {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            if value.chars().count() > 100usize {
+                return Err("longer than 100 characters".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for UpdateIpAllowlistDataAttributesEntriesItemLabel {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for UpdateIpAllowlistDataAttributesEntriesItemLabel {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for UpdateIpAllowlistDataAttributesEntriesItemLabel {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
     ///`UpdateJiraIssueTaskParams`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct UpdateJiraIssueTaskParams {
@@ -39240,15 +42598,9 @@ pub mod types {
         ///The impact observed so far
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub impact_so_far: ::std::option::Option<::std::string::String>,
-        ///The next review date for a deferred problem. A date (YYYY-MM-DD) becomes due at the start of that day in the acting user's time zone; a timestamp with an offset or Z is stored as the exact instant sent, and one without an offset is read in the acting user's time zone. When deferring, a timestamp must not be in the past; a date is accepted for today or later
+        ///The next review date and time for a deferred problem. It must include a time; a date without a time (YYYY-MM-DD) is rejected. A timestamp with an offset or Z is stored as that instant; one without an offset is read in the acting user's time zone. Seconds are dropped (rounded down to the minute), and the result must be later than the current time
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub next_review_at: ::std::option::Option<::std::string::String>,
-        ///ID of the group (team) that owns the problem
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub owner_group_id: ::std::option::Option<::std::string::String>,
-        ///ID of the user who owns the problem
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub owner_user_id: ::std::option::Option<i64>,
         ///The priority of the problem
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub priority: ::std::option::Option<::std::string::String>,
@@ -39264,7 +42616,7 @@ pub mod types {
         ///The scope of the problem
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub scope: ::std::option::Option<::std::string::String>,
-        ///Target status. Transitions run through the problem status workflow: gate fields required by the target status must be supplied in the same request. Other updatable attributes may accompany a status change and are applied atomically with it.
+        ///Target status. Transitions run through the problem status workflow: status form fields required by the target status must be supplied in the same request. Other updatable attributes may accompany a status change and are applied atomically with it.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub status: ::std::option::Option<::std::string::String>,
         ///The title of the problem
@@ -39653,6 +43005,10 @@ pub mod types {
     ///`UpdateRoleDataAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct UpdateRoleDataAttributes {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub ai_automations_permissions: ::std::vec::Vec<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub ai_skills_permissions: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub api_keys_permissions: ::std::vec::Vec<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -41325,6 +44681,9 @@ pub mod types {
         ///The color of the header. Eg. "#0061F2"
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub header_color: ::std::option::Option<::std::string::String>,
+        ///How far back resolved incidents and completed maintenances are shown
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub incident_history_window: ::std::option::Option<::std::string::String>,
         ///Make the status page accessible to the public
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub public: ::std::option::Option<bool>,
@@ -41942,6 +45301,9 @@ pub mod types {
         ///Email address
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub email: ::std::option::Option<::std::string::String>,
+        ///Set to true to make this verified address the user's primary notification address. The previous primary becomes a secondary address. This doesn't change the user's login email.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub primary: ::std::option::Option<bool>,
     }
     impl UpdateUserEmailAddressDataAttributes {
         pub fn builder() -> builder::UpdateUserEmailAddressDataAttributes {
@@ -43047,6 +46409,8 @@ pub mod types {
         pub subtype_149: ::std::option::Option<CreateMistralChatCompletionTaskParams>,
         #[serde(flatten, skip_serializing_if = "::std::option::Option::is_none")]
         pub subtype_150: ::std::option::Option<CreateAnthropicChatCompletionTaskParams>,
+        #[serde(flatten, skip_serializing_if = "::std::option::Option::is_none")]
+        pub subtype_151: ::std::option::Option<RunAiSkillTaskParams>,
     }
     impl UpdateWorkflowTaskDataAttributesTaskParams {
         pub fn builder() -> builder::UpdateWorkflowTaskDataAttributesTaskParams {
@@ -44793,6 +48157,7 @@ pub mod types {
         ),
         CreateMistralChatCompletionTaskParams(CreateMistralChatCompletionTaskParams),
         CreateAnthropicChatCompletionTaskParams(CreateAnthropicChatCompletionTaskParams),
+        RunAiSkillTaskParams(RunAiSkillTaskParams),
     }
     impl ::std::convert::From<AddActionItemTaskParams> for WorkflowTaskTaskParams {
         fn from(value: AddActionItemTaskParams) -> Self {
@@ -45627,6 +48992,11 @@ pub mod types {
     for WorkflowTaskTaskParams {
         fn from(value: CreateAnthropicChatCompletionTaskParams) -> Self {
             Self::CreateAnthropicChatCompletionTaskParams(value)
+        }
+    }
+    impl ::std::convert::From<RunAiSkillTaskParams> for WorkflowTaskTaskParams {
+        fn from(value: RunAiSkillTaskParams) -> Self {
+            Self::RunAiSkillTaskParams(value)
         }
     }
     ///`WorkflowTriggerParams`
@@ -48345,6 +51715,1871 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct AiAutomation {
+            data: ::std::result::Result<super::AiAutomationData, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiAutomation {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl AiAutomation {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiAutomationData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomation> for super::AiAutomation {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomation,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomation> for AiAutomation {
+            fn from(value: super::AiAutomation) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationAttributes {
+            conditions: ::std::result::Result<
+                ::std::option::Option<super::AiAutomationAttributesConditions>,
+                ::std::string::String,
+            >,
+            consecutive_failures_count: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_by_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            destination_kind: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            destination_slack_channel_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            destination_slack_channel_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            disabled_reason: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            event_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            last_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            limits_enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            max_credits_per_run: ::std::result::Result<
+                ::std::option::Option<f64>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            next_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            owner_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            prompt: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            rate_limit_runs: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            rate_limit_window: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule: ::std::result::Result<
+                ::std::option::Option<super::AiAutomationAttributesSchedule>,
+                ::std::string::String,
+            >,
+            schedule_rrule: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_timezone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            skill_ids: ::std::result::Result<
+                ::std::vec::Vec<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            trigger_kind: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationAttributes {
+            fn default() -> Self {
+                Self {
+                    conditions: Ok(Default::default()),
+                    consecutive_failures_count: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    created_by_user_id: Ok(Default::default()),
+                    destination_kind: Ok(Default::default()),
+                    destination_slack_channel_id: Ok(Default::default()),
+                    destination_slack_channel_name: Ok(Default::default()),
+                    disabled_reason: Ok(Default::default()),
+                    enabled: Ok(Default::default()),
+                    event_name: Ok(Default::default()),
+                    last_run_at: Ok(Default::default()),
+                    limits_enabled: Ok(Default::default()),
+                    max_credits_per_run: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                    next_run_at: Ok(Default::default()),
+                    owner_user_id: Ok(Default::default()),
+                    prompt: Ok(Default::default()),
+                    rate_limit_runs: Ok(Default::default()),
+                    rate_limit_window: Ok(Default::default()),
+                    schedule: Ok(Default::default()),
+                    schedule_rrule: Ok(Default::default()),
+                    schedule_timezone: Ok(Default::default()),
+                    skill_ids: Ok(Default::default()),
+                    trigger_kind: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiAutomationAttributes {
+            pub fn conditions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AiAutomationAttributesConditions>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.conditions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for conditions: {e}")
+                    });
+                self
+            }
+            pub fn consecutive_failures_count<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.consecutive_failures_count = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for consecutive_failures_count: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_kind: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_slack_channel_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_slack_channel_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_slack_channel_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_slack_channel_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_slack_channel_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_slack_channel_name: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn disabled_reason<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.disabled_reason = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for disabled_reason: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn event_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.event_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for event_name: {e}")
+                    });
+                self
+            }
+            pub fn last_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for last_run_at: {e}")
+                    });
+                self
+            }
+            pub fn limits_enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.limits_enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for limits_enabled: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn max_credits_per_run<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<f64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.max_credits_per_run = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for max_credits_per_run: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn next_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next_run_at: {e}")
+                    });
+                self
+            }
+            pub fn owner_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for owner_user_id: {e}")
+                    });
+                self
+            }
+            pub fn prompt<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.prompt = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for prompt: {e}")
+                    });
+                self
+            }
+            pub fn rate_limit_runs<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.rate_limit_runs = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for rate_limit_runs: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn rate_limit_window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.rate_limit_window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for rate_limit_window: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AiAutomationAttributesSchedule>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for schedule: {e}")
+                    });
+                self
+            }
+            pub fn schedule_rrule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_rrule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_rrule: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_timezone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_timezone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_timezone: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn skill_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.skill_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for skill_ids: {e}")
+                    });
+                self
+            }
+            pub fn trigger_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.trigger_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for trigger_kind: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationAttributes>
+        for super::AiAutomationAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    conditions: value.conditions?,
+                    consecutive_failures_count: value.consecutive_failures_count?,
+                    created_at: value.created_at?,
+                    created_by_user_id: value.created_by_user_id?,
+                    destination_kind: value.destination_kind?,
+                    destination_slack_channel_id: value.destination_slack_channel_id?,
+                    destination_slack_channel_name: value
+                        .destination_slack_channel_name?,
+                    disabled_reason: value.disabled_reason?,
+                    enabled: value.enabled?,
+                    event_name: value.event_name?,
+                    last_run_at: value.last_run_at?,
+                    limits_enabled: value.limits_enabled?,
+                    max_credits_per_run: value.max_credits_per_run?,
+                    name: value.name?,
+                    next_run_at: value.next_run_at?,
+                    owner_user_id: value.owner_user_id?,
+                    prompt: value.prompt?,
+                    rate_limit_runs: value.rate_limit_runs?,
+                    rate_limit_window: value.rate_limit_window?,
+                    schedule: value.schedule?,
+                    schedule_rrule: value.schedule_rrule?,
+                    schedule_timezone: value.schedule_timezone?,
+                    skill_ids: value.skill_ids?,
+                    trigger_kind: value.trigger_kind?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationAttributes>
+        for AiAutomationAttributes {
+            fn from(value: super::AiAutomationAttributes) -> Self {
+                Self {
+                    conditions: Ok(value.conditions),
+                    consecutive_failures_count: Ok(value.consecutive_failures_count),
+                    created_at: Ok(value.created_at),
+                    created_by_user_id: Ok(value.created_by_user_id),
+                    destination_kind: Ok(value.destination_kind),
+                    destination_slack_channel_id: Ok(value.destination_slack_channel_id),
+                    destination_slack_channel_name: Ok(
+                        value.destination_slack_channel_name,
+                    ),
+                    disabled_reason: Ok(value.disabled_reason),
+                    enabled: Ok(value.enabled),
+                    event_name: Ok(value.event_name),
+                    last_run_at: Ok(value.last_run_at),
+                    limits_enabled: Ok(value.limits_enabled),
+                    max_credits_per_run: Ok(value.max_credits_per_run),
+                    name: Ok(value.name),
+                    next_run_at: Ok(value.next_run_at),
+                    owner_user_id: Ok(value.owner_user_id),
+                    prompt: Ok(value.prompt),
+                    rate_limit_runs: Ok(value.rate_limit_runs),
+                    rate_limit_window: Ok(value.rate_limit_window),
+                    schedule: Ok(value.schedule),
+                    schedule_rrule: Ok(value.schedule_rrule),
+                    schedule_timezone: Ok(value.schedule_timezone),
+                    skill_ids: Ok(value.skill_ids),
+                    trigger_kind: Ok(value.trigger_kind),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationAttributesConditions {
+            any: ::std::result::Result<
+                ::std::vec::Vec<super::AiAutomationAttributesConditionsAnyItem>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationAttributesConditions {
+            fn default() -> Self {
+                Self {
+                    any: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiAutomationAttributesConditions {
+            pub fn any<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiAutomationAttributesConditionsAnyItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.any = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for any: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationAttributesConditions>
+        for super::AiAutomationAttributesConditions {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationAttributesConditions,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { any: value.any? })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationAttributesConditions>
+        for AiAutomationAttributesConditions {
+            fn from(value: super::AiAutomationAttributesConditions) -> Self {
+                Self { any: Ok(value.any) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationAttributesConditionsAnyItem {
+            all: ::std::result::Result<
+                ::std::vec::Vec<super::AiAutomationAttributesConditionsAnyItemAllItem>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationAttributesConditionsAnyItem {
+            fn default() -> Self {
+                Self {
+                    all: Err("no value supplied for all".to_string()),
+                }
+            }
+        }
+        impl AiAutomationAttributesConditionsAnyItem {
+            pub fn all<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::AiAutomationAttributesConditionsAnyItemAllItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.all = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for all: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationAttributesConditionsAnyItem>
+        for super::AiAutomationAttributesConditionsAnyItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationAttributesConditionsAnyItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { all: value.all? })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationAttributesConditionsAnyItem>
+        for AiAutomationAttributesConditionsAnyItem {
+            fn from(value: super::AiAutomationAttributesConditionsAnyItem) -> Self {
+                Self { all: Ok(value.all) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationAttributesConditionsAnyItemAllItem {
+            field: ::std::result::Result<::std::string::String, ::std::string::String>,
+            operator: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<
+                ::std::option::Option<
+                    super::AiAutomationAttributesConditionsAnyItemAllItemValue,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationAttributesConditionsAnyItemAllItem {
+            fn default() -> Self {
+                Self {
+                    field: Err("no value supplied for field".to_string()),
+                    operator: Err("no value supplied for operator".to_string()),
+                    value: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiAutomationAttributesConditionsAnyItemAllItem {
+            pub fn field<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field: {e}")
+                    });
+                self
+            }
+            pub fn operator<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.operator = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for operator: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::AiAutomationAttributesConditionsAnyItemAllItemValue,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationAttributesConditionsAnyItemAllItem>
+        for super::AiAutomationAttributesConditionsAnyItemAllItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationAttributesConditionsAnyItemAllItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    field: value.field?,
+                    operator: value.operator?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationAttributesConditionsAnyItemAllItem>
+        for AiAutomationAttributesConditionsAnyItemAllItem {
+            fn from(
+                value: super::AiAutomationAttributesConditionsAnyItemAllItem,
+            ) -> Self {
+                Self {
+                    field: Ok(value.field),
+                    operator: Ok(value.operator),
+                    value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationAttributesSchedule {
+            frequency: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            hour: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            weekday: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationAttributesSchedule {
+            fn default() -> Self {
+                Self {
+                    frequency: Ok(Default::default()),
+                    hour: Ok(Default::default()),
+                    weekday: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiAutomationAttributesSchedule {
+            pub fn frequency<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.frequency = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for frequency: {e}")
+                    });
+                self
+            }
+            pub fn hour<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.hour = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for hour: {e}")
+                    });
+                self
+            }
+            pub fn weekday<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.weekday = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for weekday: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationAttributesSchedule>
+        for super::AiAutomationAttributesSchedule {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationAttributesSchedule,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    frequency: value.frequency?,
+                    hour: value.hour?,
+                    weekday: value.weekday?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationAttributesSchedule>
+        for AiAutomationAttributesSchedule {
+            fn from(value: super::AiAutomationAttributesSchedule) -> Self {
+                Self {
+                    frequency: Ok(value.frequency),
+                    hour: Ok(value.hour),
+                    weekday: Ok(value.weekday),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationData {
+            attributes: ::std::result::Result<
+                super::AiAutomationAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiAutomationData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiAutomationData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiAutomationAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationData> for super::AiAutomationData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationData> for AiAutomationData {
+            fn from(value: super::AiAutomationData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::AiAutomationListDataItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationList {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiAutomationList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiAutomationListDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationList> for super::AiAutomationList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationList> for AiAutomationList {
+            fn from(value: super::AiAutomationList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationListDataItem {
+            attributes: ::std::result::Result<
+                super::AiAutomationAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiAutomationListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiAutomationListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiAutomationAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationListDataItem>
+        for super::AiAutomationListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationListDataItem>
+        for AiAutomationListDataItem {
+            fn from(value: super::AiAutomationListDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationRun {
+            data: ::std::result::Result<
+                super::AiAutomationRunData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationRun {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl AiAutomationRun {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiAutomationRunData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationRun> for super::AiAutomationRun {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationRun,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationRun> for AiAutomationRun {
+            fn from(value: super::AiAutomationRun) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationRunAttributes {
+            approval_expires_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            automation_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            cost_cents: ::std::result::Result<
+                ::std::option::Option<f64>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            error: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            finished_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            incident_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            output: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            scheduled_for: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            started_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            status: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            trigger_kind: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationRunAttributes {
+            fn default() -> Self {
+                Self {
+                    approval_expires_at: Ok(Default::default()),
+                    automation_id: Ok(Default::default()),
+                    cost_cents: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    error: Ok(Default::default()),
+                    finished_at: Ok(Default::default()),
+                    incident_id: Ok(Default::default()),
+                    output: Ok(Default::default()),
+                    scheduled_for: Ok(Default::default()),
+                    started_at: Ok(Default::default()),
+                    status: Ok(Default::default()),
+                    trigger_kind: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiAutomationRunAttributes {
+            pub fn approval_expires_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.approval_expires_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for approval_expires_at: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn automation_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.automation_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for automation_id: {e}")
+                    });
+                self
+            }
+            pub fn cost_cents<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<f64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.cost_cents = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for cost_cents: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn error<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.error = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for error: {e}")
+                    });
+                self
+            }
+            pub fn finished_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.finished_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for finished_at: {e}")
+                    });
+                self
+            }
+            pub fn incident_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.incident_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for incident_id: {e}")
+                    });
+                self
+            }
+            pub fn output<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.output = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for output: {e}")
+                    });
+                self
+            }
+            pub fn scheduled_for<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.scheduled_for = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for scheduled_for: {e}")
+                    });
+                self
+            }
+            pub fn started_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.started_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for started_at: {e}")
+                    });
+                self
+            }
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+            pub fn trigger_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.trigger_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for trigger_kind: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationRunAttributes>
+        for super::AiAutomationRunAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationRunAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    approval_expires_at: value.approval_expires_at?,
+                    automation_id: value.automation_id?,
+                    cost_cents: value.cost_cents?,
+                    created_at: value.created_at?,
+                    error: value.error?,
+                    finished_at: value.finished_at?,
+                    incident_id: value.incident_id?,
+                    output: value.output?,
+                    scheduled_for: value.scheduled_for?,
+                    started_at: value.started_at?,
+                    status: value.status?,
+                    trigger_kind: value.trigger_kind?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationRunAttributes>
+        for AiAutomationRunAttributes {
+            fn from(value: super::AiAutomationRunAttributes) -> Self {
+                Self {
+                    approval_expires_at: Ok(value.approval_expires_at),
+                    automation_id: Ok(value.automation_id),
+                    cost_cents: Ok(value.cost_cents),
+                    created_at: Ok(value.created_at),
+                    error: Ok(value.error),
+                    finished_at: Ok(value.finished_at),
+                    incident_id: Ok(value.incident_id),
+                    output: Ok(value.output),
+                    scheduled_for: Ok(value.scheduled_for),
+                    started_at: Ok(value.started_at),
+                    status: Ok(value.status),
+                    trigger_kind: Ok(value.trigger_kind),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationRunData {
+            attributes: ::std::result::Result<
+                super::AiAutomationRunAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiAutomationRunData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiAutomationRunData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiAutomationRunAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationRunData>
+        for super::AiAutomationRunData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationRunData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationRunData> for AiAutomationRunData {
+            fn from(value: super::AiAutomationRunData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationRunList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::AiAutomationRunListDataItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::std::option::Option<super::AiAutomationRunListMeta>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationRunList {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiAutomationRunList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiAutomationRunListDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AiAutomationRunListMeta>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationRunList>
+        for super::AiAutomationRunList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationRunList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationRunList> for AiAutomationRunList {
+            fn from(value: super::AiAutomationRunList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationRunListDataItem {
+            attributes: ::std::result::Result<
+                super::AiAutomationRunAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiAutomationRunListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiAutomationRunListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiAutomationRunAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationRunListDataItem>
+        for super::AiAutomationRunListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationRunListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationRunListDataItem>
+        for AiAutomationRunListDataItem {
+            fn from(value: super::AiAutomationRunListDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationRunListMeta {
+            next_scan_cursor: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationRunListMeta {
+            fn default() -> Self {
+                Self {
+                    next_scan_cursor: Err(
+                        "no value supplied for next_scan_cursor".to_string(),
+                    ),
+                }
+            }
+        }
+        impl AiAutomationRunListMeta {
+            pub fn next_scan_cursor<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_scan_cursor = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for next_scan_cursor: {e}"
+                        )
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationRunListMeta>
+        for super::AiAutomationRunListMeta {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationRunListMeta,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    next_scan_cursor: value.next_scan_cursor?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationRunListMeta>
+        for AiAutomationRunListMeta {
+            fn from(value: super::AiAutomationRunListMeta) -> Self {
+                Self {
+                    next_scan_cursor: Ok(value.next_scan_cursor),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationSlackChannels {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::AiAutomationSlackChannelsDataItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationSlackChannels {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiAutomationSlackChannels {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiAutomationSlackChannelsDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationSlackChannels>
+        for super::AiAutomationSlackChannels {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationSlackChannels,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationSlackChannels>
+        for AiAutomationSlackChannels {
+            fn from(value: super::AiAutomationSlackChannels) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationSlackChannelsDataItem {
+            attributes: ::std::result::Result<
+                super::AiAutomationSlackChannelsDataItemAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiAutomationSlackChannelsDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiAutomationSlackChannelsDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::AiAutomationSlackChannelsDataItemAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationSlackChannelsDataItem>
+        for super::AiAutomationSlackChannelsDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationSlackChannelsDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationSlackChannelsDataItem>
+        for AiAutomationSlackChannelsDataItem {
+            fn from(value: super::AiAutomationSlackChannelsDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationSlackChannelsDataItemAttributes {
+            name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            slack_channel_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationSlackChannelsDataItemAttributes {
+            fn default() -> Self {
+                Self {
+                    name: Err("no value supplied for name".to_string()),
+                    slack_channel_id: Err(
+                        "no value supplied for slack_channel_id".to_string(),
+                    ),
+                }
+            }
+        }
+        impl AiAutomationSlackChannelsDataItemAttributes {
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn slack_channel_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slack_channel_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for slack_channel_id: {e}"
+                        )
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationSlackChannelsDataItemAttributes>
+        for super::AiAutomationSlackChannelsDataItemAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationSlackChannelsDataItemAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    name: value.name?,
+                    slack_channel_id: value.slack_channel_id?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationSlackChannelsDataItemAttributes>
+        for AiAutomationSlackChannelsDataItemAttributes {
+            fn from(value: super::AiAutomationSlackChannelsDataItemAttributes) -> Self {
+                Self {
+                    name: Ok(value.name),
+                    slack_channel_id: Ok(value.slack_channel_id),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct AiChatCheckpointResolution {
             checkpoint_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
             replay: ::std::result::Result<
@@ -49302,6 +54537,10 @@ pub mod types {
             failed: ::std::result::Result<bool, ::std::string::String>,
             id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
             role: ::std::result::Result<::std::string::String, ::std::string::String>,
+            skill: ::std::result::Result<
+                ::std::option::Option<super::AiChatSessionMessageSkill>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default for AiChatSessionMessage {
             fn default() -> Self {
@@ -49312,6 +54551,7 @@ pub mod types {
                     failed: Err("no value supplied for failed".to_string()),
                     id: Err("no value supplied for id".to_string()),
                     role: Err("no value supplied for role".to_string()),
+                    skill: Ok(Default::default()),
                 }
             }
         }
@@ -49388,6 +54628,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn skill<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AiChatSessionMessageSkill>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.skill = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for skill: {e}")
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<AiChatSessionMessage>
         for super::AiChatSessionMessage {
@@ -49402,6 +54656,7 @@ pub mod types {
                     failed: value.failed?,
                     id: value.id?,
                     role: value.role?,
+                    skill: value.skill?,
                 })
             }
         }
@@ -49414,6 +54669,7 @@ pub mod types {
                     failed: Ok(value.failed),
                     id: Ok(value.id),
                     role: Ok(value.role),
+                    skill: Ok(value.skill),
                 }
             }
         }
@@ -49663,6 +54919,96 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct AiChatSessionMessageSkill {
+            id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            slug: ::std::result::Result<::std::string::String, ::std::string::String>,
+            version: ::std::result::Result<i64, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiChatSessionMessageSkill {
+            fn default() -> Self {
+                Self {
+                    id: Err("no value supplied for id".to_string()),
+                    name: Err("no value supplied for name".to_string()),
+                    slug: Err("no value supplied for slug".to_string()),
+                    version: Err("no value supplied for version".to_string()),
+                }
+            }
+        }
+        impl AiChatSessionMessageSkill {
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn slug<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slug = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slug: {e}")
+                    });
+                self
+            }
+            pub fn version<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.version = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for version: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiChatSessionMessageSkill>
+        for super::AiChatSessionMessageSkill {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiChatSessionMessageSkill,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    id: value.id?,
+                    name: value.name?,
+                    slug: value.slug?,
+                    version: value.version?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiChatSessionMessageSkill>
+        for AiChatSessionMessageSkill {
+            fn from(value: super::AiChatSessionMessageSkill) -> Self {
+                Self {
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                    slug: Ok(value.slug),
+                    version: Ok(value.version),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct AiChatSessionTitle {
             generated_title: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
@@ -49738,6 +55084,1616 @@ pub mod types {
                     generated_title: Ok(value.generated_title),
                     id: Ok(value.id),
                     title: Ok(value.title),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkill {
+            body: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_by_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            current_version: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            invocable_by: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            owner_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            slug: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source_template_key: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source_template_version: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            tool_grants: ::std::result::Result<
+                ::std::vec::Vec<super::AiSkillToolGrantsItem>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkill {
+            fn default() -> Self {
+                Self {
+                    body: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    created_by_user_id: Ok(Default::default()),
+                    current_version: Ok(Default::default()),
+                    description: Ok(Default::default()),
+                    enabled: Ok(Default::default()),
+                    invocable_by: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                    owner_user_id: Ok(Default::default()),
+                    slug: Ok(Default::default()),
+                    source: Ok(Default::default()),
+                    source_template_key: Ok(Default::default()),
+                    source_template_version: Ok(Default::default()),
+                    tool_grants: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiSkill {
+            pub fn body<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.body = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for body: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn current_version<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.current_version = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for current_version: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn invocable_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.invocable_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for invocable_by: {e}")
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn owner_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for owner_user_id: {e}")
+                    });
+                self
+            }
+            pub fn slug<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slug = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slug: {e}")
+                    });
+                self
+            }
+            pub fn source<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source: {e}")
+                    });
+                self
+            }
+            pub fn source_template_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_template_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for source_template_key: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn source_template_version<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_template_version = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for source_template_version: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn tool_grants<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiSkillToolGrantsItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_grants = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_grants: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkill> for super::AiSkill {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkill,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    body: value.body?,
+                    created_at: value.created_at?,
+                    created_by_user_id: value.created_by_user_id?,
+                    current_version: value.current_version?,
+                    description: value.description?,
+                    enabled: value.enabled?,
+                    invocable_by: value.invocable_by?,
+                    name: value.name?,
+                    owner_user_id: value.owner_user_id?,
+                    slug: value.slug?,
+                    source: value.source?,
+                    source_template_key: value.source_template_key?,
+                    source_template_version: value.source_template_version?,
+                    tool_grants: value.tool_grants?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkill> for AiSkill {
+            fn from(value: super::AiSkill) -> Self {
+                Self {
+                    body: Ok(value.body),
+                    created_at: Ok(value.created_at),
+                    created_by_user_id: Ok(value.created_by_user_id),
+                    current_version: Ok(value.current_version),
+                    description: Ok(value.description),
+                    enabled: Ok(value.enabled),
+                    invocable_by: Ok(value.invocable_by),
+                    name: Ok(value.name),
+                    owner_user_id: Ok(value.owner_user_id),
+                    slug: Ok(value.slug),
+                    source: Ok(value.source),
+                    source_template_key: Ok(value.source_template_key),
+                    source_template_version: Ok(value.source_template_version),
+                    tool_grants: Ok(value.tool_grants),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillGrantableTools {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::AiSkillGrantableToolsDataItem>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillGrantableTools {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl AiSkillGrantableTools {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiSkillGrantableToolsDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillGrantableTools>
+        for super::AiSkillGrantableTools {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillGrantableTools,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillGrantableTools>
+        for AiSkillGrantableTools {
+            fn from(value: super::AiSkillGrantableTools) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillGrantableToolsDataItem {
+            attributes: ::std::result::Result<
+                super::AiSkillGrantableToolsDataItemAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiSkillGrantableToolsDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiSkillGrantableToolsDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::AiSkillGrantableToolsDataItemAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillGrantableToolsDataItem>
+        for super::AiSkillGrantableToolsDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillGrantableToolsDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillGrantableToolsDataItem>
+        for AiSkillGrantableToolsDataItem {
+            fn from(value: super::AiSkillGrantableToolsDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillGrantableToolsDataItemAttributes {
+            access: ::std::result::Result<::std::string::String, ::std::string::String>,
+            category: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            connector: ::std::result::Result<bool, ::std::string::String>,
+            grantable: ::std::result::Result<bool, ::std::string::String>,
+            label: ::std::result::Result<::std::string::String, ::std::string::String>,
+            pinnable: ::std::result::Result<bool, ::std::string::String>,
+            pinnable_params: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
+                >,
+                ::std::string::String,
+            >,
+            tool_key: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillGrantableToolsDataItemAttributes {
+            fn default() -> Self {
+                Self {
+                    access: Err("no value supplied for access".to_string()),
+                    category: Err("no value supplied for category".to_string()),
+                    connector: Err("no value supplied for connector".to_string()),
+                    grantable: Err("no value supplied for grantable".to_string()),
+                    label: Err("no value supplied for label".to_string()),
+                    pinnable: Err("no value supplied for pinnable".to_string()),
+                    pinnable_params: Err(
+                        "no value supplied for pinnable_params".to_string(),
+                    ),
+                    tool_key: Err("no value supplied for tool_key".to_string()),
+                }
+            }
+        }
+        impl AiSkillGrantableToolsDataItemAttributes {
+            pub fn access<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.access = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for access: {e}")
+                    });
+                self
+            }
+            pub fn category<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.category = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for category: {e}")
+                    });
+                self
+            }
+            pub fn connector<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.connector = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for connector: {e}")
+                    });
+                self
+            }
+            pub fn grantable<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.grantable = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for grantable: {e}")
+                    });
+                self
+            }
+            pub fn label<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.label = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for label: {e}")
+                    });
+                self
+            }
+            pub fn pinnable<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinnable = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinnable: {e}")
+                    });
+                self
+            }
+            pub fn pinnable_params<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinnable_params = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for pinnable_params: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn tool_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_key: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillGrantableToolsDataItemAttributes>
+        for super::AiSkillGrantableToolsDataItemAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillGrantableToolsDataItemAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    access: value.access?,
+                    category: value.category?,
+                    connector: value.connector?,
+                    grantable: value.grantable?,
+                    label: value.label?,
+                    pinnable: value.pinnable?,
+                    pinnable_params: value.pinnable_params?,
+                    tool_key: value.tool_key?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillGrantableToolsDataItemAttributes>
+        for AiSkillGrantableToolsDataItemAttributes {
+            fn from(value: super::AiSkillGrantableToolsDataItemAttributes) -> Self {
+                Self {
+                    access: Ok(value.access),
+                    category: Ok(value.category),
+                    connector: Ok(value.connector),
+                    grantable: Ok(value.grantable),
+                    label: Ok(value.label),
+                    pinnable: Ok(value.pinnable),
+                    pinnable_params: Ok(value.pinnable_params),
+                    tool_key: Ok(value.tool_key),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
+            enum_: ::std::result::Result<
+                ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default
+        for AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
+            fn default() -> Self {
+                Self {
+                    enum_: Err("no value supplied for enum_".to_string()),
+                    name: Err("no value supplied for name".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
+            pub fn enum_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::vec::Vec<::std::string::String>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enum_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enum_: {e}")
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
+        > for super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    enum_: value.enum_?,
+                    name: value.name?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
+        > for AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
+            fn from(
+                value: super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
+            ) -> Self {
+                Self {
+                    enum_: Ok(value.enum_),
+                    name: Ok(value.name),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::AiSkillListDataItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillList {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiSkillList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<super::AiSkillListDataItem>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillList> for super::AiSkillList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillList> for AiSkillList {
+            fn from(value: super::AiSkillList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillListDataItem {
+            attributes: ::std::result::Result<super::AiSkill, ::std::string::String>,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiSkillListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiSkillListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiSkill>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillListDataItem>
+        for super::AiSkillListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillListDataItem> for AiSkillListDataItem {
+            fn from(value: super::AiSkillListDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillResponse {
+            data: ::std::result::Result<
+                super::AiSkillResponseData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl AiSkillResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiSkillResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillResponse> for super::AiSkillResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillResponse> for AiSkillResponse {
+            fn from(value: super::AiSkillResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillResponseData {
+            attributes: ::std::result::Result<super::AiSkill, ::std::string::String>,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiSkillResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiSkillResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiSkill>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillResponseData>
+        for super::AiSkillResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillResponseData> for AiSkillResponseData {
+            fn from(value: super::AiSkillResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillToolGrantsItem {
+            access: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            pinned_params: ::std::result::Result<
+                ::std::option::Option<
+                    ::std::collections::HashMap<
+                        ::std::string::String,
+                        super::AiSkillToolGrantsItemPinnedParamsValue,
+                    >,
+                >,
+                ::std::string::String,
+            >,
+            tool_key: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillToolGrantsItem {
+            fn default() -> Self {
+                Self {
+                    access: Err("no value supplied for access".to_string()),
+                    pinned_params: Err(
+                        "no value supplied for pinned_params".to_string(),
+                    ),
+                    tool_key: Err("no value supplied for tool_key".to_string()),
+                }
+            }
+        }
+        impl AiSkillToolGrantsItem {
+            pub fn access<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.access = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for access: {e}")
+                    });
+                self
+            }
+            pub fn pinned_params<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::std::collections::HashMap<
+                            ::std::string::String,
+                            super::AiSkillToolGrantsItemPinnedParamsValue,
+                        >,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned_params = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned_params: {e}")
+                    });
+                self
+            }
+            pub fn tool_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_key: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillToolGrantsItem>
+        for super::AiSkillToolGrantsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillToolGrantsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    access: value.access?,
+                    pinned_params: value.pinned_params?,
+                    tool_key: value.tool_key?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillToolGrantsItem>
+        for AiSkillToolGrantsItem {
+            fn from(value: super::AiSkillToolGrantsItem) -> Self {
+                Self {
+                    access: Ok(value.access),
+                    pinned_params: Ok(value.pinned_params),
+                    tool_key: Ok(value.tool_key),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillVersion {
+            body: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_by_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            skill_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            tool_grants: ::std::result::Result<
+                ::std::vec::Vec<super::AiSkillVersionToolGrantsItem>,
+                ::std::string::String,
+            >,
+            version: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillVersion {
+            fn default() -> Self {
+                Self {
+                    body: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    created_by_user_id: Ok(Default::default()),
+                    description: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                    skill_id: Ok(Default::default()),
+                    tool_grants: Ok(Default::default()),
+                    version: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiSkillVersion {
+            pub fn body<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.body = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for body: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn skill_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.skill_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for skill_id: {e}")
+                    });
+                self
+            }
+            pub fn tool_grants<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiSkillVersionToolGrantsItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_grants = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_grants: {e}")
+                    });
+                self
+            }
+            pub fn version<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.version = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for version: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillVersion> for super::AiSkillVersion {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillVersion,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    body: value.body?,
+                    created_at: value.created_at?,
+                    created_by_user_id: value.created_by_user_id?,
+                    description: value.description?,
+                    name: value.name?,
+                    skill_id: value.skill_id?,
+                    tool_grants: value.tool_grants?,
+                    version: value.version?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillVersion> for AiSkillVersion {
+            fn from(value: super::AiSkillVersion) -> Self {
+                Self {
+                    body: Ok(value.body),
+                    created_at: Ok(value.created_at),
+                    created_by_user_id: Ok(value.created_by_user_id),
+                    description: Ok(value.description),
+                    name: Ok(value.name),
+                    skill_id: Ok(value.skill_id),
+                    tool_grants: Ok(value.tool_grants),
+                    version: Ok(value.version),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillVersionList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::AiSkillVersionListDataItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillVersionList {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiSkillVersionList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiSkillVersionListDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillVersionList> for super::AiSkillVersionList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillVersionList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillVersionList> for AiSkillVersionList {
+            fn from(value: super::AiSkillVersionList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillVersionListDataItem {
+            attributes: ::std::result::Result<
+                super::AiSkillVersion,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiSkillVersionListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiSkillVersionListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiSkillVersion>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillVersionListDataItem>
+        for super::AiSkillVersionListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillVersionListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillVersionListDataItem>
+        for AiSkillVersionListDataItem {
+            fn from(value: super::AiSkillVersionListDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillVersionResponse {
+            data: ::std::result::Result<
+                super::AiSkillVersionResponseData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillVersionResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl AiSkillVersionResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiSkillVersionResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillVersionResponse>
+        for super::AiSkillVersionResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillVersionResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillVersionResponse>
+        for AiSkillVersionResponse {
+            fn from(value: super::AiSkillVersionResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillVersionResponseData {
+            attributes: ::std::result::Result<
+                super::AiSkillVersion,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiSkillVersionResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiSkillVersionResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiSkillVersion>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillVersionResponseData>
+        for super::AiSkillVersionResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillVersionResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillVersionResponseData>
+        for AiSkillVersionResponseData {
+            fn from(value: super::AiSkillVersionResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiSkillVersionToolGrantsItem {
+            access: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            pinned_params: ::std::result::Result<
+                ::std::option::Option<
+                    ::std::collections::HashMap<
+                        ::std::string::String,
+                        super::AiSkillVersionToolGrantsItemPinnedParamsValue,
+                    >,
+                >,
+                ::std::string::String,
+            >,
+            tool_key: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiSkillVersionToolGrantsItem {
+            fn default() -> Self {
+                Self {
+                    access: Err("no value supplied for access".to_string()),
+                    pinned_params: Err(
+                        "no value supplied for pinned_params".to_string(),
+                    ),
+                    tool_key: Err("no value supplied for tool_key".to_string()),
+                }
+            }
+        }
+        impl AiSkillVersionToolGrantsItem {
+            pub fn access<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.access = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for access: {e}")
+                    });
+                self
+            }
+            pub fn pinned_params<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::std::collections::HashMap<
+                            ::std::string::String,
+                            super::AiSkillVersionToolGrantsItemPinnedParamsValue,
+                        >,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned_params = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned_params: {e}")
+                    });
+                self
+            }
+            pub fn tool_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_key: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiSkillVersionToolGrantsItem>
+        for super::AiSkillVersionToolGrantsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiSkillVersionToolGrantsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    access: value.access?,
+                    pinned_params: value.pinned_params?,
+                    tool_key: value.tool_key?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiSkillVersionToolGrantsItem>
+        for AiSkillVersionToolGrantsItem {
+            fn from(value: super::AiSkillVersionToolGrantsItem) -> Self {
+                Self {
+                    access: Ok(value.access),
+                    pinned_params: Ok(value.pinned_params),
+                    tool_key: Ok(value.tool_key),
                 }
             }
         }
@@ -55351,6 +62307,7 @@ pub mod types {
                 ::std::vec::Vec<super::AlertRouteRulesItemDestinationsItem>,
                 ::std::string::String,
             >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
             fallback_rule: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
             non_paging: ::std::result::Result<
@@ -55370,6 +62327,7 @@ pub mod types {
                         "no value supplied for condition_groups".to_string(),
                     ),
                     destinations: Err("no value supplied for destinations".to_string()),
+                    enabled: Ok(super::defaults::default_bool::<true>()),
                     fallback_rule: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     non_paging: Ok(Default::default()),
@@ -55419,6 +62377,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for destinations: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
                     });
                 self
             }
@@ -55481,6 +62451,7 @@ pub mod types {
                     ai_sre_provider: value.ai_sre_provider?,
                     condition_groups: value.condition_groups?,
                     destinations: value.destinations?,
+                    enabled: value.enabled?,
                     fallback_rule: value.fallback_rule?,
                     name: value.name?,
                     non_paging: value.non_paging?,
@@ -55494,6 +62465,7 @@ pub mod types {
                     ai_sre_provider: Ok(value.ai_sre_provider),
                     condition_groups: Ok(value.condition_groups),
                     destinations: Ok(value.destinations),
+                    enabled: Ok(value.enabled),
                     fallback_rule: Ok(value.fallback_rule),
                     name: Ok(value.name),
                     non_paging: Ok(value.non_paging),
@@ -55509,6 +62481,10 @@ pub mod types {
                 >,
                 ::std::string::String,
             >,
+            id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
             position: ::std::result::Result<
                 ::std::option::Option<i64>,
                 ::std::string::String,
@@ -55518,6 +62494,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     conditions: Err("no value supplied for conditions".to_string()),
+                    id: Ok(Default::default()),
                     position: Ok(Default::default()),
                 }
             }
@@ -55537,6 +62514,16 @@ pub mod types {
                     .map_err(|e| {
                         format!("error converting supplied value for conditions: {e}")
                     });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
                 self
             }
             pub fn position<T>(mut self, value: T) -> Self
@@ -55560,6 +62547,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     conditions: value.conditions?,
+                    id: value.id?,
                     position: value.position?,
                 })
             }
@@ -55569,6 +62557,7 @@ pub mod types {
             fn from(value: super::AlertRouteRulesItemConditionGroupsItem) -> Self {
                 Self {
                     conditions: Ok(value.conditions),
+                    id: Ok(value.id),
                     position: Ok(value.position),
                 }
             }
@@ -55585,6 +62574,10 @@ pub mod types {
             >,
             conditionable_type: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
                 ::std::string::String,
             >,
             property_field_condition_type: ::std::result::Result<
@@ -55621,6 +62614,7 @@ pub mod types {
                     conditionable_type: Err(
                         "no value supplied for conditionable_type".to_string(),
                     ),
+                    id: Ok(Default::default()),
                     property_field_condition_type: Err(
                         "no value supplied for property_field_condition_type".to_string(),
                     ),
@@ -55682,6 +62676,16 @@ pub mod types {
                             "error converting supplied value for conditionable_type: {e}"
                         )
                     });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
                 self
             }
             pub fn property_field_condition_type<T>(mut self, value: T) -> Self
@@ -55768,6 +62772,7 @@ pub mod types {
                     alert_urgency_ids: value.alert_urgency_ids?,
                     conditionable_id: value.conditionable_id?,
                     conditionable_type: value.conditionable_type?,
+                    id: value.id?,
                     property_field_condition_type: value.property_field_condition_type?,
                     property_field_name: value.property_field_name?,
                     property_field_type: value.property_field_type?,
@@ -55786,6 +62791,7 @@ pub mod types {
                     alert_urgency_ids: Ok(value.alert_urgency_ids),
                     conditionable_id: Ok(value.conditionable_id),
                     conditionable_type: Ok(value.conditionable_type),
+                    id: Ok(value.id),
                     property_field_condition_type: Ok(
                         value.property_field_condition_type,
                     ),
@@ -55798,7 +62804,28 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct AlertRouteRulesItemDestinationsItem {
-            target_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            catalog_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            catalog_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            match_keys: ::std::result::Result<
+                ::std::option::Option<
+                    [super::AlertRouteRulesItemDestinationsItemMatchKeysItem; 1usize],
+                >,
+                ::std::string::String,
+            >,
+            target_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
             target_type: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
@@ -55807,15 +62834,69 @@ pub mod types {
         impl ::std::default::Default for AlertRouteRulesItemDestinationsItem {
             fn default() -> Self {
                 Self {
-                    target_id: Err("no value supplied for target_id".to_string()),
+                    catalog_id: Ok(Default::default()),
+                    catalog_type: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    match_keys: Ok(Default::default()),
+                    target_id: Ok(Default::default()),
                     target_type: Err("no value supplied for target_type".to_string()),
                 }
             }
         }
         impl AlertRouteRulesItemDestinationsItem {
+            pub fn catalog_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for catalog_id: {e}")
+                    });
+                self
+            }
+            pub fn catalog_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for catalog_type: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn match_keys<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        [super::AlertRouteRulesItemDestinationsItemMatchKeysItem; 1usize],
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.match_keys = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for match_keys: {e}")
+                    });
+                self
+            }
             pub fn target_id<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
                 T::Error: ::std::fmt::Display,
             {
                 self.target_id = value
@@ -55845,6 +62926,10 @@ pub mod types {
                 value: AlertRouteRulesItemDestinationsItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    catalog_id: value.catalog_id?,
+                    catalog_type: value.catalog_type?,
+                    id: value.id?,
+                    match_keys: value.match_keys?,
                     target_id: value.target_id?,
                     target_type: value.target_type?,
                 })
@@ -55854,8 +62939,252 @@ pub mod types {
         for AlertRouteRulesItemDestinationsItem {
             fn from(value: super::AlertRouteRulesItemDestinationsItem) -> Self {
                 Self {
+                    catalog_id: Ok(value.catalog_id),
+                    catalog_type: Ok(value.catalog_type),
+                    id: Ok(value.id),
+                    match_keys: Ok(value.match_keys),
                     target_id: Ok(value.target_id),
                     target_type: Ok(value.target_type),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AlertRouteRulesItemDestinationsItemMatchKeysItem {
+            normalizers: ::std::result::Result<
+                ::std::option::Option<
+                    super::AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers,
+                >,
+                ::std::string::String,
+            >,
+            property_ref: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            source_kind: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            source_ref: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for AlertRouteRulesItemDestinationsItemMatchKeysItem {
+            fn default() -> Self {
+                Self {
+                    normalizers: Ok(Default::default()),
+                    property_ref: Err("no value supplied for property_ref".to_string()),
+                    source_kind: Err("no value supplied for source_kind".to_string()),
+                    source_ref: Err("no value supplied for source_ref".to_string()),
+                }
+            }
+        }
+        impl AlertRouteRulesItemDestinationsItemMatchKeysItem {
+            pub fn normalizers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.normalizers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for normalizers: {e}")
+                    });
+                self
+            }
+            pub fn property_ref<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.property_ref = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for property_ref: {e}")
+                    });
+                self
+            }
+            pub fn source_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source_kind: {e}")
+                    });
+                self
+            }
+            pub fn source_ref<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_ref = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source_ref: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AlertRouteRulesItemDestinationsItemMatchKeysItem>
+        for super::AlertRouteRulesItemDestinationsItemMatchKeysItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertRouteRulesItemDestinationsItemMatchKeysItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    normalizers: value.normalizers?,
+                    property_ref: value.property_ref?,
+                    source_kind: value.source_kind?,
+                    source_ref: value.source_ref?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::AlertRouteRulesItemDestinationsItemMatchKeysItem,
+        > for AlertRouteRulesItemDestinationsItemMatchKeysItem {
+            fn from(
+                value: super::AlertRouteRulesItemDestinationsItemMatchKeysItem,
+            ) -> Self {
+                Self {
+                    normalizers: Ok(value.normalizers),
+                    property_ref: Ok(value.property_ref),
+                    source_kind: Ok(value.source_kind),
+                    source_ref: Ok(value.source_ref),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers {
+            extract_pattern: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            ignore_case: ::std::result::Result<bool, ::std::string::String>,
+            ignore_whitespace: ::std::result::Result<bool, ::std::string::String>,
+            strip_prefix: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            strip_suffix: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers {
+            fn default() -> Self {
+                Self {
+                    extract_pattern: Ok(Default::default()),
+                    ignore_case: Ok(Default::default()),
+                    ignore_whitespace: Ok(Default::default()),
+                    strip_prefix: Ok(Default::default()),
+                    strip_suffix: Ok(Default::default()),
+                }
+            }
+        }
+        impl AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers {
+            pub fn extract_pattern<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.extract_pattern = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for extract_pattern: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ignore_case<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignore_case = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for ignore_case: {e}")
+                    });
+                self
+            }
+            pub fn ignore_whitespace<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignore_whitespace = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ignore_whitespace: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn strip_prefix<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.strip_prefix = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for strip_prefix: {e}")
+                    });
+                self
+            }
+            pub fn strip_suffix<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.strip_suffix = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for strip_suffix: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers,
+        > for super::AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    extract_pattern: value.extract_pattern?,
+                    ignore_case: value.ignore_case?,
+                    ignore_whitespace: value.ignore_whitespace?,
+                    strip_prefix: value.strip_prefix?,
+                    strip_suffix: value.strip_suffix?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers,
+        > for AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers {
+            fn from(
+                value: super::AlertRouteRulesItemDestinationsItemMatchKeysItemNormalizers,
+            ) -> Self {
+                Self {
+                    extract_pattern: Ok(value.extract_pattern),
+                    ignore_case: Ok(value.ignore_case),
+                    ignore_whitespace: Ok(value.ignore_whitespace),
+                    strip_prefix: Ok(value.strip_prefix),
+                    strip_suffix: Ok(value.strip_suffix),
                 }
             }
         }
@@ -58789,6 +66118,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            attach_owner_groups_to_alerts: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             created_at: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
@@ -58852,6 +66185,7 @@ pub mod types {
                     alert_source_urgency_rules_attributes: Ok(Default::default()),
                     alert_template_attributes: Ok(Default::default()),
                     alert_urgency_id: Ok(Default::default()),
+                    attach_owner_groups_to_alerts: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
                     deduplicate_alerts_by_key: Ok(Default::default()),
                     deduplication_key_kind: Ok(Default::default()),
@@ -58932,6 +66266,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for alert_urgency_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn attach_owner_groups_to_alerts<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attach_owner_groups_to_alerts = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for attach_owner_groups_to_alerts: {e}"
                         )
                     });
                 self
@@ -59161,6 +66509,7 @@ pub mod types {
                         .alert_source_urgency_rules_attributes?,
                     alert_template_attributes: value.alert_template_attributes?,
                     alert_urgency_id: value.alert_urgency_id?,
+                    attach_owner_groups_to_alerts: value.attach_owner_groups_to_alerts?,
                     created_at: value.created_at?,
                     deduplicate_alerts_by_key: value.deduplicate_alerts_by_key?,
                     deduplication_key_kind: value.deduplication_key_kind?,
@@ -59191,6 +66540,9 @@ pub mod types {
                     ),
                     alert_template_attributes: Ok(value.alert_template_attributes),
                     alert_urgency_id: Ok(value.alert_urgency_id),
+                    attach_owner_groups_to_alerts: Ok(
+                        value.attach_owner_groups_to_alerts,
+                    ),
                     created_at: Ok(value.created_at),
                     deduplicate_alerts_by_key: Ok(value.deduplicate_alerts_by_key),
                     deduplication_key_kind: Ok(value.deduplication_key_kind),
@@ -79262,6 +86614,385 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct CountObservabilityLogsResponse {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::CountObservabilityLogsResponseDataItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                super::CountObservabilityLogsResponseMeta,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for CountObservabilityLogsResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    meta: Err("no value supplied for meta".to_string()),
+                }
+            }
+        }
+        impl CountObservabilityLogsResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::CountObservabilityLogsResponseDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::CountObservabilityLogsResponseMeta>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<CountObservabilityLogsResponse>
+        for super::CountObservabilityLogsResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: CountObservabilityLogsResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::CountObservabilityLogsResponse>
+        for CountObservabilityLogsResponse {
+            fn from(value: super::CountObservabilityLogsResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct CountObservabilityLogsResponseDataItem {
+            attributes: ::std::result::Result<
+                super::CountObservabilityLogsResponseDataItemAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for CountObservabilityLogsResponseDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl CountObservabilityLogsResponseDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::CountObservabilityLogsResponseDataItemAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<CountObservabilityLogsResponseDataItem>
+        for super::CountObservabilityLogsResponseDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: CountObservabilityLogsResponseDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::CountObservabilityLogsResponseDataItem>
+        for CountObservabilityLogsResponseDataItem {
+            fn from(value: super::CountObservabilityLogsResponseDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct CountObservabilityLogsResponseDataItemAttributes {
+            count: ::std::result::Result<i64, ::std::string::String>,
+            logs_query: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default
+        for CountObservabilityLogsResponseDataItemAttributes {
+            fn default() -> Self {
+                Self {
+                    count: Err("no value supplied for count".to_string()),
+                    logs_query: Err("no value supplied for logs_query".to_string()),
+                    value: Err("no value supplied for value".to_string()),
+                }
+            }
+        }
+        impl CountObservabilityLogsResponseDataItemAttributes {
+            pub fn count<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.count = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for count: {e}")
+                    });
+                self
+            }
+            pub fn logs_query<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.logs_query = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for logs_query: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<CountObservabilityLogsResponseDataItemAttributes>
+        for super::CountObservabilityLogsResponseDataItemAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: CountObservabilityLogsResponseDataItemAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    count: value.count?,
+                    logs_query: value.logs_query?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::CountObservabilityLogsResponseDataItemAttributes,
+        > for CountObservabilityLogsResponseDataItemAttributes {
+            fn from(
+                value: super::CountObservabilityLogsResponseDataItemAttributes,
+            ) -> Self {
+                Self {
+                    count: Ok(value.count),
+                    logs_query: Ok(value.logs_query),
+                    value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct CountObservabilityLogsResponseMeta {
+            group_by: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            query: ::std::result::Result<::std::string::String, ::std::string::String>,
+            returned: ::std::result::Result<i64, ::std::string::String>,
+            total: ::std::result::Result<i64, ::std::string::String>,
+            truncated: ::std::result::Result<bool, ::std::string::String>,
+            warnings: ::std::result::Result<
+                ::std::vec::Vec<super::ObservabilityWarning>,
+                ::std::string::String,
+            >,
+            window: ::std::result::Result<
+                super::ObservabilityWindow,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for CountObservabilityLogsResponseMeta {
+            fn default() -> Self {
+                Self {
+                    group_by: Err("no value supplied for group_by".to_string()),
+                    query: Err("no value supplied for query".to_string()),
+                    returned: Err("no value supplied for returned".to_string()),
+                    total: Err("no value supplied for total".to_string()),
+                    truncated: Err("no value supplied for truncated".to_string()),
+                    warnings: Err("no value supplied for warnings".to_string()),
+                    window: Err("no value supplied for window".to_string()),
+                }
+            }
+        }
+        impl CountObservabilityLogsResponseMeta {
+            pub fn group_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.group_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for group_by: {e}")
+                    });
+                self
+            }
+            pub fn query<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.query = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for query: {e}")
+                    });
+                self
+            }
+            pub fn returned<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.returned = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for returned: {e}")
+                    });
+                self
+            }
+            pub fn total<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.total = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for total: {e}")
+                    });
+                self
+            }
+            pub fn truncated<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.truncated = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for truncated: {e}")
+                    });
+                self
+            }
+            pub fn warnings<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<super::ObservabilityWarning>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.warnings = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for warnings: {e}")
+                    });
+                self
+            }
+            pub fn window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ObservabilityWindow>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for window: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<CountObservabilityLogsResponseMeta>
+        for super::CountObservabilityLogsResponseMeta {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: CountObservabilityLogsResponseMeta,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    group_by: value.group_by?,
+                    query: value.query?,
+                    returned: value.returned?,
+                    total: value.total?,
+                    truncated: value.truncated?,
+                    warnings: value.warnings?,
+                    window: value.window?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::CountObservabilityLogsResponseMeta>
+        for CountObservabilityLogsResponseMeta {
+            fn from(value: super::CountObservabilityLogsResponseMeta) -> Self {
+                Self {
+                    group_by: Ok(value.group_by),
+                    query: Ok(value.query),
+                    returned: Ok(value.returned),
+                    total: Ok(value.total),
+                    truncated: Ok(value.truncated),
+                    warnings: Ok(value.warnings),
+                    window: Ok(value.window),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct CreateAirtableTableRecordTaskParams {
             base: ::std::result::Result<
                 super::CreateAirtableTableRecordTaskParamsBase,
@@ -84935,6 +92666,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            enable_google_meet_bot_auto_join: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             post_to_incident_timeline: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -84969,6 +92704,7 @@ pub mod types {
                 Self {
                     conference_solution_key: Ok(Default::default()),
                     description: Err("no value supplied for description".to_string()),
+                    enable_google_meet_bot_auto_join: Ok(Default::default()),
                     post_to_incident_timeline: Ok(Default::default()),
                     post_to_slack_channels: Ok(Default::default()),
                     record_meeting: Ok(Default::default()),
@@ -85004,6 +92740,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn enable_google_meet_bot_auto_join<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enable_google_meet_bot_auto_join = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for enable_google_meet_bot_auto_join: {e}"
+                        )
                     });
                 self
             }
@@ -85127,6 +92877,8 @@ pub mod types {
                 Ok(Self {
                     conference_solution_key: value.conference_solution_key?,
                     description: value.description?,
+                    enable_google_meet_bot_auto_join: value
+                        .enable_google_meet_bot_auto_join?,
                     post_to_incident_timeline: value.post_to_incident_timeline?,
                     post_to_slack_channels: value.post_to_slack_channels?,
                     record_meeting: value.record_meeting?,
@@ -85144,6 +92896,9 @@ pub mod types {
                 Self {
                     conference_solution_key: Ok(value.conference_solution_key),
                     description: Ok(value.description),
+                    enable_google_meet_bot_auto_join: Ok(
+                        value.enable_google_meet_bot_auto_join,
+                    ),
                     post_to_incident_timeline: Ok(value.post_to_incident_timeline),
                     post_to_slack_channels: Ok(value.post_to_slack_channels),
                     record_meeting: Ok(value.record_meeting),
@@ -106368,6 +114123,10 @@ pub mod types {
             >,
             is_default: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            resource_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             slug: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -106384,6 +114143,7 @@ pub mod types {
                     forms: Err("no value supplied for forms".to_string()),
                     is_default: Err("no value supplied for is_default".to_string()),
                     name: Err("no value supplied for name".to_string()),
+                    resource_type: Ok(Default::default()),
                     slug: Ok(Default::default()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
                 }
@@ -106438,6 +114198,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn resource_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.resource_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for resource_type: {e}")
+                    });
+                self
+            }
             pub fn slug<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -106473,6 +114245,7 @@ pub mod types {
                     forms: value.forms?,
                     is_default: value.is_default?,
                     name: value.name?,
+                    resource_type: value.resource_type?,
                     slug: value.slug?,
                     updated_at: value.updated_at?,
                 })
@@ -106485,6 +114258,7 @@ pub mod types {
                     forms: Ok(value.forms),
                     is_default: Ok(value.is_default),
                     name: Ok(value.name),
+                    resource_type: Ok(value.resource_type),
                     slug: Ok(value.slug),
                     updated_at: Ok(value.updated_at),
                 }
@@ -109359,6 +117133,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            attach_owner_groups_to_alerts: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             created_at: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
@@ -109420,6 +117198,7 @@ pub mod types {
                         "no value supplied for alert_summary".to_string(),
                     ),
                     alert_urgency_id: Ok(Default::default()),
+                    attach_owner_groups_to_alerts: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
                     description: Ok(Default::default()),
                     email_address: Err(
@@ -109484,6 +117263,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for alert_urgency_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn attach_owner_groups_to_alerts<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attach_owner_groups_to_alerts = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for attach_owner_groups_to_alerts: {e}"
                         )
                     });
                 self
@@ -109698,6 +117491,7 @@ pub mod types {
                     alert_description: value.alert_description?,
                     alert_summary: value.alert_summary?,
                     alert_urgency_id: value.alert_urgency_id?,
+                    attach_owner_groups_to_alerts: value.attach_owner_groups_to_alerts?,
                     created_at: value.created_at?,
                     description: value.description?,
                     email_address: value.email_address?,
@@ -109723,6 +117517,9 @@ pub mod types {
                     alert_description: Ok(value.alert_description),
                     alert_summary: Ok(value.alert_summary),
                     alert_urgency_id: Ok(value.alert_urgency_id),
+                    attach_owner_groups_to_alerts: Ok(
+                        value.attach_owner_groups_to_alerts,
+                    ),
                     created_at: Ok(value.created_at),
                     description: Ok(value.description),
                     email_address: Ok(value.email_address),
@@ -126857,6 +134654,295 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct IpAllowlist {
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            entries: ::std::result::Result<
+                ::std::vec::Vec<super::IpAllowlistEntriesItem>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for IpAllowlist {
+            fn default() -> Self {
+                Self {
+                    created_at: Ok(Default::default()),
+                    enabled: Ok(Default::default()),
+                    entries: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl IpAllowlist {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn entries<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::IpAllowlistEntriesItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.entries = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for entries: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<IpAllowlist> for super::IpAllowlist {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: IpAllowlist,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    enabled: value.enabled?,
+                    entries: value.entries?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::IpAllowlist> for IpAllowlist {
+            fn from(value: super::IpAllowlist) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    enabled: Ok(value.enabled),
+                    entries: Ok(value.entries),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct IpAllowlistEntriesItem {
+            cidr: ::std::result::Result<::std::string::String, ::std::string::String>,
+            label: ::std::result::Result<
+                ::std::option::Option<super::IpAllowlistEntriesItemLabel>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for IpAllowlistEntriesItem {
+            fn default() -> Self {
+                Self {
+                    cidr: Err("no value supplied for cidr".to_string()),
+                    label: Ok(Default::default()),
+                }
+            }
+        }
+        impl IpAllowlistEntriesItem {
+            pub fn cidr<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.cidr = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for cidr: {e}")
+                    });
+                self
+            }
+            pub fn label<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::IpAllowlistEntriesItemLabel>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.label = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for label: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<IpAllowlistEntriesItem>
+        for super::IpAllowlistEntriesItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: IpAllowlistEntriesItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    cidr: value.cidr?,
+                    label: value.label?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::IpAllowlistEntriesItem>
+        for IpAllowlistEntriesItem {
+            fn from(value: super::IpAllowlistEntriesItem) -> Self {
+                Self {
+                    cidr: Ok(value.cidr),
+                    label: Ok(value.label),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct IpAllowlistResponse {
+            data: ::std::result::Result<
+                super::IpAllowlistResponseData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for IpAllowlistResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl IpAllowlistResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::IpAllowlistResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<IpAllowlistResponse>
+        for super::IpAllowlistResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: IpAllowlistResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::IpAllowlistResponse> for IpAllowlistResponse {
+            fn from(value: super::IpAllowlistResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct IpAllowlistResponseData {
+            attributes: ::std::result::Result<super::IpAllowlist, ::std::string::String>,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for IpAllowlistResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl IpAllowlistResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::IpAllowlist>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<IpAllowlistResponseData>
+        for super::IpAllowlistResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: IpAllowlistResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::IpAllowlistResponseData>
+        for IpAllowlistResponseData {
+            fn from(value: super::IpAllowlistResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct IpRanges {
             integrations_ipv4: ::std::result::Result<
                 ::std::vec::Vec<::std::string::String>,
@@ -127459,6 +135545,1258 @@ pub mod types {
                     next: Ok(value.next),
                     prev: Ok(value.prev),
                     self_: Ok(value.self_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityLogsResponse {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::ListObservabilityLogsResponseDataItem>,
+                ::std::string::String,
+            >,
+            links: ::std::result::Result<
+                super::ListObservabilityLogsResponseLinks,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                super::ListObservabilityLogsResponseMeta,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ListObservabilityLogsResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    links: Err("no value supplied for links".to_string()),
+                    meta: Err("no value supplied for meta".to_string()),
+                }
+            }
+        }
+        impl ListObservabilityLogsResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::ListObservabilityLogsResponseDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn links<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ListObservabilityLogsResponseLinks>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.links = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for links: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ListObservabilityLogsResponseMeta>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityLogsResponse>
+        for super::ListObservabilityLogsResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityLogsResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    links: value.links?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityLogsResponse>
+        for ListObservabilityLogsResponse {
+            fn from(value: super::ListObservabilityLogsResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    links: Ok(value.links),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityLogsResponseDataItem {
+            attributes: ::std::result::Result<
+                super::ListObservabilityLogsResponseDataItemAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ListObservabilityLogsResponseDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ListObservabilityLogsResponseDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::ListObservabilityLogsResponseDataItemAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityLogsResponseDataItem>
+        for super::ListObservabilityLogsResponseDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityLogsResponseDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityLogsResponseDataItem>
+        for ListObservabilityLogsResponseDataItem {
+            fn from(value: super::ListObservabilityLogsResponseDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityLogsResponseDataItemAttributes {
+            attributes: ::std::result::Result<
+                ::std::collections::HashMap<
+                    ::std::string::String,
+                    ::std::string::String,
+                >,
+                ::std::string::String,
+            >,
+            body: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            index: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            pattern_hash: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            resource_attributes: ::std::result::Result<
+                ::std::collections::HashMap<
+                    ::std::string::String,
+                    ::std::string::String,
+                >,
+                ::std::string::String,
+            >,
+            service: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            severity: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            span_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            timestamp: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            trace_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for ListObservabilityLogsResponseDataItemAttributes {
+            fn default() -> Self {
+                Self {
+                    attributes: Ok(Default::default()),
+                    body: Ok(Default::default()),
+                    index: Ok(Default::default()),
+                    pattern_hash: Ok(Default::default()),
+                    resource_attributes: Ok(Default::default()),
+                    service: Ok(Default::default()),
+                    severity: Ok(Default::default()),
+                    span_id: Ok(Default::default()),
+                    timestamp: Ok(Default::default()),
+                    trace_id: Ok(Default::default()),
+                }
+            }
+        }
+        impl ListObservabilityLogsResponseDataItemAttributes {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::collections::HashMap<
+                        ::std::string::String,
+                        ::std::string::String,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn body<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.body = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for body: {e}")
+                    });
+                self
+            }
+            pub fn index<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.index = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for index: {e}")
+                    });
+                self
+            }
+            pub fn pattern_hash<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pattern_hash = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pattern_hash: {e}")
+                    });
+                self
+            }
+            pub fn resource_attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::collections::HashMap<
+                        ::std::string::String,
+                        ::std::string::String,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.resource_attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for resource_attributes: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn service<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.service = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for service: {e}")
+                    });
+                self
+            }
+            pub fn severity<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.severity = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for severity: {e}")
+                    });
+                self
+            }
+            pub fn span_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.span_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for span_id: {e}")
+                    });
+                self
+            }
+            pub fn timestamp<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.timestamp = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for timestamp: {e}")
+                    });
+                self
+            }
+            pub fn trace_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.trace_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for trace_id: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityLogsResponseDataItemAttributes>
+        for super::ListObservabilityLogsResponseDataItemAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityLogsResponseDataItemAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    body: value.body?,
+                    index: value.index?,
+                    pattern_hash: value.pattern_hash?,
+                    resource_attributes: value.resource_attributes?,
+                    service: value.service?,
+                    severity: value.severity?,
+                    span_id: value.span_id?,
+                    timestamp: value.timestamp?,
+                    trace_id: value.trace_id?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityLogsResponseDataItemAttributes>
+        for ListObservabilityLogsResponseDataItemAttributes {
+            fn from(
+                value: super::ListObservabilityLogsResponseDataItemAttributes,
+            ) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    body: Ok(value.body),
+                    index: Ok(value.index),
+                    pattern_hash: Ok(value.pattern_hash),
+                    resource_attributes: Ok(value.resource_attributes),
+                    service: Ok(value.service),
+                    severity: Ok(value.severity),
+                    span_id: Ok(value.span_id),
+                    timestamp: Ok(value.timestamp),
+                    trace_id: Ok(value.trace_id),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityLogsResponseLinks {
+            next: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ListObservabilityLogsResponseLinks {
+            fn default() -> Self {
+                Self {
+                    next: Ok(Default::default()),
+                }
+            }
+        }
+        impl ListObservabilityLogsResponseLinks {
+            pub fn next<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityLogsResponseLinks>
+        for super::ListObservabilityLogsResponseLinks {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityLogsResponseLinks,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { next: value.next? })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityLogsResponseLinks>
+        for ListObservabilityLogsResponseLinks {
+            fn from(value: super::ListObservabilityLogsResponseLinks) -> Self {
+                Self { next: Ok(value.next) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityLogsResponseMeta {
+            page: ::std::result::Result<
+                super::ListObservabilityLogsResponseMetaPage,
+                ::std::string::String,
+            >,
+            query: ::std::result::Result<::std::string::String, ::std::string::String>,
+            returned: ::std::result::Result<i64, ::std::string::String>,
+            truncated: ::std::result::Result<bool, ::std::string::String>,
+            warnings: ::std::result::Result<
+                ::std::vec::Vec<super::ObservabilityWarning>,
+                ::std::string::String,
+            >,
+            window: ::std::result::Result<
+                super::ObservabilityWindow,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ListObservabilityLogsResponseMeta {
+            fn default() -> Self {
+                Self {
+                    page: Err("no value supplied for page".to_string()),
+                    query: Err("no value supplied for query".to_string()),
+                    returned: Err("no value supplied for returned".to_string()),
+                    truncated: Err("no value supplied for truncated".to_string()),
+                    warnings: Err("no value supplied for warnings".to_string()),
+                    window: Err("no value supplied for window".to_string()),
+                }
+            }
+        }
+        impl ListObservabilityLogsResponseMeta {
+            pub fn page<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ListObservabilityLogsResponseMetaPage>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.page = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for page: {e}")
+                    });
+                self
+            }
+            pub fn query<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.query = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for query: {e}")
+                    });
+                self
+            }
+            pub fn returned<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.returned = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for returned: {e}")
+                    });
+                self
+            }
+            pub fn truncated<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.truncated = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for truncated: {e}")
+                    });
+                self
+            }
+            pub fn warnings<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<super::ObservabilityWarning>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.warnings = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for warnings: {e}")
+                    });
+                self
+            }
+            pub fn window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ObservabilityWindow>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for window: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityLogsResponseMeta>
+        for super::ListObservabilityLogsResponseMeta {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityLogsResponseMeta,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    page: value.page?,
+                    query: value.query?,
+                    returned: value.returned?,
+                    truncated: value.truncated?,
+                    warnings: value.warnings?,
+                    window: value.window?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityLogsResponseMeta>
+        for ListObservabilityLogsResponseMeta {
+            fn from(value: super::ListObservabilityLogsResponseMeta) -> Self {
+                Self {
+                    page: Ok(value.page),
+                    query: Ok(value.query),
+                    returned: Ok(value.returned),
+                    truncated: Ok(value.truncated),
+                    warnings: Ok(value.warnings),
+                    window: Ok(value.window),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityLogsResponseMetaPage {
+            next_cursor: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            size: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ListObservabilityLogsResponseMetaPage {
+            fn default() -> Self {
+                Self {
+                    next_cursor: Ok(Default::default()),
+                    size: Ok(Default::default()),
+                }
+            }
+        }
+        impl ListObservabilityLogsResponseMetaPage {
+            pub fn next_cursor<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_cursor = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next_cursor: {e}")
+                    });
+                self
+            }
+            pub fn size<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.size = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for size: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityLogsResponseMetaPage>
+        for super::ListObservabilityLogsResponseMetaPage {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityLogsResponseMetaPage,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    next_cursor: value.next_cursor?,
+                    size: value.size?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityLogsResponseMetaPage>
+        for ListObservabilityLogsResponseMetaPage {
+            fn from(value: super::ListObservabilityLogsResponseMetaPage) -> Self {
+                Self {
+                    next_cursor: Ok(value.next_cursor),
+                    size: Ok(value.size),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityPatternsResponse {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::ListObservabilityPatternsResponseDataItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                super::ListObservabilityPatternsResponseMeta,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ListObservabilityPatternsResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    meta: Err("no value supplied for meta".to_string()),
+                }
+            }
+        }
+        impl ListObservabilityPatternsResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::ListObservabilityPatternsResponseDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ListObservabilityPatternsResponseMeta>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityPatternsResponse>
+        for super::ListObservabilityPatternsResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityPatternsResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityPatternsResponse>
+        for ListObservabilityPatternsResponse {
+            fn from(value: super::ListObservabilityPatternsResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityPatternsResponseDataItem {
+            attributes: ::std::result::Result<
+                super::ListObservabilityPatternsResponseDataItemAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ListObservabilityPatternsResponseDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ListObservabilityPatternsResponseDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::ListObservabilityPatternsResponseDataItemAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityPatternsResponseDataItem>
+        for super::ListObservabilityPatternsResponseDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityPatternsResponseDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityPatternsResponseDataItem>
+        for ListObservabilityPatternsResponseDataItem {
+            fn from(value: super::ListObservabilityPatternsResponseDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityPatternsResponseDataItemAttributes {
+            change_percent: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            detectors: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            errors: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            first_seen: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            logs_query: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            max_severity: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            pattern_hash: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            previous_total: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            service: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            template: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            total: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            warnings: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for ListObservabilityPatternsResponseDataItemAttributes {
+            fn default() -> Self {
+                Self {
+                    change_percent: Ok(Default::default()),
+                    detectors: Ok(Default::default()),
+                    errors: Ok(Default::default()),
+                    first_seen: Ok(Default::default()),
+                    logs_query: Ok(Default::default()),
+                    max_severity: Ok(Default::default()),
+                    pattern_hash: Ok(Default::default()),
+                    previous_total: Ok(Default::default()),
+                    service: Ok(Default::default()),
+                    template: Ok(Default::default()),
+                    total: Ok(Default::default()),
+                    warnings: Ok(Default::default()),
+                }
+            }
+        }
+        impl ListObservabilityPatternsResponseDataItemAttributes {
+            pub fn change_percent<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.change_percent = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for change_percent: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn detectors<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.detectors = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for detectors: {e}")
+                    });
+                self
+            }
+            pub fn errors<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.errors = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for errors: {e}")
+                    });
+                self
+            }
+            pub fn first_seen<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.first_seen = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for first_seen: {e}")
+                    });
+                self
+            }
+            pub fn logs_query<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.logs_query = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for logs_query: {e}")
+                    });
+                self
+            }
+            pub fn max_severity<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.max_severity = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for max_severity: {e}")
+                    });
+                self
+            }
+            pub fn pattern_hash<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pattern_hash = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pattern_hash: {e}")
+                    });
+                self
+            }
+            pub fn previous_total<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.previous_total = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for previous_total: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn service<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.service = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for service: {e}")
+                    });
+                self
+            }
+            pub fn template<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.template = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for template: {e}")
+                    });
+                self
+            }
+            pub fn total<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.total = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for total: {e}")
+                    });
+                self
+            }
+            pub fn warnings<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.warnings = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for warnings: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityPatternsResponseDataItemAttributes>
+        for super::ListObservabilityPatternsResponseDataItemAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityPatternsResponseDataItemAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    change_percent: value.change_percent?,
+                    detectors: value.detectors?,
+                    errors: value.errors?,
+                    first_seen: value.first_seen?,
+                    logs_query: value.logs_query?,
+                    max_severity: value.max_severity?,
+                    pattern_hash: value.pattern_hash?,
+                    previous_total: value.previous_total?,
+                    service: value.service?,
+                    template: value.template?,
+                    total: value.total?,
+                    warnings: value.warnings?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::ListObservabilityPatternsResponseDataItemAttributes,
+        > for ListObservabilityPatternsResponseDataItemAttributes {
+            fn from(
+                value: super::ListObservabilityPatternsResponseDataItemAttributes,
+            ) -> Self {
+                Self {
+                    change_percent: Ok(value.change_percent),
+                    detectors: Ok(value.detectors),
+                    errors: Ok(value.errors),
+                    first_seen: Ok(value.first_seen),
+                    logs_query: Ok(value.logs_query),
+                    max_severity: Ok(value.max_severity),
+                    pattern_hash: Ok(value.pattern_hash),
+                    previous_total: Ok(value.previous_total),
+                    service: Ok(value.service),
+                    template: Ok(value.template),
+                    total: Ok(value.total),
+                    warnings: Ok(value.warnings),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ListObservabilityPatternsResponseMeta {
+            flagged: ::std::result::Result<bool, ::std::string::String>,
+            ignored_filters: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            previous_window: ::std::result::Result<
+                super::ObservabilityWindow,
+                ::std::string::String,
+            >,
+            query: ::std::result::Result<::std::string::String, ::std::string::String>,
+            returned: ::std::result::Result<i64, ::std::string::String>,
+            sort: ::std::result::Result<::std::string::String, ::std::string::String>,
+            truncated: ::std::result::Result<bool, ::std::string::String>,
+            warnings: ::std::result::Result<
+                ::std::vec::Vec<super::ObservabilityWarning>,
+                ::std::string::String,
+            >,
+            window: ::std::result::Result<
+                super::ObservabilityWindow,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ListObservabilityPatternsResponseMeta {
+            fn default() -> Self {
+                Self {
+                    flagged: Err("no value supplied for flagged".to_string()),
+                    ignored_filters: Ok(Default::default()),
+                    previous_window: Err(
+                        "no value supplied for previous_window".to_string(),
+                    ),
+                    query: Err("no value supplied for query".to_string()),
+                    returned: Err("no value supplied for returned".to_string()),
+                    sort: Err("no value supplied for sort".to_string()),
+                    truncated: Err("no value supplied for truncated".to_string()),
+                    warnings: Err("no value supplied for warnings".to_string()),
+                    window: Err("no value supplied for window".to_string()),
+                }
+            }
+        }
+        impl ListObservabilityPatternsResponseMeta {
+            pub fn flagged<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.flagged = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for flagged: {e}")
+                    });
+                self
+            }
+            pub fn ignored_filters<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignored_filters = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ignored_filters: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn previous_window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ObservabilityWindow>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.previous_window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for previous_window: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn query<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.query = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for query: {e}")
+                    });
+                self
+            }
+            pub fn returned<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.returned = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for returned: {e}")
+                    });
+                self
+            }
+            pub fn sort<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.sort = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for sort: {e}")
+                    });
+                self
+            }
+            pub fn truncated<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.truncated = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for truncated: {e}")
+                    });
+                self
+            }
+            pub fn warnings<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<super::ObservabilityWarning>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.warnings = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for warnings: {e}")
+                    });
+                self
+            }
+            pub fn window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ObservabilityWindow>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for window: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ListObservabilityPatternsResponseMeta>
+        for super::ListObservabilityPatternsResponseMeta {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ListObservabilityPatternsResponseMeta,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    flagged: value.flagged?,
+                    ignored_filters: value.ignored_filters?,
+                    previous_window: value.previous_window?,
+                    query: value.query?,
+                    returned: value.returned?,
+                    sort: value.sort?,
+                    truncated: value.truncated?,
+                    warnings: value.warnings?,
+                    window: value.window?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ListObservabilityPatternsResponseMeta>
+        for ListObservabilityPatternsResponseMeta {
+            fn from(value: super::ListObservabilityPatternsResponseMeta) -> Self {
+                Self {
+                    flagged: Ok(value.flagged),
+                    ignored_filters: Ok(value.ignored_filters),
+                    previous_window: Ok(value.previous_window),
+                    query: Ok(value.query),
+                    returned: Ok(value.returned),
+                    sort: Ok(value.sort),
+                    truncated: Ok(value.truncated),
+                    warnings: Ok(value.warnings),
+                    window: Ok(value.window),
                 }
             }
         }
@@ -128495,6 +137833,14 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            transcript_deleted_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            transcript_expires_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
             transcript_summary: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -128529,6 +137875,8 @@ pub mod types {
                     started_at: Ok(Default::default()),
                     status: Err("no value supplied for status".to_string()),
                     title: Ok(Default::default()),
+                    transcript_deleted_at: Ok(Default::default()),
+                    transcript_expires_at: Ok(Default::default()),
                     transcript_summary: Ok(Default::default()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
                     video_url: Ok(Default::default()),
@@ -128691,6 +138039,38 @@ pub mod types {
                     });
                 self
             }
+            pub fn transcript_deleted_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.transcript_deleted_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for transcript_deleted_at: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn transcript_expires_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.transcript_expires_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for transcript_expires_at: {e}"
+                        )
+                    });
+                self
+            }
             pub fn transcript_summary<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -128760,6 +138140,8 @@ pub mod types {
                     started_at: value.started_at?,
                     status: value.status?,
                     title: value.title?,
+                    transcript_deleted_at: value.transcript_deleted_at?,
+                    transcript_expires_at: value.transcript_expires_at?,
                     transcript_summary: value.transcript_summary?,
                     updated_at: value.updated_at?,
                     video_url: value.video_url?,
@@ -128782,6 +138164,8 @@ pub mod types {
                     started_at: Ok(value.started_at),
                     status: Ok(value.status),
                     title: Ok(value.title),
+                    transcript_deleted_at: Ok(value.transcript_deleted_at),
+                    transcript_expires_at: Ok(value.transcript_expires_at),
                     transcript_summary: Ok(value.transcript_summary),
                     updated_at: Ok(value.updated_at),
                     video_url: Ok(value.video_url),
@@ -128849,6 +138233,14 @@ pub mod types {
                 ::std::option::Option<super::MeetingRecordingDetailTranscript>,
                 ::std::string::String,
             >,
+            transcript_deleted_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            transcript_expires_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
             transcript_summary: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -128887,6 +138279,8 @@ pub mod types {
                     status: Err("no value supplied for status".to_string()),
                     title: Ok(Default::default()),
                     transcript: Ok(Default::default()),
+                    transcript_deleted_at: Ok(Default::default()),
+                    transcript_expires_at: Ok(Default::default()),
                     transcript_summary: Ok(Default::default()),
                     updated_at: Err("no value supplied for updated_at".to_string()),
                     video_url: Ok(Default::default()),
@@ -129103,6 +138497,38 @@ pub mod types {
                     });
                 self
             }
+            pub fn transcript_deleted_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.transcript_deleted_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for transcript_deleted_at: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn transcript_expires_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.transcript_expires_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for transcript_expires_at: {e}"
+                        )
+                    });
+                self
+            }
             pub fn transcript_summary<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -129177,6 +138603,8 @@ pub mod types {
                     status: value.status?,
                     title: value.title?,
                     transcript: value.transcript?,
+                    transcript_deleted_at: value.transcript_deleted_at?,
+                    transcript_expires_at: value.transcript_expires_at?,
                     transcript_summary: value.transcript_summary?,
                     updated_at: value.updated_at?,
                     video_url: value.video_url?,
@@ -129204,6 +138632,8 @@ pub mod types {
                     status: Ok(value.status),
                     title: Ok(value.title),
                     transcript: Ok(value.transcript),
+                    transcript_deleted_at: Ok(value.transcript_deleted_at),
+                    transcript_expires_at: Ok(value.transcript_expires_at),
                     transcript_summary: Ok(value.transcript_summary),
                     updated_at: Ok(value.updated_at),
                     video_url: Ok(value.video_url),
@@ -130044,6 +139474,1647 @@ pub mod types {
             fn from(value: super::MitigateIncidentDataAttributes) -> Self {
                 Self {
                     mitigation_message: Ok(value.mitigation_message),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomation {
+            data: ::std::result::Result<
+                super::NewAiAutomationData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiAutomation {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl NewAiAutomation {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewAiAutomationData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomation> for super::NewAiAutomation {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomation,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomation> for NewAiAutomation {
+            fn from(value: super::NewAiAutomation) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationData {
+            attributes: ::std::result::Result<
+                super::NewAiAutomationDataAttributes,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewAiAutomationData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl NewAiAutomationData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewAiAutomationDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationData>
+        for super::NewAiAutomationData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationData> for NewAiAutomationData {
+            fn from(value: super::NewAiAutomationData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationDataAttributes {
+            conditions: ::std::result::Result<
+                ::std::option::Option<super::NewAiAutomationDataAttributesConditions>,
+                ::std::string::String,
+            >,
+            consecutive_failures_count: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_by_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            destination_kind: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            destination_slack_channel_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            destination_slack_channel_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            disabled_reason: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            event_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            last_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            limits_enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            max_credits_per_run: ::std::result::Result<
+                ::std::option::Option<
+                    super::NewAiAutomationDataAttributesMaxCreditsPerRun,
+                >,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            next_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            owner_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            prompt: ::std::result::Result<::std::string::String, ::std::string::String>,
+            rate_limit_runs: ::std::result::Result<
+                ::std::option::Option<::std::num::NonZeroU64>,
+                ::std::string::String,
+            >,
+            rate_limit_window: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule: ::std::result::Result<
+                ::std::option::Option<super::NewAiAutomationDataAttributesSchedule>,
+                ::std::string::String,
+            >,
+            schedule_rrule: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_timezone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            skill_ids: ::std::result::Result<
+                ::std::vec::Vec<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            trigger_kind: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiAutomationDataAttributes {
+            fn default() -> Self {
+                Self {
+                    conditions: Ok(Default::default()),
+                    consecutive_failures_count: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    created_by_user_id: Ok(Default::default()),
+                    destination_kind: Ok(Default::default()),
+                    destination_slack_channel_id: Ok(Default::default()),
+                    destination_slack_channel_name: Ok(Default::default()),
+                    disabled_reason: Ok(Default::default()),
+                    enabled: Ok(Default::default()),
+                    event_name: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    last_run_at: Ok(Default::default()),
+                    limits_enabled: Ok(Default::default()),
+                    max_credits_per_run: Ok(Default::default()),
+                    name: Err("no value supplied for name".to_string()),
+                    next_run_at: Ok(Default::default()),
+                    owner_user_id: Ok(Default::default()),
+                    prompt: Err("no value supplied for prompt".to_string()),
+                    rate_limit_runs: Ok(Default::default()),
+                    rate_limit_window: Ok(Default::default()),
+                    schedule: Ok(Default::default()),
+                    schedule_rrule: Ok(Default::default()),
+                    schedule_timezone: Ok(Default::default()),
+                    skill_ids: Ok(Default::default()),
+                    trigger_kind: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewAiAutomationDataAttributes {
+            pub fn conditions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::NewAiAutomationDataAttributesConditions>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.conditions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for conditions: {e}")
+                    });
+                self
+            }
+            pub fn consecutive_failures_count<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.consecutive_failures_count = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for consecutive_failures_count: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_kind: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_slack_channel_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_slack_channel_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_slack_channel_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_slack_channel_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_slack_channel_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_slack_channel_name: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn disabled_reason<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.disabled_reason = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for disabled_reason: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn event_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.event_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for event_name: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn last_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for last_run_at: {e}")
+                    });
+                self
+            }
+            pub fn limits_enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.limits_enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for limits_enabled: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn max_credits_per_run<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::NewAiAutomationDataAttributesMaxCreditsPerRun,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.max_credits_per_run = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for max_credits_per_run: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn next_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next_run_at: {e}")
+                    });
+                self
+            }
+            pub fn owner_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for owner_user_id: {e}")
+                    });
+                self
+            }
+            pub fn prompt<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.prompt = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for prompt: {e}")
+                    });
+                self
+            }
+            pub fn rate_limit_runs<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::num::NonZeroU64>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.rate_limit_runs = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for rate_limit_runs: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn rate_limit_window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.rate_limit_window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for rate_limit_window: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::NewAiAutomationDataAttributesSchedule>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for schedule: {e}")
+                    });
+                self
+            }
+            pub fn schedule_rrule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_rrule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_rrule: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_timezone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_timezone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_timezone: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn skill_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.skill_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for skill_ids: {e}")
+                    });
+                self
+            }
+            pub fn trigger_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.trigger_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for trigger_kind: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationDataAttributes>
+        for super::NewAiAutomationDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    conditions: value.conditions?,
+                    consecutive_failures_count: value.consecutive_failures_count?,
+                    created_at: value.created_at?,
+                    created_by_user_id: value.created_by_user_id?,
+                    destination_kind: value.destination_kind?,
+                    destination_slack_channel_id: value.destination_slack_channel_id?,
+                    destination_slack_channel_name: value
+                        .destination_slack_channel_name?,
+                    disabled_reason: value.disabled_reason?,
+                    enabled: value.enabled?,
+                    event_name: value.event_name?,
+                    id: value.id?,
+                    last_run_at: value.last_run_at?,
+                    limits_enabled: value.limits_enabled?,
+                    max_credits_per_run: value.max_credits_per_run?,
+                    name: value.name?,
+                    next_run_at: value.next_run_at?,
+                    owner_user_id: value.owner_user_id?,
+                    prompt: value.prompt?,
+                    rate_limit_runs: value.rate_limit_runs?,
+                    rate_limit_window: value.rate_limit_window?,
+                    schedule: value.schedule?,
+                    schedule_rrule: value.schedule_rrule?,
+                    schedule_timezone: value.schedule_timezone?,
+                    skill_ids: value.skill_ids?,
+                    trigger_kind: value.trigger_kind?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationDataAttributes>
+        for NewAiAutomationDataAttributes {
+            fn from(value: super::NewAiAutomationDataAttributes) -> Self {
+                Self {
+                    conditions: Ok(value.conditions),
+                    consecutive_failures_count: Ok(value.consecutive_failures_count),
+                    created_at: Ok(value.created_at),
+                    created_by_user_id: Ok(value.created_by_user_id),
+                    destination_kind: Ok(value.destination_kind),
+                    destination_slack_channel_id: Ok(value.destination_slack_channel_id),
+                    destination_slack_channel_name: Ok(
+                        value.destination_slack_channel_name,
+                    ),
+                    disabled_reason: Ok(value.disabled_reason),
+                    enabled: Ok(value.enabled),
+                    event_name: Ok(value.event_name),
+                    id: Ok(value.id),
+                    last_run_at: Ok(value.last_run_at),
+                    limits_enabled: Ok(value.limits_enabled),
+                    max_credits_per_run: Ok(value.max_credits_per_run),
+                    name: Ok(value.name),
+                    next_run_at: Ok(value.next_run_at),
+                    owner_user_id: Ok(value.owner_user_id),
+                    prompt: Ok(value.prompt),
+                    rate_limit_runs: Ok(value.rate_limit_runs),
+                    rate_limit_window: Ok(value.rate_limit_window),
+                    schedule: Ok(value.schedule),
+                    schedule_rrule: Ok(value.schedule_rrule),
+                    schedule_timezone: Ok(value.schedule_timezone),
+                    skill_ids: Ok(value.skill_ids),
+                    trigger_kind: Ok(value.trigger_kind),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesConditions {
+            any: ::std::result::Result<
+                ::std::vec::Vec<super::NewAiAutomationDataAttributesConditionsAnyItem>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiAutomationDataAttributesConditions {
+            fn default() -> Self {
+                Self {
+                    any: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewAiAutomationDataAttributesConditions {
+            pub fn any<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::NewAiAutomationDataAttributesConditionsAnyItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.any = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for any: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationDataAttributesConditions>
+        for super::NewAiAutomationDataAttributesConditions {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationDataAttributesConditions,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { any: value.any? })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationDataAttributesConditions>
+        for NewAiAutomationDataAttributesConditions {
+            fn from(value: super::NewAiAutomationDataAttributesConditions) -> Self {
+                Self { any: Ok(value.any) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesConditionsAnyItem {
+            all: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::NewAiAutomationDataAttributesConditionsAnyItemAllItem,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiAutomationDataAttributesConditionsAnyItem {
+            fn default() -> Self {
+                Self {
+                    all: Err("no value supplied for all".to_string()),
+                }
+            }
+        }
+        impl NewAiAutomationDataAttributesConditionsAnyItem {
+            pub fn all<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::NewAiAutomationDataAttributesConditionsAnyItemAllItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.all = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for all: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationDataAttributesConditionsAnyItem>
+        for super::NewAiAutomationDataAttributesConditionsAnyItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationDataAttributesConditionsAnyItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { all: value.all? })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationDataAttributesConditionsAnyItem>
+        for NewAiAutomationDataAttributesConditionsAnyItem {
+            fn from(
+                value: super::NewAiAutomationDataAttributesConditionsAnyItem,
+            ) -> Self {
+                Self { all: Ok(value.all) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesConditionsAnyItemAllItem {
+            field: ::std::result::Result<::std::string::String, ::std::string::String>,
+            operator: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<
+                ::std::option::Option<
+                    super::NewAiAutomationDataAttributesConditionsAnyItemAllItemValue,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for NewAiAutomationDataAttributesConditionsAnyItemAllItem {
+            fn default() -> Self {
+                Self {
+                    field: Err("no value supplied for field".to_string()),
+                    operator: Err("no value supplied for operator".to_string()),
+                    value: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewAiAutomationDataAttributesConditionsAnyItemAllItem {
+            pub fn field<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field: {e}")
+                    });
+                self
+            }
+            pub fn operator<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.operator = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for operator: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::NewAiAutomationDataAttributesConditionsAnyItemAllItemValue,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            NewAiAutomationDataAttributesConditionsAnyItemAllItem,
+        > for super::NewAiAutomationDataAttributesConditionsAnyItemAllItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationDataAttributesConditionsAnyItemAllItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    field: value.field?,
+                    operator: value.operator?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::NewAiAutomationDataAttributesConditionsAnyItemAllItem,
+        > for NewAiAutomationDataAttributesConditionsAnyItemAllItem {
+            fn from(
+                value: super::NewAiAutomationDataAttributesConditionsAnyItemAllItem,
+            ) -> Self {
+                Self {
+                    field: Ok(value.field),
+                    operator: Ok(value.operator),
+                    value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesSchedule {
+            frequency: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            hour: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            timezone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            weekday: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiAutomationDataAttributesSchedule {
+            fn default() -> Self {
+                Self {
+                    frequency: Ok(Default::default()),
+                    hour: Ok(Default::default()),
+                    timezone: Ok(Default::default()),
+                    weekday: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewAiAutomationDataAttributesSchedule {
+            pub fn frequency<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.frequency = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for frequency: {e}")
+                    });
+                self
+            }
+            pub fn hour<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.hour = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for hour: {e}")
+                    });
+                self
+            }
+            pub fn timezone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.timezone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for timezone: {e}")
+                    });
+                self
+            }
+            pub fn weekday<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.weekday = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for weekday: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationDataAttributesSchedule>
+        for super::NewAiAutomationDataAttributesSchedule {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationDataAttributesSchedule,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    frequency: value.frequency?,
+                    hour: value.hour?,
+                    timezone: value.timezone?,
+                    weekday: value.weekday?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationDataAttributesSchedule>
+        for NewAiAutomationDataAttributesSchedule {
+            fn from(value: super::NewAiAutomationDataAttributesSchedule) -> Self {
+                Self {
+                    frequency: Ok(value.frequency),
+                    hour: Ok(value.hour),
+                    timezone: Ok(value.timezone),
+                    weekday: Ok(value.weekday),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationRun {
+            data: ::std::result::Result<
+                super::NewAiAutomationRunData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiAutomationRun {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl NewAiAutomationRun {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewAiAutomationRunData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationRun> for super::NewAiAutomationRun {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationRun,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationRun> for NewAiAutomationRun {
+            fn from(value: super::NewAiAutomationRun) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationRunData {
+            attributes: ::std::result::Result<
+                super::NewAiAutomationRunDataAttributes,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewAiAutomationRunData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl NewAiAutomationRunData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewAiAutomationRunDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationRunData>
+        for super::NewAiAutomationRunData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationRunData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationRunData>
+        for NewAiAutomationRunData {
+            fn from(value: super::NewAiAutomationRunData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationRunDataAttributes {
+            incident_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiAutomationRunDataAttributes {
+            fn default() -> Self {
+                Self {
+                    incident_id: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewAiAutomationRunDataAttributes {
+            pub fn incident_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.incident_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for incident_id: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationRunDataAttributes>
+        for super::NewAiAutomationRunDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationRunDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    incident_id: value.incident_id?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationRunDataAttributes>
+        for NewAiAutomationRunDataAttributes {
+            fn from(value: super::NewAiAutomationRunDataAttributes) -> Self {
+                Self {
+                    incident_id: Ok(value.incident_id),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiSkill {
+            data: ::std::result::Result<super::NewAiSkillData, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewAiSkill {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl NewAiSkill {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewAiSkillData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiSkill> for super::NewAiSkill {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiSkill,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::NewAiSkill> for NewAiSkill {
+            fn from(value: super::NewAiSkill) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiSkillData {
+            attributes: ::std::result::Result<
+                super::NewAiSkillDataAttributes,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewAiSkillData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl NewAiSkillData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewAiSkillDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiSkillData> for super::NewAiSkillData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiSkillData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiSkillData> for NewAiSkillData {
+            fn from(value: super::NewAiSkillData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiSkillDataAttributes {
+            body: ::std::result::Result<::std::string::String, ::std::string::String>,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_by_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            current_version: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            invocable_by: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            owner_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            slug: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source_template_key: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source_template_version: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            tool_grants: ::std::result::Result<
+                ::std::vec::Vec<super::NewAiSkillDataAttributesToolGrantsItem>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiSkillDataAttributes {
+            fn default() -> Self {
+                Self {
+                    body: Err("no value supplied for body".to_string()),
+                    created_at: Ok(Default::default()),
+                    created_by_user_id: Ok(Default::default()),
+                    current_version: Ok(Default::default()),
+                    description: Err("no value supplied for description".to_string()),
+                    enabled: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    invocable_by: Ok(Default::default()),
+                    name: Err("no value supplied for name".to_string()),
+                    owner_user_id: Ok(Default::default()),
+                    slug: Ok(Default::default()),
+                    source: Ok(Default::default()),
+                    source_template_key: Ok(Default::default()),
+                    source_template_version: Ok(Default::default()),
+                    tool_grants: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewAiSkillDataAttributes {
+            pub fn body<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.body = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for body: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn current_version<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.current_version = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for current_version: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn invocable_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.invocable_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for invocable_by: {e}")
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn owner_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for owner_user_id: {e}")
+                    });
+                self
+            }
+            pub fn slug<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slug = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slug: {e}")
+                    });
+                self
+            }
+            pub fn source<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source: {e}")
+                    });
+                self
+            }
+            pub fn source_template_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_template_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for source_template_key: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn source_template_version<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_template_version = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for source_template_version: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn tool_grants<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::NewAiSkillDataAttributesToolGrantsItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_grants = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_grants: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiSkillDataAttributes>
+        for super::NewAiSkillDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiSkillDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    body: value.body?,
+                    created_at: value.created_at?,
+                    created_by_user_id: value.created_by_user_id?,
+                    current_version: value.current_version?,
+                    description: value.description?,
+                    enabled: value.enabled?,
+                    id: value.id?,
+                    invocable_by: value.invocable_by?,
+                    name: value.name?,
+                    owner_user_id: value.owner_user_id?,
+                    slug: value.slug?,
+                    source: value.source?,
+                    source_template_key: value.source_template_key?,
+                    source_template_version: value.source_template_version?,
+                    tool_grants: value.tool_grants?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiSkillDataAttributes>
+        for NewAiSkillDataAttributes {
+            fn from(value: super::NewAiSkillDataAttributes) -> Self {
+                Self {
+                    body: Ok(value.body),
+                    created_at: Ok(value.created_at),
+                    created_by_user_id: Ok(value.created_by_user_id),
+                    current_version: Ok(value.current_version),
+                    description: Ok(value.description),
+                    enabled: Ok(value.enabled),
+                    id: Ok(value.id),
+                    invocable_by: Ok(value.invocable_by),
+                    name: Ok(value.name),
+                    owner_user_id: Ok(value.owner_user_id),
+                    slug: Ok(value.slug),
+                    source: Ok(value.source),
+                    source_template_key: Ok(value.source_template_key),
+                    source_template_version: Ok(value.source_template_version),
+                    tool_grants: Ok(value.tool_grants),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiSkillDataAttributesToolGrantsItem {
+            access: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            pinned_params: ::std::result::Result<
+                ::std::option::Option<
+                    ::std::collections::HashMap<
+                        ::std::string::String,
+                        super::NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
+                    >,
+                >,
+                ::std::string::String,
+            >,
+            tool_key: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewAiSkillDataAttributesToolGrantsItem {
+            fn default() -> Self {
+                Self {
+                    access: Ok(Default::default()),
+                    pinned_params: Ok(Default::default()),
+                    tool_key: Err("no value supplied for tool_key".to_string()),
+                }
+            }
+        }
+        impl NewAiSkillDataAttributesToolGrantsItem {
+            pub fn access<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.access = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for access: {e}")
+                    });
+                self
+            }
+            pub fn pinned_params<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::std::collections::HashMap<
+                            ::std::string::String,
+                            super::NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
+                        >,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned_params = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned_params: {e}")
+                    });
+                self
+            }
+            pub fn tool_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_key: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiSkillDataAttributesToolGrantsItem>
+        for super::NewAiSkillDataAttributesToolGrantsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiSkillDataAttributesToolGrantsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    access: value.access?,
+                    pinned_params: value.pinned_params?,
+                    tool_key: value.tool_key?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiSkillDataAttributesToolGrantsItem>
+        for NewAiSkillDataAttributesToolGrantsItem {
+            fn from(value: super::NewAiSkillDataAttributesToolGrantsItem) -> Self {
+                Self {
+                    access: Ok(value.access),
+                    pinned_params: Ok(value.pinned_params),
+                    tool_key: Ok(value.tool_key),
                 }
             }
         }
@@ -132137,6 +143208,7 @@ pub mod types {
                 >,
                 ::std::string::String,
             >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
             fallback_rule: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
             non_paging: ::std::result::Result<bool, ::std::string::String>,
@@ -132153,6 +143225,7 @@ pub mod types {
                         "no value supplied for condition_groups".to_string(),
                     ),
                     destinations: Err("no value supplied for destinations".to_string()),
+                    enabled: Ok(super::defaults::default_bool::<true>()),
                     fallback_rule: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     non_paging: Ok(Default::default()),
@@ -132206,6 +143279,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for destinations: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
                     });
                 self
             }
@@ -132268,6 +143353,7 @@ pub mod types {
                     ai_sre_provider: value.ai_sre_provider?,
                     condition_groups: value.condition_groups?,
                     destinations: value.destinations?,
+                    enabled: value.enabled?,
                     fallback_rule: value.fallback_rule?,
                     name: value.name?,
                     non_paging: value.non_paging?,
@@ -132282,6 +143368,7 @@ pub mod types {
                     ai_sre_provider: Ok(value.ai_sre_provider),
                     condition_groups: Ok(value.condition_groups),
                     destinations: Ok(value.destinations),
+                    enabled: Ok(value.enabled),
                     fallback_rule: Ok(value.fallback_rule),
                     name: Ok(value.name),
                     non_paging: Ok(value.non_paging),
@@ -132580,7 +143667,24 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct NewAlertRouteDataAttributesRulesItemDestinationsItem {
-            target_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            catalog_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            catalog_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            match_keys: ::std::result::Result<
+                ::std::option::Option<
+                    [super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+                >,
+                ::std::string::String,
+            >,
+            target_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
             target_type: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
@@ -132590,15 +143694,58 @@ pub mod types {
         for NewAlertRouteDataAttributesRulesItemDestinationsItem {
             fn default() -> Self {
                 Self {
-                    target_id: Err("no value supplied for target_id".to_string()),
+                    catalog_id: Ok(Default::default()),
+                    catalog_type: Ok(Default::default()),
+                    match_keys: Ok(Default::default()),
+                    target_id: Ok(Default::default()),
                     target_type: Err("no value supplied for target_type".to_string()),
                 }
             }
         }
         impl NewAlertRouteDataAttributesRulesItemDestinationsItem {
+            pub fn catalog_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for catalog_id: {e}")
+                    });
+                self
+            }
+            pub fn catalog_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for catalog_type: {e}")
+                    });
+                self
+            }
+            pub fn match_keys<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        [super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.match_keys = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for match_keys: {e}")
+                    });
+                self
+            }
             pub fn target_id<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
                 T::Error: ::std::fmt::Display,
             {
                 self.target_id = value
@@ -132629,6 +143776,9 @@ pub mod types {
                 value: NewAlertRouteDataAttributesRulesItemDestinationsItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    catalog_id: value.catalog_id?,
+                    catalog_type: value.catalog_type?,
+                    match_keys: value.match_keys?,
                     target_id: value.target_id?,
                     target_type: value.target_type?,
                 })
@@ -132641,8 +143791,254 @@ pub mod types {
                 value: super::NewAlertRouteDataAttributesRulesItemDestinationsItem,
             ) -> Self {
                 Self {
+                    catalog_id: Ok(value.catalog_id),
+                    catalog_type: Ok(value.catalog_type),
+                    match_keys: Ok(value.match_keys),
                     target_id: Ok(value.target_id),
                     target_type: Ok(value.target_type),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            normalizers: ::std::result::Result<
+                ::std::option::Option<
+                    super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+                >,
+                ::std::string::String,
+            >,
+            property_ref: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            source_kind: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            source_ref: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            fn default() -> Self {
+                Self {
+                    normalizers: Ok(Default::default()),
+                    property_ref: Err("no value supplied for property_ref".to_string()),
+                    source_kind: Err("no value supplied for source_kind".to_string()),
+                    source_ref: Err("no value supplied for source_ref".to_string()),
+                }
+            }
+        }
+        impl NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            pub fn normalizers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.normalizers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for normalizers: {e}")
+                    });
+                self
+            }
+            pub fn property_ref<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.property_ref = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for property_ref: {e}")
+                    });
+                self
+            }
+            pub fn source_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source_kind: {e}")
+                    });
+                self
+            }
+            pub fn source_ref<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_ref = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source_ref: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+        > for super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    normalizers: value.normalizers?,
+                    property_ref: value.property_ref?,
+                    source_kind: value.source_kind?,
+                    source_ref: value.source_ref?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+        > for NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            fn from(
+                value: super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+            ) -> Self {
+                Self {
+                    normalizers: Ok(value.normalizers),
+                    property_ref: Ok(value.property_ref),
+                    source_kind: Ok(value.source_kind),
+                    source_ref: Ok(value.source_ref),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            extract_pattern: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            ignore_case: ::std::result::Result<bool, ::std::string::String>,
+            ignore_whitespace: ::std::result::Result<bool, ::std::string::String>,
+            strip_prefix: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            strip_suffix: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            fn default() -> Self {
+                Self {
+                    extract_pattern: Ok(Default::default()),
+                    ignore_case: Ok(Default::default()),
+                    ignore_whitespace: Ok(Default::default()),
+                    strip_prefix: Ok(Default::default()),
+                    strip_suffix: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            pub fn extract_pattern<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.extract_pattern = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for extract_pattern: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ignore_case<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignore_case = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for ignore_case: {e}")
+                    });
+                self
+            }
+            pub fn ignore_whitespace<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignore_whitespace = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ignore_whitespace: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn strip_prefix<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.strip_prefix = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for strip_prefix: {e}")
+                    });
+                self
+            }
+            pub fn strip_suffix<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.strip_suffix = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for strip_suffix: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >
+        for super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    extract_pattern: value.extract_pattern?,
+                    ignore_case: value.ignore_case?,
+                    ignore_whitespace: value.ignore_whitespace?,
+                    strip_prefix: value.strip_prefix?,
+                    strip_suffix: value.strip_suffix?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >
+        for NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            fn from(
+                value: super::NewAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+            ) -> Self {
+                Self {
+                    extract_pattern: Ok(value.extract_pattern),
+                    ignore_case: Ok(value.ignore_case),
+                    ignore_whitespace: Ok(value.ignore_whitespace),
+                    strip_prefix: Ok(value.strip_prefix),
+                    strip_suffix: Ok(value.strip_suffix),
                 }
             }
         }
@@ -132770,10 +144166,7 @@ pub mod types {
                 super::NewAlertRoutingRuleDataAttributesDestination,
                 ::std::string::String,
             >,
-            enabled: ::std::result::Result<
-                ::std::option::Option<bool>,
-                ::std::string::String,
-            >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
             owning_team_ids: ::std::result::Result<
                 ::std::vec::Vec<::uuid::Uuid>,
@@ -132794,7 +144187,7 @@ pub mod types {
                     condition_type: Ok(Default::default()),
                     conditions: Ok(Default::default()),
                     destination: Err("no value supplied for destination".to_string()),
-                    enabled: Ok(Default::default()),
+                    enabled: Ok(super::defaults::default_bool::<true>()),
                     name: Err("no value supplied for name".to_string()),
                     owning_team_ids: Ok(Default::default()),
                     position: Ok(Default::default()),
@@ -132876,7 +144269,7 @@ pub mod types {
             }
             pub fn enabled<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T: ::std::convert::TryInto<bool>,
                 T::Error: ::std::fmt::Display,
             {
                 self.enabled = value
@@ -133506,6 +144899,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            attach_owner_groups_to_alerts: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             deduplicate_alerts_by_key: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -133555,6 +144952,7 @@ pub mod types {
                     alert_source_urgency_rules_attributes: Ok(Default::default()),
                     alert_template_attributes: Ok(Default::default()),
                     alert_urgency_id: Ok(Default::default()),
+                    attach_owner_groups_to_alerts: Ok(Default::default()),
                     deduplicate_alerts_by_key: Ok(Default::default()),
                     deduplication_key_kind: Ok(Default::default()),
                     deduplication_key_path: Ok(Default::default()),
@@ -133633,6 +145031,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for alert_urgency_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn attach_owner_groups_to_alerts<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attach_owner_groups_to_alerts = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for attach_owner_groups_to_alerts: {e}"
                         )
                     });
                 self
@@ -133793,6 +145205,7 @@ pub mod types {
                         .alert_source_urgency_rules_attributes?,
                     alert_template_attributes: value.alert_template_attributes?,
                     alert_urgency_id: value.alert_urgency_id?,
+                    attach_owner_groups_to_alerts: value.attach_owner_groups_to_alerts?,
                     deduplicate_alerts_by_key: value.deduplicate_alerts_by_key?,
                     deduplication_key_kind: value.deduplication_key_kind?,
                     deduplication_key_path: value.deduplication_key_path?,
@@ -133818,6 +145231,9 @@ pub mod types {
                     ),
                     alert_template_attributes: Ok(value.alert_template_attributes),
                     alert_urgency_id: Ok(value.alert_urgency_id),
+                    attach_owner_groups_to_alerts: Ok(
+                        value.attach_owner_groups_to_alerts,
+                    ),
                     deduplicate_alerts_by_key: Ok(value.deduplicate_alerts_by_key),
                     deduplication_key_kind: Ok(value.deduplication_key_kind),
                     deduplication_key_path: Ok(value.deduplication_key_path),
@@ -145006,6 +156422,10 @@ pub mod types {
                 ::std::string::String,
             >,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            resource_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             slug: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -145016,6 +156436,7 @@ pub mod types {
                 Self {
                     forms: Err("no value supplied for forms".to_string()),
                     name: Err("no value supplied for name".to_string()),
+                    resource_type: Ok(Default::default()),
                     slug: Ok(Default::default()),
                 }
             }
@@ -145045,6 +156466,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn resource_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.resource_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for resource_type: {e}")
+                    });
+                self
+            }
             pub fn slug<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -145067,6 +156500,7 @@ pub mod types {
                 Ok(Self {
                     forms: value.forms?,
                     name: value.name?,
+                    resource_type: value.resource_type?,
                     slug: value.slug?,
                 })
             }
@@ -145077,6 +156511,7 @@ pub mod types {
                 Self {
                     forms: Ok(value.forms),
                     name: Ok(value.name),
+                    resource_type: Ok(value.resource_type),
                     slug: Ok(value.slug),
                 }
             }
@@ -146020,6 +157455,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            attach_owner_groups_to_alerts: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             description: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -146055,6 +157494,7 @@ pub mod types {
                         "no value supplied for alert_summary".to_string(),
                     ),
                     alert_urgency_id: Ok(Default::default()),
+                    attach_owner_groups_to_alerts: Ok(Default::default()),
                     description: Ok(Default::default()),
                     enabled: Ok(Default::default()),
                     interval: Err("no value supplied for interval".to_string()),
@@ -146109,6 +157549,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for alert_urgency_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn attach_owner_groups_to_alerts<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attach_owner_groups_to_alerts = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for attach_owner_groups_to_alerts: {e}"
                         )
                     });
                 self
@@ -146226,6 +157680,7 @@ pub mod types {
                     alert_description: value.alert_description?,
                     alert_summary: value.alert_summary?,
                     alert_urgency_id: value.alert_urgency_id?,
+                    attach_owner_groups_to_alerts: value.attach_owner_groups_to_alerts?,
                     description: value.description?,
                     enabled: value.enabled?,
                     interval: value.interval?,
@@ -146244,6 +157699,9 @@ pub mod types {
                     alert_description: Ok(value.alert_description),
                     alert_summary: Ok(value.alert_summary),
                     alert_urgency_id: Ok(value.alert_urgency_id),
+                    attach_owner_groups_to_alerts: Ok(
+                        value.attach_owner_groups_to_alerts,
+                    ),
                     description: Ok(value.description),
                     enabled: Ok(value.enabled),
                     interval: Ok(value.interval),
@@ -155120,14 +166578,6 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
-            owner_group_id: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            owner_user_id: ::std::result::Result<
-                ::std::option::Option<i64>,
-                ::std::string::String,
-            >,
             priority: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -155162,8 +166612,6 @@ pub mod types {
                     impact_so_far: Ok(Default::default()),
                     incident_ids: Ok(Default::default()),
                     next_review_at: Ok(Default::default()),
-                    owner_group_id: Ok(Default::default()),
-                    owner_user_id: Ok(Default::default()),
                     priority: Ok(Default::default()),
                     re_review_cadence: Ok(Default::default()),
                     resolution: Ok(Default::default()),
@@ -155296,32 +166744,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn owner_group_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.owner_group_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for owner_group_id: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn owner_user_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<i64>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.owner_user_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for owner_user_id: {e}")
-                    });
-                self
-            }
             pub fn priority<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -155413,8 +166835,6 @@ pub mod types {
                     impact_so_far: value.impact_so_far?,
                     incident_ids: value.incident_ids?,
                     next_review_at: value.next_review_at?,
-                    owner_group_id: value.owner_group_id?,
-                    owner_user_id: value.owner_user_id?,
                     priority: value.priority?,
                     re_review_cadence: value.re_review_cadence?,
                     resolution: value.resolution?,
@@ -155437,14 +166857,187 @@ pub mod types {
                     impact_so_far: Ok(value.impact_so_far),
                     incident_ids: Ok(value.incident_ids),
                     next_review_at: Ok(value.next_review_at),
-                    owner_group_id: Ok(value.owner_group_id),
-                    owner_user_id: Ok(value.owner_user_id),
                     priority: Ok(value.priority),
                     re_review_cadence: Ok(value.re_review_cadence),
                     resolution: Ok(value.resolution),
                     root_cause: Ok(value.root_cause),
                     scope: Ok(value.scope),
                     title: Ok(value.title),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewProblemRoleAssignment {
+            data: ::std::result::Result<
+                super::NewProblemRoleAssignmentData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for NewProblemRoleAssignment {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl NewProblemRoleAssignment {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::NewProblemRoleAssignmentData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewProblemRoleAssignment>
+        for super::NewProblemRoleAssignment {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewProblemRoleAssignment,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::NewProblemRoleAssignment>
+        for NewProblemRoleAssignment {
+            fn from(value: super::NewProblemRoleAssignment) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewProblemRoleAssignmentData {
+            attributes: ::std::result::Result<
+                super::NewProblemRoleAssignmentDataAttributes,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewProblemRoleAssignmentData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl NewProblemRoleAssignmentData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::NewProblemRoleAssignmentDataAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewProblemRoleAssignmentData>
+        for super::NewProblemRoleAssignmentData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewProblemRoleAssignmentData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewProblemRoleAssignmentData>
+        for NewProblemRoleAssignmentData {
+            fn from(value: super::NewProblemRoleAssignmentData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewProblemRoleAssignmentDataAttributes {
+            problem_role_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            user_id: ::std::result::Result<i64, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewProblemRoleAssignmentDataAttributes {
+            fn default() -> Self {
+                Self {
+                    problem_role_id: Err(
+                        "no value supplied for problem_role_id".to_string(),
+                    ),
+                    user_id: Err("no value supplied for user_id".to_string()),
+                }
+            }
+        }
+        impl NewProblemRoleAssignmentDataAttributes {
+            pub fn problem_role_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.problem_role_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for problem_role_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_id: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewProblemRoleAssignmentDataAttributes>
+        for super::NewProblemRoleAssignmentDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewProblemRoleAssignmentDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    problem_role_id: value.problem_role_id?,
+                    user_id: value.user_id?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewProblemRoleAssignmentDataAttributes>
+        for NewProblemRoleAssignmentDataAttributes {
+            fn from(value: super::NewProblemRoleAssignmentDataAttributes) -> Self {
+                Self {
+                    problem_role_id: Ok(value.problem_role_id),
+                    user_id: Ok(value.user_id),
                 }
             }
         }
@@ -156850,6 +168443,14 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct NewRoleDataAttributes {
+            ai_automations_permissions: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            ai_skills_permissions: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
             alerts_permissions: ::std::result::Result<
                 ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
@@ -157003,6 +168604,8 @@ pub mod types {
         impl ::std::default::Default for NewRoleDataAttributes {
             fn default() -> Self {
                 Self {
+                    ai_automations_permissions: Ok(Default::default()),
+                    ai_skills_permissions: Ok(Default::default()),
                     alerts_permissions: Ok(Default::default()),
                     api_keys_permissions: Ok(Default::default()),
                     audits_permissions: Ok(Default::default()),
@@ -157045,6 +168648,34 @@ pub mod types {
             }
         }
         impl NewRoleDataAttributes {
+            pub fn ai_automations_permissions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_automations_permissions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_automations_permissions: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ai_skills_permissions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_skills_permissions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_skills_permissions: {e}"
+                        )
+                    });
+                self
+            }
             pub fn alerts_permissions<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
@@ -157583,6 +169214,8 @@ pub mod types {
                 value: NewRoleDataAttributes,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_automations_permissions: value.ai_automations_permissions?,
+                    ai_skills_permissions: value.ai_skills_permissions?,
                     alerts_permissions: value.alerts_permissions?,
                     api_keys_permissions: value.api_keys_permissions?,
                     audits_permissions: value.audits_permissions?,
@@ -157631,6 +169264,8 @@ pub mod types {
         for NewRoleDataAttributes {
             fn from(value: super::NewRoleDataAttributes) -> Self {
                 Self {
+                    ai_automations_permissions: Ok(value.ai_automations_permissions),
+                    ai_skills_permissions: Ok(value.ai_skills_permissions),
                     alerts_permissions: Ok(value.alerts_permissions),
                     api_keys_permissions: Ok(value.api_keys_permissions),
                     audits_permissions: Ok(value.audits_permissions),
@@ -162987,6 +174622,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            incident_history_window: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             public: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -163078,6 +174717,7 @@ pub mod types {
                     functionality_ids: Ok(Default::default()),
                     ga_tracking_id: Ok(Default::default()),
                     header_color: Ok(Default::default()),
+                    incident_history_window: Ok(Default::default()),
                     public: Ok(Default::default()),
                     public_description: Ok(Default::default()),
                     public_title: Ok(Default::default()),
@@ -163260,6 +174900,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for header_color: {e}")
+                    });
+                self
+            }
+            pub fn incident_history_window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.incident_history_window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for incident_history_window: {e}"
+                        )
                     });
                 self
             }
@@ -163535,6 +175189,7 @@ pub mod types {
                     functionality_ids: value.functionality_ids?,
                     ga_tracking_id: value.ga_tracking_id?,
                     header_color: value.header_color?,
+                    incident_history_window: value.incident_history_window?,
                     public: value.public?,
                     public_description: value.public_description?,
                     public_title: value.public_title?,
@@ -163573,6 +175228,7 @@ pub mod types {
                     functionality_ids: Ok(value.functionality_ids),
                     ga_tracking_id: Ok(value.ga_tracking_id),
                     header_color: Ok(value.header_color),
+                    incident_history_window: Ok(value.incident_history_window),
                     public: Ok(value.public),
                     public_description: Ok(value.public_description),
                     public_title: Ok(value.public_title),
@@ -169833,6 +181489,316 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct ObservabilityErrors {
+            errors: ::std::result::Result<
+                ::std::vec::Vec<super::ObservabilityErrorsErrorsItem>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ObservabilityErrors {
+            fn default() -> Self {
+                Self {
+                    errors: Err("no value supplied for errors".to_string()),
+                }
+            }
+        }
+        impl ObservabilityErrors {
+            pub fn errors<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::ObservabilityErrorsErrorsItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.errors = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for errors: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ObservabilityErrors>
+        for super::ObservabilityErrors {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ObservabilityErrors,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { errors: value.errors? })
+            }
+        }
+        impl ::std::convert::From<super::ObservabilityErrors> for ObservabilityErrors {
+            fn from(value: super::ObservabilityErrors) -> Self {
+                Self { errors: Ok(value.errors) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ObservabilityErrorsErrorsItem {
+            code: ::std::result::Result<::std::string::String, ::std::string::String>,
+            source: ::std::result::Result<
+                ::std::option::Option<super::ObservabilityErrorsErrorsItemSource>,
+                ::std::string::String,
+            >,
+            status: ::std::result::Result<::std::string::String, ::std::string::String>,
+            title: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ObservabilityErrorsErrorsItem {
+            fn default() -> Self {
+                Self {
+                    code: Err("no value supplied for code".to_string()),
+                    source: Ok(Default::default()),
+                    status: Err("no value supplied for status".to_string()),
+                    title: Err("no value supplied for title".to_string()),
+                }
+            }
+        }
+        impl ObservabilityErrorsErrorsItem {
+            pub fn code<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.code = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for code: {e}")
+                    });
+                self
+            }
+            pub fn source<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::ObservabilityErrorsErrorsItemSource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source: {e}")
+                    });
+                self
+            }
+            pub fn status<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.status = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for status: {e}")
+                    });
+                self
+            }
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ObservabilityErrorsErrorsItem>
+        for super::ObservabilityErrorsErrorsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ObservabilityErrorsErrorsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    code: value.code?,
+                    source: value.source?,
+                    status: value.status?,
+                    title: value.title?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ObservabilityErrorsErrorsItem>
+        for ObservabilityErrorsErrorsItem {
+            fn from(value: super::ObservabilityErrorsErrorsItem) -> Self {
+                Self {
+                    code: Ok(value.code),
+                    source: Ok(value.source),
+                    status: Ok(value.status),
+                    title: Ok(value.title),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ObservabilityErrorsErrorsItemSource {
+            parameter: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ObservabilityErrorsErrorsItemSource {
+            fn default() -> Self {
+                Self {
+                    parameter: Ok(Default::default()),
+                }
+            }
+        }
+        impl ObservabilityErrorsErrorsItemSource {
+            pub fn parameter<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.parameter = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for parameter: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ObservabilityErrorsErrorsItemSource>
+        for super::ObservabilityErrorsErrorsItemSource {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ObservabilityErrorsErrorsItemSource,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    parameter: value.parameter?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ObservabilityErrorsErrorsItemSource>
+        for ObservabilityErrorsErrorsItemSource {
+            fn from(value: super::ObservabilityErrorsErrorsItemSource) -> Self {
+                Self {
+                    parameter: Ok(value.parameter),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ObservabilityWarning {
+            code: ::std::result::Result<::std::string::String, ::std::string::String>,
+            detail: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ObservabilityWarning {
+            fn default() -> Self {
+                Self {
+                    code: Err("no value supplied for code".to_string()),
+                    detail: Err("no value supplied for detail".to_string()),
+                }
+            }
+        }
+        impl ObservabilityWarning {
+            pub fn code<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.code = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for code: {e}")
+                    });
+                self
+            }
+            pub fn detail<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.detail = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for detail: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ObservabilityWarning>
+        for super::ObservabilityWarning {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ObservabilityWarning,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    code: value.code?,
+                    detail: value.detail?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ObservabilityWarning> for ObservabilityWarning {
+            fn from(value: super::ObservabilityWarning) -> Self {
+                Self {
+                    code: Ok(value.code),
+                    detail: Ok(value.detail),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ObservabilityWindow {
+            from: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            to: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ObservabilityWindow {
+            fn default() -> Self {
+                Self {
+                    from: Err("no value supplied for from".to_string()),
+                    to: Err("no value supplied for to".to_string()),
+                }
+            }
+        }
+        impl ObservabilityWindow {
+            pub fn from<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.from = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for from: {e}")
+                    });
+                self
+            }
+            pub fn to<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.to = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for to: {e}"));
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ObservabilityWindow>
+        for super::ObservabilityWindow {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ObservabilityWindow,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    from: value.from?,
+                    to: value.to?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ObservabilityWindow> for ObservabilityWindow {
+            fn from(value: super::ObservabilityWindow) -> Self {
+                Self {
+                    from: Ok(value.from),
+                    to: Ok(value.to),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct OnCallPayReport {
             created_at: ::std::result::Result<
                 ::chrono::DateTime<::chrono::offset::Utc>,
@@ -175894,6 +187860,7 @@ pub mod types {
                 ::std::option::Option<bool>,
                 ::std::string::String,
             >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
             fallback_rule: ::std::result::Result<bool, ::std::string::String>,
             id: ::std::result::Result<
                 ::std::option::Option<::uuid::Uuid>,
@@ -175916,6 +187883,7 @@ pub mod types {
                     condition_groups: Ok(Default::default()),
                     destinations: Ok(Default::default()),
                     destroy: Ok(Default::default()),
+                    enabled: Ok(super::defaults::default_bool::<true>()),
                     fallback_rule: Ok(Default::default()),
                     id: Ok(Default::default()),
                     name: Ok(Default::default()),
@@ -175982,6 +187950,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for destroy: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
                     });
                 self
             }
@@ -176055,6 +188035,7 @@ pub mod types {
                     condition_groups: value.condition_groups?,
                     destinations: value.destinations?,
                     destroy: value.destroy?,
+                    enabled: value.enabled?,
                     fallback_rule: value.fallback_rule?,
                     id: value.id?,
                     name: value.name?,
@@ -176071,6 +188052,7 @@ pub mod types {
                     condition_groups: Ok(value.condition_groups),
                     destinations: Ok(value.destinations),
                     destroy: Ok(value.destroy),
+                    enabled: Ok(value.enabled),
                     fallback_rule: Ok(value.fallback_rule),
                     id: Ok(value.id),
                     name: Ok(value.name),
@@ -176438,12 +188420,26 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct PatchAlertRouteDataAttributesRulesItemDestinationsItem {
+            catalog_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            catalog_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             destroy: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
             >,
             id: ::std::result::Result<
                 ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            match_keys: ::std::result::Result<
+                ::std::option::Option<
+                    [super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+                >,
                 ::std::string::String,
             >,
             target_id: ::std::result::Result<
@@ -176459,14 +188455,41 @@ pub mod types {
         for PatchAlertRouteDataAttributesRulesItemDestinationsItem {
             fn default() -> Self {
                 Self {
+                    catalog_id: Ok(Default::default()),
+                    catalog_type: Ok(Default::default()),
                     destroy: Ok(Default::default()),
                     id: Ok(Default::default()),
+                    match_keys: Ok(Default::default()),
                     target_id: Ok(Default::default()),
                     target_type: Ok(Default::default()),
                 }
             }
         }
         impl PatchAlertRouteDataAttributesRulesItemDestinationsItem {
+            pub fn catalog_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for catalog_id: {e}")
+                    });
+                self
+            }
+            pub fn catalog_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for catalog_type: {e}")
+                    });
+                self
+            }
             pub fn destroy<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<bool>>,
@@ -176487,6 +188510,22 @@ pub mod types {
                 self.id = value
                     .try_into()
                     .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn match_keys<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        [super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.match_keys = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for match_keys: {e}")
+                    });
                 self
             }
             pub fn target_id<T>(mut self, value: T) -> Self
@@ -176522,8 +188561,11 @@ pub mod types {
                 value: PatchAlertRouteDataAttributesRulesItemDestinationsItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    catalog_id: value.catalog_id?,
+                    catalog_type: value.catalog_type?,
                     destroy: value.destroy?,
                     id: value.id?,
+                    match_keys: value.match_keys?,
                     target_id: value.target_id?,
                     target_type: value.target_type?,
                 })
@@ -176536,10 +188578,257 @@ pub mod types {
                 value: super::PatchAlertRouteDataAttributesRulesItemDestinationsItem,
             ) -> Self {
                 Self {
+                    catalog_id: Ok(value.catalog_id),
+                    catalog_type: Ok(value.catalog_type),
                     destroy: Ok(value.destroy),
                     id: Ok(value.id),
+                    match_keys: Ok(value.match_keys),
                     target_id: Ok(value.target_id),
                     target_type: Ok(value.target_type),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            normalizers: ::std::result::Result<
+                ::std::option::Option<
+                    super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+                >,
+                ::std::string::String,
+            >,
+            property_ref: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            source_kind: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            source_ref: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            fn default() -> Self {
+                Self {
+                    normalizers: Ok(Default::default()),
+                    property_ref: Err("no value supplied for property_ref".to_string()),
+                    source_kind: Err("no value supplied for source_kind".to_string()),
+                    source_ref: Err("no value supplied for source_ref".to_string()),
+                }
+            }
+        }
+        impl PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            pub fn normalizers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.normalizers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for normalizers: {e}")
+                    });
+                self
+            }
+            pub fn property_ref<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.property_ref = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for property_ref: {e}")
+                    });
+                self
+            }
+            pub fn source_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source_kind: {e}")
+                    });
+                self
+            }
+            pub fn source_ref<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_ref = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source_ref: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+        >
+        for super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    normalizers: value.normalizers?,
+                    property_ref: value.property_ref?,
+                    source_kind: value.source_kind?,
+                    source_ref: value.source_ref?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+        > for PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            fn from(
+                value: super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+            ) -> Self {
+                Self {
+                    normalizers: Ok(value.normalizers),
+                    property_ref: Ok(value.property_ref),
+                    source_kind: Ok(value.source_kind),
+                    source_ref: Ok(value.source_ref),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            extract_pattern: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            ignore_case: ::std::result::Result<bool, ::std::string::String>,
+            ignore_whitespace: ::std::result::Result<bool, ::std::string::String>,
+            strip_prefix: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            strip_suffix: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            fn default() -> Self {
+                Self {
+                    extract_pattern: Ok(Default::default()),
+                    ignore_case: Ok(Default::default()),
+                    ignore_whitespace: Ok(Default::default()),
+                    strip_prefix: Ok(Default::default()),
+                    strip_suffix: Ok(Default::default()),
+                }
+            }
+        }
+        impl PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            pub fn extract_pattern<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.extract_pattern = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for extract_pattern: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ignore_case<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignore_case = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for ignore_case: {e}")
+                    });
+                self
+            }
+            pub fn ignore_whitespace<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignore_whitespace = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ignore_whitespace: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn strip_prefix<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.strip_prefix = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for strip_prefix: {e}")
+                    });
+                self
+            }
+            pub fn strip_suffix<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.strip_suffix = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for strip_suffix: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >
+        for super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    extract_pattern: value.extract_pattern?,
+                    ignore_case: value.ignore_case?,
+                    ignore_whitespace: value.ignore_whitespace?,
+                    strip_prefix: value.strip_prefix?,
+                    strip_suffix: value.strip_suffix?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >
+        for PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            fn from(
+                value: super::PatchAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+            ) -> Self {
+                Self {
+                    extract_pattern: Ok(value.extract_pattern),
+                    ignore_case: Ok(value.ignore_case),
+                    ignore_whitespace: Ok(value.ignore_whitespace),
+                    strip_prefix: Ok(value.strip_prefix),
+                    strip_suffix: Ok(value.strip_suffix),
                 }
             }
         }
@@ -181810,14 +194099,6 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
-            owner_group_id: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            owner_user_id: ::std::result::Result<
-                ::std::option::Option<i64>,
-                ::std::string::String,
-            >,
             priority: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -181885,8 +194166,6 @@ pub mod types {
                     incident_ids: Ok(Default::default()),
                     incidents_count: Ok(Default::default()),
                     next_review_at: Ok(Default::default()),
-                    owner_group_id: Ok(Default::default()),
-                    owner_user_id: Ok(Default::default()),
                     priority: Ok(Default::default()),
                     re_review_cadence: Ok(Default::default()),
                     resolution: Ok(Default::default()),
@@ -182179,32 +194458,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn owner_group_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.owner_group_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for owner_group_id: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn owner_user_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<i64>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.owner_user_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for owner_user_id: {e}")
-                    });
-                self
-            }
             pub fn priority<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -182383,8 +194636,6 @@ pub mod types {
                     incident_ids: value.incident_ids?,
                     incidents_count: value.incidents_count?,
                     next_review_at: value.next_review_at?,
-                    owner_group_id: value.owner_group_id?,
-                    owner_user_id: value.owner_user_id?,
                     priority: value.priority?,
                     re_review_cadence: value.re_review_cadence?,
                     resolution: value.resolution?,
@@ -182424,8 +194675,6 @@ pub mod types {
                     incident_ids: Ok(value.incident_ids),
                     incidents_count: Ok(value.incidents_count),
                     next_review_at: Ok(value.next_review_at),
-                    owner_group_id: Ok(value.owner_group_id),
-                    owner_user_id: Ok(value.owner_user_id),
                     priority: Ok(value.priority),
                     re_review_cadence: Ok(value.re_review_cadence),
                     resolution: Ok(value.resolution),
@@ -183327,6 +195576,1094 @@ pub mod types {
         }
         impl ::std::convert::From<super::ProblemResponseData> for ProblemResponseData {
             fn from(value: super::ProblemResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRole {
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
+            name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            position: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            slug: ::std::result::Result<::std::string::String, ::std::string::String>,
+            summary: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ProblemRole {
+            fn default() -> Self {
+                Self {
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    description: Ok(Default::default()),
+                    enabled: Err("no value supplied for enabled".to_string()),
+                    name: Err("no value supplied for name".to_string()),
+                    position: Ok(Default::default()),
+                    slug: Err("no value supplied for slug".to_string()),
+                    summary: Ok(Default::default()),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
+                }
+            }
+        }
+        impl ProblemRole {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn position<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.position = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for position: {e}")
+                    });
+                self
+            }
+            pub fn slug<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slug = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slug: {e}")
+                    });
+                self
+            }
+            pub fn summary<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.summary = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for summary: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRole> for super::ProblemRole {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRole,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    description: value.description?,
+                    enabled: value.enabled?,
+                    name: value.name?,
+                    position: value.position?,
+                    slug: value.slug?,
+                    summary: value.summary?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRole> for ProblemRole {
+            fn from(value: super::ProblemRole) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    description: Ok(value.description),
+                    enabled: Ok(value.enabled),
+                    name: Ok(value.name),
+                    position: Ok(value.position),
+                    slug: Ok(value.slug),
+                    summary: Ok(value.summary),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleAssignment {
+            assigned_by_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            problem_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            problem_role: ::std::result::Result<
+                ::std::option::Option<super::ProblemRoleAssignmentProblemRole>,
+                ::std::string::String,
+            >,
+            problem_role_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            user: ::std::result::Result<
+                ::std::option::Option<super::UserFlatResponse>,
+                ::std::string::String,
+            >,
+            user_id: ::std::result::Result<i64, ::std::string::String>,
+        }
+        impl ::std::default::Default for ProblemRoleAssignment {
+            fn default() -> Self {
+                Self {
+                    assigned_by_user_id: Ok(Default::default()),
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    problem_id: Err("no value supplied for problem_id".to_string()),
+                    problem_role: Err("no value supplied for problem_role".to_string()),
+                    problem_role_id: Err(
+                        "no value supplied for problem_role_id".to_string(),
+                    ),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
+                    user: Err("no value supplied for user".to_string()),
+                    user_id: Err("no value supplied for user_id".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleAssignment {
+            pub fn assigned_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.assigned_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for assigned_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn problem_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.problem_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for problem_id: {e}")
+                    });
+                self
+            }
+            pub fn problem_role<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::ProblemRoleAssignmentProblemRole>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.problem_role = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for problem_role: {e}")
+                    });
+                self
+            }
+            pub fn problem_role_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.problem_role_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for problem_role_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+            pub fn user<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::UserFlatResponse>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user: {e}")
+                    });
+                self
+            }
+            pub fn user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_id: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleAssignment>
+        for super::ProblemRoleAssignment {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleAssignment,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    assigned_by_user_id: value.assigned_by_user_id?,
+                    created_at: value.created_at?,
+                    problem_id: value.problem_id?,
+                    problem_role: value.problem_role?,
+                    problem_role_id: value.problem_role_id?,
+                    updated_at: value.updated_at?,
+                    user: value.user?,
+                    user_id: value.user_id?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleAssignment>
+        for ProblemRoleAssignment {
+            fn from(value: super::ProblemRoleAssignment) -> Self {
+                Self {
+                    assigned_by_user_id: Ok(value.assigned_by_user_id),
+                    created_at: Ok(value.created_at),
+                    problem_id: Ok(value.problem_id),
+                    problem_role: Ok(value.problem_role),
+                    problem_role_id: Ok(value.problem_role_id),
+                    updated_at: Ok(value.updated_at),
+                    user: Ok(value.user),
+                    user_id: Ok(value.user_id),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleAssignmentList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::ProblemRoleAssignmentListDataItem>,
+                ::std::string::String,
+            >,
+            links: ::std::result::Result<super::Links, ::std::string::String>,
+            meta: ::std::result::Result<super::Meta, ::std::string::String>,
+        }
+        impl ::std::default::Default for ProblemRoleAssignmentList {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    links: Err("no value supplied for links".to_string()),
+                    meta: Err("no value supplied for meta".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleAssignmentList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::ProblemRoleAssignmentListDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn links<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::Links>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.links = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for links: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::Meta>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleAssignmentList>
+        for super::ProblemRoleAssignmentList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleAssignmentList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    links: value.links?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleAssignmentList>
+        for ProblemRoleAssignmentList {
+            fn from(value: super::ProblemRoleAssignmentList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    links: Ok(value.links),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleAssignmentListDataItem {
+            attributes: ::std::result::Result<
+                super::ProblemRoleAssignment,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ProblemRoleAssignmentListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleAssignmentListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ProblemRoleAssignment>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleAssignmentListDataItem>
+        for super::ProblemRoleAssignmentListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleAssignmentListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleAssignmentListDataItem>
+        for ProblemRoleAssignmentListDataItem {
+            fn from(value: super::ProblemRoleAssignmentListDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleAssignmentProblemRole {
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            name: ::std::result::Result<::std::string::String, ::std::string::String>,
+            position: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            slug: ::std::result::Result<::std::string::String, ::std::string::String>,
+            summary: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ProblemRoleAssignmentProblemRole {
+            fn default() -> Self {
+                Self {
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    description: Ok(Default::default()),
+                    enabled: Err("no value supplied for enabled".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    name: Err("no value supplied for name".to_string()),
+                    position: Ok(Default::default()),
+                    slug: Err("no value supplied for slug".to_string()),
+                    summary: Ok(Default::default()),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleAssignmentProblemRole {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn position<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.position = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for position: {e}")
+                    });
+                self
+            }
+            pub fn slug<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slug = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slug: {e}")
+                    });
+                self
+            }
+            pub fn summary<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.summary = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for summary: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleAssignmentProblemRole>
+        for super::ProblemRoleAssignmentProblemRole {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleAssignmentProblemRole,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    description: value.description?,
+                    enabled: value.enabled?,
+                    id: value.id?,
+                    name: value.name?,
+                    position: value.position?,
+                    slug: value.slug?,
+                    summary: value.summary?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleAssignmentProblemRole>
+        for ProblemRoleAssignmentProblemRole {
+            fn from(value: super::ProblemRoleAssignmentProblemRole) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    description: Ok(value.description),
+                    enabled: Ok(value.enabled),
+                    id: Ok(value.id),
+                    name: Ok(value.name),
+                    position: Ok(value.position),
+                    slug: Ok(value.slug),
+                    summary: Ok(value.summary),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleAssignmentResponse {
+            data: ::std::result::Result<
+                super::ProblemRoleAssignmentResponseData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ProblemRoleAssignmentResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleAssignmentResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ProblemRoleAssignmentResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleAssignmentResponse>
+        for super::ProblemRoleAssignmentResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleAssignmentResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleAssignmentResponse>
+        for ProblemRoleAssignmentResponse {
+            fn from(value: super::ProblemRoleAssignmentResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleAssignmentResponseData {
+            attributes: ::std::result::Result<
+                super::ProblemRoleAssignment,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ProblemRoleAssignmentResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleAssignmentResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ProblemRoleAssignment>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleAssignmentResponseData>
+        for super::ProblemRoleAssignmentResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleAssignmentResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleAssignmentResponseData>
+        for ProblemRoleAssignmentResponseData {
+            fn from(value: super::ProblemRoleAssignmentResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::ProblemRoleListDataItem>,
+                ::std::string::String,
+            >,
+            links: ::std::result::Result<super::Links, ::std::string::String>,
+            meta: ::std::result::Result<super::Meta, ::std::string::String>,
+        }
+        impl ::std::default::Default for ProblemRoleList {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    links: Err("no value supplied for links".to_string()),
+                    meta: Err("no value supplied for meta".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::ProblemRoleListDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn links<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::Links>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.links = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for links: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::Meta>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleList> for super::ProblemRoleList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    links: value.links?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleList> for ProblemRoleList {
+            fn from(value: super::ProblemRoleList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    links: Ok(value.links),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleListDataItem {
+            attributes: ::std::result::Result<super::ProblemRole, ::std::string::String>,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ProblemRoleListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ProblemRole>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleListDataItem>
+        for super::ProblemRoleListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleListDataItem>
+        for ProblemRoleListDataItem {
+            fn from(value: super::ProblemRoleListDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleResponse {
+            data: ::std::result::Result<
+                super::ProblemRoleResponseData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ProblemRoleResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ProblemRoleResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleResponse>
+        for super::ProblemRoleResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleResponse> for ProblemRoleResponse {
+            fn from(value: super::ProblemRoleResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ProblemRoleResponseData {
+            attributes: ::std::result::Result<super::ProblemRole, ::std::string::String>,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ProblemRoleResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ProblemRoleResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ProblemRole>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ProblemRoleResponseData>
+        for super::ProblemRoleResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ProblemRoleResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ProblemRoleResponseData>
+        for ProblemRoleResponseData {
+            fn from(value: super::ProblemRoleResponseData) -> Self {
                 Self {
                     attributes: Ok(value.attributes),
                     id: Ok(value.id),
@@ -188852,6 +202189,14 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct Role {
+            ai_automations_permissions: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            ai_skills_permissions: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
             alerts_permissions: ::std::result::Result<
                 ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
@@ -189021,6 +202366,8 @@ pub mod types {
         impl ::std::default::Default for Role {
             fn default() -> Self {
                 Self {
+                    ai_automations_permissions: Ok(Default::default()),
+                    ai_skills_permissions: Ok(Default::default()),
                     alerts_permissions: Ok(Default::default()),
                     api_keys_permissions: Ok(Default::default()),
                     audits_permissions: Ok(Default::default()),
@@ -189067,6 +202414,34 @@ pub mod types {
             }
         }
         impl Role {
+            pub fn ai_automations_permissions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_automations_permissions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_automations_permissions: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ai_skills_permissions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_skills_permissions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_skills_permissions: {e}"
+                        )
+                    });
+                self
+            }
             pub fn alerts_permissions<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
@@ -189652,6 +203027,8 @@ pub mod types {
                 value: Role,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_automations_permissions: value.ai_automations_permissions?,
+                    ai_skills_permissions: value.ai_skills_permissions?,
                     alerts_permissions: value.alerts_permissions?,
                     api_keys_permissions: value.api_keys_permissions?,
                     audits_permissions: value.audits_permissions?,
@@ -189703,6 +203080,8 @@ pub mod types {
         impl ::std::convert::From<super::Role> for Role {
             fn from(value: super::Role) -> Self {
                 Self {
+                    ai_automations_permissions: Ok(value.ai_automations_permissions),
+                    ai_skills_permissions: Ok(value.ai_skills_permissions),
                     alerts_permissions: Ok(value.alerts_permissions),
                     api_keys_permissions: Ok(value.api_keys_permissions),
                     audits_permissions: Ok(value.audits_permissions),
@@ -190330,6 +203709,134 @@ pub mod types {
                 Self {
                     expires_at: Ok(value.expires_at),
                     grace_period_minutes: Ok(value.grace_period_minutes),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct RunAiSkillTaskParams {
+            ai_skill_id: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            destination: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            max_runs_per_day: ::std::result::Result<
+                ::std::num::NonZeroU64,
+                ::std::string::String,
+            >,
+            prompt: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            task_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for RunAiSkillTaskParams {
+            fn default() -> Self {
+                Self {
+                    ai_skill_id: Err("no value supplied for ai_skill_id".to_string()),
+                    destination: Ok(
+                        super::defaults::run_ai_skill_task_params_destination(),
+                    ),
+                    max_runs_per_day: Ok(
+                        super::defaults::default_nzu64::<::std::num::NonZeroU64, 50>(),
+                    ),
+                    prompt: Ok(Default::default()),
+                    task_type: Ok(Default::default()),
+                }
+            }
+        }
+        impl RunAiSkillTaskParams {
+            pub fn ai_skill_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_skill_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for ai_skill_id: {e}")
+                    });
+                self
+            }
+            pub fn destination<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for destination: {e}")
+                    });
+                self
+            }
+            pub fn max_runs_per_day<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::num::NonZeroU64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.max_runs_per_day = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for max_runs_per_day: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn prompt<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.prompt = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for prompt: {e}")
+                    });
+                self
+            }
+            pub fn task_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.task_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for task_type: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<RunAiSkillTaskParams>
+        for super::RunAiSkillTaskParams {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: RunAiSkillTaskParams,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    ai_skill_id: value.ai_skill_id?,
+                    destination: value.destination?,
+                    max_runs_per_day: value.max_runs_per_day?,
+                    prompt: value.prompt?,
+                    task_type: value.task_type?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::RunAiSkillTaskParams> for RunAiSkillTaskParams {
+            fn from(value: super::RunAiSkillTaskParams) -> Self {
+                Self {
+                    ai_skill_id: Ok(value.ai_skill_id),
+                    destination: Ok(value.destination),
+                    max_runs_per_day: Ok(value.max_runs_per_day),
+                    prompt: Ok(value.prompt),
+                    task_type: Ok(value.task_type),
                 }
             }
         }
@@ -203237,6 +216744,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            incident_history_window: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             public: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -203336,6 +216847,7 @@ pub mod types {
                     functionality_ids: Ok(Default::default()),
                     ga_tracking_id: Ok(Default::default()),
                     header_color: Ok(Default::default()),
+                    incident_history_window: Ok(Default::default()),
                     public: Ok(Default::default()),
                     public_description: Ok(Default::default()),
                     public_title: Ok(Default::default()),
@@ -203549,6 +217061,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for header_color: {e}")
+                    });
+                self
+            }
+            pub fn incident_history_window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.incident_history_window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for incident_history_window: {e}"
+                        )
                     });
                 self
             }
@@ -203849,6 +217375,7 @@ pub mod types {
                     functionality_ids: value.functionality_ids?,
                     ga_tracking_id: value.ga_tracking_id?,
                     header_color: value.header_color?,
+                    incident_history_window: value.incident_history_window?,
                     public: value.public?,
                     public_description: value.public_description?,
                     public_title: value.public_title?,
@@ -203890,6 +217417,7 @@ pub mod types {
                     functionality_ids: Ok(value.functionality_ids),
                     ga_tracking_id: Ok(value.ga_tracking_id),
                     header_color: Ok(value.header_color),
+                    incident_history_window: Ok(value.incident_history_window),
                     public: Ok(value.public),
                     public_description: Ok(value.public_description),
                     public_title: Ok(value.public_title),
@@ -209735,6 +223263,997 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomation {
+            data: ::std::result::Result<
+                super::UpdateAiAutomationData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateAiAutomation {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl UpdateAiAutomation {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::UpdateAiAutomationData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiAutomation> for super::UpdateAiAutomation {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomation,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiAutomation> for UpdateAiAutomation {
+            fn from(value: super::UpdateAiAutomation) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomationData {
+            attributes: ::std::result::Result<
+                super::UpdateAiAutomationDataAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for UpdateAiAutomationData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Ok(Default::default()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl UpdateAiAutomationData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::UpdateAiAutomationDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiAutomationData>
+        for super::UpdateAiAutomationData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomationData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiAutomationData>
+        for UpdateAiAutomationData {
+            fn from(value: super::UpdateAiAutomationData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributes {
+            conditions: ::std::result::Result<
+                ::std::option::Option<super::UpdateAiAutomationDataAttributesConditions>,
+                ::std::string::String,
+            >,
+            consecutive_failures_count: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_by_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            destination_kind: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            destination_slack_channel_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            destination_slack_channel_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            disabled_reason: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            event_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            last_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            limits_enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            max_credits_per_run: ::std::result::Result<
+                ::std::option::Option<
+                    super::UpdateAiAutomationDataAttributesMaxCreditsPerRun,
+                >,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            next_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            owner_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            prompt: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            rate_limit_runs: ::std::result::Result<
+                ::std::option::Option<::std::num::NonZeroU64>,
+                ::std::string::String,
+            >,
+            rate_limit_window: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule: ::std::result::Result<
+                ::std::option::Option<super::UpdateAiAutomationDataAttributesSchedule>,
+                ::std::string::String,
+            >,
+            schedule_rrule: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_timezone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            skill_ids: ::std::result::Result<
+                ::std::vec::Vec<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            trigger_kind: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateAiAutomationDataAttributes {
+            fn default() -> Self {
+                Self {
+                    conditions: Ok(Default::default()),
+                    consecutive_failures_count: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    created_by_user_id: Ok(Default::default()),
+                    destination_kind: Ok(Default::default()),
+                    destination_slack_channel_id: Ok(Default::default()),
+                    destination_slack_channel_name: Ok(Default::default()),
+                    disabled_reason: Ok(Default::default()),
+                    enabled: Ok(Default::default()),
+                    event_name: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    last_run_at: Ok(Default::default()),
+                    limits_enabled: Ok(Default::default()),
+                    max_credits_per_run: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                    next_run_at: Ok(Default::default()),
+                    owner_user_id: Ok(Default::default()),
+                    prompt: Ok(Default::default()),
+                    rate_limit_runs: Ok(Default::default()),
+                    rate_limit_window: Ok(Default::default()),
+                    schedule: Ok(Default::default()),
+                    schedule_rrule: Ok(Default::default()),
+                    schedule_timezone: Ok(Default::default()),
+                    skill_ids: Ok(Default::default()),
+                    trigger_kind: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateAiAutomationDataAttributes {
+            pub fn conditions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::UpdateAiAutomationDataAttributesConditions,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.conditions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for conditions: {e}")
+                    });
+                self
+            }
+            pub fn consecutive_failures_count<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.consecutive_failures_count = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for consecutive_failures_count: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_kind: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_slack_channel_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_slack_channel_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_slack_channel_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn destination_slack_channel_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.destination_slack_channel_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for destination_slack_channel_name: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn disabled_reason<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.disabled_reason = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for disabled_reason: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn event_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.event_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for event_name: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn last_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for last_run_at: {e}")
+                    });
+                self
+            }
+            pub fn limits_enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.limits_enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for limits_enabled: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn max_credits_per_run<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::UpdateAiAutomationDataAttributesMaxCreditsPerRun,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.max_credits_per_run = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for max_credits_per_run: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn next_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next_run_at: {e}")
+                    });
+                self
+            }
+            pub fn owner_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for owner_user_id: {e}")
+                    });
+                self
+            }
+            pub fn prompt<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.prompt = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for prompt: {e}")
+                    });
+                self
+            }
+            pub fn rate_limit_runs<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::std::num::NonZeroU64>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.rate_limit_runs = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for rate_limit_runs: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn rate_limit_window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.rate_limit_window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for rate_limit_window: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::UpdateAiAutomationDataAttributesSchedule,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for schedule: {e}")
+                    });
+                self
+            }
+            pub fn schedule_rrule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_rrule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_rrule: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_timezone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_timezone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_timezone: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn skill_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.skill_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for skill_ids: {e}")
+                    });
+                self
+            }
+            pub fn trigger_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.trigger_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for trigger_kind: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiAutomationDataAttributes>
+        for super::UpdateAiAutomationDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomationDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    conditions: value.conditions?,
+                    consecutive_failures_count: value.consecutive_failures_count?,
+                    created_at: value.created_at?,
+                    created_by_user_id: value.created_by_user_id?,
+                    destination_kind: value.destination_kind?,
+                    destination_slack_channel_id: value.destination_slack_channel_id?,
+                    destination_slack_channel_name: value
+                        .destination_slack_channel_name?,
+                    disabled_reason: value.disabled_reason?,
+                    enabled: value.enabled?,
+                    event_name: value.event_name?,
+                    id: value.id?,
+                    last_run_at: value.last_run_at?,
+                    limits_enabled: value.limits_enabled?,
+                    max_credits_per_run: value.max_credits_per_run?,
+                    name: value.name?,
+                    next_run_at: value.next_run_at?,
+                    owner_user_id: value.owner_user_id?,
+                    prompt: value.prompt?,
+                    rate_limit_runs: value.rate_limit_runs?,
+                    rate_limit_window: value.rate_limit_window?,
+                    schedule: value.schedule?,
+                    schedule_rrule: value.schedule_rrule?,
+                    schedule_timezone: value.schedule_timezone?,
+                    skill_ids: value.skill_ids?,
+                    trigger_kind: value.trigger_kind?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiAutomationDataAttributes>
+        for UpdateAiAutomationDataAttributes {
+            fn from(value: super::UpdateAiAutomationDataAttributes) -> Self {
+                Self {
+                    conditions: Ok(value.conditions),
+                    consecutive_failures_count: Ok(value.consecutive_failures_count),
+                    created_at: Ok(value.created_at),
+                    created_by_user_id: Ok(value.created_by_user_id),
+                    destination_kind: Ok(value.destination_kind),
+                    destination_slack_channel_id: Ok(value.destination_slack_channel_id),
+                    destination_slack_channel_name: Ok(
+                        value.destination_slack_channel_name,
+                    ),
+                    disabled_reason: Ok(value.disabled_reason),
+                    enabled: Ok(value.enabled),
+                    event_name: Ok(value.event_name),
+                    id: Ok(value.id),
+                    last_run_at: Ok(value.last_run_at),
+                    limits_enabled: Ok(value.limits_enabled),
+                    max_credits_per_run: Ok(value.max_credits_per_run),
+                    name: Ok(value.name),
+                    next_run_at: Ok(value.next_run_at),
+                    owner_user_id: Ok(value.owner_user_id),
+                    prompt: Ok(value.prompt),
+                    rate_limit_runs: Ok(value.rate_limit_runs),
+                    rate_limit_window: Ok(value.rate_limit_window),
+                    schedule: Ok(value.schedule),
+                    schedule_rrule: Ok(value.schedule_rrule),
+                    schedule_timezone: Ok(value.schedule_timezone),
+                    skill_ids: Ok(value.skill_ids),
+                    trigger_kind: Ok(value.trigger_kind),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesConditions {
+            any: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::UpdateAiAutomationDataAttributesConditionsAnyItem,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateAiAutomationDataAttributesConditions {
+            fn default() -> Self {
+                Self {
+                    any: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateAiAutomationDataAttributesConditions {
+            pub fn any<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::UpdateAiAutomationDataAttributesConditionsAnyItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.any = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for any: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiAutomationDataAttributesConditions>
+        for super::UpdateAiAutomationDataAttributesConditions {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomationDataAttributesConditions,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { any: value.any? })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiAutomationDataAttributesConditions>
+        for UpdateAiAutomationDataAttributesConditions {
+            fn from(value: super::UpdateAiAutomationDataAttributesConditions) -> Self {
+                Self { any: Ok(value.any) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesConditionsAnyItem {
+            all: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::UpdateAiAutomationDataAttributesConditionsAnyItemAllItem,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for UpdateAiAutomationDataAttributesConditionsAnyItem {
+            fn default() -> Self {
+                Self {
+                    all: Err("no value supplied for all".to_string()),
+                }
+            }
+        }
+        impl UpdateAiAutomationDataAttributesConditionsAnyItem {
+            pub fn all<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::UpdateAiAutomationDataAttributesConditionsAnyItemAllItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.all = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for all: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiAutomationDataAttributesConditionsAnyItem>
+        for super::UpdateAiAutomationDataAttributesConditionsAnyItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomationDataAttributesConditionsAnyItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { all: value.all? })
+            }
+        }
+        impl ::std::convert::From<
+            super::UpdateAiAutomationDataAttributesConditionsAnyItem,
+        > for UpdateAiAutomationDataAttributesConditionsAnyItem {
+            fn from(
+                value: super::UpdateAiAutomationDataAttributesConditionsAnyItem,
+            ) -> Self {
+                Self { all: Ok(value.all) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesConditionsAnyItemAllItem {
+            field: ::std::result::Result<::std::string::String, ::std::string::String>,
+            operator: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<
+                ::std::option::Option<
+                    super::UpdateAiAutomationDataAttributesConditionsAnyItemAllItemValue,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for UpdateAiAutomationDataAttributesConditionsAnyItemAllItem {
+            fn default() -> Self {
+                Self {
+                    field: Err("no value supplied for field".to_string()),
+                    operator: Err("no value supplied for operator".to_string()),
+                    value: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateAiAutomationDataAttributesConditionsAnyItemAllItem {
+            pub fn field<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field: {e}")
+                    });
+                self
+            }
+            pub fn operator<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.operator = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for operator: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::UpdateAiAutomationDataAttributesConditionsAnyItemAllItemValue,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            UpdateAiAutomationDataAttributesConditionsAnyItemAllItem,
+        > for super::UpdateAiAutomationDataAttributesConditionsAnyItemAllItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomationDataAttributesConditionsAnyItemAllItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    field: value.field?,
+                    operator: value.operator?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::UpdateAiAutomationDataAttributesConditionsAnyItemAllItem,
+        > for UpdateAiAutomationDataAttributesConditionsAnyItemAllItem {
+            fn from(
+                value: super::UpdateAiAutomationDataAttributesConditionsAnyItemAllItem,
+            ) -> Self {
+                Self {
+                    field: Ok(value.field),
+                    operator: Ok(value.operator),
+                    value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesSchedule {
+            frequency: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            hour: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            timezone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            weekday: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateAiAutomationDataAttributesSchedule {
+            fn default() -> Self {
+                Self {
+                    frequency: Ok(Default::default()),
+                    hour: Ok(Default::default()),
+                    timezone: Ok(Default::default()),
+                    weekday: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateAiAutomationDataAttributesSchedule {
+            pub fn frequency<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.frequency = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for frequency: {e}")
+                    });
+                self
+            }
+            pub fn hour<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.hour = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for hour: {e}")
+                    });
+                self
+            }
+            pub fn timezone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.timezone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for timezone: {e}")
+                    });
+                self
+            }
+            pub fn weekday<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.weekday = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for weekday: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiAutomationDataAttributesSchedule>
+        for super::UpdateAiAutomationDataAttributesSchedule {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomationDataAttributesSchedule,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    frequency: value.frequency?,
+                    hour: value.hour?,
+                    timezone: value.timezone?,
+                    weekday: value.weekday?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiAutomationDataAttributesSchedule>
+        for UpdateAiAutomationDataAttributesSchedule {
+            fn from(value: super::UpdateAiAutomationDataAttributesSchedule) -> Self {
+                Self {
+                    frequency: Ok(value.frequency),
+                    hour: Ok(value.hour),
+                    timezone: Ok(value.timezone),
+                    weekday: Ok(value.weekday),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct UpdateAiChatSession {
             title: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
@@ -209774,6 +224293,563 @@ pub mod types {
         impl ::std::convert::From<super::UpdateAiChatSession> for UpdateAiChatSession {
             fn from(value: super::UpdateAiChatSession) -> Self {
                 Self { title: Ok(value.title) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiSkill {
+            data: ::std::result::Result<super::UpdateAiSkillData, ::std::string::String>,
+        }
+        impl ::std::default::Default for UpdateAiSkill {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl UpdateAiSkill {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::UpdateAiSkillData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiSkill> for super::UpdateAiSkill {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiSkill,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiSkill> for UpdateAiSkill {
+            fn from(value: super::UpdateAiSkill) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiSkillData {
+            attributes: ::std::result::Result<
+                super::UpdateAiSkillDataAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for UpdateAiSkillData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Ok(Default::default()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl UpdateAiSkillData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::UpdateAiSkillDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiSkillData> for super::UpdateAiSkillData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiSkillData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiSkillData> for UpdateAiSkillData {
+            fn from(value: super::UpdateAiSkillData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiSkillDataAttributes {
+            body: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            created_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            created_by_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            current_version: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            description: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            invocable_by: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            owner_user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            slug: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source_template_key: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source_template_version: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            tool_grants: ::std::result::Result<
+                ::std::vec::Vec<super::UpdateAiSkillDataAttributesToolGrantsItem>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateAiSkillDataAttributes {
+            fn default() -> Self {
+                Self {
+                    body: Ok(Default::default()),
+                    created_at: Ok(Default::default()),
+                    created_by_user_id: Ok(Default::default()),
+                    current_version: Ok(Default::default()),
+                    description: Ok(Default::default()),
+                    enabled: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    invocable_by: Ok(Default::default()),
+                    name: Ok(Default::default()),
+                    owner_user_id: Ok(Default::default()),
+                    slug: Ok(Default::default()),
+                    source: Ok(Default::default()),
+                    source_template_key: Ok(Default::default()),
+                    source_template_version: Ok(Default::default()),
+                    tool_grants: Ok(Default::default()),
+                    updated_at: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateAiSkillDataAttributes {
+            pub fn body<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.body = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for body: {e}")
+                    });
+                self
+            }
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn created_by_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_by_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for created_by_user_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn current_version<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.current_version = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for current_version: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn description<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.description = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for description: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn invocable_by<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.invocable_by = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for invocable_by: {e}")
+                    });
+                self
+            }
+            pub fn name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for name: {e}")
+                    });
+                self
+            }
+            pub fn owner_user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.owner_user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for owner_user_id: {e}")
+                    });
+                self
+            }
+            pub fn slug<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.slug = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for slug: {e}")
+                    });
+                self
+            }
+            pub fn source<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source: {e}")
+                    });
+                self
+            }
+            pub fn source_template_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_template_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for source_template_key: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn source_template_version<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_template_version = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for source_template_version: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn tool_grants<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::UpdateAiSkillDataAttributesToolGrantsItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_grants = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_grants: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiSkillDataAttributes>
+        for super::UpdateAiSkillDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiSkillDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    body: value.body?,
+                    created_at: value.created_at?,
+                    created_by_user_id: value.created_by_user_id?,
+                    current_version: value.current_version?,
+                    description: value.description?,
+                    enabled: value.enabled?,
+                    id: value.id?,
+                    invocable_by: value.invocable_by?,
+                    name: value.name?,
+                    owner_user_id: value.owner_user_id?,
+                    slug: value.slug?,
+                    source: value.source?,
+                    source_template_key: value.source_template_key?,
+                    source_template_version: value.source_template_version?,
+                    tool_grants: value.tool_grants?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiSkillDataAttributes>
+        for UpdateAiSkillDataAttributes {
+            fn from(value: super::UpdateAiSkillDataAttributes) -> Self {
+                Self {
+                    body: Ok(value.body),
+                    created_at: Ok(value.created_at),
+                    created_by_user_id: Ok(value.created_by_user_id),
+                    current_version: Ok(value.current_version),
+                    description: Ok(value.description),
+                    enabled: Ok(value.enabled),
+                    id: Ok(value.id),
+                    invocable_by: Ok(value.invocable_by),
+                    name: Ok(value.name),
+                    owner_user_id: Ok(value.owner_user_id),
+                    slug: Ok(value.slug),
+                    source: Ok(value.source),
+                    source_template_key: Ok(value.source_template_key),
+                    source_template_version: Ok(value.source_template_version),
+                    tool_grants: Ok(value.tool_grants),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiSkillDataAttributesToolGrantsItem {
+            access: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            pinned_params: ::std::result::Result<
+                ::std::option::Option<
+                    ::std::collections::HashMap<
+                        ::std::string::String,
+                        super::UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
+                    >,
+                >,
+                ::std::string::String,
+            >,
+            tool_key: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateAiSkillDataAttributesToolGrantsItem {
+            fn default() -> Self {
+                Self {
+                    access: Ok(Default::default()),
+                    pinned_params: Ok(Default::default()),
+                    tool_key: Err("no value supplied for tool_key".to_string()),
+                }
+            }
+        }
+        impl UpdateAiSkillDataAttributesToolGrantsItem {
+            pub fn access<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.access = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for access: {e}")
+                    });
+                self
+            }
+            pub fn pinned_params<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        ::std::collections::HashMap<
+                            ::std::string::String,
+                            super::UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
+                        >,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned_params = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned_params: {e}")
+                    });
+                self
+            }
+            pub fn tool_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_key: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiSkillDataAttributesToolGrantsItem>
+        for super::UpdateAiSkillDataAttributesToolGrantsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiSkillDataAttributesToolGrantsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    access: value.access?,
+                    pinned_params: value.pinned_params?,
+                    tool_key: value.tool_key?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiSkillDataAttributesToolGrantsItem>
+        for UpdateAiSkillDataAttributesToolGrantsItem {
+            fn from(value: super::UpdateAiSkillDataAttributesToolGrantsItem) -> Self {
+                Self {
+                    access: Ok(value.access),
+                    pinned_params: Ok(value.pinned_params),
+                    tool_key: Ok(value.tool_key),
+                }
             }
         }
         #[derive(Clone, Debug)]
@@ -212391,6 +227467,7 @@ pub mod types {
                 >,
                 ::std::string::String,
             >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
             fallback_rule: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
             non_paging: ::std::result::Result<bool, ::std::string::String>,
@@ -212407,6 +227484,7 @@ pub mod types {
                         "no value supplied for condition_groups".to_string(),
                     ),
                     destinations: Err("no value supplied for destinations".to_string()),
+                    enabled: Ok(super::defaults::default_bool::<true>()),
                     fallback_rule: Ok(Default::default()),
                     name: Err("no value supplied for name".to_string()),
                     non_paging: Ok(Default::default()),
@@ -212460,6 +227538,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for destinations: {e}")
+                    });
+                self
+            }
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
                     });
                 self
             }
@@ -212522,6 +227612,7 @@ pub mod types {
                     ai_sre_provider: value.ai_sre_provider?,
                     condition_groups: value.condition_groups?,
                     destinations: value.destinations?,
+                    enabled: value.enabled?,
                     fallback_rule: value.fallback_rule?,
                     name: value.name?,
                     non_paging: value.non_paging?,
@@ -212536,6 +227627,7 @@ pub mod types {
                     ai_sre_provider: Ok(value.ai_sre_provider),
                     condition_groups: Ok(value.condition_groups),
                     destinations: Ok(value.destinations),
+                    enabled: Ok(value.enabled),
                     fallback_rule: Ok(value.fallback_rule),
                     name: Ok(value.name),
                     non_paging: Ok(value.non_paging),
@@ -212834,7 +227926,24 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct UpdateAlertRouteDataAttributesRulesItemDestinationsItem {
-            target_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            catalog_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
+            catalog_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            match_keys: ::std::result::Result<
+                ::std::option::Option<
+                    [super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+                >,
+                ::std::string::String,
+            >,
+            target_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
             target_type: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
@@ -212844,15 +227953,58 @@ pub mod types {
         for UpdateAlertRouteDataAttributesRulesItemDestinationsItem {
             fn default() -> Self {
                 Self {
-                    target_id: Err("no value supplied for target_id".to_string()),
+                    catalog_id: Ok(Default::default()),
+                    catalog_type: Ok(Default::default()),
+                    match_keys: Ok(Default::default()),
+                    target_id: Ok(Default::default()),
                     target_type: Err("no value supplied for target_type".to_string()),
                 }
             }
         }
         impl UpdateAlertRouteDataAttributesRulesItemDestinationsItem {
+            pub fn catalog_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for catalog_id: {e}")
+                    });
+                self
+            }
+            pub fn catalog_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.catalog_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for catalog_type: {e}")
+                    });
+                self
+            }
+            pub fn match_keys<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        [super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem; 1usize],
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.match_keys = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for match_keys: {e}")
+                    });
+                self
+            }
             pub fn target_id<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::uuid::Uuid>,
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
                 T::Error: ::std::fmt::Display,
             {
                 self.target_id = value
@@ -212883,6 +228035,9 @@ pub mod types {
                 value: UpdateAlertRouteDataAttributesRulesItemDestinationsItem,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    catalog_id: value.catalog_id?,
+                    catalog_type: value.catalog_type?,
+                    match_keys: value.match_keys?,
                     target_id: value.target_id?,
                     target_type: value.target_type?,
                 })
@@ -212895,8 +228050,255 @@ pub mod types {
                 value: super::UpdateAlertRouteDataAttributesRulesItemDestinationsItem,
             ) -> Self {
                 Self {
+                    catalog_id: Ok(value.catalog_id),
+                    catalog_type: Ok(value.catalog_type),
+                    match_keys: Ok(value.match_keys),
                     target_id: Ok(value.target_id),
                     target_type: Ok(value.target_type),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            normalizers: ::std::result::Result<
+                ::std::option::Option<
+                    super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+                >,
+                ::std::string::String,
+            >,
+            property_ref: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            source_kind: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            source_ref: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            fn default() -> Self {
+                Self {
+                    normalizers: Ok(Default::default()),
+                    property_ref: Err("no value supplied for property_ref".to_string()),
+                    source_kind: Err("no value supplied for source_kind".to_string()),
+                    source_ref: Err("no value supplied for source_ref".to_string()),
+                }
+            }
+        }
+        impl UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            pub fn normalizers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.normalizers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for normalizers: {e}")
+                    });
+                self
+            }
+            pub fn property_ref<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.property_ref = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for property_ref: {e}")
+                    });
+                self
+            }
+            pub fn source_kind<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_kind = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source_kind: {e}")
+                    });
+                self
+            }
+            pub fn source_ref<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source_ref = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source_ref: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+        >
+        for super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    normalizers: value.normalizers?,
+                    property_ref: value.property_ref?,
+                    source_kind: value.source_kind?,
+                    source_ref: value.source_ref?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+        > for UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem {
+            fn from(
+                value: super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItem,
+            ) -> Self {
+                Self {
+                    normalizers: Ok(value.normalizers),
+                    property_ref: Ok(value.property_ref),
+                    source_kind: Ok(value.source_kind),
+                    source_ref: Ok(value.source_ref),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            extract_pattern: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            ignore_case: ::std::result::Result<bool, ::std::string::String>,
+            ignore_whitespace: ::std::result::Result<bool, ::std::string::String>,
+            strip_prefix: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            strip_suffix: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            fn default() -> Self {
+                Self {
+                    extract_pattern: Ok(Default::default()),
+                    ignore_case: Ok(Default::default()),
+                    ignore_whitespace: Ok(Default::default()),
+                    strip_prefix: Ok(Default::default()),
+                    strip_suffix: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            pub fn extract_pattern<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.extract_pattern = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for extract_pattern: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ignore_case<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignore_case = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for ignore_case: {e}")
+                    });
+                self
+            }
+            pub fn ignore_whitespace<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ignore_whitespace = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ignore_whitespace: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn strip_prefix<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.strip_prefix = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for strip_prefix: {e}")
+                    });
+                self
+            }
+            pub fn strip_suffix<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.strip_suffix = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for strip_suffix: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >
+        for super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    extract_pattern: value.extract_pattern?,
+                    ignore_case: value.ignore_case?,
+                    ignore_whitespace: value.ignore_whitespace?,
+                    strip_prefix: value.strip_prefix?,
+                    strip_suffix: value.strip_suffix?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+        >
+        for UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers {
+            fn from(
+                value: super::UpdateAlertRouteDataAttributesRulesItemDestinationsItemMatchKeysItemNormalizers,
+            ) -> Self {
+                Self {
+                    extract_pattern: Ok(value.extract_pattern),
+                    ignore_case: Ok(value.ignore_case),
+                    ignore_whitespace: Ok(value.ignore_whitespace),
+                    strip_prefix: Ok(value.strip_prefix),
+                    strip_suffix: Ok(value.strip_suffix),
                 }
             }
         }
@@ -213049,10 +228451,7 @@ pub mod types {
                 >,
                 ::std::string::String,
             >,
-            enabled: ::std::result::Result<
-                ::std::option::Option<bool>,
-                ::std::string::String,
-            >,
+            enabled: ::std::result::Result<bool, ::std::string::String>,
             name: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -213074,7 +228473,7 @@ pub mod types {
                     condition_type: Ok(Default::default()),
                     conditions: Ok(Default::default()),
                     destination: Ok(Default::default()),
-                    enabled: Ok(Default::default()),
+                    enabled: Ok(super::defaults::default_bool::<true>()),
                     name: Ok(Default::default()),
                     owning_team_ids: Ok(Default::default()),
                     position: Ok(Default::default()),
@@ -213158,7 +228557,7 @@ pub mod types {
             }
             pub fn enabled<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T: ::std::convert::TryInto<bool>,
                 T::Error: ::std::fmt::Display,
             {
                 self.enabled = value
@@ -213845,6 +229244,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            attach_owner_groups_to_alerts: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             deduplicate_alerts_by_key: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -213897,6 +229300,7 @@ pub mod types {
                     alert_source_urgency_rules_attributes: Ok(Default::default()),
                     alert_template_attributes: Ok(Default::default()),
                     alert_urgency_id: Ok(Default::default()),
+                    attach_owner_groups_to_alerts: Ok(Default::default()),
                     deduplicate_alerts_by_key: Ok(Default::default()),
                     deduplication_key_kind: Ok(Default::default()),
                     deduplication_key_path: Ok(Default::default()),
@@ -213975,6 +229379,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for alert_urgency_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn attach_owner_groups_to_alerts<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attach_owner_groups_to_alerts = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for attach_owner_groups_to_alerts: {e}"
                         )
                     });
                 self
@@ -214135,6 +229553,7 @@ pub mod types {
                         .alert_source_urgency_rules_attributes?,
                     alert_template_attributes: value.alert_template_attributes?,
                     alert_urgency_id: value.alert_urgency_id?,
+                    attach_owner_groups_to_alerts: value.attach_owner_groups_to_alerts?,
                     deduplicate_alerts_by_key: value.deduplicate_alerts_by_key?,
                     deduplication_key_kind: value.deduplication_key_kind?,
                     deduplication_key_path: value.deduplication_key_path?,
@@ -214160,6 +229579,9 @@ pub mod types {
                     ),
                     alert_template_attributes: Ok(value.alert_template_attributes),
                     alert_urgency_id: Ok(value.alert_urgency_id),
+                    attach_owner_groups_to_alerts: Ok(
+                        value.attach_owner_groups_to_alerts,
+                    ),
                     deduplicate_alerts_by_key: Ok(value.deduplicate_alerts_by_key),
                     deduplication_key_kind: Ok(value.deduplication_key_kind),
                     deduplication_key_path: Ok(value.deduplication_key_path),
@@ -227442,6 +242864,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            resource_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             slug: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -227452,6 +242878,7 @@ pub mod types {
                 Self {
                     forms: Ok(Default::default()),
                     name: Ok(Default::default()),
+                    resource_type: Ok(Default::default()),
                     slug: Ok(Default::default()),
                 }
             }
@@ -227481,6 +242908,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn resource_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.resource_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for resource_type: {e}")
+                    });
+                self
+            }
             pub fn slug<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -227503,6 +242942,7 @@ pub mod types {
                 Ok(Self {
                     forms: value.forms?,
                     name: value.name?,
+                    resource_type: value.resource_type?,
                     slug: value.slug?,
                 })
             }
@@ -227513,6 +242953,7 @@ pub mod types {
                 Self {
                     forms: Ok(value.forms),
                     name: Ok(value.name),
+                    resource_type: Ok(value.resource_type),
                     slug: Ok(value.slug),
                 }
             }
@@ -229984,6 +245425,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            attach_owner_groups_to_alerts: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             description: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -230023,6 +245468,7 @@ pub mod types {
                     alert_description: Ok(Default::default()),
                     alert_summary: Ok(Default::default()),
                     alert_urgency_id: Ok(Default::default()),
+                    attach_owner_groups_to_alerts: Ok(Default::default()),
                     description: Ok(Default::default()),
                     enabled: Ok(Default::default()),
                     interval: Ok(Default::default()),
@@ -230071,6 +245517,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for alert_urgency_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn attach_owner_groups_to_alerts<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attach_owner_groups_to_alerts = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for attach_owner_groups_to_alerts: {e}"
                         )
                     });
                 self
@@ -230188,6 +245648,7 @@ pub mod types {
                     alert_description: value.alert_description?,
                     alert_summary: value.alert_summary?,
                     alert_urgency_id: value.alert_urgency_id?,
+                    attach_owner_groups_to_alerts: value.attach_owner_groups_to_alerts?,
                     description: value.description?,
                     enabled: value.enabled?,
                     interval: value.interval?,
@@ -230206,6 +245667,9 @@ pub mod types {
                     alert_description: Ok(value.alert_description),
                     alert_summary: Ok(value.alert_summary),
                     alert_urgency_id: Ok(value.alert_urgency_id),
+                    attach_owner_groups_to_alerts: Ok(
+                        value.attach_owner_groups_to_alerts,
+                    ),
                     description: Ok(value.description),
                     enabled: Ok(value.enabled),
                     interval: Ok(value.interval),
@@ -237147,6 +252611,264 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct UpdateIpAllowlist {
+            data: ::std::result::Result<
+                super::UpdateIpAllowlistData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateIpAllowlist {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl UpdateIpAllowlist {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::UpdateIpAllowlistData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateIpAllowlist> for super::UpdateIpAllowlist {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateIpAllowlist,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::UpdateIpAllowlist> for UpdateIpAllowlist {
+            fn from(value: super::UpdateIpAllowlist) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateIpAllowlistData {
+            attributes: ::std::result::Result<
+                super::UpdateIpAllowlistDataAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for UpdateIpAllowlistData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Ok(Default::default()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl UpdateIpAllowlistData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::UpdateIpAllowlistDataAttributes>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateIpAllowlistData>
+        for super::UpdateIpAllowlistData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateIpAllowlistData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateIpAllowlistData>
+        for UpdateIpAllowlistData {
+            fn from(value: super::UpdateIpAllowlistData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateIpAllowlistDataAttributes {
+            enabled: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            entries: ::std::result::Result<
+                ::std::vec::Vec<super::UpdateIpAllowlistDataAttributesEntriesItem>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateIpAllowlistDataAttributes {
+            fn default() -> Self {
+                Self {
+                    enabled: Ok(Default::default()),
+                    entries: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateIpAllowlistDataAttributes {
+            pub fn enabled<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.enabled = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for enabled: {e}")
+                    });
+                self
+            }
+            pub fn entries<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::UpdateIpAllowlistDataAttributesEntriesItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.entries = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for entries: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateIpAllowlistDataAttributes>
+        for super::UpdateIpAllowlistDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateIpAllowlistDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    enabled: value.enabled?,
+                    entries: value.entries?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateIpAllowlistDataAttributes>
+        for UpdateIpAllowlistDataAttributes {
+            fn from(value: super::UpdateIpAllowlistDataAttributes) -> Self {
+                Self {
+                    enabled: Ok(value.enabled),
+                    entries: Ok(value.entries),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateIpAllowlistDataAttributesEntriesItem {
+            cidr: ::std::result::Result<::std::string::String, ::std::string::String>,
+            label: ::std::result::Result<
+                ::std::option::Option<
+                    super::UpdateIpAllowlistDataAttributesEntriesItemLabel,
+                >,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UpdateIpAllowlistDataAttributesEntriesItem {
+            fn default() -> Self {
+                Self {
+                    cidr: Err("no value supplied for cidr".to_string()),
+                    label: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateIpAllowlistDataAttributesEntriesItem {
+            pub fn cidr<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.cidr = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for cidr: {e}")
+                    });
+                self
+            }
+            pub fn label<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::UpdateIpAllowlistDataAttributesEntriesItemLabel,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.label = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for label: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateIpAllowlistDataAttributesEntriesItem>
+        for super::UpdateIpAllowlistDataAttributesEntriesItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateIpAllowlistDataAttributesEntriesItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    cidr: value.cidr?,
+                    label: value.label?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateIpAllowlistDataAttributesEntriesItem>
+        for UpdateIpAllowlistDataAttributesEntriesItem {
+            fn from(value: super::UpdateIpAllowlistDataAttributesEntriesItem) -> Self {
+                Self {
+                    cidr: Ok(value.cidr),
+                    label: Ok(value.label),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct UpdateJiraIssueTaskParams {
             assign_user_email: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
@@ -242944,14 +258666,6 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
-            owner_group_id: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            owner_user_id: ::std::result::Result<
-                ::std::option::Option<i64>,
-                ::std::string::String,
-            >,
             priority: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -242993,8 +258707,6 @@ pub mod types {
                     form_field_selections: Ok(Default::default()),
                     impact_so_far: Ok(Default::default()),
                     next_review_at: Ok(Default::default()),
-                    owner_group_id: Ok(Default::default()),
-                    owner_user_id: Ok(Default::default()),
                     priority: Ok(Default::default()),
                     re_review_cadence: Ok(Default::default()),
                     resolution: Ok(Default::default()),
@@ -243130,32 +258842,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn owner_group_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.owner_group_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for owner_group_id: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn owner_user_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<i64>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.owner_user_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for owner_user_id: {e}")
-                    });
-                self
-            }
             pub fn priority<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -243259,8 +258945,6 @@ pub mod types {
                     form_field_selections: value.form_field_selections?,
                     impact_so_far: value.impact_so_far?,
                     next_review_at: value.next_review_at?,
-                    owner_group_id: value.owner_group_id?,
-                    owner_user_id: value.owner_user_id?,
                     priority: value.priority?,
                     re_review_cadence: value.re_review_cadence?,
                     resolution: value.resolution?,
@@ -243284,8 +258968,6 @@ pub mod types {
                     form_field_selections: Ok(value.form_field_selections),
                     impact_so_far: Ok(value.impact_so_far),
                     next_review_at: Ok(value.next_review_at),
-                    owner_group_id: Ok(value.owner_group_id),
-                    owner_user_id: Ok(value.owner_user_id),
                     priority: Ok(value.priority),
                     re_review_cadence: Ok(value.re_review_cadence),
                     resolution: Ok(value.resolution),
@@ -245135,6 +260817,14 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct UpdateRoleDataAttributes {
+            ai_automations_permissions: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            ai_skills_permissions: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
             api_keys_permissions: ::std::result::Result<
                 ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
@@ -245291,6 +260981,8 @@ pub mod types {
         impl ::std::default::Default for UpdateRoleDataAttributes {
             fn default() -> Self {
                 Self {
+                    ai_automations_permissions: Ok(Default::default()),
+                    ai_skills_permissions: Ok(Default::default()),
                     api_keys_permissions: Ok(Default::default()),
                     audits_permissions: Ok(Default::default()),
                     billing_permissions: Ok(Default::default()),
@@ -245333,6 +261025,34 @@ pub mod types {
             }
         }
         impl UpdateRoleDataAttributes {
+            pub fn ai_automations_permissions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_automations_permissions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_automations_permissions: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ai_skills_permissions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_skills_permissions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_skills_permissions: {e}"
+                        )
+                    });
+                self
+            }
             pub fn api_keys_permissions<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
@@ -245867,6 +261587,8 @@ pub mod types {
                 value: UpdateRoleDataAttributes,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    ai_automations_permissions: value.ai_automations_permissions?,
+                    ai_skills_permissions: value.ai_skills_permissions?,
                     api_keys_permissions: value.api_keys_permissions?,
                     audits_permissions: value.audits_permissions?,
                     billing_permissions: value.billing_permissions?,
@@ -245915,6 +261637,8 @@ pub mod types {
         for UpdateRoleDataAttributes {
             fn from(value: super::UpdateRoleDataAttributes) -> Self {
                 Self {
+                    ai_automations_permissions: Ok(value.ai_automations_permissions),
+                    ai_skills_permissions: Ok(value.ai_skills_permissions),
                     api_keys_permissions: Ok(value.api_keys_permissions),
                     audits_permissions: Ok(value.audits_permissions),
                     billing_permissions: Ok(value.billing_permissions),
@@ -252423,6 +268147,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            incident_history_window: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             public: ::std::result::Result<
                 ::std::option::Option<bool>,
                 ::std::string::String,
@@ -252517,6 +268245,7 @@ pub mod types {
                     functionality_ids: Ok(Default::default()),
                     ga_tracking_id: Ok(Default::default()),
                     header_color: Ok(Default::default()),
+                    incident_history_window: Ok(Default::default()),
                     public: Ok(Default::default()),
                     public_description: Ok(Default::default()),
                     public_title: Ok(Default::default()),
@@ -252699,6 +268428,20 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for header_color: {e}")
+                    });
+                self
+            }
+            pub fn incident_history_window<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.incident_history_window = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for incident_history_window: {e}"
+                        )
                     });
                 self
             }
@@ -252974,6 +268717,7 @@ pub mod types {
                     functionality_ids: value.functionality_ids?,
                     ga_tracking_id: value.ga_tracking_id?,
                     header_color: value.header_color?,
+                    incident_history_window: value.incident_history_window?,
                     public: value.public?,
                     public_description: value.public_description?,
                     public_title: value.public_title?,
@@ -253012,6 +268756,7 @@ pub mod types {
                     functionality_ids: Ok(value.functionality_ids),
                     ga_tracking_id: Ok(value.ga_tracking_id),
                     header_color: Ok(value.header_color),
+                    incident_history_window: Ok(value.incident_history_window),
                     public: Ok(value.public),
                     public_description: Ok(value.public_description),
                     public_title: Ok(value.public_title),
@@ -255745,11 +271490,16 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            primary: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default for UpdateUserEmailAddressDataAttributes {
             fn default() -> Self {
                 Self {
                     email: Ok(Default::default()),
+                    primary: Ok(Default::default()),
                 }
             }
         }
@@ -255766,6 +271516,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn primary<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.primary = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for primary: {e}")
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<UpdateUserEmailAddressDataAttributes>
         for super::UpdateUserEmailAddressDataAttributes {
@@ -255773,13 +271535,19 @@ pub mod types {
             fn try_from(
                 value: UpdateUserEmailAddressDataAttributes,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { email: value.email? })
+                Ok(Self {
+                    email: value.email?,
+                    primary: value.primary?,
+                })
             }
         }
         impl ::std::convert::From<super::UpdateUserEmailAddressDataAttributes>
         for UpdateUserEmailAddressDataAttributes {
             fn from(value: super::UpdateUserEmailAddressDataAttributes) -> Self {
-                Self { email: Ok(value.email) }
+                Self {
+                    email: Ok(value.email),
+                    primary: Ok(value.primary),
+                }
             }
         }
         #[derive(Clone, Debug)]
@@ -259618,6 +275386,10 @@ pub mod types {
                 ::std::option::Option<super::CreateAnthropicChatCompletionTaskParams>,
                 ::std::string::String,
             >,
+            subtype_151: ::std::result::Result<
+                ::std::option::Option<super::RunAiSkillTaskParams>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default for UpdateWorkflowTaskDataAttributesTaskParams {
             fn default() -> Self {
@@ -259773,6 +275545,7 @@ pub mod types {
                     subtype_148: Ok(Default::default()),
                     subtype_149: Ok(Default::default()),
                     subtype_150: Ok(Default::default()),
+                    subtype_151: Ok(Default::default()),
                 }
             }
         }
@@ -261901,6 +277674,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn subtype_151<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::RunAiSkillTaskParams>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.subtype_151 = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for subtype_151: {e}")
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<UpdateWorkflowTaskDataAttributesTaskParams>
         for super::UpdateWorkflowTaskDataAttributesTaskParams {
@@ -262060,6 +277847,7 @@ pub mod types {
                     subtype_148: value.subtype_148?,
                     subtype_149: value.subtype_149?,
                     subtype_150: value.subtype_150?,
+                    subtype_151: value.subtype_151?,
                 })
             }
         }
@@ -262218,6 +278006,7 @@ pub mod types {
                     subtype_148: Ok(value.subtype_148),
                     subtype_149: Ok(value.subtype_149),
                     subtype_150: Ok(value.subtype_150),
+                    subtype_151: Ok(value.subtype_151),
                 }
             }
         }
@@ -271058,6 +286847,15 @@ pub mod types {
         {
             T::try_from(V).unwrap()
         }
+        pub(super) fn default_nzu64<T, const V: u64>() -> T
+        where
+            T: ::std::convert::TryFrom<::std::num::NonZeroU64>,
+            <T as ::std::convert::TryFrom<
+                ::std::num::NonZeroU64,
+            >>::Error: ::std::fmt::Debug,
+        {
+            T::try_from(::std::num::NonZeroU64::try_from(V).unwrap()).unwrap()
+        }
         pub(super) fn action_item_trigger_params_incident_action_item_condition_group() -> ::std::string::String {
             "ANY".to_string()
         }
@@ -271330,6 +287128,9 @@ pub mod types {
         }
         pub(super) fn pulse_trigger_params_pulse_condition_source() -> ::std::string::String {
             "ANY".to_string()
+        }
+        pub(super) fn run_ai_skill_task_params_destination() -> ::std::string::String {
+            "none".to_string()
         }
         pub(super) fn schedule_rotation_time_zone() -> ::std::string::String {
             "Etc/UTC".to_string()
@@ -271713,7 +287514,7 @@ let response = client.update_ai_chat_session()
     }
     /**List AI chat session messages
 
-Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Requires `ai.chat:read` OAuth scope or an API key.
+Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Assistant messages may include a `skill` object with `id`, `name`, `slug`, and `version` for the AI Skill loaded during that turn. Requires `ai.chat:read` OAuth scope or an API key.
 
 Sends a `GET` request to `/v1/ai/chat/sessions/{session_id}/messages`
 
@@ -271736,7 +287537,7 @@ let response = client.list_ai_chat_session_messages()
     }
     /**Stream AI chat response (SSE)
 
-Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Events include `confirmation_required` for pending writes and `checkpoint_resolved` before replay. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The stream emits `done` with `status: complete` and no `confirmation_required` event; only `confirmation_required` events are resumable. `status` events carry a short progress line (`{status}`) such as the running tool's title or its progress message; they never include tool arguments or results. Requires `ai.chat:write` OAuth scope or an API key.
+Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Events include `confirmation_required` for pending writes and `checkpoint_resolved` before replay. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The stream emits `done` with `status: complete` and no `confirmation_required` event; only `confirmation_required` events are resumable. `status` events carry a short progress line (`{status}`) such as the running tool's title or its progress message; they never include tool arguments or results. `skill_loaded` events carry `{skill: {id, name, slug, version}}` when an AI Skill is loaded. Requires `ai.chat:write` OAuth scope or an API key.
 
 Sends a `POST` request to `/v1/ai/chat/stream`
 
@@ -271760,6 +287561,363 @@ let response = client.stream_ai_chat()
 ```*/
     pub fn stream_ai_chat(&self) -> builder::StreamAiChat<'_> {
         builder::StreamAiChat::new(self)
+    }
+    /**Gets an AI automation run
+
+Incident-linked runs are visible only when the caller's role permits access. OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Requires OAuth scope `ai.automations:write`.
+
+Sends a `GET` request to `/v1/ai_automation_runs/{id}`
+
+```ignore
+let response = client.get_ai_automation_run()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_ai_automation_run(&self) -> builder::GetAiAutomationRun<'_> {
+        builder::GetAiAutomationRun::new(self)
+    }
+    /**Lists AI automations
+
+Requires OAuth scope `ai.automations:read`.
+
+Sends a `GET` request to `/v1/ai_automations`
+
+Arguments:
+- `filter_created_at_gte`
+- `filter_created_at_lte`
+- `filter_enabled`
+- `filter_event_name`: Comma-separated values; any matching event name is included.
+- `filter_search`
+- `filter_trigger_kind`: Comma-separated values; any matching trigger kind is included.
+- `sort`
+```ignore
+let response = client.list_ai_automations()
+    .filter_created_at_gte(filter_created_at_gte)
+    .filter_created_at_lte(filter_created_at_lte)
+    .filter_enabled(filter_enabled)
+    .filter_event_name(filter_event_name)
+    .filter_search(filter_search)
+    .filter_trigger_kind(filter_trigger_kind)
+    .sort(sort)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_automations(&self) -> builder::ListAiAutomations<'_> {
+        builder::ListAiAutomations::new(self)
+    }
+    /**Creates an AI automation
+
+Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
+
+Sends a `POST` request to `/v1/ai_automations`
+
+```ignore
+let response = client.create_ai_automation()
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn create_ai_automation(&self) -> builder::CreateAiAutomation<'_> {
+        builder::CreateAiAutomation::new(self)
+    }
+    /**Lists synced Slack channels for AI Automations
+
+Channels Rootly has synced from the team's connected Slack workspace; any returned slack_channel_id is accepted as destination_slack_channel_id. When filter[search] is set, exact channel-name matches come first. When Slack channel user filtering is enabled, personal keys and OAuth tokens only see, and can only set new, channels the user can access in Slack; an update may resend the automation's current channel unchanged.
+
+Sends a `GET` request to `/v1/ai_automations/slack_channels`
+
+```ignore
+let response = client.list_ai_automation_slack_channels()
+    .filter_search(filter_search)
+    .page_number(page_number)
+    .page_size(page_size)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_automation_slack_channels(
+        &self,
+    ) -> builder::ListAiAutomationSlackChannels<'_> {
+        builder::ListAiAutomationSlackChannels::new(self)
+    }
+    /**Lists AI automation runs
+
+Scans the 1000 most recent runs matching the filters; pagination and counts cover the visible runs in that window. When meta.next_scan_cursor is set, older runs exist beyond the window. Present only on the last page of the current scan window; finish page pagination before following it. Repeat the request with filter[scan_cursor] set to that opaque cursor to continue. Incident-linked runs are visible only when the caller's role permits access. OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Requires OAuth scope `ai.automations:write`.
+
+Sends a `GET` request to `/v1/ai_automations/{ai_automation_id}/runs`
+
+Arguments:
+- `ai_automation_id`
+- `filter_created_at_gte`
+- `filter_created_at_lte`
+- `filter_scan_cursor`: Opaque encrypted cursor from meta.next_scan_cursor.
+- `filter_status`: Comma-separated statuses; any matching status is included.
+- `filter_trigger_kind`: Comma-separated trigger kinds; any matching kind is included.
+```ignore
+let response = client.list_ai_automation_runs()
+    .ai_automation_id(ai_automation_id)
+    .filter_created_at_gte(filter_created_at_gte)
+    .filter_created_at_lte(filter_created_at_lte)
+    .filter_scan_cursor(filter_scan_cursor)
+    .filter_status(filter_status)
+    .filter_trigger_kind(filter_trigger_kind)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_automation_runs(&self) -> builder::ListAiAutomationRuns<'_> {
+        builder::ListAiAutomationRuns::new(self)
+    }
+    /**Runs an AI automation now
+
+Requires OAuth scope `ai.automations:write`. For run-now requests with incident_id, OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Limited to 30 requests per credential per minute (fixed one-minute windows), separate from the default mutation rate limit; exceeding it returns 429 with Retry-After.
+
+Sends a `POST` request to `/v1/ai_automations/{ai_automation_id}/runs`
+
+```ignore
+let response = client.run_ai_automation()
+    .ai_automation_id(ai_automation_id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn run_ai_automation(&self) -> builder::RunAiAutomation<'_> {
+        builder::RunAiAutomation::new(self)
+    }
+    /**Gets an AI automation
+
+Requires OAuth scope `ai.automations:read`.
+
+Sends a `GET` request to `/v1/ai_automations/{id}`
+
+```ignore
+let response = client.get_ai_automation()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_ai_automation(&self) -> builder::GetAiAutomation<'_> {
+        builder::GetAiAutomation::new(self)
+    }
+    /**Updates an AI automation
+
+Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
+
+Sends a `PUT` request to `/v1/ai_automations/{id}`
+
+```ignore
+let response = client.put_ai_automation()
+    .id(id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn put_ai_automation(&self) -> builder::PutAiAutomation<'_> {
+        builder::PutAiAutomation::new(self)
+    }
+    /**Deletes an AI automation
+
+Requires OAuth scope `ai.automations:write`. Retires the automation: it is disabled and soft-deleted, no longer listed or runnable; GET show and run-now return 404, while its existing run history remains readable via the runs endpoints.
+
+Sends a `DELETE` request to `/v1/ai_automations/{id}`
+
+```ignore
+let response = client.delete_ai_automation()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn delete_ai_automation(&self) -> builder::DeleteAiAutomation<'_> {
+        builder::DeleteAiAutomation::new(self)
+    }
+    /**Updates an AI automation
+
+Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
+
+Sends a `PATCH` request to `/v1/ai_automations/{id}`
+
+```ignore
+let response = client.update_ai_automation()
+    .id(id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn update_ai_automation(&self) -> builder::UpdateAiAutomation<'_> {
+        builder::UpdateAiAutomation::new(self)
+    }
+    /**Lists AI skills
+
+Requires OAuth scope `ai.skills:read`.
+
+Sends a `GET` request to `/v1/ai_skills`
+
+Arguments:
+- `filter_created_at_gt`
+- `filter_created_at_gte`
+- `filter_created_at_lt`
+- `filter_created_at_lte`
+- `filter_enabled`
+- `filter_invocable_by`: Comma-separated sources; skills matching any listed source are returned.
+- `filter_search`
+- `filter_slug`
+- `filter_source`
+- `sort`
+```ignore
+let response = client.list_ai_skills()
+    .filter_created_at_gt(filter_created_at_gt)
+    .filter_created_at_gte(filter_created_at_gte)
+    .filter_created_at_lt(filter_created_at_lt)
+    .filter_created_at_lte(filter_created_at_lte)
+    .filter_enabled(filter_enabled)
+    .filter_invocable_by(filter_invocable_by)
+    .filter_search(filter_search)
+    .filter_slug(filter_slug)
+    .filter_source(filter_source)
+    .sort(sort)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_skills(&self) -> builder::ListAiSkills<'_> {
+        builder::ListAiSkills::new(self)
+    }
+    /**Creates an AI skill
+
+Requires OAuth scope `ai.skills:write`. Read-only attributes are ignored on write.
+
+Sends a `POST` request to `/v1/ai_skills`
+
+```ignore
+let response = client.create_ai_skill()
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn create_ai_skill(&self) -> builder::CreateAiSkill<'_> {
+        builder::CreateAiSkill::new(self)
+    }
+    /**Lists grantable AI Skill tools
+
+Requires OAuth scope `ai.skills:read`.
+
+Sends a `GET` request to `/v1/ai_skills/grantable_tools`
+
+```ignore
+let response = client.list_ai_skill_grantable_tools()
+    .send()
+    .await;
+```*/
+    pub fn list_ai_skill_grantable_tools(
+        &self,
+    ) -> builder::ListAiSkillGrantableTools<'_> {
+        builder::ListAiSkillGrantableTools::new(self)
+    }
+    /**Lists AI skill versions
+
+Requires OAuth scope `ai.skills:read`.
+
+Sends a `GET` request to `/v1/ai_skills/{ai_skill_id}/versions`
+
+Arguments:
+- `ai_skill_id`: The skill ID or slug.
+```ignore
+let response = client.list_ai_skill_versions()
+    .ai_skill_id(ai_skill_id)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_skill_versions(&self) -> builder::ListAiSkillVersions<'_> {
+        builder::ListAiSkillVersions::new(self)
+    }
+    /**Gets an AI skill version
+
+Requires OAuth scope `ai.skills:read`.
+
+Sends a `GET` request to `/v1/ai_skills/{ai_skill_id}/versions/{version}`
+
+Arguments:
+- `ai_skill_id`: The skill ID or slug.
+- `version`
+```ignore
+let response = client.get_ai_skill_version()
+    .ai_skill_id(ai_skill_id)
+    .version(version)
+    .send()
+    .await;
+```*/
+    pub fn get_ai_skill_version(&self) -> builder::GetAiSkillVersion<'_> {
+        builder::GetAiSkillVersion::new(self)
+    }
+    /**Gets an AI skill
+
+Requires OAuth scope `ai.skills:read`.
+
+Sends a `GET` request to `/v1/ai_skills/{id}`
+
+Arguments:
+- `id`: The skill ID or slug.
+```ignore
+let response = client.get_ai_skill()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_ai_skill(&self) -> builder::GetAiSkill<'_> {
+        builder::GetAiSkill::new(self)
+    }
+    /**Updates an AI skill
+
+Requires OAuth scope `ai.skills:write`. Read-only attributes are ignored on write.
+
+Sends a `PUT` request to `/v1/ai_skills/{id}`
+
+Arguments:
+- `id`: The skill ID or slug.
+- `body`
+```ignore
+let response = client.put_ai_skill()
+    .id(id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn put_ai_skill(&self) -> builder::PutAiSkill<'_> {
+        builder::PutAiSkill::new(self)
+    }
+    /**Deletes an AI skill
+
+Requires OAuth scope `ai.skills:write`.
+
+Sends a `DELETE` request to `/v1/ai_skills/{id}`
+
+Arguments:
+- `id`: The skill ID or slug.
+```ignore
+let response = client.delete_ai_skill()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn delete_ai_skill(&self) -> builder::DeleteAiSkill<'_> {
+        builder::DeleteAiSkill::new(self)
+    }
+    /**Updates an AI skill
+
+Requires OAuth scope `ai.skills:write`. Read-only attributes are ignored on write.
+
+Sends a `PATCH` request to `/v1/ai_skills/{id}`
+
+Arguments:
+- `id`: The skill ID or slug.
+- `body`
+```ignore
+let response = client.update_ai_skill()
+    .id(id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn update_ai_skill(&self) -> builder::UpdateAiSkill<'_> {
+        builder::UpdateAiSkill::new(self)
     }
     /**Retrieves the team's alert configuration
 
@@ -272111,9 +288269,13 @@ Example: `GET /v1/alert_routes/{id}?show_nested_ids=true`
 
 Sends a `GET` request to `/v1/alert_routes/{id}`
 
+Arguments:
+- `id`
+- `show_nested_ids`: Include the IDs of nested destinations, condition groups and conditions, for referencing them in PATCH updates or deletions
 ```ignore
 let response = client.get_alert_route()
     .id(id)
+    .show_nested_ids(show_nested_ids)
     .send()
     .await;
 ```*/
@@ -275115,7 +291277,7 @@ let response = client.update_user_email_address()
     }
     /**Delete user email address
 
-Deletes a user email address
+Deletes a user email address. The primary address can't be deleted, so make another verified address primary first.
 
 Sends a `DELETE` request to `/v1/email_addresses/{id}`
 
@@ -276345,10 +292507,21 @@ let response = client.delete_form_set_condition()
     }
     /**List Form Sets
 
-List form_sets
+List form_sets. Without `filter[resource_type]`, returns incident form sets and, when Problem Management is enabled, problem form sets. Pass `filter[resource_type]=incident` to list only incident form sets.
 
 Sends a `GET` request to `/v1/form_sets`
 
+Arguments:
+- `filter_created_at_gt`
+- `filter_created_at_gte`
+- `filter_created_at_lt`
+- `filter_created_at_lte`
+- `filter_is_default`
+- `filter_resource_type`: Filter by resource type: `incident` or `problem`. Comma-separate multiple values. When omitted, incident form sets are returned, plus problem form sets if Problem Management is enabled. `problem` returns no form sets unless Problem Management is enabled. Any other value returns a 400.
+- `filter_slug`
+- `include`
+- `page_number`
+- `page_size`
 ```ignore
 let response = client.list_form_sets()
     .filter_created_at_gt(filter_created_at_gt)
@@ -276356,6 +292529,7 @@ let response = client.list_form_sets()
     .filter_created_at_lt(filter_created_at_lt)
     .filter_created_at_lte(filter_created_at_lte)
     .filter_is_default(filter_is_default)
+    .filter_resource_type(filter_resource_type)
     .filter_slug(filter_slug)
     .include(include)
     .page_number(page_number)
@@ -278654,6 +294828,44 @@ let response = client.create_incident_sub_status()
     pub fn create_incident_sub_status(&self) -> builder::CreateIncidentSubStatus<'_> {
         builder::CreateIncidentSubStatus::new(self)
     }
+    /**Retrieves the organization's browser IP allowlist
+
+Sends a `GET` request to `/v1/ip_allowlist`
+
+```ignore
+let response = client.get_ip_allowlist()
+    .send()
+    .await;
+```*/
+    pub fn get_ip_allowlist(&self) -> builder::GetIpAllowlist<'_> {
+        builder::GetIpAllowlist::new(self)
+    }
+    /**Synchronizes the organization's browser IP allowlist
+
+Sends a `PUT` request to `/v1/ip_allowlist`
+
+```ignore
+let response = client.update_ip_allowlist()
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn update_ip_allowlist(&self) -> builder::UpdateIpAllowlist<'_> {
+        builder::UpdateIpAllowlist::new(self)
+    }
+    /**Partially updates the organization's browser IP allowlist
+
+Sends a `PATCH` request to `/v1/ip_allowlist`
+
+```ignore
+let response = client.patch_ip_allowlist()
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn patch_ip_allowlist(&self) -> builder::PatchIpAllowlist<'_> {
+        builder::PatchIpAllowlist::new(self)
+    }
     /**Retrieves IP ranges
 
 Retrieves the IP ranges for rootly.com services
@@ -278999,6 +295211,83 @@ let response = client.delete_user_notification_rule()
         &self,
     ) -> builder::DeleteUserNotificationRule<'_> {
         builder::DeleteUserNotificationRule::new(self)
+    }
+    /**List Observability logs
+
+Search Rootly Observability logs with the Logs explorer query syntax (`service:`, `severity:`, `index:`, `trace_id:`, `@attribute:value`, `OR` inside field groups, `-` negation, `*` prefix, free text). Rows are newest first, clipped and redacted. `meta.query` and `meta.window` echo the effective query and window. Requires a personal or Global API key (Team API Keys are group-scoped and get 403 `unsupported_api_key`) or an OAuth token with the `obs.logs:read` (or `all`) scope, and the Observability logs read permission. A Global API key uses its service user's Observability role, which starts as the team's default Observability role. Limited to 60 requests per minute per token; on this endpoint the X-RateLimit-* headers report that per-minute budget, not the default API limit. Every 429 returns the errors envelope with code rate_limited and a Retry-After header.
+
+Sends a `GET` request to `/v1/observability/logs`
+
+Arguments:
+- `filter_from`: Window start: ISO8601 or relative like `now-6h`, `now-30m`, `now-2d`. Defaults to `now-1h`. Windows are at most 7 days, and 24 hours without an indexable term.
+- `filter_query`: Logs explorer query, e.g. `service:checkout severity:error index:main`.
+- `filter_to`: Window end: ISO8601 or relative like `now`. Defaults to `now`.
+- `page_cursor`: `meta.page.next_cursor` from the previous page. Keeps that page's window; send the same `filter[query]`.
+- `page_size`: Maximum rows per page (1-50, default 25). A page can hold fewer rows when the response size budget is reached; keep paging while meta.page.next_cursor is present.
+```ignore
+let response = client.list_observability_logs()
+    .filter_from(filter_from)
+    .filter_query(filter_query)
+    .filter_to(filter_to)
+    .page_cursor(page_cursor)
+    .page_size(page_size)
+    .send()
+    .await;
+```*/
+    pub fn list_observability_logs(&self) -> builder::ListObservabilityLogs<'_> {
+        builder::ListObservabilityLogs::new(self)
+    }
+    /**Count Observability logs by field
+
+Count logs matching a Logs explorer query, grouped by `service`, `index`, `severity` or an attribute key (`@http.status_code`). Answers questions like "errors per service in the last 6h" (`filter[query]=severity:error`, `filter[from]=now-6h`, `group_by=service`). Values are ordered by count, largest first; `meta.total` counts every matching log, and each value's `logs_query` drills into its rows with `GET /v1/observability/logs` (`null` for a blank value, which the query syntax cannot select, or when the drill-down would exceed the query limits: 512 characters or 20 clauses). A log can carry an attribute key more than once (log, resource and scope attributes), so attribute counts can add up to more than `meta.total`; when logs match but none have the attribute, `data` is empty and `meta.warnings` has code attribute_missing. Requires a personal or Global API key (Team API Keys are group-scoped and get 403 `unsupported_api_key`) or an OAuth token with the `obs.logs:read` (or `all`) scope, and the Observability logs read permission. A Global API key uses its service user's Observability role, which starts as the team's default Observability role. Limited to 60 requests per minute per token; on this endpoint the X-RateLimit-* headers report that per-minute budget, not the default API limit. Every 429 returns the errors envelope with code rate_limited and a Retry-After header.
+
+Sends a `GET` request to `/v1/observability/logs/counts`
+
+Arguments:
+- `filter_from`: Window start: ISO8601 or relative like `now-6h`, `now-30m`, `now-2d`. Defaults to `now-1h`. Windows are at most 7 days, and 24 hours without an indexable term.
+- `filter_query`: Logs explorer query, e.g. `severity:error index:main`.
+- `filter_to`: Window end: ISO8601 or relative like `now`. Defaults to `now`.
+- `group_by`: Field to group by: `service`, `index`, `severity`, or `@` followed by an attribute key (e.g. `@http.status_code`). Defaults to `service`. Secret-shaped attribute keys (password, token, auth, cookie, session, ...) are rejected with `invalid_parameter`. Secret-shaped values are returned redacted with `logs_query: null`.
+- `page_size`: Number of top values to return (1-100, default 25). Not paginated: meta.truncated is true when more values matched.
+```ignore
+let response = client.count_observability_logs()
+    .filter_from(filter_from)
+    .filter_query(filter_query)
+    .filter_to(filter_to)
+    .group_by(group_by)
+    .page_size(page_size)
+    .send()
+    .await;
+```*/
+    pub fn count_observability_logs(&self) -> builder::CountObservabilityLogs<'_> {
+        builder::CountObservabilityLogs::new(self)
+    }
+    /**List Observability log patterns
+
+List log patterns (clustered log templates) with counts against the previous window of the same length. Only `service:`, `severity:` and `pattern:` filters apply; others are echoed in `meta.ignored_filters`. Each pattern's `logs_query` drills into matching rows with `GET /v1/observability/logs`; it is omitted when that query would exceed the `/logs` length or clause limits. Requires a personal or Global API key (Team API Keys are group-scoped and get 403 `unsupported_api_key`) or an OAuth token with the `obs.logs:read` (or `all`) scope, and the Observability logs read permission. A Global API key uses its service user's Observability role, which starts as the team's default Observability role. Limited to 60 requests per minute per token; on this endpoint the X-RateLimit-* headers report that per-minute budget, not the default API limit. Every 429 returns the errors envelope with code rate_limited and a Retry-After header.
+
+Sends a `GET` request to `/v1/observability/patterns`
+
+Arguments:
+- `filter_flagged`: Only patterns flagged by a detector (new, spike, error surge).
+- `filter_from`: Window start: ISO8601 or relative like `now-6h`. Defaults to `now-1h`. At most 7 days long, within the last 30 days.
+- `filter_query`: Query using `service:`, `severity:` and `pattern:` filters, e.g. `service:checkout severity:error`.
+- `filter_to`: Window end: ISO8601 or relative like `now`. Defaults to `now`.
+- `page_size`: Number of top patterns to return (1-25, default 15), ordered by sort. Not paginated: meta.truncated is true when more patterns matched; narrow filter[query] to see them.
+- `sort`: `count` for the most frequent patterns, `change` for the biggest change against the previous window.
+```ignore
+let response = client.list_observability_patterns()
+    .filter_flagged(filter_flagged)
+    .filter_from(filter_from)
+    .filter_query(filter_query)
+    .filter_to(filter_to)
+    .page_size(page_size)
+    .sort(sort)
+    .send()
+    .await;
+```*/
+    pub fn list_observability_patterns(&self) -> builder::ListObservabilityPatterns<'_> {
+        builder::ListObservabilityPatterns::new(self)
     }
     /**List On-Call Pay Reports
 
@@ -285071,6 +301360,1971 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::get_ai_automation_run`]
+
+[`Client::get_ai_automation_run`]: super::Client::get_ai_automation_run*/
+    #[derive(Debug, Clone)]
+    pub struct GetAiAutomationRun<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+    }
+    impl<'a> GetAiAutomationRun<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_automation_runs/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationRun>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_automation_runs/{}", client.baseurl, encode_path(& id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_ai_automation_run",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_automations`]
+
+[`Client::list_ai_automations`]: super::Client::list_ai_automations*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiAutomations<'a> {
+        client: &'a super::Client,
+        filter_created_at_gte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_created_at_lte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_enabled: Result<Option<bool>, String>,
+        filter_event_name: Result<Option<::std::string::String>, String>,
+        filter_search: Result<Option<::std::string::String>, String>,
+        filter_trigger_kind: Result<Option<::std::string::String>, String>,
+        sort: Result<Option<::std::string::String>, String>,
+    }
+    impl<'a> ListAiAutomations<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_created_at_gte: Ok(None),
+                filter_created_at_lte: Ok(None),
+                filter_enabled: Ok(None),
+                filter_event_name: Ok(None),
+                filter_search: Ok(None),
+                filter_trigger_kind: Ok(None),
+                sort: Ok(None),
+            }
+        }
+        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_gte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_gte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_lte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_lte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_enabled<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<bool>,
+        {
+            self.filter_enabled = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `bool` for filter_enabled failed".to_string()
+                });
+            self
+        }
+        pub fn filter_event_name<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_event_name = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_event_name failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_search<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_search = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_search failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_trigger_kind<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_trigger_kind = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_trigger_kind failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn sort<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.sort = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for sort failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_automations`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationList>, Error<()>> {
+            let Self {
+                client,
+                filter_created_at_gte,
+                filter_created_at_lte,
+                filter_enabled,
+                filter_event_name,
+                filter_search,
+                filter_trigger_kind,
+                sort,
+            } = self;
+            let filter_created_at_gte = filter_created_at_gte
+                .map_err(Error::InvalidRequest)?;
+            let filter_created_at_lte = filter_created_at_lte
+                .map_err(Error::InvalidRequest)?;
+            let filter_enabled = filter_enabled.map_err(Error::InvalidRequest)?;
+            let filter_event_name = filter_event_name.map_err(Error::InvalidRequest)?;
+            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
+            let filter_trigger_kind = filter_trigger_kind
+                .map_err(Error::InvalidRequest)?;
+            let sort = sort.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai_automations", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][gte]",
+                        &filter_created_at_gte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][lte]",
+                        &filter_created_at_lte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[enabled]",
+                        &filter_enabled,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[event_name]",
+                        &filter_event_name,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[trigger_kind]",
+                        &filter_trigger_kind,
+                    ),
+                )
+                .query(&progenitor_client::QueryParam::new("sort", &sort))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_automations",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::create_ai_automation`]
+
+[`Client::create_ai_automation`]: super::Client::create_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct CreateAiAutomation<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::NewAiAutomation, String>,
+    }
+    impl<'a> CreateAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewAiAutomation>,
+            <V as std::convert::TryInto<
+                types::NewAiAutomation,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `NewAiAutomation` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewAiAutomation,
+            ) -> types::builder::NewAiAutomation,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai_automations`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| {
+                    types::NewAiAutomation::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai_automations", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_automation_slack_channels`]
+
+[`Client::list_ai_automation_slack_channels`]: super::Client::list_ai_automation_slack_channels*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiAutomationSlackChannels<'a> {
+        client: &'a super::Client,
+        filter_search: Result<Option<::std::string::String>, String>,
+        page_number: Result<Option<i64>, String>,
+        page_size: Result<Option<i64>, String>,
+    }
+    impl<'a> ListAiAutomationSlackChannels<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_search: Ok(None),
+                page_number: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn filter_search<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_search = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_search failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_number<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_number = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_automations/slack_channels`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationSlackChannels>, Error<()>> {
+            let Self { client, filter_search, page_number, page_size } = self;
+            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
+            let page_number = page_number.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai_automations/slack_channels", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
+                )
+                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_automation_slack_channels",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_automation_runs`]
+
+[`Client::list_ai_automation_runs`]: super::Client::list_ai_automation_runs*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiAutomationRuns<'a> {
+        client: &'a super::Client,
+        ai_automation_id: Result<::uuid::Uuid, String>,
+        filter_created_at_gte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_created_at_lte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_scan_cursor: Result<Option<::std::string::String>, String>,
+        filter_status: Result<Option<::std::string::String>, String>,
+        filter_trigger_kind: Result<Option<::std::string::String>, String>,
+    }
+    impl<'a> ListAiAutomationRuns<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                ai_automation_id: Err(
+                    "ai_automation_id was not initialized".to_string(),
+                ),
+                filter_created_at_gte: Ok(None),
+                filter_created_at_lte: Ok(None),
+                filter_scan_cursor: Ok(None),
+                filter_status: Ok(None),
+                filter_trigger_kind: Ok(None),
+            }
+        }
+        pub fn ai_automation_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.ai_automation_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for ai_automation_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_gte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_gte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_lte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_lte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_scan_cursor<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_scan_cursor = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_scan_cursor failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_trigger_kind<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_trigger_kind = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_trigger_kind failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_automations/{ai_automation_id}/runs`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationRunList>, Error<()>> {
+            let Self {
+                client,
+                ai_automation_id,
+                filter_created_at_gte,
+                filter_created_at_lte,
+                filter_scan_cursor,
+                filter_status,
+                filter_trigger_kind,
+            } = self;
+            let ai_automation_id = ai_automation_id.map_err(Error::InvalidRequest)?;
+            let filter_created_at_gte = filter_created_at_gte
+                .map_err(Error::InvalidRequest)?;
+            let filter_created_at_lte = filter_created_at_lte
+                .map_err(Error::InvalidRequest)?;
+            let filter_scan_cursor = filter_scan_cursor.map_err(Error::InvalidRequest)?;
+            let filter_status = filter_status.map_err(Error::InvalidRequest)?;
+            let filter_trigger_kind = filter_trigger_kind
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_automations/{}/runs", client.baseurl, encode_path(&
+                ai_automation_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][gte]",
+                        &filter_created_at_gte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][lte]",
+                        &filter_created_at_lte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[scan_cursor]",
+                        &filter_scan_cursor,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[status]", &filter_status),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[trigger_kind]",
+                        &filter_trigger_kind,
+                    ),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_automation_runs",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::run_ai_automation`]
+
+[`Client::run_ai_automation`]: super::Client::run_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct RunAiAutomation<'a> {
+        client: &'a super::Client,
+        ai_automation_id: Result<::uuid::Uuid, String>,
+        body: Result<types::builder::NewAiAutomationRun, String>,
+    }
+    impl<'a> RunAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                ai_automation_id: Err(
+                    "ai_automation_id was not initialized".to_string(),
+                ),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn ai_automation_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.ai_automation_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for ai_automation_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewAiAutomationRun>,
+            <V as std::convert::TryInto<
+                types::NewAiAutomationRun,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `NewAiAutomationRun` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewAiAutomationRun,
+            ) -> types::builder::NewAiAutomationRun,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai_automations/{ai_automation_id}/runs`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationRun>, Error<()>> {
+            let Self { client, ai_automation_id, body } = self;
+            let ai_automation_id = ai_automation_id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::NewAiAutomationRun::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_automations/{}/runs", client.baseurl, encode_path(&
+                ai_automation_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "run_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                202u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_ai_automation`]
+
+[`Client::get_ai_automation`]: super::Client::get_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct GetAiAutomation<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+    }
+    impl<'a> GetAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_automations/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_automations/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::put_ai_automation`]
+
+[`Client::put_ai_automation`]: super::Client::put_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct PutAiAutomation<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+        body: Result<types::builder::UpdateAiAutomation, String>,
+    }
+    impl<'a> PutAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateAiAutomation>,
+            <V as std::convert::TryInto<
+                types::UpdateAiAutomation,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateAiAutomation` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateAiAutomation,
+            ) -> types::builder::UpdateAiAutomation,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PUT` request to `/v1/ai_automations/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateAiAutomation::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_automations/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .put(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "put_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::delete_ai_automation`]
+
+[`Client::delete_ai_automation`]: super::Client::delete_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct DeleteAiAutomation<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+    }
+    impl<'a> DeleteAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `DELETE` request to `/v1/ai_automations/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_automations/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .delete(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "delete_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::update_ai_automation`]
+
+[`Client::update_ai_automation`]: super::Client::update_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct UpdateAiAutomation<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+        body: Result<types::builder::UpdateAiAutomation, String>,
+    }
+    impl<'a> UpdateAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateAiAutomation>,
+            <V as std::convert::TryInto<
+                types::UpdateAiAutomation,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateAiAutomation` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateAiAutomation,
+            ) -> types::builder::UpdateAiAutomation,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PATCH` request to `/v1/ai_automations/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateAiAutomation::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_automations/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .patch(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "update_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_skills`]
+
+[`Client::list_ai_skills`]: super::Client::list_ai_skills*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiSkills<'a> {
+        client: &'a super::Client,
+        filter_created_at_gt: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_created_at_gte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_created_at_lt: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_created_at_lte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_enabled: Result<Option<bool>, String>,
+        filter_invocable_by: Result<Option<::std::string::String>, String>,
+        filter_search: Result<Option<::std::string::String>, String>,
+        filter_slug: Result<Option<::std::string::String>, String>,
+        filter_source: Result<Option<::std::string::String>, String>,
+        sort: Result<Option<::std::string::String>, String>,
+    }
+    impl<'a> ListAiSkills<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_created_at_gt: Ok(None),
+                filter_created_at_gte: Ok(None),
+                filter_created_at_lt: Ok(None),
+                filter_created_at_lte: Ok(None),
+                filter_enabled: Ok(None),
+                filter_invocable_by: Ok(None),
+                filter_search: Ok(None),
+                filter_slug: Ok(None),
+                filter_source: Ok(None),
+                sort: Ok(None),
+            }
+        }
+        pub fn filter_created_at_gt<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_gt = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_gt failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_gte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_gte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_lt<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_lt = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_lt failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_lte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_lte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_enabled<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<bool>,
+        {
+            self.filter_enabled = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `bool` for filter_enabled failed".to_string()
+                });
+            self
+        }
+        pub fn filter_invocable_by<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_invocable_by = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_invocable_by failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_search<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_search = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_search failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_slug<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_slug = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_slug failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_source<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_source = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_source failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn sort<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.sort = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for sort failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_skills`
+        pub async fn send(self) -> Result<ResponseValue<types::AiSkillList>, Error<()>> {
+            let Self {
+                client,
+                filter_created_at_gt,
+                filter_created_at_gte,
+                filter_created_at_lt,
+                filter_created_at_lte,
+                filter_enabled,
+                filter_invocable_by,
+                filter_search,
+                filter_slug,
+                filter_source,
+                sort,
+            } = self;
+            let filter_created_at_gt = filter_created_at_gt
+                .map_err(Error::InvalidRequest)?;
+            let filter_created_at_gte = filter_created_at_gte
+                .map_err(Error::InvalidRequest)?;
+            let filter_created_at_lt = filter_created_at_lt
+                .map_err(Error::InvalidRequest)?;
+            let filter_created_at_lte = filter_created_at_lte
+                .map_err(Error::InvalidRequest)?;
+            let filter_enabled = filter_enabled.map_err(Error::InvalidRequest)?;
+            let filter_invocable_by = filter_invocable_by
+                .map_err(Error::InvalidRequest)?;
+            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
+            let filter_slug = filter_slug.map_err(Error::InvalidRequest)?;
+            let filter_source = filter_source.map_err(Error::InvalidRequest)?;
+            let sort = sort.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai_skills", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][gt]",
+                        &filter_created_at_gt,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][gte]",
+                        &filter_created_at_gte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][lt]",
+                        &filter_created_at_lt,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][lte]",
+                        &filter_created_at_lte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[enabled]",
+                        &filter_enabled,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[invocable_by]",
+                        &filter_invocable_by,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
+                )
+                .query(&progenitor_client::QueryParam::new("filter[slug]", &filter_slug))
+                .query(
+                    &progenitor_client::QueryParam::new("filter[source]", &filter_source),
+                )
+                .query(&progenitor_client::QueryParam::new("sort", &sort))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_skills",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::create_ai_skill`]
+
+[`Client::create_ai_skill`]: super::Client::create_ai_skill*/
+    #[derive(Debug, Clone)]
+    pub struct CreateAiSkill<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::NewAiSkill, String>,
+    }
+    impl<'a> CreateAiSkill<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewAiSkill>,
+            <V as std::convert::TryInto<types::NewAiSkill>>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `NewAiSkill` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewAiSkill,
+            ) -> types::builder::NewAiSkill,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai_skills`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| types::NewAiSkill::try_from(v).map_err(|e| e.to_string()))
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai_skills", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_ai_skill",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_skill_grantable_tools`]
+
+[`Client::list_ai_skill_grantable_tools`]: super::Client::list_ai_skill_grantable_tools*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiSkillGrantableTools<'a> {
+        client: &'a super::Client,
+    }
+    impl<'a> ListAiSkillGrantableTools<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self { client: client }
+        }
+        ///Sends a `GET` request to `/v1/ai_skills/grantable_tools`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiSkillGrantableTools>, Error<()>> {
+            let Self { client } = self;
+            let url = format!("{}/v1/ai_skills/grantable_tools", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_skill_grantable_tools",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_skill_versions`]
+
+[`Client::list_ai_skill_versions`]: super::Client::list_ai_skill_versions*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiSkillVersions<'a> {
+        client: &'a super::Client,
+        ai_skill_id: Result<::std::string::String, String>,
+    }
+    impl<'a> ListAiSkillVersions<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                ai_skill_id: Err("ai_skill_id was not initialized".to_string()),
+            }
+        }
+        pub fn ai_skill_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.ai_skill_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for ai_skill_id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_skills/{ai_skill_id}/versions`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiSkillVersionList>, Error<()>> {
+            let Self { client, ai_skill_id } = self;
+            let ai_skill_id = ai_skill_id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_skills/{}/versions", client.baseurl, encode_path(& ai_skill_id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_skill_versions",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_ai_skill_version`]
+
+[`Client::get_ai_skill_version`]: super::Client::get_ai_skill_version*/
+    #[derive(Debug, Clone)]
+    pub struct GetAiSkillVersion<'a> {
+        client: &'a super::Client,
+        ai_skill_id: Result<::std::string::String, String>,
+        version: Result<i64, String>,
+    }
+    impl<'a> GetAiSkillVersion<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                ai_skill_id: Err("ai_skill_id was not initialized".to_string()),
+                version: Err("version was not initialized".to_string()),
+            }
+        }
+        pub fn ai_skill_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.ai_skill_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for ai_skill_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn version<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.version = value
+                .try_into()
+                .map_err(|_| "conversion to `i64` for version failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_skills/{ai_skill_id}/versions/{version}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiSkillVersionResponse>, Error<()>> {
+            let Self { client, ai_skill_id, version } = self;
+            let ai_skill_id = ai_skill_id.map_err(Error::InvalidRequest)?;
+            let version = version.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_skills/{}/versions/{}", client.baseurl, encode_path(&
+                ai_skill_id.to_string()), encode_path(& version.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_ai_skill_version",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_ai_skill`]
+
+[`Client::get_ai_skill`]: super::Client::get_ai_skill*/
+    #[derive(Debug, Clone)]
+    pub struct GetAiSkill<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> GetAiSkill<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai_skills/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_skills/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_ai_skill",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::put_ai_skill`]
+
+[`Client::put_ai_skill`]: super::Client::put_ai_skill*/
+    #[derive(Debug, Clone)]
+    pub struct PutAiSkill<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+        body: Result<types::builder::UpdateAiSkill, String>,
+    }
+    impl<'a> PutAiSkill<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateAiSkill>,
+            <V as std::convert::TryInto<types::UpdateAiSkill>>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateAiSkill` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateAiSkill,
+            ) -> types::builder::UpdateAiSkill,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PUT` request to `/v1/ai_skills/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
+            let Self { client, id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateAiSkill::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_skills/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .put(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "put_ai_skill",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::delete_ai_skill`]
+
+[`Client::delete_ai_skill`]: super::Client::delete_ai_skill*/
+    #[derive(Debug, Clone)]
+    pub struct DeleteAiSkill<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+    }
+    impl<'a> DeleteAiSkill<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `DELETE` request to `/v1/ai_skills/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_skills/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .delete(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "delete_ai_skill",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::update_ai_skill`]
+
+[`Client::update_ai_skill`]: super::Client::update_ai_skill*/
+    #[derive(Debug, Clone)]
+    pub struct UpdateAiSkill<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+        body: Result<types::builder::UpdateAiSkill, String>,
+    }
+    impl<'a> UpdateAiSkill<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateAiSkill>,
+            <V as std::convert::TryInto<types::UpdateAiSkill>>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateAiSkill` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateAiSkill,
+            ) -> types::builder::UpdateAiSkill,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PATCH` request to `/v1/ai_skills/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
+            let Self { client, id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateAiSkill::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai_skills/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .patch(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "update_ai_skill",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::get_alert_configuration`]
 
 [`Client::get_alert_configuration`]: super::Client::get_alert_configuration*/
@@ -287448,12 +305702,14 @@ pub mod builder {
     pub struct GetAlertRoute<'a> {
         client: &'a super::Client,
         id: Result<::std::string::String, String>,
+        show_nested_ids: Result<Option<bool>, String>,
     }
     impl<'a> GetAlertRoute<'a> {
         pub fn new(client: &'a super::Client) -> Self {
             Self {
                 client: client,
                 id: Err("id was not initialized".to_string()),
+                show_nested_ids: Ok(None),
             }
         }
         pub fn id<V>(mut self, value: V) -> Self
@@ -287468,12 +305724,25 @@ pub mod builder {
                 });
             self
         }
+        pub fn show_nested_ids<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<bool>,
+        {
+            self.show_nested_ids = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `bool` for show_nested_ids failed".to_string()
+                });
+            self
+        }
         ///Sends a `GET` request to `/v1/alert_routes/{id}`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AlertRouteResponse>, Error<()>> {
-            let Self { client, id } = self;
+            let Self { client, id, show_nested_ids } = self;
             let id = id.map_err(Error::InvalidRequest)?;
+            let show_nested_ids = show_nested_ids.map_err(Error::InvalidRequest)?;
             let url = format!(
                 "{}/v1/alert_routes/{}", client.baseurl, encode_path(& id.to_string()),
             );
@@ -287492,6 +305761,12 @@ pub mod builder {
                 .header(
                     ::reqwest::header::ACCEPT,
                     ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "show_nested_ids",
+                        &show_nested_ids,
+                    ),
                 )
                 .headers(header_map)
                 .build()?;
@@ -313081,6 +331356,7 @@ pub mod builder {
             client.post(&result, &info).await?;
             let response = result?;
             match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
                 201u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
@@ -314328,6 +332604,7 @@ pub mod builder {
         filter_created_at_lt: Result<Option<::std::string::String>, String>,
         filter_created_at_lte: Result<Option<::std::string::String>, String>,
         filter_is_default: Result<Option<bool>, String>,
+        filter_resource_type: Result<Option<::std::string::String>, String>,
         filter_slug: Result<Option<::std::string::String>, String>,
         include: Result<Option<::std::string::String>, String>,
         page_number: Result<Option<i64>, String>,
@@ -314342,6 +332619,7 @@ pub mod builder {
                 filter_created_at_lt: Ok(None),
                 filter_created_at_lte: Ok(None),
                 filter_is_default: Ok(None),
+                filter_resource_type: Ok(None),
                 filter_slug: Ok(None),
                 include: Ok(None),
                 page_number: Ok(None),
@@ -314412,6 +332690,19 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_resource_type<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_resource_type = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_resource_type failed"
+                        .to_string()
+                });
+            self
+        }
         pub fn filter_slug<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -314467,6 +332758,7 @@ pub mod builder {
                 filter_created_at_lt,
                 filter_created_at_lte,
                 filter_is_default,
+                filter_resource_type,
                 filter_slug,
                 include,
                 page_number,
@@ -314481,6 +332773,8 @@ pub mod builder {
             let filter_created_at_lte = filter_created_at_lte
                 .map_err(Error::InvalidRequest)?;
             let filter_is_default = filter_is_default.map_err(Error::InvalidRequest)?;
+            let filter_resource_type = filter_resource_type
+                .map_err(Error::InvalidRequest)?;
             let filter_slug = filter_slug.map_err(Error::InvalidRequest)?;
             let include = include.map_err(Error::InvalidRequest)?;
             let page_number = page_number.map_err(Error::InvalidRequest)?;
@@ -314530,6 +332824,12 @@ pub mod builder {
                     &progenitor_client::QueryParam::new(
                         "filter[is_default]",
                         &filter_is_default,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[resource_type]",
+                        &filter_resource_type,
                     ),
                 )
                 .query(&progenitor_client::QueryParam::new("filter[slug]", &filter_slug))
@@ -330503,6 +348803,218 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::get_ip_allowlist`]
+
+[`Client::get_ip_allowlist`]: super::Client::get_ip_allowlist*/
+    #[derive(Debug, Clone)]
+    pub struct GetIpAllowlist<'a> {
+        client: &'a super::Client,
+    }
+    impl<'a> GetIpAllowlist<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self { client: client }
+        }
+        ///Sends a `GET` request to `/v1/ip_allowlist`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::IpAllowlistResponse>, Error<()>> {
+            let Self { client } = self;
+            let url = format!("{}/v1/ip_allowlist", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_ip_allowlist",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::update_ip_allowlist`]
+
+[`Client::update_ip_allowlist`]: super::Client::update_ip_allowlist*/
+    #[derive(Debug, Clone)]
+    pub struct UpdateIpAllowlist<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::UpdateIpAllowlist, String>,
+    }
+    impl<'a> UpdateIpAllowlist<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateIpAllowlist>,
+            <V as std::convert::TryInto<
+                types::UpdateIpAllowlist,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateIpAllowlist` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateIpAllowlist,
+            ) -> types::builder::UpdateIpAllowlist,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PUT` request to `/v1/ip_allowlist`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::IpAllowlistResponse>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateIpAllowlist::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ip_allowlist", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .put(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "update_ip_allowlist",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::patch_ip_allowlist`]
+
+[`Client::patch_ip_allowlist`]: super::Client::patch_ip_allowlist*/
+    #[derive(Debug, Clone)]
+    pub struct PatchIpAllowlist<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::UpdateIpAllowlist, String>,
+    }
+    impl<'a> PatchIpAllowlist<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateIpAllowlist>,
+            <V as std::convert::TryInto<
+                types::UpdateIpAllowlist,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateIpAllowlist` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateIpAllowlist,
+            ) -> types::builder::UpdateIpAllowlist,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PATCH` request to `/v1/ip_allowlist`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::IpAllowlistResponse>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateIpAllowlist::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ip_allowlist", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .patch(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "patch_ip_allowlist",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::get_ip_ranges`]
 
 [`Client::get_ip_ranges`]: super::Client::get_ip_ranges*/
@@ -332184,6 +350696,460 @@ pub mod builder {
                 .build()?;
             let info = OperationInfo {
                 operation_id: "delete_user_notification_rule",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_observability_logs`]
+
+[`Client::list_observability_logs`]: super::Client::list_observability_logs*/
+    #[derive(Debug, Clone)]
+    pub struct ListObservabilityLogs<'a> {
+        client: &'a super::Client,
+        filter_from: Result<Option<::std::string::String>, String>,
+        filter_query: Result<Option<::std::string::String>, String>,
+        filter_to: Result<Option<::std::string::String>, String>,
+        page_cursor: Result<Option<::std::string::String>, String>,
+        page_size: Result<Option<::std::num::NonZeroU64>, String>,
+    }
+    impl<'a> ListObservabilityLogs<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_from: Ok(None),
+                filter_query: Ok(None),
+                filter_to: Ok(None),
+                page_cursor: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn filter_from<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_from = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_from failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_query<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_query = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_query failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_to<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_to = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_to failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_cursor<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.page_cursor = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for page_cursor failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::num::NonZeroU64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: num :: NonZeroU64` for page_size failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/observability/logs`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::ListObservabilityLogsResponse>, Error<()>> {
+            let Self {
+                client,
+                filter_from,
+                filter_query,
+                filter_to,
+                page_cursor,
+                page_size,
+            } = self;
+            let filter_from = filter_from.map_err(Error::InvalidRequest)?;
+            let filter_query = filter_query.map_err(Error::InvalidRequest)?;
+            let filter_to = filter_to.map_err(Error::InvalidRequest)?;
+            let page_cursor = page_cursor.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/observability/logs", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(&progenitor_client::QueryParam::new("filter[from]", &filter_from))
+                .query(
+                    &progenitor_client::QueryParam::new("filter[query]", &filter_query),
+                )
+                .query(&progenitor_client::QueryParam::new("filter[to]", &filter_to))
+                .query(&progenitor_client::QueryParam::new("page[cursor]", &page_cursor))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_observability_logs",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::count_observability_logs`]
+
+[`Client::count_observability_logs`]: super::Client::count_observability_logs*/
+    #[derive(Debug, Clone)]
+    pub struct CountObservabilityLogs<'a> {
+        client: &'a super::Client,
+        filter_from: Result<Option<::std::string::String>, String>,
+        filter_query: Result<Option<::std::string::String>, String>,
+        filter_to: Result<Option<::std::string::String>, String>,
+        group_by: Result<Option<::std::string::String>, String>,
+        page_size: Result<Option<::std::num::NonZeroU64>, String>,
+    }
+    impl<'a> CountObservabilityLogs<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_from: Ok(None),
+                filter_query: Ok(None),
+                filter_to: Ok(None),
+                group_by: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn filter_from<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_from = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_from failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_query<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_query = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_query failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_to<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_to = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_to failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn group_by<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.group_by = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for group_by failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::num::NonZeroU64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: num :: NonZeroU64` for page_size failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/observability/logs/counts`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::CountObservabilityLogsResponse>, Error<()>> {
+            let Self {
+                client,
+                filter_from,
+                filter_query,
+                filter_to,
+                group_by,
+                page_size,
+            } = self;
+            let filter_from = filter_from.map_err(Error::InvalidRequest)?;
+            let filter_query = filter_query.map_err(Error::InvalidRequest)?;
+            let filter_to = filter_to.map_err(Error::InvalidRequest)?;
+            let group_by = group_by.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/observability/logs/counts", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(&progenitor_client::QueryParam::new("filter[from]", &filter_from))
+                .query(
+                    &progenitor_client::QueryParam::new("filter[query]", &filter_query),
+                )
+                .query(&progenitor_client::QueryParam::new("filter[to]", &filter_to))
+                .query(&progenitor_client::QueryParam::new("group_by", &group_by))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "count_observability_logs",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_observability_patterns`]
+
+[`Client::list_observability_patterns`]: super::Client::list_observability_patterns*/
+    #[derive(Debug, Clone)]
+    pub struct ListObservabilityPatterns<'a> {
+        client: &'a super::Client,
+        filter_flagged: Result<Option<bool>, String>,
+        filter_from: Result<Option<::std::string::String>, String>,
+        filter_query: Result<Option<::std::string::String>, String>,
+        filter_to: Result<Option<::std::string::String>, String>,
+        page_size: Result<Option<::std::num::NonZeroU64>, String>,
+        sort: Result<Option<::std::string::String>, String>,
+    }
+    impl<'a> ListObservabilityPatterns<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_flagged: Ok(None),
+                filter_from: Ok(None),
+                filter_query: Ok(None),
+                filter_to: Ok(None),
+                page_size: Ok(None),
+                sort: Ok(None),
+            }
+        }
+        pub fn filter_flagged<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<bool>,
+        {
+            self.filter_flagged = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `bool` for filter_flagged failed".to_string()
+                });
+            self
+        }
+        pub fn filter_from<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_from = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_from failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_query<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_query = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_query failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_to<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_to = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_to failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::num::NonZeroU64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: num :: NonZeroU64` for page_size failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn sort<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.sort = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for sort failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/observability/patterns`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::ListObservabilityPatternsResponse>, Error<()>> {
+            let Self {
+                client,
+                filter_flagged,
+                filter_from,
+                filter_query,
+                filter_to,
+                page_size,
+                sort,
+            } = self;
+            let filter_flagged = filter_flagged.map_err(Error::InvalidRequest)?;
+            let filter_from = filter_from.map_err(Error::InvalidRequest)?;
+            let filter_query = filter_query.map_err(Error::InvalidRequest)?;
+            let filter_to = filter_to.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let sort = sort.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/observability/patterns", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[flagged]",
+                        &filter_flagged,
+                    ),
+                )
+                .query(&progenitor_client::QueryParam::new("filter[from]", &filter_from))
+                .query(
+                    &progenitor_client::QueryParam::new("filter[query]", &filter_query),
+                )
+                .query(&progenitor_client::QueryParam::new("filter[to]", &filter_to))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .query(&progenitor_client::QueryParam::new("sort", &sort))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_observability_patterns",
             };
             client.pre(&mut request, &info).await?;
             let result = client.exec(request, &info).await;
