@@ -1,0 +1,2 @@
+# Collapse generated SDK code in GitHub diffs and exclude it from language stats
+src/generated.rs linguist-generated=true
