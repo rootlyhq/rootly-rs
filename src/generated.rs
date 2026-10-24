@@ -1292,198 +1292,127 @@ pub mod types {
     }
     ///`AiSkillToolGrantsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct AiSkillToolGrantsItem {
-        ///Defaults to the tool's access classification (read or write) when omitted or null.
-        #[serde(deserialize_with = "::std::option::Option::deserialize")]
-        pub access: ::std::option::Option<::std::string::String>,
-        ///Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
-        #[serde(deserialize_with = "::std::option::Option::deserialize")]
-        pub pinned_params: ::std::option::Option<
-            ::std::collections::HashMap<
-                ::std::string::String,
-                AiSkillToolGrantsItemPinnedParamsValue,
+    #[serde(untagged)]
+    pub enum AiSkillToolGrantsItem {
+        Variant0 {
+            ///Fetch URL grants use read access, which is the default when omitted or null.
+            #[serde(deserialize_with = "::std::option::Option::deserialize")]
+            access: ::std::option::Option<::std::string::String>,
+            pinned_params: AiSkillToolGrantsItemVariant0PinnedParams,
+            tool_key: ::std::string::String,
+        },
+        Variant1 {
+            ///Defaults to the tool's access classification (read or write) when omitted or null.
+            #[serde(deserialize_with = "::std::option::Option::deserialize")]
+            access: ::std::option::Option<::std::string::String>,
+            ///For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
+            #[serde(deserialize_with = "::std::option::Option::deserialize")]
+            pinned_params: ::std::option::Option<
+                ::std::collections::HashMap<
+                    ::std::string::String,
+                    AiSkillToolGrantsItemVariant1PinnedParamsValue,
+                >,
             >,
-        >,
-        pub tool_key: ::std::string::String,
+            tool_key: AiSkillToolGrantsItemVariant1ToolKey,
+        },
     }
-    impl AiSkillToolGrantsItem {
-        pub fn builder() -> builder::AiSkillToolGrantsItem {
+    ///Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiSkillToolGrantsItemVariant0PinnedParams {
+        pub domains: ::std::vec::Vec<::std::string::String>,
+    }
+    impl AiSkillToolGrantsItemVariant0PinnedParams {
+        pub fn builder() -> builder::AiSkillToolGrantsItemVariant0PinnedParams {
             Default::default()
         }
     }
-    ///`AiSkillToolGrantsItemPinnedParamsValue`
+    ///`AiSkillToolGrantsItemVariant1PinnedParamsValue`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum AiSkillToolGrantsItemPinnedParamsValue {
-        Variant0(AiSkillToolGrantsItemPinnedParamsValueVariant0),
-        Variant1(::std::vec::Vec<AiSkillToolGrantsItemPinnedParamsValueVariant1Item>),
+    pub enum AiSkillToolGrantsItemVariant1PinnedParamsValue {
+        Variant0(AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0),
+        Variant1(
+            ::std::vec::Vec<AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item>,
+        ),
     }
-    impl ::std::convert::From<AiSkillToolGrantsItemPinnedParamsValueVariant0>
-    for AiSkillToolGrantsItemPinnedParamsValue {
-        fn from(value: AiSkillToolGrantsItemPinnedParamsValueVariant0) -> Self {
+    impl ::std::convert::From<AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0>
+    for AiSkillToolGrantsItemVariant1PinnedParamsValue {
+        fn from(value: AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<
-        ::std::vec::Vec<AiSkillToolGrantsItemPinnedParamsValueVariant1Item>,
-    > for AiSkillToolGrantsItemPinnedParamsValue {
+        ::std::vec::Vec<AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item>,
+    > for AiSkillToolGrantsItemVariant1PinnedParamsValue {
         fn from(
-            value: ::std::vec::Vec<AiSkillToolGrantsItemPinnedParamsValueVariant1Item>,
-        ) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    ///`AiSkillToolGrantsItemPinnedParamsValueVariant0`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillToolGrantsItemPinnedParamsValueVariant0 {
-        Variant0(
-            ::std::option::Option<AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0>,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0>,
-    > for AiSkillToolGrantsItemPinnedParamsValueVariant0 {
-        fn from(
-            value: ::std::option::Option<
-                AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0,
+            value: ::std::vec::Vec<
+                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item,
             >,
         ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64> for AiSkillToolGrantsItemPinnedParamsValueVariant0 {
-        fn from(value: i64) -> Self {
             Self::Variant1(value)
         }
     }
-    impl ::std::convert::From<bool> for AiSkillToolGrantsItemPinnedParamsValueVariant0 {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0>
-    for ::std::string::String {
-        fn from(value: AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for AiSkillToolGrantsItemPinnedParamsValueVariant0Variant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`AiSkillToolGrantsItemPinnedParamsValueVariant1Item`
+    ///`AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum AiSkillToolGrantsItemPinnedParamsValueVariant1Item {
+    pub enum AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0 {
         Variant0(
             ::std::option::Option<
-                AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
             >,
         ),
         Variant1(i64),
         Variant2(bool),
     }
     impl ::std::convert::From<
-        ::std::option::Option<AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0>,
-    > for AiSkillToolGrantsItemPinnedParamsValueVariant1Item {
+        ::std::option::Option<
+            AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
+        >,
+    > for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(
             value: ::std::option::Option<
-                AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
             >,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<i64>
-    for AiSkillToolGrantsItemPinnedParamsValueVariant1Item {
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(value: i64) -> Self {
             Self::Variant1(value)
         }
     }
     impl ::std::convert::From<bool>
-    for AiSkillToolGrantsItemPinnedParamsValueVariant1Item {
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(value: bool) -> Self {
             Self::Variant2(value)
         }
     }
-    ///`AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0`
+    ///`AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0`
     #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[serde(transparent)]
-    pub struct AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0(
+    pub struct AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0(
         ::std::string::String,
     );
     impl ::std::ops::Deref
-    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Target = ::std::string::String;
         fn deref(&self) -> &::std::string::String {
             &self.0
         }
     }
-    impl ::std::convert::From<AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0>
-    for ::std::string::String {
+    impl ::std::convert::From<
+        AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
+    > for ::std::string::String {
         fn from(
-            value: AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            value: AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
         ) -> Self {
             value.0
         }
     }
     impl ::std::str::FromStr
-    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Err = self::error::ConversionError;
         fn from_str(
             value: &str,
@@ -1497,7 +1426,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<&str>
-    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: &str,
@@ -1506,7 +1435,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<::std::string::String>
-    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -1515,7 +1444,7 @@ pub mod types {
         }
     }
     impl<'de> ::serde::Deserialize<'de>
-    for AiSkillToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
         where
             D: ::serde::Deserializer<'de>,
@@ -1527,6 +1456,124 @@ pub mod types {
                 })
         }
     }
+    ///`AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    #[serde(untagged)]
+    pub enum AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item {
+        Variant0(
+            ::std::option::Option<
+                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
+            >,
+        ),
+        Variant1(i64),
+        Variant2(bool),
+    }
+    impl ::std::convert::From<
+        ::std::option::Option<
+            AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
+        >,
+    > for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item {
+        fn from(
+            value: ::std::option::Option<
+                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
+            >,
+        ) -> Self {
+            Self::Variant0(value)
+        }
+    }
+    impl ::std::convert::From<i64>
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item {
+        fn from(value: i64) -> Self {
+            Self::Variant1(value)
+        }
+    }
+    impl ::std::convert::From<bool>
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item {
+        fn from(value: bool) -> Self {
+            Self::Variant2(value)
+        }
+    }
+    ///`AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0`
+    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
+    #[serde(transparent)]
+    pub struct AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0(
+        ::std::string::String,
+    );
+    impl ::std::ops::Deref
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
+        type Target = ::std::string::String;
+        fn deref(&self) -> &::std::string::String {
+            &self.0
+        }
+    }
+    impl ::std::convert::From<
+        AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
+    > for ::std::string::String {
+        fn from(
+            value: AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
+        ) -> Self {
+            value.0
+        }
+    }
+    impl ::std::str::FromStr
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
+            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
+            if PATTERN.find(value).is_none() {
+                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
+            }
+            Ok(Self(value.to_string()))
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl<'de> ::serde::Deserialize<'de>
+    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
+        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
+        where
+            D: ::serde::Deserializer<'de>,
+        {
+            ::std::string::String::deserialize(deserializer)?
+                .parse()
+                .map_err(|e: self::error::ConversionError| {
+                    <D::Error as ::serde::de::Error>::custom(e.to_string())
+                })
+        }
+    }
+    ///`AiSkillToolGrantsItemVariant1ToolKey`
+    #[derive(
+        ::serde::Deserialize,
+        ::serde::Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd
+    )]
+        pub enum AiSkillToolGrantsItemVariant1ToolKey {}
     ///`AiSkillVersion`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
     pub struct AiSkillVersion {
@@ -1602,58 +1649,80 @@ pub mod types {
     }
     ///`AiSkillVersionToolGrantsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct AiSkillVersionToolGrantsItem {
-        ///Defaults to the tool's access classification (read or write) when omitted or null.
-        #[serde(deserialize_with = "::std::option::Option::deserialize")]
-        pub access: ::std::option::Option<::std::string::String>,
-        ///Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
-        #[serde(deserialize_with = "::std::option::Option::deserialize")]
-        pub pinned_params: ::std::option::Option<
-            ::std::collections::HashMap<
-                ::std::string::String,
-                AiSkillVersionToolGrantsItemPinnedParamsValue,
+    #[serde(untagged)]
+    pub enum AiSkillVersionToolGrantsItem {
+        Variant0 {
+            ///Fetch URL grants use read access, which is the default when omitted or null.
+            #[serde(deserialize_with = "::std::option::Option::deserialize")]
+            access: ::std::option::Option<::std::string::String>,
+            pinned_params: AiSkillVersionToolGrantsItemVariant0PinnedParams,
+            tool_key: ::std::string::String,
+        },
+        Variant1 {
+            ///Defaults to the tool's access classification (read or write) when omitted or null.
+            #[serde(deserialize_with = "::std::option::Option::deserialize")]
+            access: ::std::option::Option<::std::string::String>,
+            ///For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
+            #[serde(deserialize_with = "::std::option::Option::deserialize")]
+            pinned_params: ::std::option::Option<
+                ::std::collections::HashMap<
+                    ::std::string::String,
+                    AiSkillVersionToolGrantsItemVariant1PinnedParamsValue,
+                >,
             >,
-        >,
-        pub tool_key: ::std::string::String,
+            tool_key: AiSkillVersionToolGrantsItemVariant1ToolKey,
+        },
     }
-    impl AiSkillVersionToolGrantsItem {
-        pub fn builder() -> builder::AiSkillVersionToolGrantsItem {
+    ///Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiSkillVersionToolGrantsItemVariant0PinnedParams {
+        pub domains: ::std::vec::Vec<::std::string::String>,
+    }
+    impl AiSkillVersionToolGrantsItemVariant0PinnedParams {
+        pub fn builder() -> builder::AiSkillVersionToolGrantsItemVariant0PinnedParams {
             Default::default()
         }
     }
-    ///`AiSkillVersionToolGrantsItemPinnedParamsValue`
+    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValue`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum AiSkillVersionToolGrantsItemPinnedParamsValue {
-        Variant0(AiSkillVersionToolGrantsItemPinnedParamsValueVariant0),
+    pub enum AiSkillVersionToolGrantsItemVariant1PinnedParamsValue {
+        Variant0(AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0),
         Variant1(
-            ::std::vec::Vec<AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item>,
+            ::std::vec::Vec<
+                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item,
+            >,
         ),
     }
-    impl ::std::convert::From<AiSkillVersionToolGrantsItemPinnedParamsValueVariant0>
-    for AiSkillVersionToolGrantsItemPinnedParamsValue {
-        fn from(value: AiSkillVersionToolGrantsItemPinnedParamsValueVariant0) -> Self {
+    impl ::std::convert::From<
+        AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0,
+    > for AiSkillVersionToolGrantsItemVariant1PinnedParamsValue {
+        fn from(
+            value: AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0,
+        ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<
-        ::std::vec::Vec<AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item>,
-    > for AiSkillVersionToolGrantsItemPinnedParamsValue {
+        ::std::vec::Vec<
+            AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item,
+        >,
+    > for AiSkillVersionToolGrantsItemVariant1PinnedParamsValue {
         fn from(
             value: ::std::vec::Vec<
-                AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item,
+                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item,
             >,
         ) -> Self {
             Self::Variant1(value)
         }
     }
-    ///`AiSkillVersionToolGrantsItemPinnedParamsValueVariant0`
+    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum AiSkillVersionToolGrantsItemPinnedParamsValueVariant0 {
+    pub enum AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0 {
         Variant0(
             ::std::option::Option<
-                AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
             >,
         ),
         Variant1(i64),
@@ -1661,53 +1730,53 @@ pub mod types {
     }
     impl ::std::convert::From<
         ::std::option::Option<
-            AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+            AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
         >,
-    > for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0 {
+    > for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(
             value: ::std::option::Option<
-                AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
             >,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<i64>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(value: i64) -> Self {
             Self::Variant1(value)
         }
     }
     impl ::std::convert::From<bool>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(value: bool) -> Self {
             Self::Variant2(value)
         }
     }
-    ///`AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0`
+    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0`
     #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[serde(transparent)]
-    pub struct AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0(
+    pub struct AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0(
         ::std::string::String,
     );
     impl ::std::ops::Deref
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Target = ::std::string::String;
         fn deref(&self) -> &::std::string::String {
             &self.0
         }
     }
     impl ::std::convert::From<
-        AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+        AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
     > for ::std::string::String {
         fn from(
-            value: AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0,
+            value: AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
         ) -> Self {
             value.0
         }
     }
     impl ::std::str::FromStr
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Err = self::error::ConversionError;
         fn from_str(
             value: &str,
@@ -1721,7 +1790,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<&str>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: &str,
@@ -1730,7 +1799,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<::std::string::String>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -1739,7 +1808,7 @@ pub mod types {
         }
     }
     impl<'de> ::serde::Deserialize<'de>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
         where
             D: ::serde::Deserializer<'de>,
@@ -1751,13 +1820,13 @@ pub mod types {
                 })
         }
     }
-    ///`AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item`
+    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item {
+    pub enum AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         Variant0(
             ::std::option::Option<
-                AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
             >,
         ),
         Variant1(i64),
@@ -1765,53 +1834,53 @@ pub mod types {
     }
     impl ::std::convert::From<
         ::std::option::Option<
-            AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
         >,
-    > for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item {
+    > for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(
             value: ::std::option::Option<
-                AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
             >,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<i64>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(value: i64) -> Self {
             Self::Variant1(value)
         }
     }
     impl ::std::convert::From<bool>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1Item {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(value: bool) -> Self {
             Self::Variant2(value)
         }
     }
-    ///`AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0`
+    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0`
     #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[serde(transparent)]
-    pub struct AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0(
+    pub struct AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0(
         ::std::string::String,
     );
     impl ::std::ops::Deref
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Target = ::std::string::String;
         fn deref(&self) -> &::std::string::String {
             &self.0
         }
     }
     impl ::std::convert::From<
-        AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
     > for ::std::string::String {
         fn from(
-            value: AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            value: AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
         ) -> Self {
             value.0
         }
     }
     impl ::std::str::FromStr
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Err = self::error::ConversionError;
         fn from_str(
             value: &str,
@@ -1825,7 +1894,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<&str>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: &str,
@@ -1834,7 +1903,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<::std::string::String>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -1843,7 +1912,7 @@ pub mod types {
         }
     }
     impl<'de> ::serde::Deserialize<'de>
-    for AiSkillVersionToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
         where
             D: ::serde::Deserializer<'de>,
@@ -1855,6 +1924,20 @@ pub mod types {
                 })
         }
     }
+    ///`AiSkillVersionToolGrantsItemVariant1ToolKey`
+    #[derive(
+        ::serde::Deserialize,
+        ::serde::Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd
+    )]
+        pub enum AiSkillVersionToolGrantsItemVariant1ToolKey {}
     ///`Alert`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct Alert {
@@ -17643,7 +17726,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Create a skill. New skills are disabled unless enabled is explicitly true. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. Pinned parameters apply only to write access. Read-only attributes are ignored on write.
+    ///Create a skill. New skills are disabled unless enabled is explicitly true. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. fetch_url read grants use pinned domains; other pinned parameters apply only to write access. Read-only attributes are ignored on write.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAiSkill {
         pub data: NewAiSkillData,
@@ -17717,65 +17800,82 @@ pub mod types {
     }
     ///`NewAiSkillDataAttributesToolGrantsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct NewAiSkillDataAttributesToolGrantsItem {
-        ///Defaults to the tool's access classification (read or write) when omitted or null.
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub access: ::std::option::Option<::std::string::String>,
-        ///Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub pinned_params: ::std::option::Option<
-            ::std::collections::HashMap<
-                ::std::string::String,
-                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
+    #[serde(untagged)]
+    pub enum NewAiSkillDataAttributesToolGrantsItem {
+        Variant0 {
+            ///Fetch URL grants use read access, which is the default when omitted or null.
+            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+            access: ::std::option::Option<::std::string::String>,
+            pinned_params: NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
+            tool_key: ::std::string::String,
+        },
+        Variant1 {
+            ///Defaults to the tool's access classification (read or write) when omitted or null.
+            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+            access: ::std::option::Option<::std::string::String>,
+            ///For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
+            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+            pinned_params: ::std::option::Option<
+                ::std::collections::HashMap<
+                    ::std::string::String,
+                    NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue,
+                >,
             >,
-        >,
-        pub tool_key: ::std::string::String,
+            tool_key: NewAiSkillDataAttributesToolGrantsItemVariant1ToolKey,
+        },
     }
-    impl NewAiSkillDataAttributesToolGrantsItem {
-        pub fn builder() -> builder::NewAiSkillDataAttributesToolGrantsItem {
+    ///Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+        pub domains: ::std::vec::Vec<::std::string::String>,
+    }
+    impl NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+        pub fn builder() -> builder::NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
             Default::default()
         }
     }
-    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue`
+    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
-        Variant0(NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0),
+    pub enum NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
+        Variant0(
+            NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
+        ),
         Variant1(
             ::std::vec::Vec<
-                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
             >,
         ),
     }
     impl ::std::convert::From<
-        NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0,
-    > for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+        NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
+    > for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
         fn from(
-            value: NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0,
+            value: NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<
         ::std::vec::Vec<
-            NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+            NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
         >,
-    > for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+    > for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
         fn from(
             value: ::std::vec::Vec<
-                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
             >,
         ) -> Self {
             Self::Variant1(value)
         }
     }
-    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0`
+    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+    pub enum NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
         Variant0(
             ::std::option::Option<
-                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
             >,
         ),
         Variant1(i64),
@@ -17783,53 +17883,53 @@ pub mod types {
     }
     impl ::std::convert::From<
         ::std::option::Option<
-            NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+            NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
         >,
-    > for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+    > for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(
             value: ::std::option::Option<
-                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
             >,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<i64>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(value: i64) -> Self {
             Self::Variant1(value)
         }
     }
     impl ::std::convert::From<bool>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(value: bool) -> Self {
             Self::Variant2(value)
         }
     }
-    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0`
+    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0`
     #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[serde(transparent)]
-    pub struct NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0(
+    pub struct NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0(
         ::std::string::String,
     );
     impl ::std::ops::Deref
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Target = ::std::string::String;
         fn deref(&self) -> &::std::string::String {
             &self.0
         }
     }
     impl ::std::convert::From<
-        NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+        NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
     > for ::std::string::String {
         fn from(
-            value: NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+            value: NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
         ) -> Self {
             value.0
         }
     }
     impl ::std::str::FromStr
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Err = self::error::ConversionError;
         fn from_str(
             value: &str,
@@ -17843,7 +17943,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<&str>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: &str,
@@ -17852,7 +17952,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<::std::string::String>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -17861,7 +17961,7 @@ pub mod types {
         }
     }
     impl<'de> ::serde::Deserialize<'de>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
         where
             D: ::serde::Deserializer<'de>,
@@ -17873,13 +17973,13 @@ pub mod types {
                 })
         }
     }
-    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item`
+    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+    pub enum NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         Variant0(
             ::std::option::Option<
-                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
             >,
         ),
         Variant1(i64),
@@ -17887,53 +17987,53 @@ pub mod types {
     }
     impl ::std::convert::From<
         ::std::option::Option<
-            NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
         >,
-    > for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+    > for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(
             value: ::std::option::Option<
-                NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
             >,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<i64>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(value: i64) -> Self {
             Self::Variant1(value)
         }
     }
     impl ::std::convert::From<bool>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(value: bool) -> Self {
             Self::Variant2(value)
         }
     }
-    ///`NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0`
+    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0`
     #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[serde(transparent)]
-    pub struct NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0(
+    pub struct NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0(
         ::std::string::String,
     );
     impl ::std::ops::Deref
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Target = ::std::string::String;
         fn deref(&self) -> &::std::string::String {
             &self.0
         }
     }
     impl ::std::convert::From<
-        NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
     > for ::std::string::String {
         fn from(
-            value: NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            value: NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
         ) -> Self {
             value.0
         }
     }
     impl ::std::str::FromStr
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Err = self::error::ConversionError;
         fn from_str(
             value: &str,
@@ -17947,7 +18047,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<&str>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: &str,
@@ -17956,7 +18056,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<::std::string::String>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -17965,7 +18065,7 @@ pub mod types {
         }
     }
     impl<'de> ::serde::Deserialize<'de>
-    for NewAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
         where
             D: ::serde::Deserializer<'de>,
@@ -17977,6 +18077,20 @@ pub mod types {
                 })
         }
     }
+    ///`NewAiSkillDataAttributesToolGrantsItemVariant1ToolKey`
+    #[derive(
+        ::serde::Deserialize,
+        ::serde::Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd
+    )]
+        pub enum NewAiSkillDataAttributesToolGrantsItemVariant1ToolKey {}
     ///`NewAlert`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAlert {
@@ -35219,7 +35333,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Update only supplied attributes. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. Pinned parameters apply only to write access. Read-only attributes are ignored on write.
+    ///Update only supplied attributes. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. fetch_url read grants use pinned domains; other pinned parameters apply only to write access. Read-only attributes are ignored on write.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateAiSkill {
         pub data: UpdateAiSkillData,
@@ -35297,65 +35411,82 @@ pub mod types {
     }
     ///`UpdateAiSkillDataAttributesToolGrantsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct UpdateAiSkillDataAttributesToolGrantsItem {
-        ///Defaults to the tool's access classification (read or write) when omitted or null.
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub access: ::std::option::Option<::std::string::String>,
-        ///Pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub pinned_params: ::std::option::Option<
-            ::std::collections::HashMap<
-                ::std::string::String,
-                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
+    #[serde(untagged)]
+    pub enum UpdateAiSkillDataAttributesToolGrantsItem {
+        Variant0 {
+            ///Fetch URL grants use read access, which is the default when omitted or null.
+            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+            access: ::std::option::Option<::std::string::String>,
+            pinned_params: UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
+            tool_key: ::std::string::String,
+        },
+        Variant1 {
+            ///Defaults to the tool's access classification (read or write) when omitted or null.
+            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+            access: ::std::option::Option<::std::string::String>,
+            ///For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
+            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+            pinned_params: ::std::option::Option<
+                ::std::collections::HashMap<
+                    ::std::string::String,
+                    UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue,
+                >,
             >,
-        >,
-        pub tool_key: ::std::string::String,
+            tool_key: UpdateAiSkillDataAttributesToolGrantsItemVariant1ToolKey,
+        },
     }
-    impl UpdateAiSkillDataAttributesToolGrantsItem {
-        pub fn builder() -> builder::UpdateAiSkillDataAttributesToolGrantsItem {
+    ///Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+        pub domains: ::std::vec::Vec<::std::string::String>,
+    }
+    impl UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+        pub fn builder() -> builder::UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
             Default::default()
         }
     }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue`
+    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
-        Variant0(UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0),
+    pub enum UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
+        Variant0(
+            UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
+        ),
         Variant1(
             ::std::vec::Vec<
-                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
             >,
         ),
     }
     impl ::std::convert::From<
-        UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0,
-    > for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+        UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
+    > for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
         fn from(
-            value: UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0,
+            value: UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<
         ::std::vec::Vec<
-            UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+            UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
         >,
-    > for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue {
+    > for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
         fn from(
             value: ::std::vec::Vec<
-                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item,
+                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
             >,
         ) -> Self {
             Self::Variant1(value)
         }
     }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0`
+    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+    pub enum UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
         Variant0(
             ::std::option::Option<
-                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
             >,
         ),
         Variant1(i64),
@@ -35363,53 +35494,53 @@ pub mod types {
     }
     impl ::std::convert::From<
         ::std::option::Option<
-            UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+            UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
         >,
-    > for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+    > for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(
             value: ::std::option::Option<
-                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
             >,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<i64>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(value: i64) -> Self {
             Self::Variant1(value)
         }
     }
     impl ::std::convert::From<bool>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
         fn from(value: bool) -> Self {
             Self::Variant2(value)
         }
     }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0`
+    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0`
     #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[serde(transparent)]
-    pub struct UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0(
+    pub struct UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0(
         ::std::string::String,
     );
     impl ::std::ops::Deref
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Target = ::std::string::String;
         fn deref(&self) -> &::std::string::String {
             &self.0
         }
     }
     impl ::std::convert::From<
-        UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+        UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
     > for ::std::string::String {
         fn from(
-            value: UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0,
+            value: UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
         ) -> Self {
             value.0
         }
     }
     impl ::std::str::FromStr
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Err = self::error::ConversionError;
         fn from_str(
             value: &str,
@@ -35423,7 +35554,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<&str>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: &str,
@@ -35432,7 +35563,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<::std::string::String>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -35441,7 +35572,7 @@ pub mod types {
         }
     }
     impl<'de> ::serde::Deserialize<'de>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant0Variant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
         fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
         where
             D: ::serde::Deserializer<'de>,
@@ -35453,13 +35584,13 @@ pub mod types {
                 })
         }
     }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item`
+    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     #[serde(untagged)]
-    pub enum UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+    pub enum UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         Variant0(
             ::std::option::Option<
-                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
             >,
         ),
         Variant1(i64),
@@ -35467,53 +35598,54 @@ pub mod types {
     }
     impl ::std::convert::From<
         ::std::option::Option<
-            UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
         >,
-    > for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+    >
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(
             value: ::std::option::Option<
-                UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
             >,
         ) -> Self {
             Self::Variant0(value)
         }
     }
     impl ::std::convert::From<i64>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(value: i64) -> Self {
             Self::Variant1(value)
         }
     }
     impl ::std::convert::From<bool>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1Item {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
         fn from(value: bool) -> Self {
             Self::Variant2(value)
         }
     }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0`
+    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0`
     #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
     #[serde(transparent)]
-    pub struct UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0(
+    pub struct UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0(
         ::std::string::String,
     );
     impl ::std::ops::Deref
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Target = ::std::string::String;
         fn deref(&self) -> &::std::string::String {
             &self.0
         }
     }
     impl ::std::convert::From<
-        UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+        UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
     > for ::std::string::String {
         fn from(
-            value: UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0,
+            value: UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
         ) -> Self {
             value.0
         }
     }
     impl ::std::str::FromStr
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Err = self::error::ConversionError;
         fn from_str(
             value: &str,
@@ -35527,7 +35659,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<&str>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: &str,
@@ -35536,7 +35668,7 @@ pub mod types {
         }
     }
     impl ::std::convert::TryFrom<::std::string::String>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         type Error = self::error::ConversionError;
         fn try_from(
             value: ::std::string::String,
@@ -35545,7 +35677,7 @@ pub mod types {
         }
     }
     impl<'de> ::serde::Deserialize<'de>
-    for UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValueVariant1ItemVariant0 {
+    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
         fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
         where
             D: ::serde::Deserializer<'de>,
@@ -35557,6 +35689,20 @@ pub mod types {
                 })
         }
     }
+    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1ToolKey`
+    #[derive(
+        ::serde::Deserialize,
+        ::serde::Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd
+    )]
+        pub enum UpdateAiSkillDataAttributesToolGrantsItemVariant1ToolKey {}
     ///`UpdateAirtableTableRecordTaskParams`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct UpdateAirtableTableRecordTaskParams {
@@ -56051,102 +56197,46 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
-        pub struct AiSkillToolGrantsItem {
-            access: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            pinned_params: ::std::result::Result<
-                ::std::option::Option<
-                    ::std::collections::HashMap<
-                        ::std::string::String,
-                        super::AiSkillToolGrantsItemPinnedParamsValue,
-                    >,
-                >,
-                ::std::string::String,
-            >,
-            tool_key: ::std::result::Result<
-                ::std::string::String,
+        pub struct AiSkillToolGrantsItemVariant0PinnedParams {
+            domains: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
         }
-        impl ::std::default::Default for AiSkillToolGrantsItem {
+        impl ::std::default::Default for AiSkillToolGrantsItemVariant0PinnedParams {
             fn default() -> Self {
                 Self {
-                    access: Err("no value supplied for access".to_string()),
-                    pinned_params: Err(
-                        "no value supplied for pinned_params".to_string(),
-                    ),
-                    tool_key: Err("no value supplied for tool_key".to_string()),
+                    domains: Err("no value supplied for domains".to_string()),
                 }
             }
         }
-        impl AiSkillToolGrantsItem {
-            pub fn access<T>(mut self, value: T) -> Self
+        impl AiSkillToolGrantsItemVariant0PinnedParams {
+            pub fn domains<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
                 T::Error: ::std::fmt::Display,
             {
-                self.access = value
+                self.domains = value
                     .try_into()
                     .map_err(|e| {
-                        format!("error converting supplied value for access: {e}")
-                    });
-                self
-            }
-            pub fn pinned_params<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        ::std::collections::HashMap<
-                            ::std::string::String,
-                            super::AiSkillToolGrantsItemPinnedParamsValue,
-                        >,
-                    >,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.pinned_params = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for pinned_params: {e}")
-                    });
-                self
-            }
-            pub fn tool_key<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_key = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_key: {e}")
+                        format!("error converting supplied value for domains: {e}")
                     });
                 self
             }
         }
-        impl ::std::convert::TryFrom<AiSkillToolGrantsItem>
-        for super::AiSkillToolGrantsItem {
+        impl ::std::convert::TryFrom<AiSkillToolGrantsItemVariant0PinnedParams>
+        for super::AiSkillToolGrantsItemVariant0PinnedParams {
             type Error = super::error::ConversionError;
             fn try_from(
-                value: AiSkillToolGrantsItem,
+                value: AiSkillToolGrantsItemVariant0PinnedParams,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    access: value.access?,
-                    pinned_params: value.pinned_params?,
-                    tool_key: value.tool_key?,
-                })
+                Ok(Self { domains: value.domains? })
             }
         }
-        impl ::std::convert::From<super::AiSkillToolGrantsItem>
-        for AiSkillToolGrantsItem {
-            fn from(value: super::AiSkillToolGrantsItem) -> Self {
-                Self {
-                    access: Ok(value.access),
-                    pinned_params: Ok(value.pinned_params),
-                    tool_key: Ok(value.tool_key),
-                }
+        impl ::std::convert::From<super::AiSkillToolGrantsItemVariant0PinnedParams>
+        for AiSkillToolGrantsItemVariant0PinnedParams {
+            fn from(value: super::AiSkillToolGrantsItemVariant0PinnedParams) -> Self {
+                Self { domains: Ok(value.domains) }
             }
         }
         #[derive(Clone, Debug)]
@@ -56599,102 +56689,50 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
-        pub struct AiSkillVersionToolGrantsItem {
-            access: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            pinned_params: ::std::result::Result<
-                ::std::option::Option<
-                    ::std::collections::HashMap<
-                        ::std::string::String,
-                        super::AiSkillVersionToolGrantsItemPinnedParamsValue,
-                    >,
-                >,
-                ::std::string::String,
-            >,
-            tool_key: ::std::result::Result<
-                ::std::string::String,
+        pub struct AiSkillVersionToolGrantsItemVariant0PinnedParams {
+            domains: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
         }
-        impl ::std::default::Default for AiSkillVersionToolGrantsItem {
+        impl ::std::default::Default
+        for AiSkillVersionToolGrantsItemVariant0PinnedParams {
             fn default() -> Self {
                 Self {
-                    access: Err("no value supplied for access".to_string()),
-                    pinned_params: Err(
-                        "no value supplied for pinned_params".to_string(),
-                    ),
-                    tool_key: Err("no value supplied for tool_key".to_string()),
+                    domains: Err("no value supplied for domains".to_string()),
                 }
             }
         }
-        impl AiSkillVersionToolGrantsItem {
-            pub fn access<T>(mut self, value: T) -> Self
+        impl AiSkillVersionToolGrantsItemVariant0PinnedParams {
+            pub fn domains<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
                 T::Error: ::std::fmt::Display,
             {
-                self.access = value
+                self.domains = value
                     .try_into()
                     .map_err(|e| {
-                        format!("error converting supplied value for access: {e}")
-                    });
-                self
-            }
-            pub fn pinned_params<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        ::std::collections::HashMap<
-                            ::std::string::String,
-                            super::AiSkillVersionToolGrantsItemPinnedParamsValue,
-                        >,
-                    >,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.pinned_params = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for pinned_params: {e}")
-                    });
-                self
-            }
-            pub fn tool_key<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_key = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_key: {e}")
+                        format!("error converting supplied value for domains: {e}")
                     });
                 self
             }
         }
-        impl ::std::convert::TryFrom<AiSkillVersionToolGrantsItem>
-        for super::AiSkillVersionToolGrantsItem {
+        impl ::std::convert::TryFrom<AiSkillVersionToolGrantsItemVariant0PinnedParams>
+        for super::AiSkillVersionToolGrantsItemVariant0PinnedParams {
             type Error = super::error::ConversionError;
             fn try_from(
-                value: AiSkillVersionToolGrantsItem,
+                value: AiSkillVersionToolGrantsItemVariant0PinnedParams,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    access: value.access?,
-                    pinned_params: value.pinned_params?,
-                    tool_key: value.tool_key?,
-                })
+                Ok(Self { domains: value.domains? })
             }
         }
-        impl ::std::convert::From<super::AiSkillVersionToolGrantsItem>
-        for AiSkillVersionToolGrantsItem {
-            fn from(value: super::AiSkillVersionToolGrantsItem) -> Self {
-                Self {
-                    access: Ok(value.access),
-                    pinned_params: Ok(value.pinned_params),
-                    tool_key: Ok(value.tool_key),
-                }
+        impl ::std::convert::From<
+            super::AiSkillVersionToolGrantsItemVariant0PinnedParams,
+        > for AiSkillVersionToolGrantsItemVariant0PinnedParams {
+            fn from(
+                value: super::AiSkillVersionToolGrantsItemVariant0PinnedParams,
+            ) -> Self {
+                Self { domains: Ok(value.domains) }
             }
         }
         #[derive(Clone, Debug)]
@@ -141022,100 +141060,51 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
-        pub struct NewAiSkillDataAttributesToolGrantsItem {
-            access: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            pinned_params: ::std::result::Result<
-                ::std::option::Option<
-                    ::std::collections::HashMap<
-                        ::std::string::String,
-                        super::NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
-                    >,
-                >,
-                ::std::string::String,
-            >,
-            tool_key: ::std::result::Result<
-                ::std::string::String,
+        pub struct NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+            domains: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
         }
-        impl ::std::default::Default for NewAiSkillDataAttributesToolGrantsItem {
+        impl ::std::default::Default
+        for NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
             fn default() -> Self {
                 Self {
-                    access: Ok(Default::default()),
-                    pinned_params: Ok(Default::default()),
-                    tool_key: Err("no value supplied for tool_key".to_string()),
+                    domains: Err("no value supplied for domains".to_string()),
                 }
             }
         }
-        impl NewAiSkillDataAttributesToolGrantsItem {
-            pub fn access<T>(mut self, value: T) -> Self
+        impl NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+            pub fn domains<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
                 T::Error: ::std::fmt::Display,
             {
-                self.access = value
+                self.domains = value
                     .try_into()
                     .map_err(|e| {
-                        format!("error converting supplied value for access: {e}")
-                    });
-                self
-            }
-            pub fn pinned_params<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        ::std::collections::HashMap<
-                            ::std::string::String,
-                            super::NewAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
-                        >,
-                    >,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.pinned_params = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for pinned_params: {e}")
-                    });
-                self
-            }
-            pub fn tool_key<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_key = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_key: {e}")
+                        format!("error converting supplied value for domains: {e}")
                     });
                 self
             }
         }
-        impl ::std::convert::TryFrom<NewAiSkillDataAttributesToolGrantsItem>
-        for super::NewAiSkillDataAttributesToolGrantsItem {
+        impl ::std::convert::TryFrom<
+            NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
+        > for super::NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
             type Error = super::error::ConversionError;
             fn try_from(
-                value: NewAiSkillDataAttributesToolGrantsItem,
+                value: NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    access: value.access?,
-                    pinned_params: value.pinned_params?,
-                    tool_key: value.tool_key?,
-                })
+                Ok(Self { domains: value.domains? })
             }
         }
-        impl ::std::convert::From<super::NewAiSkillDataAttributesToolGrantsItem>
-        for NewAiSkillDataAttributesToolGrantsItem {
-            fn from(value: super::NewAiSkillDataAttributesToolGrantsItem) -> Self {
-                Self {
-                    access: Ok(value.access),
-                    pinned_params: Ok(value.pinned_params),
-                    tool_key: Ok(value.tool_key),
-                }
+        impl ::std::convert::From<
+            super::NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
+        > for NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+            fn from(
+                value: super::NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
+            ) -> Self {
+                Self { domains: Ok(value.domains) }
             }
         }
         #[derive(Clone, Debug)]
@@ -224756,100 +224745,51 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
-        pub struct UpdateAiSkillDataAttributesToolGrantsItem {
-            access: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            pinned_params: ::std::result::Result<
-                ::std::option::Option<
-                    ::std::collections::HashMap<
-                        ::std::string::String,
-                        super::UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
-                    >,
-                >,
-                ::std::string::String,
-            >,
-            tool_key: ::std::result::Result<
-                ::std::string::String,
+        pub struct UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+            domains: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
                 ::std::string::String,
             >,
         }
-        impl ::std::default::Default for UpdateAiSkillDataAttributesToolGrantsItem {
+        impl ::std::default::Default
+        for UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
             fn default() -> Self {
                 Self {
-                    access: Ok(Default::default()),
-                    pinned_params: Ok(Default::default()),
-                    tool_key: Err("no value supplied for tool_key".to_string()),
+                    domains: Err("no value supplied for domains".to_string()),
                 }
             }
         }
-        impl UpdateAiSkillDataAttributesToolGrantsItem {
-            pub fn access<T>(mut self, value: T) -> Self
+        impl UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+            pub fn domains<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
                 T::Error: ::std::fmt::Display,
             {
-                self.access = value
+                self.domains = value
                     .try_into()
                     .map_err(|e| {
-                        format!("error converting supplied value for access: {e}")
-                    });
-                self
-            }
-            pub fn pinned_params<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        ::std::collections::HashMap<
-                            ::std::string::String,
-                            super::UpdateAiSkillDataAttributesToolGrantsItemPinnedParamsValue,
-                        >,
-                    >,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.pinned_params = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for pinned_params: {e}")
-                    });
-                self
-            }
-            pub fn tool_key<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_key = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_key: {e}")
+                        format!("error converting supplied value for domains: {e}")
                     });
                 self
             }
         }
-        impl ::std::convert::TryFrom<UpdateAiSkillDataAttributesToolGrantsItem>
-        for super::UpdateAiSkillDataAttributesToolGrantsItem {
+        impl ::std::convert::TryFrom<
+            UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
+        > for super::UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
             type Error = super::error::ConversionError;
             fn try_from(
-                value: UpdateAiSkillDataAttributesToolGrantsItem,
+                value: UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    access: value.access?,
-                    pinned_params: value.pinned_params?,
-                    tool_key: value.tool_key?,
-                })
+                Ok(Self { domains: value.domains? })
             }
         }
-        impl ::std::convert::From<super::UpdateAiSkillDataAttributesToolGrantsItem>
-        for UpdateAiSkillDataAttributesToolGrantsItem {
-            fn from(value: super::UpdateAiSkillDataAttributesToolGrantsItem) -> Self {
-                Self {
-                    access: Ok(value.access),
-                    pinned_params: Ok(value.pinned_params),
-                    tool_key: Ok(value.tool_key),
-                }
+        impl ::std::convert::From<
+            super::UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
+        > for UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
+            fn from(
+                value: super::UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
+            ) -> Self {
+                Self { domains: Ok(value.domains) }
             }
         }
         #[derive(Clone, Debug)]
