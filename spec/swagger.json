@@ -960,7 +960,7 @@
         "tags": [
           "AI Chat"
         ],
-        "description": "Returns the caller's active, unbound AI home chat sessions newest-first, cursor-paginated by `before`. Requires `ai.chat:read` OAuth scope or a personal API key, and the caller must be eligible for home chat.",
+        "description": "Returns the caller's active, unbound AI home chat sessions newest-first, cursor-paginated by `before`. `archived=false` leaves out archived sessions, `archived=true` lists only archived ones, and `pinned` splits the unarchived ones. Archived sessions are never pinned, so `archived=true&pinned=true` returns no sessions. Requires `ai.chat:read` OAuth scope or a personal API key, and the caller must be eligible for home chat.",
         "operationId": "listAiChatSessions",
         "parameters": [
           {
@@ -979,6 +979,24 @@
               "type": "integer"
             },
             "description": "Sessions per page (max 50, default 20)",
+            "required": false
+          },
+          {
+            "name": "pinned",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "true lists only pinned sessions, false only unpinned ones (archived excluded either way)",
+            "required": false
+          },
+          {
+            "name": "archived",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            },
+            "description": "true lists only archived sessions, false leaves them out (default: both)",
             "required": false
           }
         ],
@@ -1002,6 +1020,16 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "pinned or archived is not a boolean",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ai_chat_error_response"
+                }
+              }
+            }
           }
         }
       }
@@ -1017,7 +1045,7 @@
         "tags": [
           "AI Chat"
         ],
-        "description": "Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Assistant messages may include a `skill` object with `id`, `name`, `slug`, and `version` for the AI Skill loaded during that turn. Requires `ai.chat:read` OAuth scope or an API key.",
+        "description": "Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Assistant messages may include a `skill` object with `id`, `name`, `slug`, and `version` for the AI Skill loaded during that turn. The response also carries the session's current `pinned`, `archived`, and `last_active_at` state. Requires `ai.chat:read` OAuth scope or an API key.",
         "operationId": "listAiChatSessionMessages",
         "parameters": [
           {
@@ -1068,7 +1096,7 @@
     },
     "/v1/ai/chat/sessions/{id}": {
       "patch": {
-        "summary": "Rename AI chat session",
+        "summary": "Update AI chat session",
         "security": [
           {
             "bearer_auth": []
@@ -1077,7 +1105,7 @@
         "tags": [
           "AI Chat"
         ],
-        "description": "Renames an AI home chat session; a blank or null title resets to the generated title. Requires `ai.chat:write` OAuth scope or a personal API key, and the caller must be eligible for home chat.",
+        "description": "Renames, pins or archives an AI home chat session; a blank or null title resets to the generated title. Archiving also unpins. Requires `ai.chat:write` OAuth scope or a personal API key, and the caller must be eligible for home chat.",
         "operationId": "updateAiChatSession",
         "parameters": [
           {
@@ -1093,7 +1121,7 @@
         ],
         "responses": {
           "200": {
-            "description": "renamed session",
+            "description": "updated session",
             "content": {
               "application/json": {
                 "schema": {
@@ -1123,7 +1151,7 @@
             }
           },
           "422": {
-            "description": "title is missing or is not a string/null",
+            "description": "no title, pinned or archived given, title is not a string/null, or pinned/archived is not a boolean",
             "content": {
               "application/json": {
                 "schema": {
@@ -42638,6 +42666,19 @@
           },
           "meta": {
             "type": "object"
+          },
+          "pinned": {
+            "type": "boolean",
+            "description": "Whether the session is pinned"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Whether the session is archived"
+          },
+          "last_active_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the session was last active"
           }
         },
         "required": [
@@ -42665,6 +42706,22 @@
             "type": "string",
             "format": "date-time",
             "description": "When the session was created"
+          },
+          "pinned": {
+            "type": "boolean",
+            "description": "Whether the caller pinned the session"
+          },
+          "pinned_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When the session was pinned"
+          },
+          "archived_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When the session was archived"
           }
         },
         "required": [
@@ -42731,6 +42788,22 @@
             "type": "string",
             "nullable": true,
             "description": "Server-generated title, null when hidden behind the placeholder"
+          },
+          "pinned": {
+            "type": "boolean",
+            "description": "Whether the session is pinned (returned by update)"
+          },
+          "pinned_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When the session was pinned (returned by update)"
+          },
+          "archived_at": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true,
+            "description": "When the session was archived (returned by update)"
           }
         },
         "required": [
@@ -42746,11 +42819,18 @@
             "type": "string",
             "nullable": true,
             "description": "New title; blank or null resets to the generated title"
+          },
+          "pinned": {
+            "type": "boolean",
+            "description": "Pin or unpin the session"
+          },
+          "archived": {
+            "type": "boolean",
+            "description": "Archive (which also unpins) or unarchive the session"
           }
         },
-        "required": [
-          "title"
-        ]
+        "minProperties": 1,
+        "description": "At least one of title, pinned or archived is required"
       },
       "ai_chat_checkpoint_resolution": {
         "type": "object",
@@ -43920,7 +44000,8 @@
             "enum": [
               "schedule",
               "event"
-            ]
+            ],
+            "description": "Legacy single-trigger view; not authoritative when the automation has more than one trigger. Read triggers for the full state."
           },
           "schedule": {
             "type": "object",
@@ -43961,11 +44042,12 @@
           "schedule_rrule": {
             "type": "string",
             "nullable": true,
-            "description": "Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed."
+            "description": "Legacy single-schedule view; null unless the automation has exactly one schedule trigger. Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed."
           },
           "schedule_timezone": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "description": "Legacy single-schedule view; null unless the automation has exactly one schedule trigger."
           },
           "event_name": {
             "type": "string",
@@ -43973,13 +44055,18 @@
             "enum": [
               "incident.created",
               "incident.status_changed",
-              "incident.resolved"
+              "incident.resolved",
+              "incident.cancelled",
+              "alert.created",
+              "alert.acknowledged",
+              "alert.resolved",
+              "slack.message_posted"
             ],
-            "description": "null unless trigger_kind is event."
+            "description": "Legacy single-event view. null when the automation has no event trigger, more than one event, or alert/Slack conditions; read triggers instead."
           },
           "conditions": {
             "type": "object",
-            "description": "{} unless trigger_kind is event. Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.",
+            "description": "Legacy view of incident trigger conditions. {} when event_name is null. Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.",
             "example": {
               "any": [
                 {
@@ -44053,6 +44140,101 @@
               }
             },
             "additionalProperties": false
+          },
+          "triggers": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string",
+                  "enum": [
+                    "schedule",
+                    "incident",
+                    "alert",
+                    "slack"
+                  ]
+                },
+                "event_name": {
+                  "type": "string",
+                  "nullable": true,
+                  "enum": [
+                    "incident.created",
+                    "incident.status_changed",
+                    "incident.resolved",
+                    "incident.cancelled",
+                    "alert.created",
+                    "alert.acknowledged",
+                    "alert.resolved",
+                    "slack.message_posted",
+                    null
+                  ]
+                },
+                "schedule_rrule": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "schedule_timezone": {
+                  "type": "string",
+                  "nullable": true
+                },
+                "next_run_at": {
+                  "type": "string",
+                  "format": "date-time",
+                  "nullable": true
+                },
+                "cooldown_seconds": {
+                  "type": "integer"
+                },
+                "conditions": {
+                  "type": "array",
+                  "description": "All conditions on a trigger must match. Alert conditions use the field token and key accepted on write.",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      },
+                      "key": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "field_type": {
+                        "type": "string"
+                      },
+                      "operator": {
+                        "type": "string"
+                      },
+                      "values": {
+                        "type": "array",
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "field_type",
+                      "operator",
+                      "values"
+                    ]
+                  }
+                }
+              },
+              "required": [
+                "id",
+                "source",
+                "event_name",
+                "schedule_rrule",
+                "schedule_timezone",
+                "next_run_at",
+                "cooldown_seconds",
+                "conditions"
+              ]
+            }
           },
           "destination_kind": {
             "type": "string",
@@ -44259,7 +44441,7 @@
       },
       "ai_automation_trigger_options": {
         "type": "object",
-        "description": "Options for configuring AI Automation triggers and destinations. Conditions only apply to `event` triggers and are sent as `{\"any\": [{\"all\": [{field, operator, value}]}]}`. `choice` values must match one of the field's choices (case-insensitive), `text` values are free-form, and `none` operators take no value. Skills are listed by `GET /v1/ai_skills?filter[invocable_by]=automation`; Slack channels are listed by `GET /v1/ai_automations/slack_channels`. `schedule_rrule` accepts custom RRULEs using `rrule_frequencies`. Any IANA timezone resolved by `ActiveSupport::TimeZone[...]` is accepted; `timezones` is the editor's list.",
+        "description": "Options for configuring AI Automation triggers and destinations. `sources` lists each trigger source with its events, condition fields and operators. Send triggers as rows in `triggers`: schedule rows take `schedule_rrule` or the preset fields, and incident, alert and Slack rows take `event_name` plus `conditions` as `[{field, operator, values}]`, all of which must match. `choice` values must match one of the field's choices (case-insensitive), `text` values are free-form, and `none` operators take no value. Skills are listed by `GET /v1/ai_skills?filter[invocable_by]=automation`; Slack channels are listed by `GET /v1/ai_automations/slack_channels`. `schedule_rrule` accepts custom RRULEs using `rrule_frequencies`. Any IANA timezone resolved by `ActiveSupport::TimeZone[...]` is accepted; `timezones` is the editor's list.",
         "properties": {
           "data": {
             "type": "object",
@@ -44279,6 +44461,99 @@
               "attributes": {
                 "type": "object",
                 "properties": {
+                  "sources": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "value": {
+                          "type": "string",
+                          "enum": [
+                            "schedule",
+                            "incident",
+                            "alert",
+                            "slack"
+                          ]
+                        },
+                        "label": {
+                          "type": "string"
+                        },
+                        "events": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "incident.created",
+                              "incident.status_changed",
+                              "incident.resolved",
+                              "incident.cancelled",
+                              "alert.created",
+                              "alert.acknowledged",
+                              "alert.resolved",
+                              "slack.message_posted"
+                            ]
+                          }
+                        },
+                        "fields": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "value": {
+                                "type": "string",
+                                "description": "Field token to send as a condition's `field`. Custom alert fields use `alert_field:<id>`."
+                              },
+                              "label": {
+                                "type": "string",
+                                "description": "Display name for custom alert fields."
+                              },
+                              "requires_key": {
+                                "type": "boolean",
+                                "description": "True for the alert `payload` field, which needs a JSONPath `key`."
+                              },
+                              "operators": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "choices": {
+                                "type": "array",
+                                "items": {
+                                  "type": "object",
+                                  "properties": {
+                                    "value": {
+                                      "type": "string"
+                                    },
+                                    "label": {
+                                      "type": "string"
+                                    }
+                                  },
+                                  "required": [
+                                    "value",
+                                    "label"
+                                  ]
+                                }
+                              }
+                            },
+                            "required": [
+                              "value",
+                              "operators",
+                              "choices"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "value",
+                        "label",
+                        "events",
+                        "fields"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
                   "trigger_kinds": {
                     "type": "array",
                     "items": {
@@ -44312,7 +44587,21 @@
                           "enum": [
                             "incident.created",
                             "incident.status_changed",
-                            "incident.resolved"
+                            "incident.resolved",
+                            "incident.cancelled",
+                            "alert.created",
+                            "alert.acknowledged",
+                            "alert.resolved",
+                            "slack.message_posted"
+                          ]
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "schedule",
+                            "incident",
+                            "alert",
+                            "slack"
                           ]
                         },
                         "label": {
@@ -44325,7 +44614,21 @@
                             "enum": [
                               "severity",
                               "status",
-                              "to_status"
+                              "to_status",
+                              "incident_type",
+                              "service",
+                              "group",
+                              "environment",
+                              "title",
+                              "channel",
+                              "user",
+                              "text",
+                              "sender_type",
+                              "summary",
+                              "description",
+                              "urgency",
+                              "source",
+                              "group_status"
                             ]
                           }
                         }
@@ -44351,7 +44654,16 @@
                               "enum": [
                                 "severity",
                                 "status",
-                                "to_status"
+                                "to_status",
+                                "incident_type",
+                                "service",
+                                "group",
+                                "environment",
+                                "title",
+                                "channel",
+                                "user",
+                                "text",
+                                "sender_type"
                               ]
                             },
                             "label": {
@@ -44605,7 +44917,12 @@
                             "enum": [
                               "incident.created",
                               "incident.status_changed",
-                              "incident.resolved"
+                              "incident.resolved",
+                              "incident.cancelled",
+                              "alert.created",
+                              "alert.acknowledged",
+                              "alert.resolved",
+                              "slack.message_posted"
                             ]
                           }
                         },
@@ -44681,6 +44998,7 @@
                   }
                 },
                 "required": [
+                  "sources",
                   "trigger_kinds",
                   "events",
                   "conditions",
@@ -44729,13 +45047,143 @@
                     "type": "boolean",
                     "description": "Defaults to false."
                   },
+                  "triggers": {
+                    "type": "array",
+                    "description": "Replaces the automation's triggers. The automation runs when any trigger matches; all conditions on a trigger must match. Rows with an id update that trigger in place, including a source change; an id that isn't one of this automation's triggers is rejected. Omit id to add a trigger. Defaults to one schedule trigger, daily at 09:00 UTC.",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "schedule",
+                            "incident",
+                            "alert",
+                            "slack"
+                          ]
+                        },
+                        "event_name": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "incident.created",
+                            "incident.status_changed",
+                            "incident.resolved",
+                            "incident.cancelled",
+                            "alert.created",
+                            "alert.acknowledged",
+                            "alert.resolved",
+                            "slack.message_posted",
+                            null
+                          ]
+                        },
+                        "schedule_rrule": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed."
+                        },
+                        "schedule_timezone": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "schedule_frequency": {
+                          "type": "string",
+                          "enum": [
+                            "hourly",
+                            "daily",
+                            "weekdays",
+                            "weekly"
+                          ],
+                          "description": "Preset alternative to schedule_rrule."
+                        },
+                        "schedule_hour": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 23
+                        },
+                        "schedule_weekday": {
+                          "type": "string",
+                          "enum": [
+                            "MO",
+                            "TU",
+                            "WE",
+                            "TH",
+                            "FR",
+                            "SA",
+                            "SU"
+                          ]
+                        },
+                        "cooldown_seconds": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 604800,
+                          "description": "Minimum seconds between runs started by this trigger. Event triggers only; schedule triggers must omit it or send 0."
+                        },
+                        "next_run_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true,
+                          "description": "Read-only; accepted and ignored so GET documents can be sent back."
+                        },
+                        "conditions": {
+                          "type": "array",
+                          "maxItems": 20,
+                          "description": "Fields and operators per source are listed by GET /v1/ai_automation_trigger_options. Alert payload conditions use field \"payload\" with a JSONPath key.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "field": {
+                                "type": "string"
+                              },
+                              "field_type": {
+                                "type": "string",
+                                "description": "Read-only; accepted and ignored so GET documents can be sent back."
+                              },
+                              "key": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "operator": {
+                                "type": "string"
+                              },
+                              "values": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "Single-value alternative to values."
+                              }
+                            },
+                            "required": [
+                              "field",
+                              "operator"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "source"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
                   "trigger_kind": {
                     "type": "string",
                     "enum": [
                       "schedule",
                       "event"
                     ],
-                    "description": "Defaults to schedule. Switching triggers on update requires the new trigger's active configuration; fields belonging to the previous trigger are ignored."
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "schedule": {
                     "type": "object",
@@ -44775,17 +45223,21 @@
                       }
                     },
                     "additionalProperties": false,
-                    "description": "For schedule triggers, defaults to daily at 09:00. schedule.timezone defaults to UTC."
+                    "nullable": true,
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "schedule_rrule": {
                     "type": "string",
                     "nullable": true,
-                    "description": "Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed."
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "schedule_timezone": {
                     "type": "string",
                     "nullable": true,
-                    "description": "Alias for schedule.timezone."
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "event_name": {
                     "type": "string",
@@ -44793,13 +45245,19 @@
                     "enum": [
                       "incident.created",
                       "incident.status_changed",
-                      "incident.resolved"
+                      "incident.resolved",
+                      "incident.cancelled",
+                      "alert.created",
+                      "alert.acknowledged",
+                      "alert.resolved",
+                      "slack.message_posted"
                     ],
-                    "description": "Required when trigger_kind is event. null is accepted only for schedule automations, where it is ignored."
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "conditions": {
                     "type": "object",
-                    "description": "Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.",
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.",
                     "example": {
                       "any": [
                         {
@@ -44872,7 +45330,8 @@
                         }
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "readOnly": true
                   },
                   "destination_kind": {
                     "type": "string",
@@ -45047,13 +45506,143 @@
                   "enabled": {
                     "type": "boolean"
                   },
+                  "triggers": {
+                    "type": "array",
+                    "description": "Replaces the automation's triggers. The automation runs when any trigger matches; all conditions on a trigger must match. Rows with an id update that trigger in place, including a source change; an id that isn't one of this automation's triggers is rejected. Omit id to add a trigger.",
+                    "minItems": 1,
+                    "maxItems": 10,
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "type": "string"
+                        },
+                        "source": {
+                          "type": "string",
+                          "enum": [
+                            "schedule",
+                            "incident",
+                            "alert",
+                            "slack"
+                          ]
+                        },
+                        "event_name": {
+                          "type": "string",
+                          "nullable": true,
+                          "enum": [
+                            "incident.created",
+                            "incident.status_changed",
+                            "incident.resolved",
+                            "incident.cancelled",
+                            "alert.created",
+                            "alert.acknowledged",
+                            "alert.resolved",
+                            "slack.message_posted",
+                            null
+                          ]
+                        },
+                        "schedule_rrule": {
+                          "type": "string",
+                          "nullable": true,
+                          "description": "Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed."
+                        },
+                        "schedule_timezone": {
+                          "type": "string",
+                          "nullable": true
+                        },
+                        "schedule_frequency": {
+                          "type": "string",
+                          "enum": [
+                            "hourly",
+                            "daily",
+                            "weekdays",
+                            "weekly"
+                          ],
+                          "description": "Preset alternative to schedule_rrule."
+                        },
+                        "schedule_hour": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 23
+                        },
+                        "schedule_weekday": {
+                          "type": "string",
+                          "enum": [
+                            "MO",
+                            "TU",
+                            "WE",
+                            "TH",
+                            "FR",
+                            "SA",
+                            "SU"
+                          ]
+                        },
+                        "cooldown_seconds": {
+                          "type": "integer",
+                          "minimum": 0,
+                          "maximum": 604800,
+                          "description": "Minimum seconds between runs started by this trigger. Event triggers only; schedule triggers must omit it or send 0."
+                        },
+                        "next_run_at": {
+                          "type": "string",
+                          "format": "date-time",
+                          "nullable": true,
+                          "description": "Read-only; accepted and ignored so GET documents can be sent back."
+                        },
+                        "conditions": {
+                          "type": "array",
+                          "maxItems": 20,
+                          "description": "Fields and operators per source are listed by GET /v1/ai_automation_trigger_options. Alert payload conditions use field \"payload\" with a JSONPath key.",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "field": {
+                                "type": "string"
+                              },
+                              "field_type": {
+                                "type": "string",
+                                "description": "Read-only; accepted and ignored so GET documents can be sent back."
+                              },
+                              "key": {
+                                "type": "string",
+                                "nullable": true
+                              },
+                              "operator": {
+                                "type": "string"
+                              },
+                              "values": {
+                                "type": "array",
+                                "items": {
+                                  "type": "string"
+                                }
+                              },
+                              "value": {
+                                "type": "string",
+                                "description": "Single-value alternative to values."
+                              }
+                            },
+                            "required": [
+                              "field",
+                              "operator"
+                            ],
+                            "additionalProperties": false
+                          }
+                        }
+                      },
+                      "required": [
+                        "source"
+                      ],
+                      "additionalProperties": false
+                    }
+                  },
                   "trigger_kind": {
                     "type": "string",
                     "enum": [
                       "schedule",
                       "event"
                     ],
-                    "description": "Switching triggers on update requires the new trigger's active configuration; fields belonging to the previous trigger are ignored."
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "schedule": {
                     "type": "object",
@@ -45093,17 +45682,21 @@
                       }
                     },
                     "additionalProperties": false,
-                    "nullable": true
+                    "nullable": true,
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "schedule_rrule": {
                     "type": "string",
                     "nullable": true,
-                    "description": "Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed."
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "schedule_timezone": {
                     "type": "string",
                     "nullable": true,
-                    "description": "Alias for schedule.timezone."
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "event_name": {
                     "type": "string",
@@ -45111,13 +45704,19 @@
                     "enum": [
                       "incident.created",
                       "incident.status_changed",
-                      "incident.resolved"
+                      "incident.resolved",
+                      "incident.cancelled",
+                      "alert.created",
+                      "alert.acknowledged",
+                      "alert.resolved",
+                      "slack.message_posted"
                     ],
-                    "description": "Required when trigger_kind is event. null is accepted only for schedule automations, where it is ignored."
+                    "readOnly": true,
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET."
                   },
                   "conditions": {
                     "type": "object",
-                    "description": "Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.",
+                    "description": "Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.",
                     "example": {
                       "any": [
                         {
@@ -45190,7 +45789,8 @@
                         }
                       }
                     },
-                    "additionalProperties": false
+                    "additionalProperties": false,
+                    "readOnly": true
                   },
                   "destination_kind": {
                     "type": "string",
