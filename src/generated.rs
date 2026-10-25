@@ -578,7 +578,7 @@ pub mod types {
         pub disabled_reason: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub enabled: ::std::option::Option<bool>,
-        ///null unless trigger_kind is event.
+        ///Legacy single-event view. null when the automation has no event trigger, more than one event, or alert/Slack conditions; read triggers instead.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub event_name: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -609,15 +609,19 @@ pub mod types {
         pub rate_limit_window: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule: ::std::option::Option<AiAutomationAttributesSchedule>,
-        ///Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
+        ///Legacy single-schedule view; null unless the automation has exactly one schedule trigger. Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule_rrule: ::std::option::Option<::std::string::String>,
+        ///Legacy single-schedule view; null unless the automation has exactly one schedule trigger.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule_timezone: ::std::option::Option<::std::string::String>,
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub skill_ids: ::std::vec::Vec<::uuid::Uuid>,
+        ///Legacy single-trigger view; not authoritative when the automation has more than one trigger. Read triggers for the full state.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub trigger_kind: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub triggers: ::std::vec::Vec<AiAutomationAttributesTriggersItem>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
     }
@@ -626,7 +630,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///{} unless trigger_kind is event. Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.
+    ///Legacy view of incident trigger conditions. {} when event_name is null. Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct AiAutomationAttributesConditions {
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -707,6 +711,129 @@ pub mod types {
     impl AiAutomationAttributesSchedule {
         pub fn builder() -> builder::AiAutomationAttributesSchedule {
             Default::default()
+        }
+    }
+    ///`AiAutomationAttributesTriggersItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationAttributesTriggersItem {
+        ///All conditions on a trigger must match. Alert conditions use the field token and key accepted on write.
+        pub conditions: ::std::vec::Vec<
+            AiAutomationAttributesTriggersItemConditionsItem,
+        >,
+        pub cooldown_seconds: i64,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub event_name: ::std::option::Option<
+            AiAutomationAttributesTriggersItemEventName,
+        >,
+        pub id: ::std::string::String,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub next_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub schedule_rrule: ::std::option::Option<::std::string::String>,
+        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        pub schedule_timezone: ::std::option::Option<::std::string::String>,
+        pub source: ::std::string::String,
+    }
+    impl AiAutomationAttributesTriggersItem {
+        pub fn builder() -> builder::AiAutomationAttributesTriggersItem {
+            Default::default()
+        }
+    }
+    ///`AiAutomationAttributesTriggersItemConditionsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationAttributesTriggersItemConditionsItem {
+        pub field: ::std::string::String,
+        pub field_type: ::std::string::String,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub key: ::std::option::Option<::std::string::String>,
+        pub operator: ::std::string::String,
+        pub values: ::std::vec::Vec<::std::string::String>,
+    }
+    impl AiAutomationAttributesTriggersItemConditionsItem {
+        pub fn builder() -> builder::AiAutomationAttributesTriggersItemConditionsItem {
+            Default::default()
+        }
+    }
+    ///`AiAutomationAttributesTriggersItemEventName`
+    #[derive(
+        ::serde::Deserialize,
+        ::serde::Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd
+    )]
+    pub enum AiAutomationAttributesTriggersItemEventName {
+        #[serde(rename = "incident.created")]
+        IncidentCreated,
+        #[serde(rename = "incident.status_changed")]
+        IncidentStatusChanged,
+        #[serde(rename = "incident.resolved")]
+        IncidentResolved,
+        #[serde(rename = "incident.cancelled")]
+        IncidentCancelled,
+        #[serde(rename = "alert.created")]
+        AlertCreated,
+        #[serde(rename = "alert.acknowledged")]
+        AlertAcknowledged,
+        #[serde(rename = "alert.resolved")]
+        AlertResolved,
+        #[serde(rename = "slack.message_posted")]
+        SlackMessagePosted,
+    }
+    impl ::std::fmt::Display for AiAutomationAttributesTriggersItemEventName {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::IncidentCreated => f.write_str("incident.created"),
+                Self::IncidentStatusChanged => f.write_str("incident.status_changed"),
+                Self::IncidentResolved => f.write_str("incident.resolved"),
+                Self::IncidentCancelled => f.write_str("incident.cancelled"),
+                Self::AlertCreated => f.write_str("alert.created"),
+                Self::AlertAcknowledged => f.write_str("alert.acknowledged"),
+                Self::AlertResolved => f.write_str("alert.resolved"),
+                Self::SlackMessagePosted => f.write_str("slack.message_posted"),
+            }
+        }
+    }
+    impl ::std::str::FromStr for AiAutomationAttributesTriggersItemEventName {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "incident.created" => Ok(Self::IncidentCreated),
+                "incident.status_changed" => Ok(Self::IncidentStatusChanged),
+                "incident.resolved" => Ok(Self::IncidentResolved),
+                "incident.cancelled" => Ok(Self::IncidentCancelled),
+                "alert.created" => Ok(Self::AlertCreated),
+                "alert.acknowledged" => Ok(Self::AlertAcknowledged),
+                "alert.resolved" => Ok(Self::AlertResolved),
+                "slack.message_posted" => Ok(Self::SlackMessagePosted),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+    impl ::std::convert::TryFrom<&str> for AiAutomationAttributesTriggersItemEventName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for AiAutomationAttributesTriggersItemEventName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
         }
     }
     ///`AiAutomationData`
@@ -883,7 +1010,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Options for configuring AI Automation triggers and destinations. Conditions only apply to `event` triggers and are sent as `{"any": [{"all": [{field, operator, value}]}]}`. `choice` values must match one of the field's choices (case-insensitive), `text` values are free-form, and `none` operators take no value. Skills are listed by `GET /v1/ai_skills?filter[invocable_by]=automation`; Slack channels are listed by `GET /v1/ai_automations/slack_channels`. `schedule_rrule` accepts custom RRULEs using `rrule_frequencies`. Any IANA timezone resolved by `ActiveSupport::TimeZone[...]` is accepted; `timezones` is the editor's list.
+    ///Options for configuring AI Automation triggers and destinations. `sources` lists each trigger source with its events, condition fields and operators. Send triggers as rows in `triggers`: schedule rows take `schedule_rrule` or the preset fields, and incident, alert and Slack rows take `event_name` plus `conditions` as `[{field, operator, values}]`, all of which must match. `choice` values must match one of the field's choices (case-insensitive), `text` values are free-form, and `none` operators take no value. Skills are listed by `GET /v1/ai_skills?filter[invocable_by]=automation`; Slack channels are listed by `GET /v1/ai_automations/slack_channels`. `schedule_rrule` accepts custom RRULEs using `rrule_frequencies`. Any IANA timezone resolved by `ActiveSupport::TimeZone[...]` is accepted; `timezones` is the editor's list.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct AiAutomationTriggerOptions {
         pub data: AiAutomationTriggerOptionsData,
@@ -916,6 +1043,9 @@ pub mod types {
         pub events: ::std::vec::Vec<AiAutomationTriggerOptionsDataAttributesEventsItem>,
         pub limits: AiAutomationTriggerOptionsDataAttributesLimits,
         pub schedule: AiAutomationTriggerOptionsDataAttributesSchedule,
+        pub sources: ::std::vec::Vec<
+            AiAutomationTriggerOptionsDataAttributesSourcesItem,
+        >,
         pub trigger_kinds: ::std::vec::Vec<
             AiAutomationTriggerOptionsDataAttributesTriggerKindsItem,
         >,
@@ -996,6 +1126,8 @@ pub mod types {
         pub struct AiAutomationTriggerOptionsDataAttributesEventsItem {
         pub condition_fields: ::std::vec::Vec<::std::string::String>,
         pub label: ::std::string::String,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub source: ::std::option::Option<::std::string::String>,
         pub value: ::std::string::String,
     }
     impl AiAutomationTriggerOptionsDataAttributesEventsItem {
@@ -1218,6 +1350,53 @@ pub mod types {
             Default::default()
         }
     }
+    ///`AiAutomationTriggerOptionsDataAttributesSourcesItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiAutomationTriggerOptionsDataAttributesSourcesItem {
+        pub events: ::std::vec::Vec<::std::string::String>,
+        pub fields: ::std::vec::Vec<
+            AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem,
+        >,
+        pub label: ::std::string::String,
+        pub value: ::std::string::String,
+    }
+    impl AiAutomationTriggerOptionsDataAttributesSourcesItem {
+        pub fn builder() -> builder::AiAutomationTriggerOptionsDataAttributesSourcesItem {
+            Default::default()
+        }
+    }
+    ///`AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem {
+        pub choices: ::std::vec::Vec<
+            AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem,
+        >,
+        ///Display name for custom alert fields.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub label: ::std::option::Option<::std::string::String>,
+        pub operators: ::std::vec::Vec<::std::string::String>,
+        ///True for the alert `payload` field, which needs a JSONPath `key`.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub requires_key: ::std::option::Option<bool>,
+        ///Field token to send as a condition's `field`. Custom alert fields use `alert_field:<id>`.
+        pub value: ::std::string::String,
+    }
+    impl AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem {
+        pub fn builder() -> builder::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem {
+            Default::default()
+        }
+    }
+    ///`AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem {
+        pub label: ::std::string::String,
+        pub value: ::std::string::String,
+    }
+    impl AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem {
+        pub fn builder() -> builder::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem {
+            Default::default()
+        }
+    }
     ///`AiAutomationTriggerOptionsDataAttributesTriggerKindsItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct AiAutomationTriggerOptionsDataAttributesTriggerKindsItem {
@@ -1349,12 +1528,23 @@ pub mod types {
     ///`AiChatSession`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatSession {
+        ///When the session was archived
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub archived_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
         ///When the session was created
         pub created_at: ::chrono::DateTime<::chrono::offset::Utc>,
         ///Session UUID
         pub id: ::uuid::Uuid,
         ///When the session was last active
         pub last_active_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        ///Whether the caller pinned the session
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pinned: ::std::option::Option<bool>,
+        ///When the session was pinned
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pinned_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
         ///Session title (user-supplied, generated, or placeholder)
         pub title: ::std::string::String,
     }
@@ -1450,9 +1640,20 @@ pub mod types {
     ///`AiChatSessionMessageList`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatSessionMessageList {
+        ///Whether the session is archived
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub archived: ::std::option::Option<bool>,
+        ///When the session was last active
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub last_active_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
         pub messages: ::std::vec::Vec<AiChatSessionMessage>,
         #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
         pub meta: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+        ///Whether the session is pinned
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pinned: ::std::option::Option<bool>,
     }
     impl AiChatSessionMessageList {
         pub fn builder() -> builder::AiChatSessionMessageList {
@@ -1475,11 +1676,22 @@ pub mod types {
     ///`AiChatSessionTitle`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatSessionTitle {
+        ///When the session was archived (returned by update)
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub archived_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
         ///Server-generated title, null when hidden behind the placeholder
         #[serde(deserialize_with = "::std::option::Option::deserialize")]
         pub generated_title: ::std::option::Option<::std::string::String>,
         ///Session UUID
         pub id: ::uuid::Uuid,
+        ///Whether the session is pinned (returned by update)
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pinned: ::std::option::Option<bool>,
+        ///When the session was pinned (returned by update)
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pinned_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
         ///Session title (user-supplied, generated, or placeholder)
         pub title: ::std::string::String,
     }
@@ -17883,7 +18095,7 @@ pub mod types {
         ///Defaults to false.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub enabled: ::std::option::Option<bool>,
-        ///Required when trigger_kind is event. null is accepted only for schedule automations, where it is ignored.
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub event_name: ::std::option::Option<::std::string::String>,
         ///Ignored on write.
@@ -17918,20 +18130,24 @@ pub mod types {
         ///Defaults to 1_day. Stored value is returned even when limits are disabled and only applies when limits_enabled is true.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub rate_limit_window: ::std::option::Option<::std::string::String>,
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule: ::std::option::Option<NewAiAutomationDataAttributesSchedule>,
-        ///Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule_rrule: ::std::option::Option<::std::string::String>,
-        ///Alias for schedule.timezone.
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule_timezone: ::std::option::Option<::std::string::String>,
         ///If omitted on update, current attachments are kept. Skills that are no longer invocable by automations are detached the next time an update changes the automation; unchanged updates return the automation as-is.
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub skill_ids: ::std::vec::Vec<::uuid::Uuid>,
-        ///Defaults to schedule. Switching triggers on update requires the new trigger's active configuration; fields belonging to the previous trigger are ignored.
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub trigger_kind: ::std::option::Option<::std::string::String>,
+        ///Replaces the automation's triggers. The automation runs when any trigger matches; all conditions on a trigger must match. Rows with an id update that trigger in place, including a source change; an id that isn't one of this automation's triggers is rejected. Omit id to add a trigger. Defaults to one schedule trigger, daily at 09:00 UTC.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub triggers: ::std::vec::Vec<NewAiAutomationDataAttributesTriggersItem>,
         ///Ignored on write.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
@@ -17941,7 +18157,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.
+    ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct NewAiAutomationDataAttributesConditions {
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -18066,7 +18282,7 @@ pub mod types {
                 .map_err(|e| { <D::Error as ::serde::de::Error>::custom(e.to_string()) })
         }
     }
-    ///For schedule triggers, defaults to daily at 09:00. schedule.timezone defaults to UTC.
+    ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct NewAiAutomationDataAttributesSchedule {
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -18083,6 +18299,149 @@ pub mod types {
     impl NewAiAutomationDataAttributesSchedule {
         pub fn builder() -> builder::NewAiAutomationDataAttributesSchedule {
             Default::default()
+        }
+    }
+    ///`NewAiAutomationDataAttributesTriggersItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesTriggersItem {
+        ///Fields and operators per source are listed by GET /v1/ai_automation_trigger_options. Alert payload conditions use field "payload" with a JSONPath key.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub conditions: ::std::vec::Vec<
+            NewAiAutomationDataAttributesTriggersItemConditionsItem,
+        >,
+        ///Minimum seconds between runs started by this trigger. Event triggers only; schedule triggers must omit it or send 0.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub cooldown_seconds: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub event_name: ::std::option::Option<
+            NewAiAutomationDataAttributesTriggersItemEventName,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        ///Read-only; accepted and ignored so GET documents can be sent back.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub next_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Preset alternative to schedule_rrule.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_frequency: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_hour: ::std::option::Option<i64>,
+        ///Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_rrule: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_timezone: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_weekday: ::std::option::Option<::std::string::String>,
+        pub source: ::std::string::String,
+    }
+    impl NewAiAutomationDataAttributesTriggersItem {
+        pub fn builder() -> builder::NewAiAutomationDataAttributesTriggersItem {
+            Default::default()
+        }
+    }
+    ///`NewAiAutomationDataAttributesTriggersItemConditionsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesTriggersItemConditionsItem {
+        pub field: ::std::string::String,
+        ///Read-only; accepted and ignored so GET documents can be sent back.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub field_type: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub key: ::std::option::Option<::std::string::String>,
+        pub operator: ::std::string::String,
+        ///Single-value alternative to values.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub value: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub values: ::std::vec::Vec<::std::string::String>,
+    }
+    impl NewAiAutomationDataAttributesTriggersItemConditionsItem {
+        pub fn builder() -> builder::NewAiAutomationDataAttributesTriggersItemConditionsItem {
+            Default::default()
+        }
+    }
+    ///`NewAiAutomationDataAttributesTriggersItemEventName`
+    #[derive(
+        ::serde::Deserialize,
+        ::serde::Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd
+    )]
+    pub enum NewAiAutomationDataAttributesTriggersItemEventName {
+        #[serde(rename = "incident.created")]
+        IncidentCreated,
+        #[serde(rename = "incident.status_changed")]
+        IncidentStatusChanged,
+        #[serde(rename = "incident.resolved")]
+        IncidentResolved,
+        #[serde(rename = "incident.cancelled")]
+        IncidentCancelled,
+        #[serde(rename = "alert.created")]
+        AlertCreated,
+        #[serde(rename = "alert.acknowledged")]
+        AlertAcknowledged,
+        #[serde(rename = "alert.resolved")]
+        AlertResolved,
+        #[serde(rename = "slack.message_posted")]
+        SlackMessagePosted,
+    }
+    impl ::std::fmt::Display for NewAiAutomationDataAttributesTriggersItemEventName {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::IncidentCreated => f.write_str("incident.created"),
+                Self::IncidentStatusChanged => f.write_str("incident.status_changed"),
+                Self::IncidentResolved => f.write_str("incident.resolved"),
+                Self::IncidentCancelled => f.write_str("incident.cancelled"),
+                Self::AlertCreated => f.write_str("alert.created"),
+                Self::AlertAcknowledged => f.write_str("alert.acknowledged"),
+                Self::AlertResolved => f.write_str("alert.resolved"),
+                Self::SlackMessagePosted => f.write_str("slack.message_posted"),
+            }
+        }
+    }
+    impl ::std::str::FromStr for NewAiAutomationDataAttributesTriggersItemEventName {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "incident.created" => Ok(Self::IncidentCreated),
+                "incident.status_changed" => Ok(Self::IncidentStatusChanged),
+                "incident.resolved" => Ok(Self::IncidentResolved),
+                "incident.cancelled" => Ok(Self::IncidentCancelled),
+                "alert.created" => Ok(Self::AlertCreated),
+                "alert.acknowledged" => Ok(Self::AlertAcknowledged),
+                "alert.resolved" => Ok(Self::AlertResolved),
+                "slack.message_posted" => Ok(Self::SlackMessagePosted),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for NewAiAutomationDataAttributesTriggersItemEventName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for NewAiAutomationDataAttributesTriggersItemEventName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
         }
     }
     ///`NewAiAutomationRun`
@@ -35504,7 +35863,7 @@ pub mod types {
         pub disabled_reason: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub enabled: ::std::option::Option<bool>,
-        ///Required when trigger_kind is event. null is accepted only for schedule automations, where it is ignored.
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub event_name: ::std::option::Option<::std::string::String>,
         ///Ignored on write.
@@ -35541,20 +35900,24 @@ pub mod types {
         ///The stored value is returned even when limits are disabled and only applies when limits_enabled is true.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub rate_limit_window: ::std::option::Option<::std::string::String>,
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule: ::std::option::Option<UpdateAiAutomationDataAttributesSchedule>,
-        ///Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule_rrule: ::std::option::Option<::std::string::String>,
-        ///Alias for schedule.timezone.
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub schedule_timezone: ::std::option::Option<::std::string::String>,
         ///If omitted on update, current attachments are kept. Skills that are no longer invocable by automations are detached the next time an update changes the automation; unchanged updates return the automation as-is.
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub skill_ids: ::std::vec::Vec<::uuid::Uuid>,
-        ///Switching triggers on update requires the new trigger's active configuration; fields belonging to the previous trigger are ignored.
+        ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub trigger_kind: ::std::option::Option<::std::string::String>,
+        ///Replaces the automation's triggers. The automation runs when any trigger matches; all conditions on a trigger must match. Rows with an id update that trigger in place, including a source change; an id that isn't one of this automation's triggers is rejected. Omit id to add a trigger.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub triggers: ::std::vec::Vec<UpdateAiAutomationDataAttributesTriggersItem>,
         ///Ignored on write.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
@@ -35564,7 +35927,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Empty object means no conditions. Groups in any are ORed; clauses in all are ANDed.
+    ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct UpdateAiAutomationDataAttributesConditions {
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
@@ -35695,7 +36058,7 @@ pub mod types {
                 .map_err(|e| { <D::Error as ::serde::de::Error>::custom(e.to_string()) })
         }
     }
-    ///`UpdateAiAutomationDataAttributesSchedule`
+    ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
         pub struct UpdateAiAutomationDataAttributesSchedule {
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -35714,11 +36077,160 @@ pub mod types {
             Default::default()
         }
     }
-    ///`UpdateAiChatSession`
+    ///`UpdateAiAutomationDataAttributesTriggersItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesTriggersItem {
+        ///Fields and operators per source are listed by GET /v1/ai_automation_trigger_options. Alert payload conditions use field "payload" with a JSONPath key.
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub conditions: ::std::vec::Vec<
+            UpdateAiAutomationDataAttributesTriggersItemConditionsItem,
+        >,
+        ///Minimum seconds between runs started by this trigger. Event triggers only; schedule triggers must omit it or send 0.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub cooldown_seconds: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub event_name: ::std::option::Option<
+            UpdateAiAutomationDataAttributesTriggersItemEventName,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        ///Read-only; accepted and ignored so GET documents can be sent back.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub next_run_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        ///Preset alternative to schedule_rrule.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_frequency: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_hour: ::std::option::Option<i64>,
+        ///Custom RRULE. Can't be combined with schedule.frequency, schedule.hour or schedule.weekday; schedule.timezone is allowed.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_rrule: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_timezone: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub schedule_weekday: ::std::option::Option<::std::string::String>,
+        pub source: ::std::string::String,
+    }
+    impl UpdateAiAutomationDataAttributesTriggersItem {
+        pub fn builder() -> builder::UpdateAiAutomationDataAttributesTriggersItem {
+            Default::default()
+        }
+    }
+    ///`UpdateAiAutomationDataAttributesTriggersItemConditionsItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesTriggersItemConditionsItem {
+        pub field: ::std::string::String,
+        ///Read-only; accepted and ignored so GET documents can be sent back.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub field_type: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub key: ::std::option::Option<::std::string::String>,
+        pub operator: ::std::string::String,
+        ///Single-value alternative to values.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub value: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub values: ::std::vec::Vec<::std::string::String>,
+    }
+    impl UpdateAiAutomationDataAttributesTriggersItemConditionsItem {
+        pub fn builder() -> builder::UpdateAiAutomationDataAttributesTriggersItemConditionsItem {
+            Default::default()
+        }
+    }
+    ///`UpdateAiAutomationDataAttributesTriggersItemEventName`
+    #[derive(
+        ::serde::Deserialize,
+        ::serde::Serialize,
+        Clone,
+        Copy,
+        Debug,
+        Eq,
+        Hash,
+        Ord,
+        PartialEq,
+        PartialOrd
+    )]
+    pub enum UpdateAiAutomationDataAttributesTriggersItemEventName {
+        #[serde(rename = "incident.created")]
+        IncidentCreated,
+        #[serde(rename = "incident.status_changed")]
+        IncidentStatusChanged,
+        #[serde(rename = "incident.resolved")]
+        IncidentResolved,
+        #[serde(rename = "incident.cancelled")]
+        IncidentCancelled,
+        #[serde(rename = "alert.created")]
+        AlertCreated,
+        #[serde(rename = "alert.acknowledged")]
+        AlertAcknowledged,
+        #[serde(rename = "alert.resolved")]
+        AlertResolved,
+        #[serde(rename = "slack.message_posted")]
+        SlackMessagePosted,
+    }
+    impl ::std::fmt::Display for UpdateAiAutomationDataAttributesTriggersItemEventName {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter<'_>) -> ::std::fmt::Result {
+            match *self {
+                Self::IncidentCreated => f.write_str("incident.created"),
+                Self::IncidentStatusChanged => f.write_str("incident.status_changed"),
+                Self::IncidentResolved => f.write_str("incident.resolved"),
+                Self::IncidentCancelled => f.write_str("incident.cancelled"),
+                Self::AlertCreated => f.write_str("alert.created"),
+                Self::AlertAcknowledged => f.write_str("alert.acknowledged"),
+                Self::AlertResolved => f.write_str("alert.resolved"),
+                Self::SlackMessagePosted => f.write_str("slack.message_posted"),
+            }
+        }
+    }
+    impl ::std::str::FromStr for UpdateAiAutomationDataAttributesTriggersItemEventName {
+        type Err = self::error::ConversionError;
+        fn from_str(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            match value {
+                "incident.created" => Ok(Self::IncidentCreated),
+                "incident.status_changed" => Ok(Self::IncidentStatusChanged),
+                "incident.resolved" => Ok(Self::IncidentResolved),
+                "incident.cancelled" => Ok(Self::IncidentCancelled),
+                "alert.created" => Ok(Self::AlertCreated),
+                "alert.acknowledged" => Ok(Self::AlertAcknowledged),
+                "alert.resolved" => Ok(Self::AlertResolved),
+                "slack.message_posted" => Ok(Self::SlackMessagePosted),
+                _ => Err("invalid value".into()),
+            }
+        }
+    }
+    impl ::std::convert::TryFrom<&str>
+    for UpdateAiAutomationDataAttributesTriggersItemEventName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: &str,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    impl ::std::convert::TryFrom<::std::string::String>
+    for UpdateAiAutomationDataAttributesTriggersItemEventName {
+        type Error = self::error::ConversionError;
+        fn try_from(
+            value: ::std::string::String,
+        ) -> ::std::result::Result<Self, self::error::ConversionError> {
+            value.parse()
+        }
+    }
+    ///At least one of title, pinned or archived is required
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
     pub struct UpdateAiChatSession {
+        ///Archive (which also unpins) or unarchive the session
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub archived: ::std::option::Option<bool>,
+        ///Pin or unpin the session
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub pinned: ::std::option::Option<bool>,
         ///New title; blank or null resets to the generated title
-        #[serde(deserialize_with = "::std::option::Option::deserialize")]
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub title: ::std::option::Option<::std::string::String>,
     }
     impl UpdateAiChatSession {
@@ -52389,6 +52901,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            triggers: ::std::result::Result<
+                ::std::vec::Vec<super::AiAutomationAttributesTriggersItem>,
+                ::std::string::String,
+            >,
             updated_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
@@ -52421,6 +52937,7 @@ pub mod types {
                     schedule_timezone: Ok(Default::default()),
                     skill_ids: Ok(Default::default()),
                     trigger_kind: Ok(Default::default()),
+                    triggers: Ok(Default::default()),
                     updated_at: Ok(Default::default()),
                 }
             }
@@ -52748,6 +53265,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn triggers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiAutomationAttributesTriggersItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.triggers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for triggers: {e}")
+                    });
+                self
+            }
             pub fn updated_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -52795,6 +53326,7 @@ pub mod types {
                     schedule_timezone: value.schedule_timezone?,
                     skill_ids: value.skill_ids?,
                     trigger_kind: value.trigger_kind?,
+                    triggers: value.triggers?,
                     updated_at: value.updated_at?,
                 })
             }
@@ -52829,6 +53361,7 @@ pub mod types {
                     schedule_timezone: Ok(value.schedule_timezone),
                     skill_ids: Ok(value.skill_ids),
                     trigger_kind: Ok(value.trigger_kind),
+                    triggers: Ok(value.triggers),
                     updated_at: Ok(value.updated_at),
                 }
             }
@@ -53097,6 +53630,323 @@ pub mod types {
                     frequency: Ok(value.frequency),
                     hour: Ok(value.hour),
                     weekday: Ok(value.weekday),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationAttributesTriggersItem {
+            conditions: ::std::result::Result<
+                ::std::vec::Vec<super::AiAutomationAttributesTriggersItemConditionsItem>,
+                ::std::string::String,
+            >,
+            cooldown_seconds: ::std::result::Result<i64, ::std::string::String>,
+            event_name: ::std::result::Result<
+                ::std::option::Option<
+                    super::AiAutomationAttributesTriggersItemEventName,
+                >,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            next_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            schedule_rrule: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_timezone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiAutomationAttributesTriggersItem {
+            fn default() -> Self {
+                Self {
+                    conditions: Err("no value supplied for conditions".to_string()),
+                    cooldown_seconds: Err(
+                        "no value supplied for cooldown_seconds".to_string(),
+                    ),
+                    event_name: Err("no value supplied for event_name".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    next_run_at: Err("no value supplied for next_run_at".to_string()),
+                    schedule_rrule: Err(
+                        "no value supplied for schedule_rrule".to_string(),
+                    ),
+                    schedule_timezone: Err(
+                        "no value supplied for schedule_timezone".to_string(),
+                    ),
+                    source: Err("no value supplied for source".to_string()),
+                }
+            }
+        }
+        impl AiAutomationAttributesTriggersItem {
+            pub fn conditions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::AiAutomationAttributesTriggersItemConditionsItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.conditions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for conditions: {e}")
+                    });
+                self
+            }
+            pub fn cooldown_seconds<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<i64>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.cooldown_seconds = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for cooldown_seconds: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn event_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::AiAutomationAttributesTriggersItemEventName,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.event_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for event_name: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn next_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next_run_at: {e}")
+                    });
+                self
+            }
+            pub fn schedule_rrule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_rrule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_rrule: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_timezone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_timezone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_timezone: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn source<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationAttributesTriggersItem>
+        for super::AiAutomationAttributesTriggersItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationAttributesTriggersItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    conditions: value.conditions?,
+                    cooldown_seconds: value.cooldown_seconds?,
+                    event_name: value.event_name?,
+                    id: value.id?,
+                    next_run_at: value.next_run_at?,
+                    schedule_rrule: value.schedule_rrule?,
+                    schedule_timezone: value.schedule_timezone?,
+                    source: value.source?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationAttributesTriggersItem>
+        for AiAutomationAttributesTriggersItem {
+            fn from(value: super::AiAutomationAttributesTriggersItem) -> Self {
+                Self {
+                    conditions: Ok(value.conditions),
+                    cooldown_seconds: Ok(value.cooldown_seconds),
+                    event_name: Ok(value.event_name),
+                    id: Ok(value.id),
+                    next_run_at: Ok(value.next_run_at),
+                    schedule_rrule: Ok(value.schedule_rrule),
+                    schedule_timezone: Ok(value.schedule_timezone),
+                    source: Ok(value.source),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationAttributesTriggersItemConditionsItem {
+            field: ::std::result::Result<::std::string::String, ::std::string::String>,
+            field_type: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            key: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            operator: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            values: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for AiAutomationAttributesTriggersItemConditionsItem {
+            fn default() -> Self {
+                Self {
+                    field: Err("no value supplied for field".to_string()),
+                    field_type: Err("no value supplied for field_type".to_string()),
+                    key: Ok(Default::default()),
+                    operator: Err("no value supplied for operator".to_string()),
+                    values: Err("no value supplied for values".to_string()),
+                }
+            }
+        }
+        impl AiAutomationAttributesTriggersItemConditionsItem {
+            pub fn field<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field: {e}")
+                    });
+                self
+            }
+            pub fn field_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field_type: {e}")
+                    });
+                self
+            }
+            pub fn key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for key: {e}")
+                    });
+                self
+            }
+            pub fn operator<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.operator = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for operator: {e}")
+                    });
+                self
+            }
+            pub fn values<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.values = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for values: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationAttributesTriggersItemConditionsItem>
+        for super::AiAutomationAttributesTriggersItemConditionsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationAttributesTriggersItemConditionsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    field: value.field?,
+                    field_type: value.field_type?,
+                    key: value.key?,
+                    operator: value.operator?,
+                    values: value.values?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::AiAutomationAttributesTriggersItemConditionsItem,
+        > for AiAutomationAttributesTriggersItemConditionsItem {
+            fn from(
+                value: super::AiAutomationAttributesTriggersItemConditionsItem,
+            ) -> Self {
+                Self {
+                    field: Ok(value.field),
+                    field_type: Ok(value.field_type),
+                    key: Ok(value.key),
+                    operator: Ok(value.operator),
+                    values: Ok(value.values),
                 }
             }
         }
@@ -54266,6 +55116,12 @@ pub mod types {
                 super::AiAutomationTriggerOptionsDataAttributesSchedule,
                 ::std::string::String,
             >,
+            sources: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::AiAutomationTriggerOptionsDataAttributesSourcesItem,
+                >,
+                ::std::string::String,
+            >,
             trigger_kinds: ::std::result::Result<
                 ::std::vec::Vec<
                     super::AiAutomationTriggerOptionsDataAttributesTriggerKindsItem,
@@ -54281,6 +55137,7 @@ pub mod types {
                     events: Err("no value supplied for events".to_string()),
                     limits: Err("no value supplied for limits".to_string()),
                     schedule: Err("no value supplied for schedule".to_string()),
+                    sources: Err("no value supplied for sources".to_string()),
                     trigger_kinds: Err("no value supplied for trigger_kinds".to_string()),
                 }
             }
@@ -54360,6 +55217,22 @@ pub mod types {
                     });
                 self
             }
+            pub fn sources<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::AiAutomationTriggerOptionsDataAttributesSourcesItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.sources = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for sources: {e}")
+                    });
+                self
+            }
             pub fn trigger_kinds<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -54389,6 +55262,7 @@ pub mod types {
                     events: value.events?,
                     limits: value.limits?,
                     schedule: value.schedule?,
+                    sources: value.sources?,
                     trigger_kinds: value.trigger_kinds?,
                 })
             }
@@ -54402,6 +55276,7 @@ pub mod types {
                     events: Ok(value.events),
                     limits: Ok(value.limits),
                     schedule: Ok(value.schedule),
+                    sources: Ok(value.sources),
                     trigger_kinds: Ok(value.trigger_kinds),
                 }
             }
@@ -54860,6 +55735,10 @@ pub mod types {
                 ::std::string::String,
             >,
             label: ::std::result::Result<::std::string::String, ::std::string::String>,
+            source: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             value: ::std::result::Result<::std::string::String, ::std::string::String>,
         }
         impl ::std::default::Default
@@ -54870,6 +55749,7 @@ pub mod types {
                         "no value supplied for condition_fields".to_string(),
                     ),
                     label: Err("no value supplied for label".to_string()),
+                    source: Ok(Default::default()),
                     value: Err("no value supplied for value".to_string()),
                 }
             }
@@ -54901,6 +55781,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn source<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source: {e}")
+                    });
+                self
+            }
             pub fn value<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -54923,6 +55815,7 @@ pub mod types {
                 Ok(Self {
                     condition_fields: value.condition_fields?,
                     label: value.label?,
+                    source: value.source?,
                     value: value.value?,
                 })
             }
@@ -54936,6 +55829,7 @@ pub mod types {
                 Self {
                     condition_fields: Ok(value.condition_fields),
                     label: Ok(value.label),
+                    source: Ok(value.source),
                     value: Ok(value.value),
                 }
             }
@@ -55585,6 +56479,311 @@ pub mod types {
         > for AiAutomationTriggerOptionsDataAttributesScheduleWeekdaysItem {
             fn from(
                 value: super::AiAutomationTriggerOptionsDataAttributesScheduleWeekdaysItem,
+            ) -> Self {
+                Self {
+                    label: Ok(value.label),
+                    value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationTriggerOptionsDataAttributesSourcesItem {
+            events: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            fields: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem,
+                >,
+                ::std::string::String,
+            >,
+            label: ::std::result::Result<::std::string::String, ::std::string::String>,
+            value: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default
+        for AiAutomationTriggerOptionsDataAttributesSourcesItem {
+            fn default() -> Self {
+                Self {
+                    events: Err("no value supplied for events".to_string()),
+                    fields: Err("no value supplied for fields".to_string()),
+                    label: Err("no value supplied for label".to_string()),
+                    value: Err("no value supplied for value".to_string()),
+                }
+            }
+        }
+        impl AiAutomationTriggerOptionsDataAttributesSourcesItem {
+            pub fn events<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.events = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for events: {e}")
+                    });
+                self
+            }
+            pub fn fields<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.fields = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for fields: {e}")
+                    });
+                self
+            }
+            pub fn label<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.label = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for label: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationTriggerOptionsDataAttributesSourcesItem>
+        for super::AiAutomationTriggerOptionsDataAttributesSourcesItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationTriggerOptionsDataAttributesSourcesItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    events: value.events?,
+                    fields: value.fields?,
+                    label: value.label?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::AiAutomationTriggerOptionsDataAttributesSourcesItem,
+        > for AiAutomationTriggerOptionsDataAttributesSourcesItem {
+            fn from(
+                value: super::AiAutomationTriggerOptionsDataAttributesSourcesItem,
+            ) -> Self {
+                Self {
+                    events: Ok(value.events),
+                    fields: Ok(value.fields),
+                    label: Ok(value.label),
+                    value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem {
+            choices: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem,
+                >,
+                ::std::string::String,
+            >,
+            label: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            operators: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            requires_key: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default
+        for AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem {
+            fn default() -> Self {
+                Self {
+                    choices: Err("no value supplied for choices".to_string()),
+                    label: Ok(Default::default()),
+                    operators: Err("no value supplied for operators".to_string()),
+                    requires_key: Ok(Default::default()),
+                    value: Err("no value supplied for value".to_string()),
+                }
+            }
+        }
+        impl AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem {
+            pub fn choices<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.choices = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for choices: {e}")
+                    });
+                self
+            }
+            pub fn label<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.label = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for label: {e}")
+                    });
+                self
+            }
+            pub fn operators<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.operators = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for operators: {e}")
+                    });
+                self
+            }
+            pub fn requires_key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.requires_key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for requires_key: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem,
+        > for super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    choices: value.choices?,
+                    label: value.label?,
+                    operators: value.operators?,
+                    requires_key: value.requires_key?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem,
+        > for AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem {
+            fn from(
+                value: super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItem,
+            ) -> Self {
+                Self {
+                    choices: Ok(value.choices),
+                    label: Ok(value.label),
+                    operators: Ok(value.operators),
+                    requires_key: Ok(value.requires_key),
+                    value: Ok(value.value),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem {
+            label: ::std::result::Result<::std::string::String, ::std::string::String>,
+            value: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default
+        for AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem {
+            fn default() -> Self {
+                Self {
+                    label: Err("no value supplied for label".to_string()),
+                    value: Err("no value supplied for value".to_string()),
+                }
+            }
+        }
+        impl AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem {
+            pub fn label<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.label = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for label: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem,
+        >
+        for super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    label: value.label?,
+                    value: value.value?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem,
+        > for AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem {
+            fn from(
+                value: super::AiAutomationTriggerOptionsDataAttributesSourcesItemFieldsItemChoicesItem,
             ) -> Self {
                 Self {
                     label: Ok(value.label),
@@ -56331,6 +57530,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct AiChatSession {
+            archived_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
             created_at: ::std::result::Result<
                 ::chrono::DateTime<::chrono::offset::Utc>,
                 ::std::string::String,
@@ -56340,21 +57543,46 @@ pub mod types {
                 ::chrono::DateTime<::chrono::offset::Utc>,
                 ::std::string::String,
             >,
+            pinned: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            pinned_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
             title: ::std::result::Result<::std::string::String, ::std::string::String>,
         }
         impl ::std::default::Default for AiChatSession {
             fn default() -> Self {
                 Self {
+                    archived_at: Ok(Default::default()),
                     created_at: Err("no value supplied for created_at".to_string()),
                     id: Err("no value supplied for id".to_string()),
                     last_active_at: Err(
                         "no value supplied for last_active_at".to_string(),
                     ),
+                    pinned: Ok(Default::default()),
+                    pinned_at: Ok(Default::default()),
                     title: Err("no value supplied for title".to_string()),
                 }
             }
         }
         impl AiChatSession {
+            pub fn archived_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.archived_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for archived_at: {e}")
+                    });
+                self
+            }
             pub fn created_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
@@ -56391,6 +57619,32 @@ pub mod types {
                     });
                 self
             }
+            pub fn pinned<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned: {e}")
+                    });
+                self
+            }
+            pub fn pinned_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned_at: {e}")
+                    });
+                self
+            }
             pub fn title<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -56410,9 +57664,12 @@ pub mod types {
                 value: AiChatSession,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    archived_at: value.archived_at?,
                     created_at: value.created_at?,
                     id: value.id?,
                     last_active_at: value.last_active_at?,
+                    pinned: value.pinned?,
+                    pinned_at: value.pinned_at?,
                     title: value.title?,
                 })
             }
@@ -56420,9 +57677,12 @@ pub mod types {
         impl ::std::convert::From<super::AiChatSession> for AiChatSession {
             fn from(value: super::AiChatSession) -> Self {
                 Self {
+                    archived_at: Ok(value.archived_at),
                     created_at: Ok(value.created_at),
                     id: Ok(value.id),
                     last_active_at: Ok(value.last_active_at),
+                    pinned: Ok(value.pinned),
+                    pinned_at: Ok(value.pinned_at),
                     title: Ok(value.title),
                 }
             }
@@ -56930,6 +58190,14 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct AiChatSessionMessageList {
+            archived: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            last_active_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
             messages: ::std::result::Result<
                 ::std::vec::Vec<super::AiChatSessionMessage>,
                 ::std::string::String,
@@ -56938,16 +58206,51 @@ pub mod types {
                 ::serde_json::Map<::std::string::String, ::serde_json::Value>,
                 ::std::string::String,
             >,
+            pinned: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default for AiChatSessionMessageList {
             fn default() -> Self {
                 Self {
+                    archived: Ok(Default::default()),
+                    last_active_at: Ok(Default::default()),
                     messages: Err("no value supplied for messages".to_string()),
                     meta: Ok(Default::default()),
+                    pinned: Ok(Default::default()),
                 }
             }
         }
         impl AiChatSessionMessageList {
+            pub fn archived<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.archived = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for archived: {e}")
+                    });
+                self
+            }
+            pub fn last_active_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_active_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for last_active_at: {e}"
+                        )
+                    });
+                self
+            }
             pub fn messages<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::vec::Vec<super::AiChatSessionMessage>>,
@@ -56974,6 +58277,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn pinned<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned: {e}")
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<AiChatSessionMessageList>
         for super::AiChatSessionMessageList {
@@ -56982,8 +58297,11 @@ pub mod types {
                 value: AiChatSessionMessageList,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    archived: value.archived?,
+                    last_active_at: value.last_active_at?,
                     messages: value.messages?,
                     meta: value.meta?,
+                    pinned: value.pinned?,
                 })
             }
         }
@@ -56991,8 +58309,11 @@ pub mod types {
         for AiChatSessionMessageList {
             fn from(value: super::AiChatSessionMessageList) -> Self {
                 Self {
+                    archived: Ok(value.archived),
+                    last_active_at: Ok(value.last_active_at),
                     messages: Ok(value.messages),
                     meta: Ok(value.meta),
+                    pinned: Ok(value.pinned),
                 }
             }
         }
@@ -57088,25 +58409,54 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct AiChatSessionTitle {
+            archived_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
             generated_title: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
             id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
+            pinned: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            pinned_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
             title: ::std::result::Result<::std::string::String, ::std::string::String>,
         }
         impl ::std::default::Default for AiChatSessionTitle {
             fn default() -> Self {
                 Self {
+                    archived_at: Ok(Default::default()),
                     generated_title: Err(
                         "no value supplied for generated_title".to_string(),
                     ),
                     id: Err("no value supplied for id".to_string()),
+                    pinned: Ok(Default::default()),
+                    pinned_at: Ok(Default::default()),
                     title: Err("no value supplied for title".to_string()),
                 }
             }
         }
         impl AiChatSessionTitle {
+            pub fn archived_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.archived_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for archived_at: {e}")
+                    });
+                self
+            }
             pub fn generated_title<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -57131,6 +58481,32 @@ pub mod types {
                     .map_err(|e| format!("error converting supplied value for id: {e}"));
                 self
             }
+            pub fn pinned<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned: {e}")
+                    });
+                self
+            }
+            pub fn pinned_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned_at: {e}")
+                    });
+                self
+            }
             pub fn title<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::string::String>,
@@ -57150,8 +58526,11 @@ pub mod types {
                 value: AiChatSessionTitle,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    archived_at: value.archived_at?,
                     generated_title: value.generated_title?,
                     id: value.id?,
+                    pinned: value.pinned?,
+                    pinned_at: value.pinned_at?,
                     title: value.title?,
                 })
             }
@@ -57159,8 +58538,11 @@ pub mod types {
         impl ::std::convert::From<super::AiChatSessionTitle> for AiChatSessionTitle {
             fn from(value: super::AiChatSessionTitle) -> Self {
                 Self {
+                    archived_at: Ok(value.archived_at),
                     generated_title: Ok(value.generated_title),
                     id: Ok(value.id),
+                    pinned: Ok(value.pinned),
+                    pinned_at: Ok(value.pinned_at),
                     title: Ok(value.title),
                 }
             }
@@ -141922,6 +143304,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            triggers: ::std::result::Result<
+                ::std::vec::Vec<super::NewAiAutomationDataAttributesTriggersItem>,
+                ::std::string::String,
+            >,
             updated_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
@@ -141955,6 +143341,7 @@ pub mod types {
                     schedule_timezone: Ok(Default::default()),
                     skill_ids: Ok(Default::default()),
                     trigger_kind: Ok(Default::default()),
+                    triggers: Ok(Default::default()),
                     updated_at: Ok(Default::default()),
                 }
             }
@@ -142298,6 +143685,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn triggers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::NewAiAutomationDataAttributesTriggersItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.triggers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for triggers: {e}")
+                    });
+                self
+            }
             pub fn updated_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -142346,6 +143747,7 @@ pub mod types {
                     schedule_timezone: value.schedule_timezone?,
                     skill_ids: value.skill_ids?,
                     trigger_kind: value.trigger_kind?,
+                    triggers: value.triggers?,
                     updated_at: value.updated_at?,
                 })
             }
@@ -142381,6 +143783,7 @@ pub mod types {
                     schedule_timezone: Ok(value.schedule_timezone),
                     skill_ids: Ok(value.skill_ids),
                     trigger_kind: Ok(value.trigger_kind),
+                    triggers: Ok(value.triggers),
                     updated_at: Ok(value.updated_at),
                 }
             }
@@ -142677,6 +144080,406 @@ pub mod types {
                     hour: Ok(value.hour),
                     timezone: Ok(value.timezone),
                     weekday: Ok(value.weekday),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesTriggersItem {
+            conditions: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::NewAiAutomationDataAttributesTriggersItemConditionsItem,
+                >,
+                ::std::string::String,
+            >,
+            cooldown_seconds: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            event_name: ::std::result::Result<
+                ::std::option::Option<
+                    super::NewAiAutomationDataAttributesTriggersItemEventName,
+                >,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            next_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            schedule_frequency: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_hour: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            schedule_rrule: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_timezone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_weekday: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for NewAiAutomationDataAttributesTriggersItem {
+            fn default() -> Self {
+                Self {
+                    conditions: Ok(Default::default()),
+                    cooldown_seconds: Ok(Default::default()),
+                    event_name: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    next_run_at: Ok(Default::default()),
+                    schedule_frequency: Ok(Default::default()),
+                    schedule_hour: Ok(Default::default()),
+                    schedule_rrule: Ok(Default::default()),
+                    schedule_timezone: Ok(Default::default()),
+                    schedule_weekday: Ok(Default::default()),
+                    source: Err("no value supplied for source".to_string()),
+                }
+            }
+        }
+        impl NewAiAutomationDataAttributesTriggersItem {
+            pub fn conditions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::NewAiAutomationDataAttributesTriggersItemConditionsItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.conditions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for conditions: {e}")
+                    });
+                self
+            }
+            pub fn cooldown_seconds<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.cooldown_seconds = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for cooldown_seconds: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn event_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::NewAiAutomationDataAttributesTriggersItemEventName,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.event_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for event_name: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn next_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next_run_at: {e}")
+                    });
+                self
+            }
+            pub fn schedule_frequency<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_frequency = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_frequency: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_hour<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_hour = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for schedule_hour: {e}")
+                    });
+                self
+            }
+            pub fn schedule_rrule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_rrule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_rrule: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_timezone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_timezone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_timezone: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_weekday<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_weekday = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_weekday: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn source<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<NewAiAutomationDataAttributesTriggersItem>
+        for super::NewAiAutomationDataAttributesTriggersItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationDataAttributesTriggersItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    conditions: value.conditions?,
+                    cooldown_seconds: value.cooldown_seconds?,
+                    event_name: value.event_name?,
+                    id: value.id?,
+                    next_run_at: value.next_run_at?,
+                    schedule_frequency: value.schedule_frequency?,
+                    schedule_hour: value.schedule_hour?,
+                    schedule_rrule: value.schedule_rrule?,
+                    schedule_timezone: value.schedule_timezone?,
+                    schedule_weekday: value.schedule_weekday?,
+                    source: value.source?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::NewAiAutomationDataAttributesTriggersItem>
+        for NewAiAutomationDataAttributesTriggersItem {
+            fn from(value: super::NewAiAutomationDataAttributesTriggersItem) -> Self {
+                Self {
+                    conditions: Ok(value.conditions),
+                    cooldown_seconds: Ok(value.cooldown_seconds),
+                    event_name: Ok(value.event_name),
+                    id: Ok(value.id),
+                    next_run_at: Ok(value.next_run_at),
+                    schedule_frequency: Ok(value.schedule_frequency),
+                    schedule_hour: Ok(value.schedule_hour),
+                    schedule_rrule: Ok(value.schedule_rrule),
+                    schedule_timezone: Ok(value.schedule_timezone),
+                    schedule_weekday: Ok(value.schedule_weekday),
+                    source: Ok(value.source),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct NewAiAutomationDataAttributesTriggersItemConditionsItem {
+            field: ::std::result::Result<::std::string::String, ::std::string::String>,
+            field_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            key: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            operator: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            values: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for NewAiAutomationDataAttributesTriggersItemConditionsItem {
+            fn default() -> Self {
+                Self {
+                    field: Err("no value supplied for field".to_string()),
+                    field_type: Ok(Default::default()),
+                    key: Ok(Default::default()),
+                    operator: Err("no value supplied for operator".to_string()),
+                    value: Ok(Default::default()),
+                    values: Ok(Default::default()),
+                }
+            }
+        }
+        impl NewAiAutomationDataAttributesTriggersItemConditionsItem {
+            pub fn field<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field: {e}")
+                    });
+                self
+            }
+            pub fn field_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field_type: {e}")
+                    });
+                self
+            }
+            pub fn key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for key: {e}")
+                    });
+                self
+            }
+            pub fn operator<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.operator = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for operator: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+            pub fn values<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.values = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for values: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            NewAiAutomationDataAttributesTriggersItemConditionsItem,
+        > for super::NewAiAutomationDataAttributesTriggersItemConditionsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: NewAiAutomationDataAttributesTriggersItemConditionsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    field: value.field?,
+                    field_type: value.field_type?,
+                    key: value.key?,
+                    operator: value.operator?,
+                    value: value.value?,
+                    values: value.values?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::NewAiAutomationDataAttributesTriggersItemConditionsItem,
+        > for NewAiAutomationDataAttributesTriggersItemConditionsItem {
+            fn from(
+                value: super::NewAiAutomationDataAttributesTriggersItemConditionsItem,
+            ) -> Self {
+                Self {
+                    field: Ok(value.field),
+                    field_type: Ok(value.field_type),
+                    key: Ok(value.key),
+                    operator: Ok(value.operator),
+                    value: Ok(value.value),
+                    values: Ok(value.values),
                 }
             }
         }
@@ -225682,6 +227485,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            triggers: ::std::result::Result<
+                ::std::vec::Vec<super::UpdateAiAutomationDataAttributesTriggersItem>,
+                ::std::string::String,
+            >,
             updated_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
@@ -225715,6 +227522,7 @@ pub mod types {
                     schedule_timezone: Ok(Default::default()),
                     skill_ids: Ok(Default::default()),
                     trigger_kind: Ok(Default::default()),
+                    triggers: Ok(Default::default()),
                     updated_at: Ok(Default::default()),
                 }
             }
@@ -226062,6 +227870,20 @@ pub mod types {
                     });
                 self
             }
+            pub fn triggers<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::UpdateAiAutomationDataAttributesTriggersItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.triggers = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for triggers: {e}")
+                    });
+                self
+            }
             pub fn updated_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -226110,6 +227932,7 @@ pub mod types {
                     schedule_timezone: value.schedule_timezone?,
                     skill_ids: value.skill_ids?,
                     trigger_kind: value.trigger_kind?,
+                    triggers: value.triggers?,
                     updated_at: value.updated_at?,
                 })
             }
@@ -226145,6 +227968,7 @@ pub mod types {
                     schedule_timezone: Ok(value.schedule_timezone),
                     skill_ids: Ok(value.skill_ids),
                     trigger_kind: Ok(value.trigger_kind),
+                    triggers: Ok(value.triggers),
                     updated_at: Ok(value.updated_at),
                 }
             }
@@ -226449,7 +228273,415 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesTriggersItem {
+            conditions: ::std::result::Result<
+                ::std::vec::Vec<
+                    super::UpdateAiAutomationDataAttributesTriggersItemConditionsItem,
+                >,
+                ::std::string::String,
+            >,
+            cooldown_seconds: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            event_name: ::std::result::Result<
+                ::std::option::Option<
+                    super::UpdateAiAutomationDataAttributesTriggersItemEventName,
+                >,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            next_run_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            schedule_frequency: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_hour: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            schedule_rrule: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_timezone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            schedule_weekday: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            source: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for UpdateAiAutomationDataAttributesTriggersItem {
+            fn default() -> Self {
+                Self {
+                    conditions: Ok(Default::default()),
+                    cooldown_seconds: Ok(Default::default()),
+                    event_name: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    next_run_at: Ok(Default::default()),
+                    schedule_frequency: Ok(Default::default()),
+                    schedule_hour: Ok(Default::default()),
+                    schedule_rrule: Ok(Default::default()),
+                    schedule_timezone: Ok(Default::default()),
+                    schedule_weekday: Ok(Default::default()),
+                    source: Err("no value supplied for source".to_string()),
+                }
+            }
+        }
+        impl UpdateAiAutomationDataAttributesTriggersItem {
+            pub fn conditions<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<
+                        super::UpdateAiAutomationDataAttributesTriggersItemConditionsItem,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.conditions = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for conditions: {e}")
+                    });
+                self
+            }
+            pub fn cooldown_seconds<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.cooldown_seconds = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for cooldown_seconds: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn event_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<
+                        super::UpdateAiAutomationDataAttributesTriggersItemEventName,
+                    >,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.event_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for event_name: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn next_run_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.next_run_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for next_run_at: {e}")
+                    });
+                self
+            }
+            pub fn schedule_frequency<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_frequency = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_frequency: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_hour<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_hour = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for schedule_hour: {e}")
+                    });
+                self
+            }
+            pub fn schedule_rrule<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_rrule = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_rrule: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_timezone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_timezone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_timezone: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn schedule_weekday<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.schedule_weekday = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for schedule_weekday: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn source<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.source = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for source: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UpdateAiAutomationDataAttributesTriggersItem>
+        for super::UpdateAiAutomationDataAttributesTriggersItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomationDataAttributesTriggersItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    conditions: value.conditions?,
+                    cooldown_seconds: value.cooldown_seconds?,
+                    event_name: value.event_name?,
+                    id: value.id?,
+                    next_run_at: value.next_run_at?,
+                    schedule_frequency: value.schedule_frequency?,
+                    schedule_hour: value.schedule_hour?,
+                    schedule_rrule: value.schedule_rrule?,
+                    schedule_timezone: value.schedule_timezone?,
+                    schedule_weekday: value.schedule_weekday?,
+                    source: value.source?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UpdateAiAutomationDataAttributesTriggersItem>
+        for UpdateAiAutomationDataAttributesTriggersItem {
+            fn from(value: super::UpdateAiAutomationDataAttributesTriggersItem) -> Self {
+                Self {
+                    conditions: Ok(value.conditions),
+                    cooldown_seconds: Ok(value.cooldown_seconds),
+                    event_name: Ok(value.event_name),
+                    id: Ok(value.id),
+                    next_run_at: Ok(value.next_run_at),
+                    schedule_frequency: Ok(value.schedule_frequency),
+                    schedule_hour: Ok(value.schedule_hour),
+                    schedule_rrule: Ok(value.schedule_rrule),
+                    schedule_timezone: Ok(value.schedule_timezone),
+                    schedule_weekday: Ok(value.schedule_weekday),
+                    source: Ok(value.source),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UpdateAiAutomationDataAttributesTriggersItemConditionsItem {
+            field: ::std::result::Result<::std::string::String, ::std::string::String>,
+            field_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            key: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            operator: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            value: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            values: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for UpdateAiAutomationDataAttributesTriggersItemConditionsItem {
+            fn default() -> Self {
+                Self {
+                    field: Err("no value supplied for field".to_string()),
+                    field_type: Ok(Default::default()),
+                    key: Ok(Default::default()),
+                    operator: Err("no value supplied for operator".to_string()),
+                    value: Ok(Default::default()),
+                    values: Ok(Default::default()),
+                }
+            }
+        }
+        impl UpdateAiAutomationDataAttributesTriggersItemConditionsItem {
+            pub fn field<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field: {e}")
+                    });
+                self
+            }
+            pub fn field_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.field_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for field_type: {e}")
+                    });
+                self
+            }
+            pub fn key<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.key = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for key: {e}")
+                    });
+                self
+            }
+            pub fn operator<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.operator = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for operator: {e}")
+                    });
+                self
+            }
+            pub fn value<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.value = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for value: {e}")
+                    });
+                self
+            }
+            pub fn values<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.values = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for values: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<
+            UpdateAiAutomationDataAttributesTriggersItemConditionsItem,
+        > for super::UpdateAiAutomationDataAttributesTriggersItemConditionsItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UpdateAiAutomationDataAttributesTriggersItemConditionsItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    field: value.field?,
+                    field_type: value.field_type?,
+                    key: value.key?,
+                    operator: value.operator?,
+                    value: value.value?,
+                    values: value.values?,
+                })
+            }
+        }
+        impl ::std::convert::From<
+            super::UpdateAiAutomationDataAttributesTriggersItemConditionsItem,
+        > for UpdateAiAutomationDataAttributesTriggersItemConditionsItem {
+            fn from(
+                value: super::UpdateAiAutomationDataAttributesTriggersItemConditionsItem,
+            ) -> Self {
+                Self {
+                    field: Ok(value.field),
+                    field_type: Ok(value.field_type),
+                    key: Ok(value.key),
+                    operator: Ok(value.operator),
+                    value: Ok(value.value),
+                    values: Ok(value.values),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct UpdateAiChatSession {
+            archived: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            pinned: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
             title: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -226458,11 +228690,37 @@ pub mod types {
         impl ::std::default::Default for UpdateAiChatSession {
             fn default() -> Self {
                 Self {
-                    title: Err("no value supplied for title".to_string()),
+                    archived: Ok(Default::default()),
+                    pinned: Ok(Default::default()),
+                    title: Ok(Default::default()),
                 }
             }
         }
         impl UpdateAiChatSession {
+            pub fn archived<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.archived = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for archived: {e}")
+                    });
+                self
+            }
+            pub fn pinned<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.pinned = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for pinned: {e}")
+                    });
+                self
+            }
             pub fn title<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -226482,12 +228740,20 @@ pub mod types {
             fn try_from(
                 value: UpdateAiChatSession,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { title: value.title? })
+                Ok(Self {
+                    archived: value.archived?,
+                    pinned: value.pinned?,
+                    title: value.title?,
+                })
             }
         }
         impl ::std::convert::From<super::UpdateAiChatSession> for UpdateAiChatSession {
             fn from(value: super::UpdateAiChatSession) -> Self {
-                Self { title: Ok(value.title) }
+                Self {
+                    archived: Ok(value.archived),
+                    pinned: Ok(value.pinned),
+                    title: Ok(value.title),
+                }
             }
         }
         #[derive(Clone, Debug)]
@@ -289605,17 +291871,21 @@ let response = client.create_ai_chat()
     }
     /**List AI home chat sessions
 
-Returns the caller's active, unbound AI home chat sessions newest-first, cursor-paginated by `before`. Requires `ai.chat:read` OAuth scope or a personal API key, and the caller must be eligible for home chat.
+Returns the caller's active, unbound AI home chat sessions newest-first, cursor-paginated by `before`. `archived=false` leaves out archived sessions, `archived=true` lists only archived ones, and `pinned` splits the unarchived ones. Archived sessions are never pinned, so `archived=true&pinned=true` returns no sessions. Requires `ai.chat:read` OAuth scope or a personal API key, and the caller must be eligible for home chat.
 
 Sends a `GET` request to `/v1/ai/chat/sessions`
 
 Arguments:
+- `archived`: true lists only archived sessions, false leaves them out (default: both)
 - `before`: Opaque cursor from a previous page's meta.pagination.next_before
 - `limit`: Sessions per page (max 50, default 20)
+- `pinned`: true lists only pinned sessions, false only unpinned ones (archived excluded either way)
 ```ignore
 let response = client.list_ai_chat_sessions()
+    .archived(archived)
     .before(before)
     .limit(limit)
+    .pinned(pinned)
     .send()
     .await;
 ```*/
@@ -289639,9 +291909,9 @@ let response = client.delete_ai_chat_session()
     pub fn delete_ai_chat_session(&self) -> builder::DeleteAiChatSession<'_> {
         builder::DeleteAiChatSession::new(self)
     }
-    /**Rename AI chat session
+    /**Update AI chat session
 
-Renames an AI home chat session; a blank or null title resets to the generated title. Requires `ai.chat:write` OAuth scope or a personal API key, and the caller must be eligible for home chat.
+Renames, pins or archives an AI home chat session; a blank or null title resets to the generated title. Archiving also unpins. Requires `ai.chat:write` OAuth scope or a personal API key, and the caller must be eligible for home chat.
 
 Sends a `PATCH` request to `/v1/ai/chat/sessions/{id}`
 
@@ -289660,7 +291930,7 @@ let response = client.update_ai_chat_session()
     }
     /**List AI chat session messages
 
-Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Assistant messages may include a `skill` object with `id`, `name`, `slug`, and `version` for the AI Skill loaded during that turn. Requires `ai.chat:read` OAuth scope or an API key.
+Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Assistant messages may include a `skill` object with `id`, `name`, `slug`, and `version` for the AI Skill loaded during that turn. The response also carries the session's current `pinned`, `archived`, and `last_active_at` state. Requires `ai.chat:read` OAuth scope or an API key.
 
 Sends a `GET` request to `/v1/ai/chat/sessions/{session_id}/messages`
 
@@ -303078,16 +305348,30 @@ pub mod builder {
     #[derive(Debug, Clone)]
     pub struct ListAiChatSessions<'a> {
         client: &'a super::Client,
+        archived: Result<Option<bool>, String>,
         before: Result<Option<::std::string::String>, String>,
         limit: Result<Option<i64>, String>,
+        pinned: Result<Option<bool>, String>,
     }
     impl<'a> ListAiChatSessions<'a> {
         pub fn new(client: &'a super::Client) -> Self {
             Self {
                 client: client,
+                archived: Ok(None),
                 before: Ok(None),
                 limit: Ok(None),
+                pinned: Ok(None),
             }
+        }
+        pub fn archived<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<bool>,
+        {
+            self.archived = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `bool` for archived failed".to_string());
+            self
         }
         pub fn before<V>(mut self, value: V) -> Self
         where
@@ -303112,13 +305396,25 @@ pub mod builder {
                 .map_err(|_| "conversion to `i64` for limit failed".to_string());
             self
         }
+        pub fn pinned<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<bool>,
+        {
+            self.pinned = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `bool` for pinned failed".to_string());
+            self
+        }
         ///Sends a `GET` request to `/v1/ai/chat/sessions`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiChatSessionList>, Error<()>> {
-            let Self { client, before, limit } = self;
+            let Self { client, archived, before, limit, pinned } = self;
+            let archived = archived.map_err(Error::InvalidRequest)?;
             let before = before.map_err(Error::InvalidRequest)?;
             let limit = limit.map_err(Error::InvalidRequest)?;
+            let pinned = pinned.map_err(Error::InvalidRequest)?;
             let url = format!("{}/v1/ai/chat/sessions", client.baseurl,);
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
@@ -303136,8 +305432,10 @@ pub mod builder {
                     ::reqwest::header::ACCEPT,
                     ::reqwest::header::HeaderValue::from_static("application/json"),
                 )
+                .query(&progenitor_client::QueryParam::new("archived", &archived))
                 .query(&progenitor_client::QueryParam::new("before", &before))
                 .query(&progenitor_client::QueryParam::new("limit", &limit))
+                .query(&progenitor_client::QueryParam::new("pinned", &pinned))
                 .headers(header_map)
                 .build()?;
             let info = OperationInfo {
