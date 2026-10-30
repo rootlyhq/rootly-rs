@@ -600,7 +600,7 @@ pub mod types {
     ///`AiAutomationAttributes`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
     pub struct AiAutomationAttributes {
-        ///null inherits all tools allowed by the team; otherwise the automation can use only these tool keys.
+        ///Tool keys are stable identifiers; connector tools use mcp:<lineage_root_id>:<tool_name> or private_connect:<agent_id>:<provider_id>:<capability>. null inherits all tools allowed by the team; otherwise the automation can use only these tool keys.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub allowed_tool_keys: ::std::option::Option<
             ::std::vec::Vec<::std::string::String>,
@@ -1823,6 +1823,8 @@ pub mod types {
         ///Whether the session is pinned
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub pinned: ::std::option::Option<bool>,
+        ///Session title (user-supplied, generated, or placeholder)
+        pub title: ::std::string::String,
     }
     impl AiChatSessionMessageList {
         pub fn builder() -> builder::AiChatSessionMessageList {
@@ -1899,72 +1901,11 @@ pub mod types {
         pub source_template_key: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub source_template_version: ::std::option::Option<i64>,
-        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
-        pub tool_grants: ::std::vec::Vec<AiSkillToolGrantsItem>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
     }
     impl AiSkill {
         pub fn builder() -> builder::AiSkill {
-            Default::default()
-        }
-    }
-    ///`AiSkillGrantableTools`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct AiSkillGrantableTools {
-        pub data: ::std::vec::Vec<AiSkillGrantableToolsDataItem>,
-    }
-    impl AiSkillGrantableTools {
-        pub fn builder() -> builder::AiSkillGrantableTools {
-            Default::default()
-        }
-    }
-    ///`AiSkillGrantableToolsDataItem`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct AiSkillGrantableToolsDataItem {
-        pub attributes: AiSkillGrantableToolsDataItemAttributes,
-        pub id: ::std::string::String,
-        #[serde(rename = "type")]
-        pub type_: ::std::string::String,
-    }
-    impl AiSkillGrantableToolsDataItem {
-        pub fn builder() -> builder::AiSkillGrantableToolsDataItem {
-            Default::default()
-        }
-    }
-    ///`AiSkillGrantableToolsDataItemAttributes`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct AiSkillGrantableToolsDataItemAttributes {
-        pub access: ::std::string::String,
-        pub category: ::std::string::String,
-        pub connector: bool,
-        pub grantable: bool,
-        pub label: ::std::string::String,
-        pub pinnable: bool,
-        pub pinnable_params: ::std::vec::Vec<
-            AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
-        >,
-        pub tool_key: ::std::string::String,
-    }
-    impl AiSkillGrantableToolsDataItemAttributes {
-        pub fn builder() -> builder::AiSkillGrantableToolsDataItemAttributes {
-            Default::default()
-        }
-    }
-    ///`AiSkillGrantableToolsDataItemAttributesPinnableParamsItem`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
-        #[serde(
-            rename = "enum",
-            deserialize_with = "::std::option::Option::deserialize"
-        )]
-        pub enum_: ::std::option::Option<::std::vec::Vec<::std::string::String>>,
-        pub name: ::std::string::String,
-        #[serde(rename = "type")]
-        pub type_: ::std::string::String,
-    }
-    impl AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
-        pub fn builder() -> builder::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
             Default::default()
         }
     }
@@ -2017,290 +1958,6 @@ pub mod types {
             Default::default()
         }
     }
-    ///`AiSkillToolGrantsItem`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillToolGrantsItem {
-        Variant0 {
-            ///Fetch URL grants use read access, which is the default when omitted or null.
-            #[serde(deserialize_with = "::std::option::Option::deserialize")]
-            access: ::std::option::Option<::std::string::String>,
-            pinned_params: AiSkillToolGrantsItemVariant0PinnedParams,
-            tool_key: ::std::string::String,
-        },
-        Variant1 {
-            ///Defaults to the tool's access classification (read or write) when omitted or null.
-            #[serde(deserialize_with = "::std::option::Option::deserialize")]
-            access: ::std::option::Option<::std::string::String>,
-            ///For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
-            #[serde(deserialize_with = "::std::option::Option::deserialize")]
-            pinned_params: ::std::option::Option<
-                ::std::collections::HashMap<
-                    ::std::string::String,
-                    AiSkillToolGrantsItemVariant1PinnedParamsValue,
-                >,
-            >,
-            tool_key: AiSkillToolGrantsItemVariant1ToolKey,
-        },
-    }
-    ///Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct AiSkillToolGrantsItemVariant0PinnedParams {
-        pub domains: ::std::vec::Vec<::std::string::String>,
-    }
-    impl AiSkillToolGrantsItemVariant0PinnedParams {
-        pub fn builder() -> builder::AiSkillToolGrantsItemVariant0PinnedParams {
-            Default::default()
-        }
-    }
-    ///`AiSkillToolGrantsItemVariant1PinnedParamsValue`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillToolGrantsItemVariant1PinnedParamsValue {
-        Variant0(AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0),
-        Variant1(
-            ::std::vec::Vec<AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item>,
-        ),
-    }
-    impl ::std::convert::From<AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValue {
-        fn from(value: AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<
-        ::std::vec::Vec<AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item>,
-    > for AiSkillToolGrantsItemVariant1PinnedParamsValue {
-        fn from(
-            value: ::std::vec::Vec<
-                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-            >,
-        ) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    ///`AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        Variant0(
-            ::std::option::Option<
-                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-            >,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<
-            AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-        >,
-    > for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(
-            value: ::std::option::Option<
-                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-            >,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(value: i64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    impl ::std::convert::From<bool>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<
-        AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-    > for ::std::string::String {
-        fn from(
-            value: AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        Variant0(
-            ::std::option::Option<
-                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-            >,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<
-            AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-        >,
-    > for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(
-            value: ::std::option::Option<
-                AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-            >,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(value: i64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    impl ::std::convert::From<bool>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<
-        AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-    > for ::std::string::String {
-        fn from(
-            value: AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for AiSkillToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`AiSkillToolGrantsItemVariant1ToolKey`
-    #[derive(
-        ::serde::Deserialize,
-        ::serde::Serialize,
-        Clone,
-        Copy,
-        Debug,
-        Eq,
-        Hash,
-        Ord,
-        PartialEq,
-        PartialOrd
-    )]
-        pub enum AiSkillToolGrantsItemVariant1ToolKey {}
     ///`AiSkillVersion`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
     pub struct AiSkillVersion {
@@ -2316,8 +1973,6 @@ pub mod types {
         pub name: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub skill_id: ::std::option::Option<::std::string::String>,
-        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
-        pub tool_grants: ::std::vec::Vec<AiSkillVersionToolGrantsItem>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub version: ::std::option::Option<i64>,
     }
@@ -2374,297 +2029,6 @@ pub mod types {
             Default::default()
         }
     }
-    ///`AiSkillVersionToolGrantsItem`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillVersionToolGrantsItem {
-        Variant0 {
-            ///Fetch URL grants use read access, which is the default when omitted or null.
-            #[serde(deserialize_with = "::std::option::Option::deserialize")]
-            access: ::std::option::Option<::std::string::String>,
-            pinned_params: AiSkillVersionToolGrantsItemVariant0PinnedParams,
-            tool_key: ::std::string::String,
-        },
-        Variant1 {
-            ///Defaults to the tool's access classification (read or write) when omitted or null.
-            #[serde(deserialize_with = "::std::option::Option::deserialize")]
-            access: ::std::option::Option<::std::string::String>,
-            ///For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
-            #[serde(deserialize_with = "::std::option::Option::deserialize")]
-            pinned_params: ::std::option::Option<
-                ::std::collections::HashMap<
-                    ::std::string::String,
-                    AiSkillVersionToolGrantsItemVariant1PinnedParamsValue,
-                >,
-            >,
-            tool_key: AiSkillVersionToolGrantsItemVariant1ToolKey,
-        },
-    }
-    ///Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct AiSkillVersionToolGrantsItemVariant0PinnedParams {
-        pub domains: ::std::vec::Vec<::std::string::String>,
-    }
-    impl AiSkillVersionToolGrantsItemVariant0PinnedParams {
-        pub fn builder() -> builder::AiSkillVersionToolGrantsItemVariant0PinnedParams {
-            Default::default()
-        }
-    }
-    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValue`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillVersionToolGrantsItemVariant1PinnedParamsValue {
-        Variant0(AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0),
-        Variant1(
-            ::std::vec::Vec<
-                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-            >,
-        ),
-    }
-    impl ::std::convert::From<
-        AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0,
-    > for AiSkillVersionToolGrantsItemVariant1PinnedParamsValue {
-        fn from(
-            value: AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<
-        ::std::vec::Vec<
-            AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-        >,
-    > for AiSkillVersionToolGrantsItemVariant1PinnedParamsValue {
-        fn from(
-            value: ::std::vec::Vec<
-                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-            >,
-        ) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        Variant0(
-            ::std::option::Option<
-                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-            >,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<
-            AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-        >,
-    > for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(
-            value: ::std::option::Option<
-                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-            >,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(value: i64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    impl ::std::convert::From<bool>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<
-        AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-    > for ::std::string::String {
-        fn from(
-            value: AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        Variant0(
-            ::std::option::Option<
-                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-            >,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<
-            AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-        >,
-    > for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(
-            value: ::std::option::Option<
-                AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-            >,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(value: i64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    impl ::std::convert::From<bool>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<
-        AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-    > for ::std::string::String {
-        fn from(
-            value: AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for AiSkillVersionToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`AiSkillVersionToolGrantsItemVariant1ToolKey`
-    #[derive(
-        ::serde::Deserialize,
-        ::serde::Serialize,
-        Clone,
-        Copy,
-        Debug,
-        Eq,
-        Hash,
-        Ord,
-        PartialEq,
-        PartialOrd
-    )]
-        pub enum AiSkillVersionToolGrantsItemVariant1ToolKey {}
     ///`Alert`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct Alert {
@@ -11465,7 +10829,7 @@ pub mod types {
         pub created_at: ::std::string::String,
         ///The email of the user
         pub email: ::std::string::String,
-        ///Server-evaluated flags for the calling credential. `ai-native-home` indicates whether the AI-native home is available. `ai-skills` is true only when the organization has AI Skills enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai_skills` is expected to succeed. `ai-automations` is true only when the organization has AI Automations enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai_automations` is expected to succeed. May be absent; treat a missing object or key as unknown, not false.
+        ///Server-evaluated flags for the calling credential. `ai-native-home` indicates whether the AI-native home is available. `ai-skills` is true only when the organization has AI Skills enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai_skills` is expected to succeed. `ai-automations` is true only when the organization has AI Automations enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai_automations` is expected to succeed. `ai-chat` is true when the organization can use the `/v1/ai/chat` endpoints (feature rollout, `config_ai_api_chat_enabled`, and the AI assistant are all on) and, for OAuth tokens, the token has `ai.chat:write` or an AI meta scope; a true value means `POST /v1/ai/chat` is expected to pass these gates. May be absent; treat a missing object or key as unknown, not false.
         #[serde(
             default,
             skip_serializing_if = ":: std :: collections :: HashMap::is_empty"
@@ -19175,7 +18539,7 @@ pub mod types {
     ///Read-only attributes are ignored on write.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAiAutomationDataAttributes {
-        ///null inherits all tools allowed by the team; otherwise the automation can use only these tool keys.
+        ///Tool keys are stable identifiers; connector tools use mcp:<lineage_root_id>:<tool_name> or private_connect:<agent_id>:<provider_id>:<capability>. null inherits all tools allowed by the team; otherwise the automation can use only these tool keys.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub allowed_tool_keys: ::std::option::Option<
             ::std::vec::Vec<::std::string::String>,
@@ -19625,7 +18989,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Create a skill. New skills are disabled unless enabled is explicitly true. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. fetch_url read grants use pinned domains; other pinned parameters apply only to write access. Read-only attributes are ignored on write.
+    ///Create a skill. New skills are disabled unless enabled is explicitly true. Read-only attributes are ignored on write.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAiSkill {
         pub data: NewAiSkillData,
@@ -19685,9 +19049,6 @@ pub mod types {
         ///Ignored on write.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub source_template_version: ::std::option::Option<i64>,
-        ///Replaces the editable grant list. Grants on tools the caller cannot see are kept.
-        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
-        pub tool_grants: ::std::vec::Vec<NewAiSkillDataAttributesToolGrantsItem>,
         ///Ignored on write.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
@@ -19697,299 +19058,6 @@ pub mod types {
             Default::default()
         }
     }
-    ///`NewAiSkillDataAttributesToolGrantsItem`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum NewAiSkillDataAttributesToolGrantsItem {
-        Variant0 {
-            ///Fetch URL grants use read access, which is the default when omitted or null.
-            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-            access: ::std::option::Option<::std::string::String>,
-            pinned_params: NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-            tool_key: ::std::string::String,
-        },
-        Variant1 {
-            ///Defaults to the tool's access classification (read or write) when omitted or null.
-            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-            access: ::std::option::Option<::std::string::String>,
-            ///For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
-            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-            pinned_params: ::std::option::Option<
-                ::std::collections::HashMap<
-                    ::std::string::String,
-                    NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue,
-                >,
-            >,
-            tool_key: NewAiSkillDataAttributesToolGrantsItemVariant1ToolKey,
-        },
-    }
-    ///Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-        pub domains: ::std::vec::Vec<::std::string::String>,
-    }
-    impl NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-        pub fn builder() -> builder::NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            Default::default()
-        }
-    }
-    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
-        Variant0(
-            NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
-        ),
-        Variant1(
-            ::std::vec::Vec<
-                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-            >,
-        ),
-    }
-    impl ::std::convert::From<
-        NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
-    > for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
-        fn from(
-            value: NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<
-        ::std::vec::Vec<
-            NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-        >,
-    > for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
-        fn from(
-            value: ::std::vec::Vec<
-                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-            >,
-        ) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        Variant0(
-            ::std::option::Option<
-                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-            >,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<
-            NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-        >,
-    > for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(
-            value: ::std::option::Option<
-                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-            >,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(value: i64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    impl ::std::convert::From<bool>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<
-        NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-    > for ::std::string::String {
-        fn from(
-            value: NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        Variant0(
-            ::std::option::Option<
-                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-            >,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<
-            NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-        >,
-    > for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(
-            value: ::std::option::Option<
-                NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-            >,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(value: i64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    impl ::std::convert::From<bool>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<
-        NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-    > for ::std::string::String {
-        fn from(
-            value: NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for NewAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`NewAiSkillDataAttributesToolGrantsItemVariant1ToolKey`
-    #[derive(
-        ::serde::Deserialize,
-        ::serde::Serialize,
-        Clone,
-        Copy,
-        Debug,
-        Eq,
-        Hash,
-        Ord,
-        PartialEq,
-        PartialOrd
-    )]
-        pub enum NewAiSkillDataAttributesToolGrantsItemVariant1ToolKey {}
     ///`NewAlert`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAlert {
@@ -27486,7 +26554,7 @@ pub mod types {
         pub status_page_id: ::std::option::Option<::std::string::String>,
         ///Title of the template
         pub title: ::std::string::String,
-        ///Status of the event the template will populate
+        ///Status of the event the template will populate. Allowed values depend on the team's feature flags
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub update_status: ::std::option::Option<::std::string::String>,
         ///Title that will be used for the status page update
@@ -36762,7 +35830,7 @@ pub mod types {
         pub status_page_id: ::std::string::String,
         ///Title of the template
         pub title: ::std::string::String,
-        ///Status of the event the template will populate
+        ///Status of the event the template will populate. Allowed values depend on the team's feature flags
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub update_status: ::std::option::Option<::std::string::String>,
         ///Title that will be used for the status page update
@@ -37386,7 +36454,7 @@ pub mod types {
     ///Read-only attributes are ignored on write.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateAiAutomationDataAttributes {
-        ///null inherits all tools allowed by the team; otherwise the automation can use only these tool keys.
+        ///Tool keys are stable identifiers; connector tools use mcp:<lineage_root_id>:<tool_name> or private_connect:<agent_id>:<provider_id>:<capability>. null inherits all tools allowed by the team; otherwise the automation can use only these tool keys.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub allowed_tool_keys: ::std::option::Option<
             ::std::vec::Vec<::std::string::String>,
@@ -37864,7 +36932,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Update only supplied attributes. Supplying tool_grants replaces the editable grant list; grants on tools the caller cannot see are kept. fetch_url read grants use pinned domains; other pinned parameters apply only to write access. Read-only attributes are ignored on write.
+    ///Update only supplied attributes. Read-only attributes are ignored on write.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateAiSkill {
         pub data: UpdateAiSkillData,
@@ -37928,9 +36996,6 @@ pub mod types {
         ///Ignored on write.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub source_template_version: ::std::option::Option<i64>,
-        ///Replaces the editable grant list. Grants on tools the caller cannot see are kept.
-        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
-        pub tool_grants: ::std::vec::Vec<UpdateAiSkillDataAttributesToolGrantsItem>,
         ///Ignored on write.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub updated_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
@@ -37940,300 +37005,6 @@ pub mod types {
             Default::default()
         }
     }
-    ///`UpdateAiSkillDataAttributesToolGrantsItem`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum UpdateAiSkillDataAttributesToolGrantsItem {
-        Variant0 {
-            ///Fetch URL grants use read access, which is the default when omitted or null.
-            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-            access: ::std::option::Option<::std::string::String>,
-            pinned_params: UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-            tool_key: ::std::string::String,
-        },
-        Variant1 {
-            ///Defaults to the tool's access classification (read or write) when omitted or null.
-            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-            access: ::std::option::Option<::std::string::String>,
-            ///For fetch_url read grants, pinned_params contains Web access domains. For other tools, pinned parameters apply only to write access. String values must match the identifier pattern `^[A-Za-z0-9_.:-]{1,64}$`. Each value is a single string, integer, boolean or null; an array is accepted only when it resends an existing stored value unchanged.
-            #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-            pinned_params: ::std::option::Option<
-                ::std::collections::HashMap<
-                    ::std::string::String,
-                    UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue,
-                >,
-            >,
-            tool_key: UpdateAiSkillDataAttributesToolGrantsItemVariant1ToolKey,
-        },
-    }
-    ///Domains this Skill may fetch, limited to domains covered by the team's Web access allowlist.
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-        pub struct UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-        pub domains: ::std::vec::Vec<::std::string::String>,
-    }
-    impl UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-        pub fn builder() -> builder::UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            Default::default()
-        }
-    }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
-        Variant0(
-            UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
-        ),
-        Variant1(
-            ::std::vec::Vec<
-                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-            >,
-        ),
-    }
-    impl ::std::convert::From<
-        UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
-    > for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
-        fn from(
-            value: UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<
-        ::std::vec::Vec<
-            UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-        >,
-    > for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValue {
-        fn from(
-            value: ::std::vec::Vec<
-                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item,
-            >,
-        ) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        Variant0(
-            ::std::option::Option<
-                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-            >,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<
-            UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-        >,
-    > for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(
-            value: ::std::option::Option<
-                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-            >,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(value: i64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    impl ::std::convert::From<bool>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0 {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<
-        UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-    > for ::std::string::String {
-        fn from(
-            value: UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant0Variant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        Variant0(
-            ::std::option::Option<
-                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-            >,
-        ),
-        Variant1(i64),
-        Variant2(bool),
-    }
-    impl ::std::convert::From<
-        ::std::option::Option<
-            UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-        >,
-    >
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(
-            value: ::std::option::Option<
-                UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-            >,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<i64>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(value: i64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    impl ::std::convert::From<bool>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1Item {
-        fn from(value: bool) -> Self {
-            Self::Variant2(value)
-        }
-    }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0`
-    #[derive(::serde::Serialize, Clone, Debug, Eq, Hash, Ord, PartialEq, PartialOrd)]
-    #[serde(transparent)]
-    pub struct UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0(
-        ::std::string::String,
-    );
-    impl ::std::ops::Deref
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Target = ::std::string::String;
-        fn deref(&self) -> &::std::string::String {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<
-        UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-    > for ::std::string::String {
-        fn from(
-            value: UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::str::FromStr
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Err = self::error::ConversionError;
-        fn from_str(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            static PATTERN: ::std::sync::LazyLock<::regress::Regex> = ::std::sync::LazyLock::new(||
-            { ::regress::Regex::new("^[A-Za-z0-9_.:-]{1,64}$").unwrap() });
-            if PATTERN.find(value).is_none() {
-                return Err("doesn't match pattern \"^[A-Za-z0-9_.:-]{1,64}$\"".into());
-            }
-            Ok(Self(value.to_string()))
-        }
-    }
-    impl ::std::convert::TryFrom<&str>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: &str,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl ::std::convert::TryFrom<::std::string::String>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: ::std::string::String,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            value.parse()
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for UpdateAiSkillDataAttributesToolGrantsItemVariant1PinnedParamsValueVariant1ItemVariant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            ::std::string::String::deserialize(deserializer)?
-                .parse()
-                .map_err(|e: self::error::ConversionError| {
-                    <D::Error as ::serde::de::Error>::custom(e.to_string())
-                })
-        }
-    }
-    ///`UpdateAiSkillDataAttributesToolGrantsItemVariant1ToolKey`
-    #[derive(
-        ::serde::Deserialize,
-        ::serde::Serialize,
-        Clone,
-        Copy,
-        Debug,
-        Eq,
-        Hash,
-        Ord,
-        PartialEq,
-        PartialOrd
-    )]
-        pub enum UpdateAiSkillDataAttributesToolGrantsItemVariant1ToolKey {}
     ///`UpdateAirtableTableRecordTaskParams`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct UpdateAirtableTableRecordTaskParams {
@@ -43897,6 +42668,9 @@ pub mod types {
     pub struct UpdateIncidentTaskParams {
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub acknowledged_at: ::std::option::Option<::std::string::String>,
+        ///When true, the configured services, functionalities, environments, groups and incident types are added to the incident's existing ones instead of replacing them
+        #[serde(default)]
+        pub append_associations: bool,
         #[serde(default = "defaults::update_incident_task_params_attribute_to_query_by")]
         pub attribute_to_query_by: ::std::string::String,
         ///Custom field mappings. Can contain liquid markup and need to be valid JSON. Use 'services', 'functionalities', or 'groups' keys with arrays of names/slugs for name/slug lookup
@@ -47828,7 +46602,7 @@ pub mod types {
         pub should_notify_subscribers: ::std::option::Option<bool>,
         ///Title of the template
         pub title: ::std::string::String,
-        ///Status of the event the template will populate
+        ///Status of the event the template will populate. Allowed values depend on the team's feature flags
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub update_status: ::std::option::Option<::std::string::String>,
         ///Title that will be used for the status page update
@@ -61144,6 +59918,7 @@ pub mod types {
                 ::std::option::Option<bool>,
                 ::std::string::String,
             >,
+            title: ::std::result::Result<::std::string::String, ::std::string::String>,
         }
         impl ::std::default::Default for AiChatSessionMessageList {
             fn default() -> Self {
@@ -61153,6 +59928,7 @@ pub mod types {
                     messages: Err("no value supplied for messages".to_string()),
                     meta: Ok(Default::default()),
                     pinned: Ok(Default::default()),
+                    title: Err("no value supplied for title".to_string()),
                 }
             }
         }
@@ -61223,6 +59999,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn title<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.title = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for title: {e}")
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<AiChatSessionMessageList>
         for super::AiChatSessionMessageList {
@@ -61236,6 +60024,7 @@ pub mod types {
                     messages: value.messages?,
                     meta: value.meta?,
                     pinned: value.pinned?,
+                    title: value.title?,
                 })
             }
         }
@@ -61248,6 +60037,7 @@ pub mod types {
                     messages: Ok(value.messages),
                     meta: Ok(value.meta),
                     pinned: Ok(value.pinned),
+                    title: Ok(value.title),
                 }
             }
         }
@@ -61535,10 +60325,6 @@ pub mod types {
                 ::std::option::Option<i64>,
                 ::std::string::String,
             >,
-            tool_grants: ::std::result::Result<
-                ::std::vec::Vec<super::AiSkillToolGrantsItem>,
-                ::std::string::String,
-            >,
             updated_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
@@ -61560,7 +60346,6 @@ pub mod types {
                     source: Ok(Default::default()),
                     source_template_key: Ok(Default::default()),
                     source_template_version: Ok(Default::default()),
-                    tool_grants: Ok(Default::default()),
                     updated_at: Ok(Default::default()),
                 }
             }
@@ -61732,20 +60517,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn tool_grants<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::vec::Vec<super::AiSkillToolGrantsItem>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_grants = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_grants: {e}")
-                    });
-                self
-            }
             pub fn updated_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -61780,7 +60551,6 @@ pub mod types {
                     source: value.source?,
                     source_template_key: value.source_template_key?,
                     source_template_version: value.source_template_version?,
-                    tool_grants: value.tool_grants?,
                     updated_at: value.updated_at?,
                 })
             }
@@ -61801,393 +60571,7 @@ pub mod types {
                     source: Ok(value.source),
                     source_template_key: Ok(value.source_template_key),
                     source_template_version: Ok(value.source_template_version),
-                    tool_grants: Ok(value.tool_grants),
                     updated_at: Ok(value.updated_at),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct AiSkillGrantableTools {
-            data: ::std::result::Result<
-                ::std::vec::Vec<super::AiSkillGrantableToolsDataItem>,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for AiSkillGrantableTools {
-            fn default() -> Self {
-                Self {
-                    data: Err("no value supplied for data".to_string()),
-                }
-            }
-        }
-        impl AiSkillGrantableTools {
-            pub fn data<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::vec::Vec<super::AiSkillGrantableToolsDataItem>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.data = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for data: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<AiSkillGrantableTools>
-        for super::AiSkillGrantableTools {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: AiSkillGrantableTools,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { data: value.data? })
-            }
-        }
-        impl ::std::convert::From<super::AiSkillGrantableTools>
-        for AiSkillGrantableTools {
-            fn from(value: super::AiSkillGrantableTools) -> Self {
-                Self { data: Ok(value.data) }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct AiSkillGrantableToolsDataItem {
-            attributes: ::std::result::Result<
-                super::AiSkillGrantableToolsDataItemAttributes,
-                ::std::string::String,
-            >,
-            id: ::std::result::Result<::std::string::String, ::std::string::String>,
-            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
-        }
-        impl ::std::default::Default for AiSkillGrantableToolsDataItem {
-            fn default() -> Self {
-                Self {
-                    attributes: Err("no value supplied for attributes".to_string()),
-                    id: Err("no value supplied for id".to_string()),
-                    type_: Err("no value supplied for type_".to_string()),
-                }
-            }
-        }
-        impl AiSkillGrantableToolsDataItem {
-            pub fn attributes<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    super::AiSkillGrantableToolsDataItemAttributes,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.attributes = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for attributes: {e}")
-                    });
-                self
-            }
-            pub fn id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.id = value
-                    .try_into()
-                    .map_err(|e| format!("error converting supplied value for id: {e}"));
-                self
-            }
-            pub fn type_<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.type_ = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for type_: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<AiSkillGrantableToolsDataItem>
-        for super::AiSkillGrantableToolsDataItem {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: AiSkillGrantableToolsDataItem,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    attributes: value.attributes?,
-                    id: value.id?,
-                    type_: value.type_?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::AiSkillGrantableToolsDataItem>
-        for AiSkillGrantableToolsDataItem {
-            fn from(value: super::AiSkillGrantableToolsDataItem) -> Self {
-                Self {
-                    attributes: Ok(value.attributes),
-                    id: Ok(value.id),
-                    type_: Ok(value.type_),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct AiSkillGrantableToolsDataItemAttributes {
-            access: ::std::result::Result<::std::string::String, ::std::string::String>,
-            category: ::std::result::Result<
-                ::std::string::String,
-                ::std::string::String,
-            >,
-            connector: ::std::result::Result<bool, ::std::string::String>,
-            grantable: ::std::result::Result<bool, ::std::string::String>,
-            label: ::std::result::Result<::std::string::String, ::std::string::String>,
-            pinnable: ::std::result::Result<bool, ::std::string::String>,
-            pinnable_params: ::std::result::Result<
-                ::std::vec::Vec<
-                    super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
-                >,
-                ::std::string::String,
-            >,
-            tool_key: ::std::result::Result<
-                ::std::string::String,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for AiSkillGrantableToolsDataItemAttributes {
-            fn default() -> Self {
-                Self {
-                    access: Err("no value supplied for access".to_string()),
-                    category: Err("no value supplied for category".to_string()),
-                    connector: Err("no value supplied for connector".to_string()),
-                    grantable: Err("no value supplied for grantable".to_string()),
-                    label: Err("no value supplied for label".to_string()),
-                    pinnable: Err("no value supplied for pinnable".to_string()),
-                    pinnable_params: Err(
-                        "no value supplied for pinnable_params".to_string(),
-                    ),
-                    tool_key: Err("no value supplied for tool_key".to_string()),
-                }
-            }
-        }
-        impl AiSkillGrantableToolsDataItemAttributes {
-            pub fn access<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.access = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for access: {e}")
-                    });
-                self
-            }
-            pub fn category<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.category = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for category: {e}")
-                    });
-                self
-            }
-            pub fn connector<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<bool>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.connector = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for connector: {e}")
-                    });
-                self
-            }
-            pub fn grantable<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<bool>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.grantable = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for grantable: {e}")
-                    });
-                self
-            }
-            pub fn label<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.label = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for label: {e}")
-                    });
-                self
-            }
-            pub fn pinnable<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<bool>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.pinnable = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for pinnable: {e}")
-                    });
-                self
-            }
-            pub fn pinnable_params<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::vec::Vec<
-                        super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
-                    >,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.pinnable_params = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for pinnable_params: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn tool_key<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_key = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_key: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<AiSkillGrantableToolsDataItemAttributes>
-        for super::AiSkillGrantableToolsDataItemAttributes {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: AiSkillGrantableToolsDataItemAttributes,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    access: value.access?,
-                    category: value.category?,
-                    connector: value.connector?,
-                    grantable: value.grantable?,
-                    label: value.label?,
-                    pinnable: value.pinnable?,
-                    pinnable_params: value.pinnable_params?,
-                    tool_key: value.tool_key?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::AiSkillGrantableToolsDataItemAttributes>
-        for AiSkillGrantableToolsDataItemAttributes {
-            fn from(value: super::AiSkillGrantableToolsDataItemAttributes) -> Self {
-                Self {
-                    access: Ok(value.access),
-                    category: Ok(value.category),
-                    connector: Ok(value.connector),
-                    grantable: Ok(value.grantable),
-                    label: Ok(value.label),
-                    pinnable: Ok(value.pinnable),
-                    pinnable_params: Ok(value.pinnable_params),
-                    tool_key: Ok(value.tool_key),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
-            enum_: ::std::result::Result<
-                ::std::option::Option<::std::vec::Vec<::std::string::String>>,
-                ::std::string::String,
-            >,
-            name: ::std::result::Result<::std::string::String, ::std::string::String>,
-            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
-        }
-        impl ::std::default::Default
-        for AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
-            fn default() -> Self {
-                Self {
-                    enum_: Err("no value supplied for enum_".to_string()),
-                    name: Err("no value supplied for name".to_string()),
-                    type_: Err("no value supplied for type_".to_string()),
-                }
-            }
-        }
-        impl AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
-            pub fn enum_<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<::std::vec::Vec<::std::string::String>>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.enum_ = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for enum_: {e}")
-                    });
-                self
-            }
-            pub fn name<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.name = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for name: {e}")
-                    });
-                self
-            }
-            pub fn type_<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.type_ = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for type_: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<
-            AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
-        > for super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    enum_: value.enum_?,
-                    name: value.name?,
-                    type_: value.type_?,
-                })
-            }
-        }
-        impl ::std::convert::From<
-            super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
-        > for AiSkillGrantableToolsDataItemAttributesPinnableParamsItem {
-            fn from(
-                value: super::AiSkillGrantableToolsDataItemAttributesPinnableParamsItem,
-            ) -> Self {
-                Self {
-                    enum_: Ok(value.enum_),
-                    name: Ok(value.name),
-                    type_: Ok(value.type_),
                 }
             }
         }
@@ -62445,49 +60829,6 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
-        pub struct AiSkillToolGrantsItemVariant0PinnedParams {
-            domains: ::std::result::Result<
-                ::std::vec::Vec<::std::string::String>,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for AiSkillToolGrantsItemVariant0PinnedParams {
-            fn default() -> Self {
-                Self {
-                    domains: Err("no value supplied for domains".to_string()),
-                }
-            }
-        }
-        impl AiSkillToolGrantsItemVariant0PinnedParams {
-            pub fn domains<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.domains = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for domains: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<AiSkillToolGrantsItemVariant0PinnedParams>
-        for super::AiSkillToolGrantsItemVariant0PinnedParams {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: AiSkillToolGrantsItemVariant0PinnedParams,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { domains: value.domains? })
-            }
-        }
-        impl ::std::convert::From<super::AiSkillToolGrantsItemVariant0PinnedParams>
-        for AiSkillToolGrantsItemVariant0PinnedParams {
-            fn from(value: super::AiSkillToolGrantsItemVariant0PinnedParams) -> Self {
-                Self { domains: Ok(value.domains) }
-            }
-        }
-        #[derive(Clone, Debug)]
         pub struct AiSkillVersion {
             body: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
@@ -62513,10 +60854,6 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
-            tool_grants: ::std::result::Result<
-                ::std::vec::Vec<super::AiSkillVersionToolGrantsItem>,
-                ::std::string::String,
-            >,
             version: ::std::result::Result<
                 ::std::option::Option<i64>,
                 ::std::string::String,
@@ -62531,7 +60868,6 @@ pub mod types {
                     description: Ok(Default::default()),
                     name: Ok(Default::default()),
                     skill_id: Ok(Default::default()),
-                    tool_grants: Ok(Default::default()),
                     version: Ok(Default::default()),
                 }
             }
@@ -62613,20 +60949,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn tool_grants<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::vec::Vec<super::AiSkillVersionToolGrantsItem>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_grants = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_grants: {e}")
-                    });
-                self
-            }
             pub fn version<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<i64>>,
@@ -62652,7 +60974,6 @@ pub mod types {
                     description: value.description?,
                     name: value.name?,
                     skill_id: value.skill_id?,
-                    tool_grants: value.tool_grants?,
                     version: value.version?,
                 })
             }
@@ -62666,7 +60987,6 @@ pub mod types {
                     description: Ok(value.description),
                     name: Ok(value.name),
                     skill_id: Ok(value.skill_id),
-                    tool_grants: Ok(value.tool_grants),
                     version: Ok(value.version),
                 }
             }
@@ -62934,53 +61254,6 @@ pub mod types {
                     id: Ok(value.id),
                     type_: Ok(value.type_),
                 }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct AiSkillVersionToolGrantsItemVariant0PinnedParams {
-            domains: ::std::result::Result<
-                ::std::vec::Vec<::std::string::String>,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default
-        for AiSkillVersionToolGrantsItemVariant0PinnedParams {
-            fn default() -> Self {
-                Self {
-                    domains: Err("no value supplied for domains".to_string()),
-                }
-            }
-        }
-        impl AiSkillVersionToolGrantsItemVariant0PinnedParams {
-            pub fn domains<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.domains = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for domains: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<AiSkillVersionToolGrantsItemVariant0PinnedParams>
-        for super::AiSkillVersionToolGrantsItemVariant0PinnedParams {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: AiSkillVersionToolGrantsItemVariant0PinnedParams,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { domains: value.domains? })
-            }
-        }
-        impl ::std::convert::From<
-            super::AiSkillVersionToolGrantsItemVariant0PinnedParams,
-        > for AiSkillVersionToolGrantsItemVariant0PinnedParams {
-            fn from(
-                value: super::AiSkillVersionToolGrantsItemVariant0PinnedParams,
-            ) -> Self {
-                Self { domains: Ok(value.domains) }
             }
         }
         #[derive(Clone, Debug)]
@@ -152349,10 +150622,6 @@ pub mod types {
                 ::std::option::Option<i64>,
                 ::std::string::String,
             >,
-            tool_grants: ::std::result::Result<
-                ::std::vec::Vec<super::NewAiSkillDataAttributesToolGrantsItem>,
-                ::std::string::String,
-            >,
             updated_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
@@ -152375,7 +150644,6 @@ pub mod types {
                     source: Ok(Default::default()),
                     source_template_key: Ok(Default::default()),
                     source_template_version: Ok(Default::default()),
-                    tool_grants: Ok(Default::default()),
                     updated_at: Ok(Default::default()),
                 }
             }
@@ -152557,20 +150825,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn tool_grants<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::vec::Vec<super::NewAiSkillDataAttributesToolGrantsItem>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_grants = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_grants: {e}")
-                    });
-                self
-            }
             pub fn updated_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -152607,7 +150861,6 @@ pub mod types {
                     source: value.source?,
                     source_template_key: value.source_template_key?,
                     source_template_version: value.source_template_version?,
-                    tool_grants: value.tool_grants?,
                     updated_at: value.updated_at?,
                 })
             }
@@ -152630,57 +150883,8 @@ pub mod types {
                     source: Ok(value.source),
                     source_template_key: Ok(value.source_template_key),
                     source_template_version: Ok(value.source_template_version),
-                    tool_grants: Ok(value.tool_grants),
                     updated_at: Ok(value.updated_at),
                 }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            domains: ::std::result::Result<
-                ::std::vec::Vec<::std::string::String>,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default
-        for NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            fn default() -> Self {
-                Self {
-                    domains: Err("no value supplied for domains".to_string()),
-                }
-            }
-        }
-        impl NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            pub fn domains<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.domains = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for domains: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<
-            NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-        > for super::NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { domains: value.domains? })
-            }
-        }
-        impl ::std::convert::From<
-            super::NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-        > for NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            fn from(
-                value: super::NewAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-            ) -> Self {
-                Self { domains: Ok(value.domains) }
             }
         }
         #[derive(Clone, Debug)]
@@ -238326,10 +236530,6 @@ pub mod types {
                 ::std::option::Option<i64>,
                 ::std::string::String,
             >,
-            tool_grants: ::std::result::Result<
-                ::std::vec::Vec<super::UpdateAiSkillDataAttributesToolGrantsItem>,
-                ::std::string::String,
-            >,
             updated_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
                 ::std::string::String,
@@ -238352,7 +236552,6 @@ pub mod types {
                     source: Ok(Default::default()),
                     source_template_key: Ok(Default::default()),
                     source_template_version: Ok(Default::default()),
-                    tool_grants: Ok(Default::default()),
                     updated_at: Ok(Default::default()),
                 }
             }
@@ -238534,20 +236733,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn tool_grants<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::vec::Vec<super::UpdateAiSkillDataAttributesToolGrantsItem>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_grants = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_grants: {e}")
-                    });
-                self
-            }
             pub fn updated_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -238584,7 +236769,6 @@ pub mod types {
                     source: value.source?,
                     source_template_key: value.source_template_key?,
                     source_template_version: value.source_template_version?,
-                    tool_grants: value.tool_grants?,
                     updated_at: value.updated_at?,
                 })
             }
@@ -238607,57 +236791,8 @@ pub mod types {
                     source: Ok(value.source),
                     source_template_key: Ok(value.source_template_key),
                     source_template_version: Ok(value.source_template_version),
-                    tool_grants: Ok(value.tool_grants),
                     updated_at: Ok(value.updated_at),
                 }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            domains: ::std::result::Result<
-                ::std::vec::Vec<::std::string::String>,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default
-        for UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            fn default() -> Self {
-                Self {
-                    domains: Err("no value supplied for domains".to_string()),
-                }
-            }
-        }
-        impl UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            pub fn domains<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.domains = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for domains: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<
-            UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-        > for super::UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { domains: value.domains? })
-            }
-        }
-        impl ::std::convert::From<
-            super::UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-        > for UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams {
-            fn from(
-                value: super::UpdateAiSkillDataAttributesToolGrantsItemVariant0PinnedParams,
-            ) -> Self {
-                Self { domains: Ok(value.domains) }
             }
         }
         #[derive(Clone, Debug)]
@@ -265904,6 +264039,7 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            append_associations: ::std::result::Result<bool, ::std::string::String>,
             attribute_to_query_by: ::std::result::Result<
                 ::std::string::String,
                 ::std::string::String,
@@ -265981,6 +264117,7 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     acknowledged_at: Ok(Default::default()),
+                    append_associations: Ok(Default::default()),
                     attribute_to_query_by: Ok(
                         super::defaults::update_incident_task_params_attribute_to_query_by(),
                     ),
@@ -266015,6 +264152,20 @@ pub mod types {
                     .map_err(|e| {
                         format!(
                             "error converting supplied value for acknowledged_at: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn append_associations<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<bool>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.append_associations = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for append_associations: {e}"
                         )
                     });
                 self
@@ -266264,6 +264415,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     acknowledged_at: value.acknowledged_at?,
+                    append_associations: value.append_associations?,
                     attribute_to_query_by: value.attribute_to_query_by?,
                     custom_fields_mapping: value.custom_fields_mapping?,
                     detected_at: value.detected_at?,
@@ -266290,6 +264442,7 @@ pub mod types {
             fn from(value: super::UpdateIncidentTaskParams) -> Self {
                 Self {
                     acknowledged_at: Ok(value.acknowledged_at),
+                    append_associations: Ok(value.append_associations),
                     attribute_to_query_by: Ok(value.attribute_to_query_by),
                     custom_fields_mapping: Ok(value.custom_fields_mapping),
                     detected_at: Ok(value.detected_at),
@@ -302196,7 +300349,7 @@ let response = client.delete_incident_action_item()
     }
     /**Send AI chat message
 
-Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Responses include `confirmation` for a pending write and `checkpoint_resolved` after resume. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The synchronous response has no `confirmation` key; only `confirmation` responses are resumable. Requires `ai.chat:write` OAuth scope or an API key.
+Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Responses include `confirmation` for a pending write and `checkpoint_resolved` after resume. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The synchronous response has no `confirmation` key; only `confirmation` responses are resumable. Limited to 60 requests per minute per credential. Rate-limit responses include `Retry-After` and `X-RateLimit-*` headers. Requires `ai.chat:write` OAuth scope or an API key.
 
 Sends a `POST` request to `/v1/ai/chat`
 
@@ -302282,7 +300435,7 @@ let response = client.update_ai_chat_session()
     }
     /**List AI chat session messages
 
-Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Assistant messages may include a `skill` object with `id`, `name`, `slug`, and `version` for the AI Skill loaded during that turn. The response also carries the session's current `pinned`, `archived`, and `last_active_at` state. Requires `ai.chat:read` OAuth scope or an API key.
+Returns the user and assistant message history for a session, paginated and chronologically ordered. Internal tool messages are filtered out. Assistant messages may include a `skill` object with `id`, `name`, `slug`, and `version` for the AI Skill loaded during that turn. The response also carries the session's current `title`, `pinned`, `archived`, and `last_active_at` state. Requires `ai.chat:read` OAuth scope or an API key.
 
 Sends a `GET` request to `/v1/ai/chat/sessions/{session_id}/messages`
 
@@ -302305,7 +300458,7 @@ let response = client.list_ai_chat_session_messages()
     }
     /**Stream AI chat response (SSE)
 
-Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Events include `confirmation_required` for pending writes and `checkpoint_resolved` before replay. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The stream emits `done` with `status: complete` and no `confirmation_required` event; only `confirmation_required` events are resumable. `status` events carry a short progress line (`{status}`) such as the running tool's title or its progress message; they never include tool arguments or results. `skill_loaded` events carry `{skill: {id, name, slug, version}}` when an AI Skill is loaded. Requires `ai.chat:write` OAuth scope or an API key.
+Send a message and receive the AI response as a Server-Sent Events stream. Optionally bind to an incident or alert for context. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Events include `confirmation_required` for pending writes and `checkpoint_resolved` before replay. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The stream emits `done` with `status: complete` and no `confirmation_required` event; only `confirmation_required` events are resumable. `status` events carry a short progress line (`{status}`) such as the running tool's title or its progress message; they never include tool arguments or results. `skill_loaded` events carry `{skill: {id, name, slug, version}}` when an AI Skill is loaded. Limited to 60 requests per minute per credential. Rate-limit responses include `Retry-After` and `X-RateLimit-*` headers. Requires `ai.chat:write` OAuth scope or an API key.
 
 Sends a `POST` request to `/v1/ai/chat/stream`
 
@@ -302639,22 +300792,6 @@ let response = client.create_ai_skill()
 ```*/
     pub fn create_ai_skill(&self) -> builder::CreateAiSkill<'_> {
         builder::CreateAiSkill::new(self)
-    }
-    /**Lists grantable AI Skill tools
-
-Requires OAuth scope `ai.skills:read`.
-
-Sends a `GET` request to `/v1/ai_skills/grantable_tools`
-
-```ignore
-let response = client.list_ai_skill_grantable_tools()
-    .send()
-    .await;
-```*/
-    pub fn list_ai_skill_grantable_tools(
-        &self,
-    ) -> builder::ListAiSkillGrantableTools<'_> {
-        builder::ListAiSkillGrantableTools::new(self)
     }
     /**Lists AI skill versions
 
@@ -318264,54 +316401,6 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 201u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_ai_skill_grantable_tools`]
-
-[`Client::list_ai_skill_grantable_tools`]: super::Client::list_ai_skill_grantable_tools*/
-    #[derive(Debug, Clone)]
-    pub struct ListAiSkillGrantableTools<'a> {
-        client: &'a super::Client,
-    }
-    impl<'a> ListAiSkillGrantableTools<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self { client: client }
-        }
-        ///Sends a `GET` request to `/v1/ai_skills/grantable_tools`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiSkillGrantableTools>, Error<()>> {
-            let Self { client } = self;
-            let url = format!("{}/v1/ai_skills/grantable_tools", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_ai_skill_grantable_tools",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }
