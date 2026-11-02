@@ -115,7 +115,7 @@
       },
       "post": {
         "summary": "Runs an AI automation now",
-        "description": "Requires OAuth scope `ai.automations:write`. For run-now requests with incident_id, OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Limited to 30 requests per credential per minute (fixed one-minute windows), separate from the default mutation rate limit; exceeding it returns 429 with Retry-After.",
+        "description": "Requires OAuth scope `ai.automations:write`. For run-now requests with incident_id, or run_id of an incident-linked run, OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Limited to 30 requests per credential per minute (fixed one-minute windows), separate from the default mutation rate limit; exceeding it returns 429 with Retry-After.",
         "security": [
           {
             "bearer_auth": []
@@ -148,7 +148,7 @@
             }
           },
           "404": {
-            "description": "deleted automations cannot be run now",
+            "description": "re-running an incident run the caller cannot read is not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -509,51 +509,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "object",
-                      "properties": {
-                        "id": {
-                          "type": "string"
-                        },
-                        "type": {
-                          "type": "string",
-                          "enum": [
-                            "ai_automation_webhook_secrets"
-                          ]
-                        },
-                        "attributes": {
-                          "type": "object",
-                          "properties": {
-                            "secret": {
-                              "type": "string"
-                            },
-                            "webhook_url": {
-                              "type": "string"
-                            },
-                            "rotated_at": {
-                              "type": "string",
-                              "format": "date-time"
-                            }
-                          },
-                          "required": [
-                            "secret",
-                            "webhook_url",
-                            "rotated_at"
-                          ]
-                        }
-                      },
-                      "required": [
-                        "id",
-                        "type",
-                        "attributes"
-                      ]
-                    }
-                  },
-                  "required": [
-                    "data"
-                  ]
+                  "$ref": "#/components/schemas/ai_automation_webhook_secret_response"
                 }
               }
             }
@@ -2171,104 +2127,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object",
-                  "properties": {
-                    "data": {
-                      "type": "array",
-                      "items": {
-                        "type": "object",
-                        "properties": {
-                          "id": {
-                            "type": "string"
-                          },
-                          "type": {
-                            "type": "string",
-                            "enum": [
-                              "ai_tool_call_events"
-                            ]
-                          },
-                          "attributes": {
-                            "type": "object",
-                            "properties": {
-                              "remote_mcp_source_id": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "provider_type": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "tool_name": {
-                                "type": "string"
-                              },
-                              "user_id": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "user_name": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "user_email": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "connection_name": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "automatic": {
-                                "type": "boolean"
-                              },
-                              "trigger_record_type": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "trigger_record_id": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "surface": {
-                                "type": "string"
-                              },
-                              "risk_class": {
-                                "type": "string"
-                              },
-                              "outcome": {
-                                "type": "string"
-                              },
-                              "duration_ms": {
-                                "type": "integer",
-                                "nullable": true
-                              },
-                              "occurred_at": {
-                                "type": "string",
-                                "format": "date-time"
-                              },
-                              "ai_session_id": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "ai_automation_run_id": {
-                                "type": "string",
-                                "nullable": true
-                              },
-                              "argument_keys": {
-                                "type": "array",
-                                "items": {
-                                  "type": "string"
-                                }
-                              }
-                            }
-                          }
-                        }
-                      }
-                    },
-                    "meta": {
-                      "type": "object",
-                      "additionalProperties": true
-                    }
-                  }
+                  "$ref": "#/components/schemas/ai_tool_call_event_list"
                 }
               }
             }
@@ -2686,6 +2545,24 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/alert_event_feed_list"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "page took too long to load",
+            "headers": {
+              "Retry-After": {
+                "schema": {
+                  "type": "integer"
+                },
+                "description": "Seconds to wait before retrying"
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
                 }
               }
             }
@@ -6506,7 +6383,7 @@
         "tags": [
           "API Keys"
         ],
-        "description": "Rotate an API key's token. Issues a new secret token and returns it — **the new token is only shown once**, so store it securely.\n\n**Self-only:** You can only rotate the API key that was used to authenticate this request. Attempting to rotate a different key returns `403 Forbidden`.\n\n**Grace period:** When enabled for your organization, the previous token remains valid after rotation, giving you time to deploy the new token without downtime. Pass `grace_period_minutes` (integer, 0–1440, default 30) to control how long the old token stays valid. Set to 0 to immediately invalidate the old token. The `grace_period_ends_at` field in the response confirms the exact time the old token will stop working.\n\n**Expiration:** Optionally provide a new `expires_at` date (ISO 8601, up to 5 years). Defaults to 90 days from now if omitted. Dates in the past are rejected.\n\n**Typical rotation workflow:**\n1. Call this endpoint to get a new token (optionally with a custom `grace_period_minutes`).\n2. Deploy the new token to your systems.\n3. The old token continues working for `grace_period_minutes` (if grace period is enabled).\n4. After the grace period, the old token is automatically invalidated.\n",
+        "description": "Rotate an API key's token. Issues a new secret token and returns it — **the new token is only shown once**, so store it securely.\n\n**Self-only:** You can only rotate the API key that was used to authenticate this request. Attempting to rotate a different key returns `404 Not Found` when the authenticating key is not authorized to manage it, or `403 Forbidden` when it is.\n\n**Grace period:** When enabled for your organization, the previous token remains valid after rotation, giving you time to deploy the new token without downtime. Pass `grace_period_minutes` (integer, 0–1440, default 30) to control how long the old token stays valid. Set to 0 to immediately invalidate the old token. The `grace_period_ends_at` field in the response confirms the exact time the old token will stop working.\n\n**Expiration:** Optionally provide a new `expires_at` date (ISO 8601, up to 5 years). Defaults to 90 days from now if omitted. Dates in the past are rejected.\n\n**Typical rotation workflow:**\n1. Call this endpoint to get a new token (optionally with a custom `grace_period_minutes`).\n2. Deploy the new token to your systems.\n3. The old token continues working for `grace_period_minutes` (if grace period is enabled).\n4. After the grace period, the old token is automatically invalidated.\n",
         "operationId": "rotateApiKey",
         "parameters": [],
         "responses": {
@@ -28290,7 +28167,7 @@
     "/v1/investigations": {
       "get": {
         "summary": "Lists AI SRE investigations",
-        "description": "Investigations on alerts and incidents the caller can read, newest first.",
+        "description": "Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. Investigations on alerts and incidents the caller can read, newest first.",
         "security": [
           {
             "bearer_auth": []
@@ -28356,21 +28233,11 @@
         ],
         "responses": {
           "200": {
-            "description": "filters by alert",
+            "description": "lists investigations with the all scope",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/investigation_list"
-                }
-              }
-            }
-          },
-          "422": {
-            "description": "rejects unknown statuses",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/errors_list"
                 }
               }
             }
@@ -28384,12 +28251,22 @@
                 }
               }
             }
+          },
+          "422": {
+            "description": "rejects unknown statuses",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
+                }
+              }
+            }
           }
         }
       },
       "post": {
         "summary": "Starts an AI SRE investigation",
-        "description": "Starts an investigation on an alert or incident you can update, or returns the one already running.",
+        "description": "Requires OAuth scope `ai.investigations:write`. OAuth tokens also need `oc.alerts:write` (alerts) or `ir.incidents:write` (incidents) and update access to the resource; API keys use the key's role. Starts an investigation on an alert or incident you can update, or returns the one already running.",
         "security": [
           {
             "bearer_auth": []
@@ -28402,7 +28279,7 @@
         "parameters": [],
         "responses": {
           "202": {
-            "description": "reruns a finished investigation",
+            "description": "starts an investigation with the all scope",
             "content": {
               "application/json": {
                 "schema": {
@@ -28422,7 +28299,7 @@
             }
           },
           "403": {
-            "description": "read-only tokens cannot start investigations",
+            "description": "requires alert update access to start an investigation",
             "content": {
               "application/json": {
                 "schema": {
@@ -28477,7 +28354,7 @@
       ],
       "get": {
         "summary": "Retrieves an AI SRE investigation",
-        "description": "The verdict, hypotheses, evidence, causal chain and open questions.",
+        "description": "Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. The verdict, hypotheses, evidence, causal chain and open questions.",
         "security": [
           {
             "bearer_auth": []
@@ -28494,6 +28371,16 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/investigation"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "requires the AI investigations read scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
                 }
               }
             }
@@ -28534,7 +28421,7 @@
       ],
       "get": {
         "summary": "Retrieves AI SRE investigation progress",
-        "description": "Returns immediately with steps and tool calls recorded after the cursor. Poll with after=next_cursor until done is true.",
+        "description": "Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. Returns immediately with steps and tool calls recorded after the cursor. Poll with after=next_cursor until done is true.",
         "security": [
           {
             "bearer_auth": []
@@ -28546,11 +28433,21 @@
         "operationId": "GetInvestigationProgress",
         "responses": {
           "200": {
-            "description": "returns progress since the start",
+            "description": "returns progress with OAuth read scopes",
             "content": {
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/investigation_progress"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "requires the AI investigations read scope",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/errors_list"
                 }
               }
             }
@@ -28582,6 +28479,7 @@
       ],
       "post": {
         "summary": "Cancels an AI SRE investigation",
+        "description": "Requires OAuth scope `ai.investigations:write`. OAuth tokens also need `oc.alerts:write` (alerts) or `ir.incidents:write` (incidents) and update access to the resource; API keys use the key's role.",
         "security": [
           {
             "bearer_auth": []
@@ -28593,7 +28491,7 @@
         "operationId": "CancelInvestigation",
         "responses": {
           "200": {
-            "description": "cancels a running investigation",
+            "description": "cancels a running investigation with OAuth write scopes",
             "content": {
               "application/json": {
                 "schema": {
@@ -44991,9 +44889,10 @@
             "type": "string",
             "nullable": true
           },
-          "cost_cents": {
+          "credits": {
             "type": "number",
-            "nullable": true
+            "nullable": true,
+            "description": "AI credits charged for this run, from the credit ledger. Null until the run is billed."
           },
           "scheduled_for": {
             "type": "string",
@@ -46225,27 +46124,12 @@
                     "description": "Defaults to true. Stored limits are returned even when false and apply only when true."
                   },
                   "max_credits_per_run": {
-                    "oneOf": [
-                      {
-                        "type": "number",
-                        "enum": [
-                          0
-                        ]
-                      },
-                      {
-                        "type": "number",
-                        "minimum": 1,
-                        "maximum": 1000
-                      },
-                      {
-                        "type": "number",
-                        "nullable": true,
-                        "enum": [
-                          null
-                        ]
-                      }
-                    ],
-                    "description": "Defaults to no limit (null); null or 0 means no limit. Stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1."
+                    "type": "number",
+                    "nullable": true,
+                    "minimum": 0,
+                    "maximum": 1000,
+                    "multipleOf": 0.1,
+                    "description": "Defaults to no limit (null); null or 0 means no limit. Otherwise must be at least 1; values between 0 and 1 are rejected. Stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1."
                   },
                   "rate_limit_runs": {
                     "type": "integer",
@@ -46729,27 +46613,12 @@
                     "description": "Stored limit values are returned even when false and apply only when this is true."
                   },
                   "max_credits_per_run": {
-                    "oneOf": [
-                      {
-                        "type": "number",
-                        "enum": [
-                          0
-                        ]
-                      },
-                      {
-                        "type": "number",
-                        "minimum": 1,
-                        "maximum": 1000
-                      },
-                      {
-                        "type": "number",
-                        "nullable": true,
-                        "enum": [
-                          null
-                        ]
-                      }
-                    ],
-                    "description": "Null or 0 means no limit. The stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1."
+                    "type": "number",
+                    "nullable": true,
+                    "minimum": 0,
+                    "maximum": 1000,
+                    "multipleOf": 0.1,
+                    "description": "Null or 0 means no limit. Otherwise must be at least 1; values between 0 and 1 are rejected. The stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1."
                   },
                   "rate_limit_runs": {
                     "type": "integer",
@@ -47030,6 +46899,11 @@
                   "incident_id": {
                     "type": "string",
                     "description": "Incident UUID or sequential reference such as INC-123; OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role."
+                  },
+                  "run_id": {
+                    "type": "string",
+                    "format": "uuid",
+                    "description": "Re-run a previous run of this automation. When the automation has an incident trigger, the new run reuses that run's incident if the caller can view it. Cannot be combined with incident_id."
                   }
                 },
                 "additionalProperties": false
@@ -47046,6 +46920,153 @@
           "data"
         ],
         "additionalProperties": false
+      },
+      "ai_automation_webhook_secret_response": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string",
+                "enum": [
+                  "ai_automation_webhook_secrets"
+                ]
+              },
+              "attributes": {
+                "type": "object",
+                "properties": {
+                  "secret": {
+                    "type": "string"
+                  },
+                  "webhook_url": {
+                    "type": "string"
+                  },
+                  "rotated_at": {
+                    "type": "string",
+                    "format": "date-time"
+                  }
+                },
+                "required": [
+                  "secret",
+                  "webhook_url",
+                  "rotated_at"
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "attributes"
+            ]
+          }
+        },
+        "required": [
+          "data"
+        ]
+      },
+      "ai_tool_call_event_list": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "type": {
+                  "type": "string",
+                  "enum": [
+                    "ai_tool_call_events"
+                  ]
+                },
+                "attributes": {
+                  "type": "object",
+                  "properties": {
+                    "remote_mcp_source_id": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "provider_type": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "tool_name": {
+                      "type": "string"
+                    },
+                    "user_id": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "user_name": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "user_email": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "connection_name": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "automatic": {
+                      "type": "boolean"
+                    },
+                    "trigger_record_type": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "trigger_record_id": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "surface": {
+                      "type": "string"
+                    },
+                    "risk_class": {
+                      "type": "string"
+                    },
+                    "outcome": {
+                      "type": "string"
+                    },
+                    "duration_ms": {
+                      "type": "integer",
+                      "nullable": true
+                    },
+                    "occurred_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    },
+                    "ai_session_id": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "ai_automation_run_id": {
+                      "type": "string",
+                      "nullable": true
+                    },
+                    "argument_keys": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "meta": {
+            "type": "object",
+            "additionalProperties": true
+          }
+        }
       },
       "investigation": {
         "type": "object",
@@ -76973,6 +76994,15 @@
             "type": "string",
             "description": "The Google Doc file ID to use as a template."
           },
+          "document_mode": {
+            "type": "string",
+            "enum": [
+              "pages",
+              "pageless"
+            ],
+            "default": "pages",
+            "description": "Page setup for the Google Doc. pageless makes the doc pageless; pages leaves the page setup unchanged unless the Google Doc template is pageless"
+          },
           "include_overview": {
             "type": "boolean",
             "default": true
@@ -77252,6 +77282,15 @@
           "template_id": {
             "type": "string",
             "description": "The Google Doc file ID to use as a template"
+          },
+          "document_mode": {
+            "type": "string",
+            "enum": [
+              "pages",
+              "pageless"
+            ],
+            "default": "pages",
+            "description": "Page setup for the Google Doc. pageless makes the doc pageless; pages leaves the page setup unchanged unless the Google Doc template is pageless"
           },
           "permissions": {
             "type": "string",
@@ -95855,7 +95894,7 @@
                   },
                   "description": {
                     "type": "string",
-                    "description": "The description of the incident type",
+                    "description": "The description of the incident type. Required when the organization has \"Require description for incident types\" enabled.",
                     "nullable": true
                   },
                   "public_description": {
@@ -96004,7 +96043,7 @@
                   },
                   "description": {
                     "type": "string",
-                    "description": "The description of the incident type",
+                    "description": "The description of the incident type. Required when the organization has \"Require description for incident types\" enabled.",
                     "nullable": true
                   },
                   "public_description": {
@@ -110401,7 +110440,7 @@
                   },
                   "description": {
                     "type": "string",
-                    "description": "The description of the severity",
+                    "description": "The description of the severity. Required when the organization has \"Require description & type for severities\" enabled.",
                     "nullable": true
                   },
                   "severity": {
@@ -110528,7 +110567,7 @@
                   },
                   "description": {
                     "type": "string",
-                    "description": "The description of the severity",
+                    "description": "The description of the severity. Required when the organization has \"Require description & type for severities\" enabled.",
                     "nullable": true
                   },
                   "severity": {
@@ -116548,6 +116587,10 @@
                   "name": {
                     "type": "string",
                     "description": "The name of the endpoint"
+                  },
+                  "secret": {
+                    "type": "string",
+                    "description": "The webhook signing secret used to verify webhook requests."
                   },
                   "event_types": {
                     "type": "array",

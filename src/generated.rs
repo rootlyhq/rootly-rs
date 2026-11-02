@@ -972,9 +972,10 @@ pub mod types {
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub automation_id: ::std::option::Option<::uuid::Uuid>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub cost_cents: ::std::option::Option<f64>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub created_at: ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+        ///AI credits charged for this run, from the credit ledger. Null until the run is billed.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub credits: ::std::option::Option<f64>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub delivery_note: ::std::option::Option<::std::string::String>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -1577,6 +1578,41 @@ pub mod types {
             Default::default()
         }
     }
+    ///`AiAutomationWebhookSecretResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationWebhookSecretResponse {
+        pub data: AiAutomationWebhookSecretResponseData,
+    }
+    impl AiAutomationWebhookSecretResponse {
+        pub fn builder() -> builder::AiAutomationWebhookSecretResponse {
+            Default::default()
+        }
+    }
+    ///`AiAutomationWebhookSecretResponseData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationWebhookSecretResponseData {
+        pub attributes: AiAutomationWebhookSecretResponseDataAttributes,
+        pub id: ::std::string::String,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl AiAutomationWebhookSecretResponseData {
+        pub fn builder() -> builder::AiAutomationWebhookSecretResponseData {
+            Default::default()
+        }
+    }
+    ///`AiAutomationWebhookSecretResponseDataAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct AiAutomationWebhookSecretResponseDataAttributes {
+        pub rotated_at: ::chrono::DateTime<::chrono::offset::Utc>,
+        pub secret: ::std::string::String,
+        pub webhook_url: ::std::string::String,
+    }
+    impl AiAutomationWebhookSecretResponseDataAttributes {
+        pub fn builder() -> builder::AiAutomationWebhookSecretResponseDataAttributes {
+            Default::default()
+        }
+    }
     ///Checkpoint state after a confirm or cancel request
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct AiChatCheckpointResolution {
@@ -2026,6 +2062,81 @@ pub mod types {
     }
     impl AiSkillVersionResponseData {
         pub fn builder() -> builder::AiSkillVersionResponseData {
+            Default::default()
+        }
+    }
+    ///`AiToolCallEventList`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct AiToolCallEventList {
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub data: ::std::vec::Vec<AiToolCallEventListDataItem>,
+        #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
+        pub meta: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+    }
+    impl AiToolCallEventList {
+        pub fn builder() -> builder::AiToolCallEventList {
+            Default::default()
+        }
+    }
+    ///`AiToolCallEventListDataItem`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct AiToolCallEventListDataItem {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub attributes: ::std::option::Option<AiToolCallEventListDataItemAttributes>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub id: ::std::option::Option<::std::string::String>,
+        #[serde(rename = "type", skip_serializing_if = "::std::option::Option::is_none")]
+        pub type_: ::std::option::Option<::std::string::String>,
+    }
+    impl AiToolCallEventListDataItem {
+        pub fn builder() -> builder::AiToolCallEventListDataItem {
+            Default::default()
+        }
+    }
+    ///`AiToolCallEventListDataItemAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
+    pub struct AiToolCallEventListDataItemAttributes {
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_automation_run_id: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub ai_session_id: ::std::option::Option<::std::string::String>,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub argument_keys: ::std::vec::Vec<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub automatic: ::std::option::Option<bool>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub connection_name: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub duration_ms: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub occurred_at: ::std::option::Option<
+            ::chrono::DateTime<::chrono::offset::Utc>,
+        >,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub outcome: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub provider_type: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub remote_mcp_source_id: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub risk_class: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub surface: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub tool_name: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub trigger_record_id: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub trigger_record_type: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub user_email: ::std::option::Option<::std::string::String>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub user_id: ::std::option::Option<i64>,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub user_name: ::std::option::Option<::std::string::String>,
+    }
+    impl AiToolCallEventListDataItemAttributes {
+        pub fn builder() -> builder::AiToolCallEventListDataItemAttributes {
             Default::default()
         }
     }
@@ -8724,6 +8835,9 @@ pub mod types {
         ///The page content
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub content: ::std::option::Option<::std::string::String>,
+        ///Page setup for the Google Doc. pageless makes the doc pageless; pages leaves the page setup unchanged unless the Google Doc template is pageless
+        #[serde(default = "defaults::create_google_docs_page_task_params_document_mode")]
+        pub document_mode: ::std::string::String,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub drive: ::std::option::Option<CreateGoogleDocsPageTaskParamsDrive>,
         #[serde(default = "defaults::default_bool::<true>")]
@@ -17660,83 +17774,6 @@ pub mod types {
             Default::default()
         }
     }
-    ///`ListAiToolCallEventsResponse`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
-    pub struct ListAiToolCallEventsResponse {
-        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
-        pub data: ::std::vec::Vec<ListAiToolCallEventsResponseDataItem>,
-        #[serde(default, skip_serializing_if = "::serde_json::Map::is_empty")]
-        pub meta: ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-    }
-    impl ListAiToolCallEventsResponse {
-        pub fn builder() -> builder::ListAiToolCallEventsResponse {
-            Default::default()
-        }
-    }
-    ///`ListAiToolCallEventsResponseDataItem`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
-    pub struct ListAiToolCallEventsResponseDataItem {
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub attributes: ::std::option::Option<
-            ListAiToolCallEventsResponseDataItemAttributes,
-        >,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub id: ::std::option::Option<::std::string::String>,
-        #[serde(rename = "type", skip_serializing_if = "::std::option::Option::is_none")]
-        pub type_: ::std::option::Option<::std::string::String>,
-    }
-    impl ListAiToolCallEventsResponseDataItem {
-        pub fn builder() -> builder::ListAiToolCallEventsResponseDataItem {
-            Default::default()
-        }
-    }
-    ///`ListAiToolCallEventsResponseDataItemAttributes`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug, Default)]
-    pub struct ListAiToolCallEventsResponseDataItemAttributes {
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub ai_automation_run_id: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub ai_session_id: ::std::option::Option<::std::string::String>,
-        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
-        pub argument_keys: ::std::vec::Vec<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub automatic: ::std::option::Option<bool>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub connection_name: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub duration_ms: ::std::option::Option<i64>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub occurred_at: ::std::option::Option<
-            ::chrono::DateTime<::chrono::offset::Utc>,
-        >,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub outcome: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub provider_type: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub remote_mcp_source_id: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub risk_class: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub surface: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub tool_name: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub trigger_record_id: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub trigger_record_type: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub user_email: ::std::option::Option<::std::string::String>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub user_id: ::std::option::Option<i64>,
-        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub user_name: ::std::option::Option<::std::string::String>,
-    }
-    impl ListAiToolCallEventsResponseDataItemAttributes {
-        pub fn builder() -> builder::ListAiToolCallEventsResponseDataItemAttributes {
-            Default::default()
-        }
-    }
     ///`ListObservabilityLogsResponse`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct ListObservabilityLogsResponse {
@@ -18589,11 +18626,9 @@ pub mod types {
         ///Defaults to true. Stored limits are returned even when false and apply only when true.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub limits_enabled: ::std::option::Option<bool>,
-        ///Defaults to no limit (null); null or 0 means no limit. Stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
+        ///Defaults to no limit (null); null or 0 means no limit. Otherwise must be at least 1; values between 0 and 1 are rejected. Stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub max_credits_per_run: ::std::option::Option<
-            NewAiAutomationDataAttributesMaxCreditsPerRun,
-        >,
+        pub max_credits_per_run: ::std::option::Option<f64>,
         pub name: ::std::string::String,
         ///Ignored on write.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -18702,64 +18737,6 @@ pub mod types {
     for NewAiAutomationDataAttributesConditionsAnyItemAllItemValue {
         fn from(value: bool) -> Self {
             Self::Boolean(value)
-        }
-    }
-    ///Defaults to no limit (null); null or 0 means no limit. Stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum NewAiAutomationDataAttributesMaxCreditsPerRun {
-        Variant0(NewAiAutomationDataAttributesMaxCreditsPerRunVariant0),
-        Variant1(f64),
-        Variant2,
-    }
-    impl ::std::convert::From<NewAiAutomationDataAttributesMaxCreditsPerRunVariant0>
-    for NewAiAutomationDataAttributesMaxCreditsPerRun {
-        fn from(value: NewAiAutomationDataAttributesMaxCreditsPerRunVariant0) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<f64> for NewAiAutomationDataAttributesMaxCreditsPerRun {
-        fn from(value: f64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    ///`NewAiAutomationDataAttributesMaxCreditsPerRunVariant0`
-    #[derive(::serde::Serialize, Clone, Debug)]
-    #[serde(transparent)]
-    pub struct NewAiAutomationDataAttributesMaxCreditsPerRunVariant0(f64);
-    impl ::std::ops::Deref for NewAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
-        type Target = f64;
-        fn deref(&self) -> &f64 {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<NewAiAutomationDataAttributesMaxCreditsPerRunVariant0>
-    for f64 {
-        fn from(value: NewAiAutomationDataAttributesMaxCreditsPerRunVariant0) -> Self {
-            value.0
-        }
-    }
-    impl ::std::convert::TryFrom<f64>
-    for NewAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: f64,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            if ![0.0_f64].contains(&value) {
-                Err("invalid value".into())
-            } else {
-                Ok(Self(value))
-            }
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for NewAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            Self::try_from(<f64>::deserialize(deserializer)?)
-                .map_err(|e| { <D::Error as ::serde::de::Error>::custom(e.to_string()) })
         }
     }
     ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
@@ -18983,6 +18960,9 @@ pub mod types {
         ///Incident UUID or sequential reference such as INC-123; OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub incident_id: ::std::option::Option<::std::string::String>,
+        ///Re-run a previous run of this automation. When the automation has an incident trigger, the new run reuses that run's incident if the caller can view it. Cannot be combined with incident_id.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub run_id: ::std::option::Option<::uuid::Uuid>,
     }
     impl NewAiAutomationRunDataAttributes {
         pub fn builder() -> builder::NewAiAutomationRunDataAttributes {
@@ -23686,7 +23666,7 @@ pub mod types {
         ///The hex color of the incident type
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub color: ::std::option::Option<::std::string::String>,
-        ///The description of the incident type
+        ///The description of the incident type. Required when the organization has "Require description for incident types" enabled.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
         ///The name of the incident type
@@ -25709,7 +25689,7 @@ pub mod types {
         ///The hex color of the severity
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub color: ::std::option::Option<::std::string::String>,
-        ///The description of the severity
+        ///The description of the severity. Required when the organization has "Require description & type for severities" enabled.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
         ///The name of the severity
@@ -32612,41 +32592,6 @@ pub mod types {
             Default::default()
         }
     }
-    ///`RotateAiAutomationWebhookSecretResponse`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct RotateAiAutomationWebhookSecretResponse {
-        pub data: RotateAiAutomationWebhookSecretResponseData,
-    }
-    impl RotateAiAutomationWebhookSecretResponse {
-        pub fn builder() -> builder::RotateAiAutomationWebhookSecretResponse {
-            Default::default()
-        }
-    }
-    ///`RotateAiAutomationWebhookSecretResponseData`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct RotateAiAutomationWebhookSecretResponseData {
-        pub attributes: RotateAiAutomationWebhookSecretResponseDataAttributes,
-        pub id: ::std::string::String,
-        #[serde(rename = "type")]
-        pub type_: ::std::string::String,
-    }
-    impl RotateAiAutomationWebhookSecretResponseData {
-        pub fn builder() -> builder::RotateAiAutomationWebhookSecretResponseData {
-            Default::default()
-        }
-    }
-    ///`RotateAiAutomationWebhookSecretResponseDataAttributes`
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    pub struct RotateAiAutomationWebhookSecretResponseDataAttributes {
-        pub rotated_at: ::chrono::DateTime<::chrono::offset::Utc>,
-        pub secret: ::std::string::String,
-        pub webhook_url: ::std::string::String,
-    }
-    impl RotateAiAutomationWebhookSecretResponseDataAttributes {
-        pub fn builder() -> builder::RotateAiAutomationWebhookSecretResponseDataAttributes {
-            Default::default()
-        }
-    }
     ///`RotateApiKey`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct RotateApiKey {
@@ -36505,11 +36450,9 @@ pub mod types {
         ///Stored limit values are returned even when false and apply only when this is true.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub limits_enabled: ::std::option::Option<bool>,
-        ///Null or 0 means no limit. The stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
+        ///Null or 0 means no limit. Otherwise must be at least 1; values between 0 and 1 are rejected. The stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
-        pub max_credits_per_run: ::std::option::Option<
-            UpdateAiAutomationDataAttributesMaxCreditsPerRun,
-        >,
+        pub max_credits_per_run: ::std::option::Option<f64>,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub name: ::std::option::Option<::std::string::String>,
         ///Ignored on write.
@@ -36657,68 +36600,6 @@ pub mod types {
     for UpdateAiAutomationDataAttributesConditionsAnyItemAllItemValue {
         fn from(value: bool) -> Self {
             Self::Boolean(value)
-        }
-    }
-    ///Null or 0 means no limit. The stored value is returned even when limits are disabled and only applies when limits_enabled is true. Accepts increments of 0.1.
-    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
-    #[serde(untagged)]
-    pub enum UpdateAiAutomationDataAttributesMaxCreditsPerRun {
-        Variant0(UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0),
-        Variant1(f64),
-        Variant2,
-    }
-    impl ::std::convert::From<UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0>
-    for UpdateAiAutomationDataAttributesMaxCreditsPerRun {
-        fn from(
-            value: UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0,
-        ) -> Self {
-            Self::Variant0(value)
-        }
-    }
-    impl ::std::convert::From<f64> for UpdateAiAutomationDataAttributesMaxCreditsPerRun {
-        fn from(value: f64) -> Self {
-            Self::Variant1(value)
-        }
-    }
-    ///`UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0`
-    #[derive(::serde::Serialize, Clone, Debug)]
-    #[serde(transparent)]
-    pub struct UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0(f64);
-    impl ::std::ops::Deref for UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
-        type Target = f64;
-        fn deref(&self) -> &f64 {
-            &self.0
-        }
-    }
-    impl ::std::convert::From<UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0>
-    for f64 {
-        fn from(
-            value: UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0,
-        ) -> Self {
-            value.0
-        }
-    }
-    impl ::std::convert::TryFrom<f64>
-    for UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
-        type Error = self::error::ConversionError;
-        fn try_from(
-            value: f64,
-        ) -> ::std::result::Result<Self, self::error::ConversionError> {
-            if ![0.0_f64].contains(&value) {
-                Err("invalid value".into())
-            } else {
-                Ok(Self(value))
-            }
-        }
-    }
-    impl<'de> ::serde::Deserialize<'de>
-    for UpdateAiAutomationDataAttributesMaxCreditsPerRunVariant0 {
-        fn deserialize<D>(deserializer: D) -> ::std::result::Result<Self, D::Error>
-        where
-            D: ::serde::Deserializer<'de>,
-        {
-            Self::try_from(<f64>::deserialize(deserializer)?)
-                .map_err(|e| { <D::Error as ::serde::de::Error>::custom(e.to_string()) })
         }
     }
     ///Read-only; send triggers to change how the automation is triggered. Accepted on update only when unchanged from GET.
@@ -41401,6 +41282,9 @@ pub mod types {
         ///The Google Doc content
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub content: ::std::option::Option<::std::string::String>,
+        ///Page setup for the Google Doc. pageless makes the doc pageless; pages leaves the page setup unchanged unless the Google Doc template is pageless
+        #[serde(default = "defaults::update_google_docs_page_task_params_document_mode")]
+        pub document_mode: ::std::string::String,
         ///The Google Doc file ID
         pub file_id: ::std::string::String,
         #[serde(default = "defaults::default_bool::<true>")]
@@ -42756,7 +42640,7 @@ pub mod types {
         ///The hex color of the incident type
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub color: ::std::option::Option<::std::string::String>,
-        ///The description of the incident type
+        ///The description of the incident type. Required when the organization has "Require description for incident types" enabled.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
         ///The name of the incident type
@@ -45481,7 +45365,7 @@ pub mod types {
         ///The hex color of the severity
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub color: ::std::option::Option<::std::string::String>,
-        ///The description of the severity
+        ///The description of the severity. Required when the organization has "Require description & type for severities" enabled.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub description: ::std::option::Option<::std::string::String>,
         ///The name of the severity
@@ -47233,6 +47117,9 @@ pub mod types {
         ///The name of the endpoint
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub name: ::std::option::Option<::std::string::String>,
+        ///The webhook signing secret used to verify webhook requests.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub secret: ::std::option::Option<::std::string::String>,
         ///Deprecated. `slug` is derived from `name`; any submitted value is ignored. This property will be removed from the request schema in a future version.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub slug: ::std::option::Option<::std::string::String>,
@@ -55333,12 +55220,12 @@ pub mod types {
                 ::std::option::Option<::uuid::Uuid>,
                 ::std::string::String,
             >,
-            cost_cents: ::std::result::Result<
-                ::std::option::Option<f64>,
-                ::std::string::String,
-            >,
             created_at: ::std::result::Result<
                 ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            credits: ::std::result::Result<
+                ::std::option::Option<f64>,
                 ::std::string::String,
             >,
             delivery_note: ::std::result::Result<
@@ -55383,8 +55270,8 @@ pub mod types {
                 Self {
                     approval_expires_at: Ok(Default::default()),
                     automation_id: Ok(Default::default()),
-                    cost_cents: Ok(Default::default()),
                     created_at: Ok(Default::default()),
+                    credits: Ok(Default::default()),
                     delivery_note: Ok(Default::default()),
                     error: Ok(Default::default()),
                     finished_at: Ok(Default::default()),
@@ -55426,18 +55313,6 @@ pub mod types {
                     });
                 self
             }
-            pub fn cost_cents<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<f64>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.cost_cents = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for cost_cents: {e}")
-                    });
-                self
-            }
             pub fn created_at<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<
@@ -55449,6 +55324,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn credits<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<f64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.credits = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for credits: {e}")
                     });
                 self
             }
@@ -55576,8 +55463,8 @@ pub mod types {
                 Ok(Self {
                     approval_expires_at: value.approval_expires_at?,
                     automation_id: value.automation_id?,
-                    cost_cents: value.cost_cents?,
                     created_at: value.created_at?,
+                    credits: value.credits?,
                     delivery_note: value.delivery_note?,
                     error: value.error?,
                     finished_at: value.finished_at?,
@@ -55596,8 +55483,8 @@ pub mod types {
                 Self {
                     approval_expires_at: Ok(value.approval_expires_at),
                     automation_id: Ok(value.automation_id),
-                    cost_cents: Ok(value.cost_cents),
                     created_at: Ok(value.created_at),
+                    credits: Ok(value.credits),
                     delivery_note: Ok(value.delivery_note),
                     error: Ok(value.error),
                     finished_at: Ok(value.finished_at),
@@ -58565,6 +58452,213 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct AiAutomationWebhookSecretResponse {
+            data: ::std::result::Result<
+                super::AiAutomationWebhookSecretResponseData,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiAutomationWebhookSecretResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                }
+            }
+        }
+        impl AiAutomationWebhookSecretResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::AiAutomationWebhookSecretResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationWebhookSecretResponse>
+        for super::AiAutomationWebhookSecretResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationWebhookSecretResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self { data: value.data? })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationWebhookSecretResponse>
+        for AiAutomationWebhookSecretResponse {
+            fn from(value: super::AiAutomationWebhookSecretResponse) -> Self {
+                Self { data: Ok(value.data) }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationWebhookSecretResponseData {
+            attributes: ::std::result::Result<
+                super::AiAutomationWebhookSecretResponseDataAttributes,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for AiAutomationWebhookSecretResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl AiAutomationWebhookSecretResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    super::AiAutomationWebhookSecretResponseDataAttributes,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationWebhookSecretResponseData>
+        for super::AiAutomationWebhookSecretResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationWebhookSecretResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationWebhookSecretResponseData>
+        for AiAutomationWebhookSecretResponseData {
+            fn from(value: super::AiAutomationWebhookSecretResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiAutomationWebhookSecretResponseDataAttributes {
+            rotated_at: ::std::result::Result<
+                ::chrono::DateTime<::chrono::offset::Utc>,
+                ::std::string::String,
+            >,
+            secret: ::std::result::Result<::std::string::String, ::std::string::String>,
+            webhook_url: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default
+        for AiAutomationWebhookSecretResponseDataAttributes {
+            fn default() -> Self {
+                Self {
+                    rotated_at: Err("no value supplied for rotated_at".to_string()),
+                    secret: Err("no value supplied for secret".to_string()),
+                    webhook_url: Err("no value supplied for webhook_url".to_string()),
+                }
+            }
+        }
+        impl AiAutomationWebhookSecretResponseDataAttributes {
+            pub fn rotated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.rotated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for rotated_at: {e}")
+                    });
+                self
+            }
+            pub fn secret<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.secret = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for secret: {e}")
+                    });
+                self
+            }
+            pub fn webhook_url<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.webhook_url = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for webhook_url: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiAutomationWebhookSecretResponseDataAttributes>
+        for super::AiAutomationWebhookSecretResponseDataAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiAutomationWebhookSecretResponseDataAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    rotated_at: value.rotated_at?,
+                    secret: value.secret?,
+                    webhook_url: value.webhook_url?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiAutomationWebhookSecretResponseDataAttributes>
+        for AiAutomationWebhookSecretResponseDataAttributes {
+            fn from(
+                value: super::AiAutomationWebhookSecretResponseDataAttributes,
+            ) -> Self {
+                Self {
+                    rotated_at: Ok(value.rotated_at),
+                    secret: Ok(value.secret),
+                    webhook_url: Ok(value.webhook_url),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct AiChatCheckpointResolution {
             checkpoint_id: ::std::result::Result<::uuid::Uuid, ::std::string::String>,
             replay: ::std::result::Result<
@@ -61253,6 +61347,542 @@ pub mod types {
                     attributes: Ok(value.attributes),
                     id: Ok(value.id),
                     type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiToolCallEventList {
+            data: ::std::result::Result<
+                ::std::vec::Vec<super::AiToolCallEventListDataItem>,
+                ::std::string::String,
+            >,
+            meta: ::std::result::Result<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiToolCallEventList {
+            fn default() -> Self {
+                Self {
+                    data: Ok(Default::default()),
+                    meta: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiToolCallEventList {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::AiToolCallEventListDataItem>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn meta<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.meta = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for meta: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiToolCallEventList>
+        for super::AiToolCallEventList {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiToolCallEventList,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    meta: value.meta?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiToolCallEventList> for AiToolCallEventList {
+            fn from(value: super::AiToolCallEventList) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    meta: Ok(value.meta),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiToolCallEventListDataItem {
+            attributes: ::std::result::Result<
+                ::std::option::Option<super::AiToolCallEventListDataItemAttributes>,
+                ::std::string::String,
+            >,
+            id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiToolCallEventListDataItem {
+            fn default() -> Self {
+                Self {
+                    attributes: Ok(Default::default()),
+                    id: Ok(Default::default()),
+                    type_: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiToolCallEventListDataItem {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::AiToolCallEventListDataItemAttributes>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiToolCallEventListDataItem>
+        for super::AiToolCallEventListDataItem {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiToolCallEventListDataItem,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiToolCallEventListDataItem>
+        for AiToolCallEventListDataItem {
+            fn from(value: super::AiToolCallEventListDataItem) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct AiToolCallEventListDataItemAttributes {
+            ai_automation_run_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            ai_session_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            argument_keys: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            automatic: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            connection_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            duration_ms: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            occurred_at: ::std::result::Result<
+                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                ::std::string::String,
+            >,
+            outcome: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            provider_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            remote_mcp_source_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            risk_class: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            surface: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            tool_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            trigger_record_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            trigger_record_type: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            user_email: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            user_id: ::std::result::Result<
+                ::std::option::Option<i64>,
+                ::std::string::String,
+            >,
+            user_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for AiToolCallEventListDataItemAttributes {
+            fn default() -> Self {
+                Self {
+                    ai_automation_run_id: Ok(Default::default()),
+                    ai_session_id: Ok(Default::default()),
+                    argument_keys: Ok(Default::default()),
+                    automatic: Ok(Default::default()),
+                    connection_name: Ok(Default::default()),
+                    duration_ms: Ok(Default::default()),
+                    occurred_at: Ok(Default::default()),
+                    outcome: Ok(Default::default()),
+                    provider_type: Ok(Default::default()),
+                    remote_mcp_source_id: Ok(Default::default()),
+                    risk_class: Ok(Default::default()),
+                    surface: Ok(Default::default()),
+                    tool_name: Ok(Default::default()),
+                    trigger_record_id: Ok(Default::default()),
+                    trigger_record_type: Ok(Default::default()),
+                    user_email: Ok(Default::default()),
+                    user_id: Ok(Default::default()),
+                    user_name: Ok(Default::default()),
+                }
+            }
+        }
+        impl AiToolCallEventListDataItemAttributes {
+            pub fn ai_automation_run_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_automation_run_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for ai_automation_run_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn ai_session_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.ai_session_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for ai_session_id: {e}")
+                    });
+                self
+            }
+            pub fn argument_keys<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.argument_keys = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for argument_keys: {e}")
+                    });
+                self
+            }
+            pub fn automatic<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.automatic = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for automatic: {e}")
+                    });
+                self
+            }
+            pub fn connection_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.connection_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for connection_name: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn duration_ms<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.duration_ms = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for duration_ms: {e}")
+                    });
+                self
+            }
+            pub fn occurred_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.occurred_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for occurred_at: {e}")
+                    });
+                self
+            }
+            pub fn outcome<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.outcome = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for outcome: {e}")
+                    });
+                self
+            }
+            pub fn provider_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.provider_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for provider_type: {e}")
+                    });
+                self
+            }
+            pub fn remote_mcp_source_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.remote_mcp_source_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for remote_mcp_source_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn risk_class<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.risk_class = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for risk_class: {e}")
+                    });
+                self
+            }
+            pub fn surface<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.surface = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for surface: {e}")
+                    });
+                self
+            }
+            pub fn tool_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.tool_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for tool_name: {e}")
+                    });
+                self
+            }
+            pub fn trigger_record_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.trigger_record_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for trigger_record_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn trigger_record_type<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.trigger_record_type = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for trigger_record_type: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn user_email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_email: {e}")
+                    });
+                self
+            }
+            pub fn user_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<i64>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_id: {e}")
+                    });
+                self
+            }
+            pub fn user_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.user_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for user_name: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<AiToolCallEventListDataItemAttributes>
+        for super::AiToolCallEventListDataItemAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: AiToolCallEventListDataItemAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    ai_automation_run_id: value.ai_automation_run_id?,
+                    ai_session_id: value.ai_session_id?,
+                    argument_keys: value.argument_keys?,
+                    automatic: value.automatic?,
+                    connection_name: value.connection_name?,
+                    duration_ms: value.duration_ms?,
+                    occurred_at: value.occurred_at?,
+                    outcome: value.outcome?,
+                    provider_type: value.provider_type?,
+                    remote_mcp_source_id: value.remote_mcp_source_id?,
+                    risk_class: value.risk_class?,
+                    surface: value.surface?,
+                    tool_name: value.tool_name?,
+                    trigger_record_id: value.trigger_record_id?,
+                    trigger_record_type: value.trigger_record_type?,
+                    user_email: value.user_email?,
+                    user_id: value.user_id?,
+                    user_name: value.user_name?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::AiToolCallEventListDataItemAttributes>
+        for AiToolCallEventListDataItemAttributes {
+            fn from(value: super::AiToolCallEventListDataItemAttributes) -> Self {
+                Self {
+                    ai_automation_run_id: Ok(value.ai_automation_run_id),
+                    ai_session_id: Ok(value.ai_session_id),
+                    argument_keys: Ok(value.argument_keys),
+                    automatic: Ok(value.automatic),
+                    connection_name: Ok(value.connection_name),
+                    duration_ms: Ok(value.duration_ms),
+                    occurred_at: Ok(value.occurred_at),
+                    outcome: Ok(value.outcome),
+                    provider_type: Ok(value.provider_type),
+                    remote_mcp_source_id: Ok(value.remote_mcp_source_id),
+                    risk_class: Ok(value.risk_class),
+                    surface: Ok(value.surface),
+                    tool_name: Ok(value.tool_name),
+                    trigger_record_id: Ok(value.trigger_record_id),
+                    trigger_record_type: Ok(value.trigger_record_type),
+                    user_email: Ok(value.user_email),
+                    user_id: Ok(value.user_id),
+                    user_name: Ok(value.user_name),
                 }
             }
         }
@@ -96787,6 +97417,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            document_mode: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
             drive: ::std::result::Result<
                 ::std::option::Option<super::CreateGoogleDocsPageTaskParamsDrive>,
                 ::std::string::String,
@@ -96824,6 +97458,9 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     content: Ok(Default::default()),
+                    document_mode: Ok(
+                        super::defaults::create_google_docs_page_task_params_document_mode(),
+                    ),
                     drive: Ok(Default::default()),
                     include_follow_ups: Ok(super::defaults::default_bool::<true>()),
                     include_overview: Ok(super::defaults::default_bool::<true>()),
@@ -96850,6 +97487,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for content: {e}")
+                    });
+                self
+            }
+            pub fn document_mode<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.document_mode = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for document_mode: {e}")
                     });
                 self
             }
@@ -97010,6 +97659,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     content: value.content?,
+                    document_mode: value.document_mode?,
                     drive: value.drive?,
                     include_follow_ups: value.include_follow_ups?,
                     include_overview: value.include_overview?,
@@ -97029,6 +97679,7 @@ pub mod types {
             fn from(value: super::CreateGoogleDocsPageTaskParams) -> Self {
                 Self {
                     content: Ok(value.content),
+                    document_mode: Ok(value.document_mode),
                     drive: Ok(value.drive),
                     include_follow_ups: Ok(value.include_follow_ups),
                     include_overview: Ok(value.include_overview),
@@ -144363,549 +145014,6 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
-        pub struct ListAiToolCallEventsResponse {
-            data: ::std::result::Result<
-                ::std::vec::Vec<super::ListAiToolCallEventsResponseDataItem>,
-                ::std::string::String,
-            >,
-            meta: ::std::result::Result<
-                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for ListAiToolCallEventsResponse {
-            fn default() -> Self {
-                Self {
-                    data: Ok(Default::default()),
-                    meta: Ok(Default::default()),
-                }
-            }
-        }
-        impl ListAiToolCallEventsResponse {
-            pub fn data<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::vec::Vec<super::ListAiToolCallEventsResponseDataItem>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.data = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for data: {e}")
-                    });
-                self
-            }
-            pub fn meta<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.meta = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for meta: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<ListAiToolCallEventsResponse>
-        for super::ListAiToolCallEventsResponse {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: ListAiToolCallEventsResponse,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    data: value.data?,
-                    meta: value.meta?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::ListAiToolCallEventsResponse>
-        for ListAiToolCallEventsResponse {
-            fn from(value: super::ListAiToolCallEventsResponse) -> Self {
-                Self {
-                    data: Ok(value.data),
-                    meta: Ok(value.meta),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct ListAiToolCallEventsResponseDataItem {
-            attributes: ::std::result::Result<
-                ::std::option::Option<
-                    super::ListAiToolCallEventsResponseDataItemAttributes,
-                >,
-                ::std::string::String,
-            >,
-            id: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            type_: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for ListAiToolCallEventsResponseDataItem {
-            fn default() -> Self {
-                Self {
-                    attributes: Ok(Default::default()),
-                    id: Ok(Default::default()),
-                    type_: Ok(Default::default()),
-                }
-            }
-        }
-        impl ListAiToolCallEventsResponseDataItem {
-            pub fn attributes<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        super::ListAiToolCallEventsResponseDataItemAttributes,
-                    >,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.attributes = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for attributes: {e}")
-                    });
-                self
-            }
-            pub fn id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.id = value
-                    .try_into()
-                    .map_err(|e| format!("error converting supplied value for id: {e}"));
-                self
-            }
-            pub fn type_<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.type_ = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for type_: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<ListAiToolCallEventsResponseDataItem>
-        for super::ListAiToolCallEventsResponseDataItem {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: ListAiToolCallEventsResponseDataItem,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    attributes: value.attributes?,
-                    id: value.id?,
-                    type_: value.type_?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::ListAiToolCallEventsResponseDataItem>
-        for ListAiToolCallEventsResponseDataItem {
-            fn from(value: super::ListAiToolCallEventsResponseDataItem) -> Self {
-                Self {
-                    attributes: Ok(value.attributes),
-                    id: Ok(value.id),
-                    type_: Ok(value.type_),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct ListAiToolCallEventsResponseDataItemAttributes {
-            ai_automation_run_id: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            ai_session_id: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            argument_keys: ::std::result::Result<
-                ::std::vec::Vec<::std::string::String>,
-                ::std::string::String,
-            >,
-            automatic: ::std::result::Result<
-                ::std::option::Option<bool>,
-                ::std::string::String,
-            >,
-            connection_name: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            duration_ms: ::std::result::Result<
-                ::std::option::Option<i64>,
-                ::std::string::String,
-            >,
-            occurred_at: ::std::result::Result<
-                ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                ::std::string::String,
-            >,
-            outcome: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            provider_type: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            remote_mcp_source_id: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            risk_class: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            surface: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            tool_name: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            trigger_record_id: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            trigger_record_type: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            user_email: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-            user_id: ::std::result::Result<
-                ::std::option::Option<i64>,
-                ::std::string::String,
-            >,
-            user_name: ::std::result::Result<
-                ::std::option::Option<::std::string::String>,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for ListAiToolCallEventsResponseDataItemAttributes {
-            fn default() -> Self {
-                Self {
-                    ai_automation_run_id: Ok(Default::default()),
-                    ai_session_id: Ok(Default::default()),
-                    argument_keys: Ok(Default::default()),
-                    automatic: Ok(Default::default()),
-                    connection_name: Ok(Default::default()),
-                    duration_ms: Ok(Default::default()),
-                    occurred_at: Ok(Default::default()),
-                    outcome: Ok(Default::default()),
-                    provider_type: Ok(Default::default()),
-                    remote_mcp_source_id: Ok(Default::default()),
-                    risk_class: Ok(Default::default()),
-                    surface: Ok(Default::default()),
-                    tool_name: Ok(Default::default()),
-                    trigger_record_id: Ok(Default::default()),
-                    trigger_record_type: Ok(Default::default()),
-                    user_email: Ok(Default::default()),
-                    user_id: Ok(Default::default()),
-                    user_name: Ok(Default::default()),
-                }
-            }
-        }
-        impl ListAiToolCallEventsResponseDataItemAttributes {
-            pub fn ai_automation_run_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.ai_automation_run_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for ai_automation_run_id: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn ai_session_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.ai_session_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for ai_session_id: {e}")
-                    });
-                self
-            }
-            pub fn argument_keys<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.argument_keys = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for argument_keys: {e}")
-                    });
-                self
-            }
-            pub fn automatic<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<bool>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.automatic = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for automatic: {e}")
-                    });
-                self
-            }
-            pub fn connection_name<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.connection_name = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for connection_name: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn duration_ms<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<i64>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.duration_ms = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for duration_ms: {e}")
-                    });
-                self
-            }
-            pub fn occurred_at<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<::chrono::DateTime<::chrono::offset::Utc>>,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.occurred_at = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for occurred_at: {e}")
-                    });
-                self
-            }
-            pub fn outcome<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.outcome = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for outcome: {e}")
-                    });
-                self
-            }
-            pub fn provider_type<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.provider_type = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for provider_type: {e}")
-                    });
-                self
-            }
-            pub fn remote_mcp_source_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.remote_mcp_source_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for remote_mcp_source_id: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn risk_class<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.risk_class = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for risk_class: {e}")
-                    });
-                self
-            }
-            pub fn surface<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.surface = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for surface: {e}")
-                    });
-                self
-            }
-            pub fn tool_name<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.tool_name = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for tool_name: {e}")
-                    });
-                self
-            }
-            pub fn trigger_record_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.trigger_record_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for trigger_record_id: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn trigger_record_type<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.trigger_record_type = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!(
-                            "error converting supplied value for trigger_record_type: {e}"
-                        )
-                    });
-                self
-            }
-            pub fn user_email<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.user_email = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for user_email: {e}")
-                    });
-                self
-            }
-            pub fn user_id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<i64>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.user_id = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for user_id: {e}")
-                    });
-                self
-            }
-            pub fn user_name<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.user_name = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for user_name: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<ListAiToolCallEventsResponseDataItemAttributes>
-        for super::ListAiToolCallEventsResponseDataItemAttributes {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: ListAiToolCallEventsResponseDataItemAttributes,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    ai_automation_run_id: value.ai_automation_run_id?,
-                    ai_session_id: value.ai_session_id?,
-                    argument_keys: value.argument_keys?,
-                    automatic: value.automatic?,
-                    connection_name: value.connection_name?,
-                    duration_ms: value.duration_ms?,
-                    occurred_at: value.occurred_at?,
-                    outcome: value.outcome?,
-                    provider_type: value.provider_type?,
-                    remote_mcp_source_id: value.remote_mcp_source_id?,
-                    risk_class: value.risk_class?,
-                    surface: value.surface?,
-                    tool_name: value.tool_name?,
-                    trigger_record_id: value.trigger_record_id?,
-                    trigger_record_type: value.trigger_record_type?,
-                    user_email: value.user_email?,
-                    user_id: value.user_id?,
-                    user_name: value.user_name?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::ListAiToolCallEventsResponseDataItemAttributes>
-        for ListAiToolCallEventsResponseDataItemAttributes {
-            fn from(
-                value: super::ListAiToolCallEventsResponseDataItemAttributes,
-            ) -> Self {
-                Self {
-                    ai_automation_run_id: Ok(value.ai_automation_run_id),
-                    ai_session_id: Ok(value.ai_session_id),
-                    argument_keys: Ok(value.argument_keys),
-                    automatic: Ok(value.automatic),
-                    connection_name: Ok(value.connection_name),
-                    duration_ms: Ok(value.duration_ms),
-                    occurred_at: Ok(value.occurred_at),
-                    outcome: Ok(value.outcome),
-                    provider_type: Ok(value.provider_type),
-                    remote_mcp_source_id: Ok(value.remote_mcp_source_id),
-                    risk_class: Ok(value.risk_class),
-                    surface: Ok(value.surface),
-                    tool_name: Ok(value.tool_name),
-                    trigger_record_id: Ok(value.trigger_record_id),
-                    trigger_record_type: Ok(value.trigger_record_type),
-                    user_email: Ok(value.user_email),
-                    user_id: Ok(value.user_id),
-                    user_name: Ok(value.user_name),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
         pub struct ListObservabilityLogsResponse {
             data: ::std::result::Result<
                 ::std::vec::Vec<super::ListObservabilityLogsResponseDataItem>,
@@ -149000,9 +149108,7 @@ pub mod types {
                 ::std::string::String,
             >,
             max_credits_per_run: ::std::result::Result<
-                ::std::option::Option<
-                    super::NewAiAutomationDataAttributesMaxCreditsPerRun,
-                >,
+                ::std::option::Option<f64>,
                 ::std::string::String,
             >,
             name: ::std::result::Result<::std::string::String, ::std::string::String>,
@@ -149296,11 +149402,7 @@ pub mod types {
             }
             pub fn max_credits_per_run<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        super::NewAiAutomationDataAttributesMaxCreditsPerRun,
-                    >,
-                >,
+                T: ::std::convert::TryInto<::std::option::Option<f64>>,
                 T::Error: ::std::fmt::Display,
             {
                 self.max_credits_per_run = value
@@ -150433,11 +150535,16 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            run_id: ::std::result::Result<
+                ::std::option::Option<::uuid::Uuid>,
+                ::std::string::String,
+            >,
         }
         impl ::std::default::Default for NewAiAutomationRunDataAttributes {
             fn default() -> Self {
                 Self {
                     incident_id: Ok(Default::default()),
+                    run_id: Ok(Default::default()),
                 }
             }
         }
@@ -150454,6 +150561,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn run_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::uuid::Uuid>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.run_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for run_id: {e}")
+                    });
+                self
+            }
         }
         impl ::std::convert::TryFrom<NewAiAutomationRunDataAttributes>
         for super::NewAiAutomationRunDataAttributes {
@@ -150463,6 +150582,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     incident_id: value.incident_id?,
+                    run_id: value.run_id?,
                 })
             }
         }
@@ -150471,6 +150591,7 @@ pub mod types {
             fn from(value: super::NewAiAutomationRunDataAttributes) -> Self {
                 Self {
                     incident_id: Ok(value.incident_id),
+                    run_id: Ok(value.run_id),
                 }
             }
         }
@@ -214722,217 +214843,6 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
-        pub struct RotateAiAutomationWebhookSecretResponse {
-            data: ::std::result::Result<
-                super::RotateAiAutomationWebhookSecretResponseData,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default for RotateAiAutomationWebhookSecretResponse {
-            fn default() -> Self {
-                Self {
-                    data: Err("no value supplied for data".to_string()),
-                }
-            }
-        }
-        impl RotateAiAutomationWebhookSecretResponse {
-            pub fn data<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    super::RotateAiAutomationWebhookSecretResponseData,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.data = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for data: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<RotateAiAutomationWebhookSecretResponse>
-        for super::RotateAiAutomationWebhookSecretResponse {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: RotateAiAutomationWebhookSecretResponse,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self { data: value.data? })
-            }
-        }
-        impl ::std::convert::From<super::RotateAiAutomationWebhookSecretResponse>
-        for RotateAiAutomationWebhookSecretResponse {
-            fn from(value: super::RotateAiAutomationWebhookSecretResponse) -> Self {
-                Self { data: Ok(value.data) }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct RotateAiAutomationWebhookSecretResponseData {
-            attributes: ::std::result::Result<
-                super::RotateAiAutomationWebhookSecretResponseDataAttributes,
-                ::std::string::String,
-            >,
-            id: ::std::result::Result<::std::string::String, ::std::string::String>,
-            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
-        }
-        impl ::std::default::Default for RotateAiAutomationWebhookSecretResponseData {
-            fn default() -> Self {
-                Self {
-                    attributes: Err("no value supplied for attributes".to_string()),
-                    id: Err("no value supplied for id".to_string()),
-                    type_: Err("no value supplied for type_".to_string()),
-                }
-            }
-        }
-        impl RotateAiAutomationWebhookSecretResponseData {
-            pub fn attributes<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<
-                    super::RotateAiAutomationWebhookSecretResponseDataAttributes,
-                >,
-                T::Error: ::std::fmt::Display,
-            {
-                self.attributes = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for attributes: {e}")
-                    });
-                self
-            }
-            pub fn id<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.id = value
-                    .try_into()
-                    .map_err(|e| format!("error converting supplied value for id: {e}"));
-                self
-            }
-            pub fn type_<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.type_ = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for type_: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<RotateAiAutomationWebhookSecretResponseData>
-        for super::RotateAiAutomationWebhookSecretResponseData {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: RotateAiAutomationWebhookSecretResponseData,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    attributes: value.attributes?,
-                    id: value.id?,
-                    type_: value.type_?,
-                })
-            }
-        }
-        impl ::std::convert::From<super::RotateAiAutomationWebhookSecretResponseData>
-        for RotateAiAutomationWebhookSecretResponseData {
-            fn from(value: super::RotateAiAutomationWebhookSecretResponseData) -> Self {
-                Self {
-                    attributes: Ok(value.attributes),
-                    id: Ok(value.id),
-                    type_: Ok(value.type_),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
-        pub struct RotateAiAutomationWebhookSecretResponseDataAttributes {
-            rotated_at: ::std::result::Result<
-                ::chrono::DateTime<::chrono::offset::Utc>,
-                ::std::string::String,
-            >,
-            secret: ::std::result::Result<::std::string::String, ::std::string::String>,
-            webhook_url: ::std::result::Result<
-                ::std::string::String,
-                ::std::string::String,
-            >,
-        }
-        impl ::std::default::Default
-        for RotateAiAutomationWebhookSecretResponseDataAttributes {
-            fn default() -> Self {
-                Self {
-                    rotated_at: Err("no value supplied for rotated_at".to_string()),
-                    secret: Err("no value supplied for secret".to_string()),
-                    webhook_url: Err("no value supplied for webhook_url".to_string()),
-                }
-            }
-        }
-        impl RotateAiAutomationWebhookSecretResponseDataAttributes {
-            pub fn rotated_at<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.rotated_at = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for rotated_at: {e}")
-                    });
-                self
-            }
-            pub fn secret<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.secret = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for secret: {e}")
-                    });
-                self
-            }
-            pub fn webhook_url<T>(mut self, value: T) -> Self
-            where
-                T: ::std::convert::TryInto<::std::string::String>,
-                T::Error: ::std::fmt::Display,
-            {
-                self.webhook_url = value
-                    .try_into()
-                    .map_err(|e| {
-                        format!("error converting supplied value for webhook_url: {e}")
-                    });
-                self
-            }
-        }
-        impl ::std::convert::TryFrom<
-            RotateAiAutomationWebhookSecretResponseDataAttributes,
-        > for super::RotateAiAutomationWebhookSecretResponseDataAttributes {
-            type Error = super::error::ConversionError;
-            fn try_from(
-                value: RotateAiAutomationWebhookSecretResponseDataAttributes,
-            ) -> ::std::result::Result<Self, super::error::ConversionError> {
-                Ok(Self {
-                    rotated_at: value.rotated_at?,
-                    secret: value.secret?,
-                    webhook_url: value.webhook_url?,
-                })
-            }
-        }
-        impl ::std::convert::From<
-            super::RotateAiAutomationWebhookSecretResponseDataAttributes,
-        > for RotateAiAutomationWebhookSecretResponseDataAttributes {
-            fn from(
-                value: super::RotateAiAutomationWebhookSecretResponseDataAttributes,
-            ) -> Self {
-                Self {
-                    rotated_at: Ok(value.rotated_at),
-                    secret: Ok(value.secret),
-                    webhook_url: Ok(value.webhook_url),
-                }
-            }
-        }
-        #[derive(Clone, Debug)]
         pub struct RotateApiKey {
             data: ::std::result::Result<super::RotateApiKeyData, ::std::string::String>,
         }
@@ -234935,9 +234845,7 @@ pub mod types {
                 ::std::string::String,
             >,
             max_credits_per_run: ::std::result::Result<
-                ::std::option::Option<
-                    super::UpdateAiAutomationDataAttributesMaxCreditsPerRun,
-                >,
+                ::std::option::Option<f64>,
                 ::std::string::String,
             >,
             name: ::std::result::Result<
@@ -235239,11 +235147,7 @@ pub mod types {
             }
             pub fn max_credits_per_run<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<
-                    ::std::option::Option<
-                        super::UpdateAiAutomationDataAttributesMaxCreditsPerRun,
-                    >,
-                >,
+                T: ::std::convert::TryInto<::std::option::Option<f64>>,
                 T::Error: ::std::fmt::Display,
             {
                 self.max_credits_per_run = value
@@ -257481,6 +257385,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            document_mode: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
             file_id: ::std::result::Result<::std::string::String, ::std::string::String>,
             include_follow_ups: ::std::result::Result<bool, ::std::string::String>,
             include_overview: ::std::result::Result<bool, ::std::string::String>,
@@ -257506,6 +257414,9 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     content: Ok(Default::default()),
+                    document_mode: Ok(
+                        super::defaults::update_google_docs_page_task_params_document_mode(),
+                    ),
                     file_id: Err("no value supplied for file_id".to_string()),
                     include_follow_ups: Ok(super::defaults::default_bool::<true>()),
                     include_overview: Ok(super::defaults::default_bool::<true>()),
@@ -257527,6 +257438,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for content: {e}")
+                    });
+                self
+            }
+            pub fn document_mode<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.document_mode = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for document_mode: {e}")
                     });
                 self
             }
@@ -257643,6 +257566,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     content: value.content?,
+                    document_mode: value.document_mode?,
                     file_id: value.file_id?,
                     include_follow_ups: value.include_follow_ups?,
                     include_overview: value.include_overview?,
@@ -257659,6 +257583,7 @@ pub mod types {
             fn from(value: super::UpdateGoogleDocsPageTaskParams) -> Self {
                 Self {
                     content: Ok(value.content),
+                    document_mode: Ok(value.document_mode),
                     file_id: Ok(value.file_id),
                     include_follow_ups: Ok(value.include_follow_ups),
                     include_overview: Ok(value.include_overview),
@@ -284911,6 +284836,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            secret: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             slug: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -284923,6 +284852,7 @@ pub mod types {
                     enabled: Ok(Default::default()),
                     event_types: Ok(Default::default()),
                     name: Ok(Default::default()),
+                    secret: Ok(Default::default()),
                     slug: Ok(Default::default()),
                 }
             }
@@ -284982,6 +284912,18 @@ pub mod types {
                     });
                 self
             }
+            pub fn secret<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.secret = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for secret: {e}")
+                    });
+                self
+            }
             pub fn slug<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -285006,6 +284948,7 @@ pub mod types {
                     enabled: value.enabled?,
                     event_types: value.event_types?,
                     name: value.name?,
+                    secret: value.secret?,
                     slug: value.slug?,
                 })
             }
@@ -285018,6 +284961,7 @@ pub mod types {
                     enabled: Ok(value.enabled),
                     event_types: Ok(value.event_types),
                     name: Ok(value.name),
+                    secret: Ok(value.secret),
                     slug: Ok(value.slug),
                 }
             }
@@ -299830,6 +299774,9 @@ pub mod types {
         pub(super) fn create_asana_task_task_params_dependency_direction() -> ::std::string::String {
             "blocking".to_string()
         }
+        pub(super) fn create_google_docs_page_task_params_document_mode() -> ::std::string::String {
+            "pages".to_string()
+        }
         pub(super) fn create_jsmops_alert_task_params_priority() -> ::std::string::String {
             "P3".to_string()
         }
@@ -300093,6 +300040,9 @@ pub mod types {
         }
         pub(super) fn update_github_issue_task_params_labels_mode() -> ::std::string::String {
             "replace".to_string()
+        }
+        pub(super) fn update_google_docs_page_task_params_document_mode() -> ::std::string::String {
+            "pages".to_string()
         }
         pub(super) fn update_incident_task_params_attribute_to_query_by() -> ::std::string::String {
             "id".to_string()
@@ -300644,7 +300594,7 @@ let response = client.list_ai_automation_runs()
     }
     /**Runs an AI automation now
 
-Requires OAuth scope `ai.automations:write`. For run-now requests with incident_id, OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Limited to 30 requests per credential per minute (fixed one-minute windows), separate from the default mutation rate limit; exceeding it returns 429 with Retry-After.
+Requires OAuth scope `ai.automations:write`. For run-now requests with incident_id, or run_id of an incident-linked run, OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Limited to 30 requests per credential per minute (fixed one-minute windows), separate from the default mutation rate limit; exceeding it returns 429 with Retry-After.
 
 Sends a `POST` request to `/v1/ai_automations/{ai_automation_id}/runs`
 
@@ -302112,7 +302062,7 @@ let response = client.delete_api_key()
 
 Rotate an API key's token. Issues a new secret token and returns it — **the new token is only shown once**, so store it securely.
 
-**Self-only:** You can only rotate the API key that was used to authenticate this request. Attempting to rotate a different key returns `403 Forbidden`.
+**Self-only:** You can only rotate the API key that was used to authenticate this request. Attempting to rotate a different key returns `404 Not Found` when the authenticating key is not authorized to manage it, or `403 Forbidden` when it is.
 
 **Grace period:** When enabled for your organization, the previous token remains valid after rotation, giving you time to deploy the new token without downtime. Pass `grace_period_minutes` (integer, 0–1440, default 30) to control how long the old token stays valid. Set to 0 to immediately invalidate the old token. The `grace_period_ends_at` field in the response confirms the exact time the old token will stop working.
 
@@ -307935,7 +307885,7 @@ let response = client.create_incident_sub_status()
     }
     /**Lists AI SRE investigations
 
-Investigations on alerts and incidents the caller can read, newest first.
+Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. Investigations on alerts and incidents the caller can read, newest first.
 
 Sends a `GET` request to `/v1/investigations`
 
@@ -307962,7 +307912,7 @@ let response = client.list_investigations()
     }
     /**Starts an AI SRE investigation
 
-Starts an investigation on an alert or incident you can update, or returns the one already running.
+Requires OAuth scope `ai.investigations:write`. OAuth tokens also need `oc.alerts:write` (alerts) or `ir.incidents:write` (incidents) and update access to the resource; API keys use the key's role. Starts an investigation on an alert or incident you can update, or returns the one already running.
 
 Sends a `POST` request to `/v1/investigations`
 
@@ -307977,7 +307927,7 @@ let response = client.create_investigation()
     }
     /**Retrieves an AI SRE investigation
 
-The verdict, hypotheses, evidence, causal chain and open questions.
+Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. The verdict, hypotheses, evidence, causal chain and open questions.
 
 Sends a `GET` request to `/v1/investigations/{id}`
 
@@ -307992,6 +307942,8 @@ let response = client.get_investigation()
     }
     /**Cancels an AI SRE investigation
 
+Requires OAuth scope `ai.investigations:write`. OAuth tokens also need `oc.alerts:write` (alerts) or `ir.incidents:write` (incidents) and update access to the resource; API keys use the key's role.
+
 Sends a `POST` request to `/v1/investigations/{id}/cancel`
 
 ```ignore
@@ -308005,7 +307957,7 @@ let response = client.cancel_investigation()
     }
     /**Retrieves AI SRE investigation progress
 
-Returns immediately with steps and tool calls recorded after the cursor. Poll with after=next_cursor until done is true.
+Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. Returns immediately with steps and tool calls recorded after the cursor. Poll with after=next_cursor until done is true.
 
 Sends a `GET` request to `/v1/investigations/{id}/progress`
 
@@ -316003,10 +315955,7 @@ pub mod builder {
         ///Sends a `POST` request to `/v1/ai_automations/{id}/triggers/{trigger_id}/webhook_secret`
         pub async fn send(
             self,
-        ) -> Result<
-            ResponseValue<types::RotateAiAutomationWebhookSecretResponse>,
-            Error<()>,
-        > {
+        ) -> Result<ResponseValue<types::AiAutomationWebhookSecretResponse>, Error<()>> {
             let Self { client, id, trigger_id, body } = self;
             let id = id.map_err(Error::InvalidRequest)?;
             let trigger_id = trigger_id.map_err(Error::InvalidRequest)?;
@@ -317031,7 +316980,7 @@ pub mod builder {
         ///Sends a `GET` request to `/v1/ai_tool_call_events`
         pub async fn send(
             self,
-        ) -> Result<ResponseValue<types::ListAiToolCallEventsResponse>, Error<()>> {
+        ) -> Result<ResponseValue<types::AiToolCallEventList>, Error<()>> {
             let Self {
                 client,
                 filter_connector_id,
