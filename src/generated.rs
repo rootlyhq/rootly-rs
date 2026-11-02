@@ -8835,6 +8835,9 @@ pub mod types {
         ///The page content
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub content: ::std::option::Option<::std::string::String>,
+        ///Page setup for the Google Doc. pageless makes the doc pageless; pages leaves the page setup unchanged unless the Google Doc template is pageless
+        #[serde(default = "defaults::create_google_docs_page_task_params_document_mode")]
+        pub document_mode: ::std::string::String,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub drive: ::std::option::Option<CreateGoogleDocsPageTaskParamsDrive>,
         #[serde(default = "defaults::default_bool::<true>")]
@@ -41279,6 +41282,9 @@ pub mod types {
         ///The Google Doc content
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub content: ::std::option::Option<::std::string::String>,
+        ///Page setup for the Google Doc. pageless makes the doc pageless; pages leaves the page setup unchanged unless the Google Doc template is pageless
+        #[serde(default = "defaults::update_google_docs_page_task_params_document_mode")]
+        pub document_mode: ::std::string::String,
         ///The Google Doc file ID
         pub file_id: ::std::string::String,
         #[serde(default = "defaults::default_bool::<true>")]
@@ -97411,6 +97417,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            document_mode: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
             drive: ::std::result::Result<
                 ::std::option::Option<super::CreateGoogleDocsPageTaskParamsDrive>,
                 ::std::string::String,
@@ -97448,6 +97458,9 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     content: Ok(Default::default()),
+                    document_mode: Ok(
+                        super::defaults::create_google_docs_page_task_params_document_mode(),
+                    ),
                     drive: Ok(Default::default()),
                     include_follow_ups: Ok(super::defaults::default_bool::<true>()),
                     include_overview: Ok(super::defaults::default_bool::<true>()),
@@ -97474,6 +97487,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for content: {e}")
+                    });
+                self
+            }
+            pub fn document_mode<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.document_mode = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for document_mode: {e}")
                     });
                 self
             }
@@ -97634,6 +97659,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     content: value.content?,
+                    document_mode: value.document_mode?,
                     drive: value.drive?,
                     include_follow_ups: value.include_follow_ups?,
                     include_overview: value.include_overview?,
@@ -97653,6 +97679,7 @@ pub mod types {
             fn from(value: super::CreateGoogleDocsPageTaskParams) -> Self {
                 Self {
                     content: Ok(value.content),
+                    document_mode: Ok(value.document_mode),
                     drive: Ok(value.drive),
                     include_follow_ups: Ok(value.include_follow_ups),
                     include_overview: Ok(value.include_overview),
@@ -257358,6 +257385,10 @@ pub mod types {
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
             >,
+            document_mode: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
             file_id: ::std::result::Result<::std::string::String, ::std::string::String>,
             include_follow_ups: ::std::result::Result<bool, ::std::string::String>,
             include_overview: ::std::result::Result<bool, ::std::string::String>,
@@ -257383,6 +257414,9 @@ pub mod types {
             fn default() -> Self {
                 Self {
                     content: Ok(Default::default()),
+                    document_mode: Ok(
+                        super::defaults::update_google_docs_page_task_params_document_mode(),
+                    ),
                     file_id: Err("no value supplied for file_id".to_string()),
                     include_follow_ups: Ok(super::defaults::default_bool::<true>()),
                     include_overview: Ok(super::defaults::default_bool::<true>()),
@@ -257404,6 +257438,18 @@ pub mod types {
                     .try_into()
                     .map_err(|e| {
                         format!("error converting supplied value for content: {e}")
+                    });
+                self
+            }
+            pub fn document_mode<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.document_mode = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for document_mode: {e}")
                     });
                 self
             }
@@ -257520,6 +257566,7 @@ pub mod types {
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
                     content: value.content?,
+                    document_mode: value.document_mode?,
                     file_id: value.file_id?,
                     include_follow_ups: value.include_follow_ups?,
                     include_overview: value.include_overview?,
@@ -257536,6 +257583,7 @@ pub mod types {
             fn from(value: super::UpdateGoogleDocsPageTaskParams) -> Self {
                 Self {
                     content: Ok(value.content),
+                    document_mode: Ok(value.document_mode),
                     file_id: Ok(value.file_id),
                     include_follow_ups: Ok(value.include_follow_ups),
                     include_overview: Ok(value.include_overview),
@@ -299726,6 +299774,9 @@ pub mod types {
         pub(super) fn create_asana_task_task_params_dependency_direction() -> ::std::string::String {
             "blocking".to_string()
         }
+        pub(super) fn create_google_docs_page_task_params_document_mode() -> ::std::string::String {
+            "pages".to_string()
+        }
         pub(super) fn create_jsmops_alert_task_params_priority() -> ::std::string::String {
             "P3".to_string()
         }
@@ -299989,6 +300040,9 @@ pub mod types {
         }
         pub(super) fn update_github_issue_task_params_labels_mode() -> ::std::string::String {
             "replace".to_string()
+        }
+        pub(super) fn update_google_docs_page_task_params_document_mode() -> ::std::string::String {
+            "pages".to_string()
         }
         pub(super) fn update_incident_task_params_attribute_to_query_by() -> ::std::string::String {
             "id".to_string()

@@ -76994,6 +76994,15 @@
             "type": "string",
             "description": "The Google Doc file ID to use as a template."
           },
+          "document_mode": {
+            "type": "string",
+            "enum": [
+              "pages",
+              "pageless"
+            ],
+            "default": "pages",
+            "description": "Page setup for the Google Doc. pageless makes the doc pageless; pages leaves the page setup unchanged unless the Google Doc template is pageless"
+          },
           "include_overview": {
             "type": "boolean",
             "default": true
@@ -77273,6 +77282,15 @@
           "template_id": {
             "type": "string",
             "description": "The Google Doc file ID to use as a template"
+          },
+          "document_mode": {
+            "type": "string",
+            "enum": [
+              "pages",
+              "pageless"
+            ],
+            "default": "pages",
+            "description": "Page setup for the Google Doc. pageless makes the doc pageless; pages leaves the page setup unchanged unless the Google Doc template is pageless"
           },
           "permissions": {
             "type": "string",
