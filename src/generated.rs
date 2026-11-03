@@ -782,7 +782,7 @@ pub mod types {
         #[serde(deserialize_with = "::std::option::Option::deserialize")]
         pub schedule_timezone: ::std::option::Option<::std::string::String>,
         pub source: ::std::string::String,
-        ///Webhook triggers only. The secret itself is never returned; generate one with POST /v1/ai_automations/{id}/triggers/{trigger_id}/webhook_secret.
+        ///Webhook triggers only. The secret itself is never returned; generate one with POST /v1/ai/automations/{id}/triggers/{trigger_id}/webhook_secret.
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub webhook_secret_configured: ::std::option::Option<bool>,
         ///Webhook triggers only.
@@ -1165,7 +1165,7 @@ pub mod types {
             Default::default()
         }
     }
-    ///Options for configuring AI Automation triggers and destinations. `sources` lists each trigger source with its events, condition fields and operators. Send triggers as rows in `triggers`: schedule rows take `schedule_rrule` or the preset fields, and incident, alert, Slack and webhook rows take `event_name` plus `conditions` as `[{field, operator, values}]`, all of which must match. `choice` values must match one of the field's choices (case-insensitive), `text` values are free-form, and `none` operators take no value. Skills are listed by `GET /v1/ai_skills?filter[invocable_by]=automation`; Slack channels, users and user groups are listed by `GET /v1/ai_automations/slack_channels`, `/slack_users` and `/slack_user_groups`. Slack `channel`, `user`, `item_user` and `usergroup` conditions take Slack IDs; `matches_regex` takes Ruby regular expressions (case-insensitive, at most 500 characters). `schedule_rrule` accepts custom RRULEs using `rrule_frequencies`. Any IANA timezone resolved by `ActiveSupport::TimeZone[...]` is accepted; `timezones` is the editor's list.
+    ///Options for configuring AI Automation triggers and destinations. `sources` lists each trigger source with its events, condition fields and operators. Send triggers as rows in `triggers`: schedule rows take `schedule_rrule` or the preset fields, and incident, alert, Slack and webhook rows take `event_name` plus `conditions` as `[{field, operator, values}]`, all of which must match. `choice` values must match one of the field's choices (case-insensitive), `text` values are free-form, and `none` operators take no value. Skills are listed by `GET /v1/ai/skills?filter[invocable_by]=automation`; Slack channels, users and user groups are listed by `GET /v1/ai/automations/slack_channels`, `/slack_users` and `/slack_user_groups`. Slack `channel`, `user`, `item_user` and `usergroup` conditions take Slack IDs; `matches_regex` takes Ruby regular expressions (case-insensitive, at most 500 characters). `schedule_rrule` accepts custom RRULEs using `rrule_frequencies`. Any IANA timezone resolved by `ActiveSupport::TimeZone[...]` is accepted; `timezones` is the editor's list.
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct AiAutomationTriggerOptions {
         pub data: AiAutomationTriggerOptionsData,
@@ -3674,6 +3674,7 @@ pub mod types {
         pub query: ::std::string::String,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub use_regexp: ::std::option::Option<bool>,
+        ///Required, with at least one value, unless the operator is SET or UNSET
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub values: ::std::vec::Vec<::std::string::String>,
     }
@@ -10642,6 +10643,27 @@ pub mod types {
     ///`CreateSubIncidentTaskParams`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct CreateSubIncidentTaskParams {
+        ///Array of environment UUIDs. Inherited from the parent incident when blank
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub environment_ids: ::std::vec::Vec<::std::string::String>,
+        ///Array of functionality UUIDs. Inherited from the parent incident when blank
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub functionality_ids: ::std::vec::Vec<::std::string::String>,
+        ///Array of group/team UUIDs. Inherited from the parent incident when blank
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub group_ids: ::std::vec::Vec<::std::string::String>,
+        ///Array of incident type UUIDs. Inherited from the parent incident when blank
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub incident_type_ids: ::std::vec::Vec<::std::string::String>,
+        ///Make the sub incident private. Cannot make it public when the parent incident is private
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub private: ::std::option::Option<bool>,
+        ///Array of service UUIDs. Inherited from the parent incident when blank
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub service_ids: ::std::vec::Vec<::std::string::String>,
+        ///Inherited from the parent incident when blank
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub severity_id: ::std::option::Option<::std::string::String>,
         ///The sub incident summary
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
         pub summary: ::std::option::Option<::std::string::String>,
@@ -10943,7 +10965,7 @@ pub mod types {
         pub created_at: ::std::string::String,
         ///The email of the user
         pub email: ::std::string::String,
-        ///Server-evaluated flags for the calling credential. `ai-native-home` indicates whether the AI-native home is available. `ai-skills` is true only when the organization has AI Skills enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai_skills` is expected to succeed. `ai-automations` is true only when the organization has AI Automations enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai_automations` is expected to succeed. `ai-chat` is true when the organization can use the `/v1/ai/chat` endpoints (feature rollout, `config_ai_api_chat_enabled`, and the AI assistant are all on) and, for OAuth tokens, the token has `ai.chat:write` or an AI meta scope; a true value means `POST /v1/ai/chat` is expected to pass these gates. May be absent; treat a missing object or key as unknown, not false.
+        ///Server-evaluated flags for the calling credential. `ai-native-home` indicates whether the AI-native home is available. `ai-skills` is true only when the organization has AI Skills enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai/skills` is expected to succeed. `ai-automations` is true only when the organization has AI Automations enabled, the credential is not a group API key, and its role or OAuth scopes allow reading the resource; a true value means `GET /v1/ai/automations` is expected to succeed. `ai-chat` is true when the organization can use the `/v1/ai/chat` endpoints (feature rollout, `config_ai_api_chat_enabled`, and the AI assistant are all on) and, for OAuth tokens, the token has `ai.chat:write` or an AI meta scope; a true value means `POST /v1/ai/chat` is expected to pass these gates. May be absent; treat a missing object or key as unknown, not false.
         #[serde(
             default,
             skip_serializing_if = ":: std :: collections :: HashMap::is_empty"
@@ -12486,9 +12508,9 @@ pub mod types {
             values: ::std::vec::Vec<::std::string::String>,
         },
         AlertField {
-            ///The ID of the alert field
+            ///The ID of an existing alert field in the escalation policy's organization
             fieldable_id: ::std::string::String,
-            ///The type of the fieldable (e.g., AlertField)
+            ///The field type. Only AlertField is supported.
             fieldable_type: ::std::string::String,
             ///How the alert field value should be matched
             operator: ::std::string::String,
@@ -12594,9 +12616,9 @@ pub mod types {
             values: ::std::vec::Vec<::std::string::String>,
         },
         AlertField {
-            ///The ID of the alert field
+            ///The ID of an existing alert field in the escalation policy's organization
             fieldable_id: ::std::string::String,
-            ///The type of the fieldable (e.g., AlertField)
+            ///The field type. Only AlertField is supported.
             fieldable_type: ::std::string::String,
             ///How the alert field value should be matched
             operator: ::std::string::String,
@@ -18761,7 +18783,7 @@ pub mod types {
     ///`NewAiAutomationDataAttributesTriggersItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct NewAiAutomationDataAttributesTriggersItem {
-        ///Fields and operators per source are listed by GET /v1/ai_automation_trigger_options. Alert and webhook payload conditions use field "payload" with a JSONPath key; webhook keys allow only plain paths such as $.alert.severity or $.tags[0].
+        ///Fields and operators per source are listed by GET /v1/ai/automations/trigger_options. Alert and webhook payload conditions use field "payload" with a JSONPath key; webhook keys allow only plain paths such as $.alert.severity or $.tags[0].
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub conditions: ::std::vec::Vec<
             NewAiAutomationDataAttributesTriggersItemConditionsItem,
@@ -21849,9 +21871,9 @@ pub mod types {
             values: ::std::vec::Vec<::std::string::String>,
         },
         AlertField {
-            ///The ID of the alert field
+            ///The ID of an existing alert field in the escalation policy's organization
             fieldable_id: ::std::string::String,
-            ///The type of the fieldable (e.g., AlertField)
+            ///The field type. Only AlertField is supported.
             fieldable_type: ::std::string::String,
             ///How the alert field value should be matched
             operator: ::std::string::String,
@@ -21992,9 +22014,9 @@ pub mod types {
             values: ::std::vec::Vec<::std::string::String>,
         },
         AlertField {
-            ///The ID of the alert field
+            ///The ID of an existing alert field in the escalation policy's organization
             fieldable_id: ::std::string::String,
-            ///The type of the fieldable (e.g., AlertField)
+            ///The field type. Only AlertField is supported.
             fieldable_type: ::std::string::String,
             ///How the alert field value should be matched
             operator: ::std::string::String,
@@ -33151,6 +33173,70 @@ pub mod types {
             Default::default()
         }
     }
+    ///`ScimUser`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ScimUser {
+        ///Date of creation
+        pub created_at: ::std::string::String,
+        ///The email of the user
+        pub email: ::std::string::String,
+        ///First name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub first_name: ::std::option::Option<::std::string::String>,
+        ///The full name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub full_name: ::std::option::Option<::std::string::String>,
+        ///The full name with team of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub full_name_with_team: ::std::option::Option<::std::string::String>,
+        ///Last name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub last_name: ::std::option::Option<::std::string::String>,
+        ///The externalId this organization's identity provider sent for the user over SCIM, or the linked organization's for synced users, or null.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub scim_external_id: ::std::option::Option<::std::string::String>,
+        ///Whether the user's membership in this organization is provisioned by its SCIM integration, or synced in by a linked organization's SCIM integration.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub scim_managed: ::std::option::Option<bool>,
+        ///Configured time zone
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub time_zone: ::std::option::Option<::std::string::String>,
+        ///Date of last update
+        pub updated_at: ::std::string::String,
+    }
+    impl ScimUser {
+        pub fn builder() -> builder::ScimUser {
+            Default::default()
+        }
+    }
+    ///`ScimUserResponse`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ScimUserResponse {
+        pub data: ScimUserResponseData,
+        #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
+        pub included: ::std::vec::Vec<JsonapiIncludedResource>,
+    }
+    impl ScimUserResponse {
+        pub fn builder() -> builder::ScimUserResponse {
+            Default::default()
+        }
+    }
+    ///`ScimUserResponseData`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct ScimUserResponseData {
+        pub attributes: ScimUser,
+        ///Unique ID of the user
+        pub id: ::std::string::String,
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub relationships: ::std::option::Option<UserRelationships>,
+        #[serde(rename = "type")]
+        pub type_: ::std::string::String,
+    }
+    impl ScimUserResponseData {
+        pub fn builder() -> builder::ScimUserResponseData {
+            Default::default()
+        }
+    }
     ///`Secret`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct Secret {
@@ -36624,7 +36710,7 @@ pub mod types {
     ///`UpdateAiAutomationDataAttributesTriggersItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
         pub struct UpdateAiAutomationDataAttributesTriggersItem {
-        ///Fields and operators per source are listed by GET /v1/ai_automation_trigger_options. Alert and webhook payload conditions use field "payload" with a JSONPath key; webhook keys allow only plain paths such as $.alert.severity or $.tags[0].
+        ///Fields and operators per source are listed by GET /v1/ai/automations/trigger_options. Alert and webhook payload conditions use field "payload" with a JSONPath key; webhook keys allow only plain paths such as $.alert.severity or $.tags[0].
         #[serde(default, skip_serializing_if = "::std::vec::Vec::is_empty")]
         pub conditions: ::std::vec::Vec<
             UpdateAiAutomationDataAttributesTriggersItemConditionsItem,
@@ -40299,9 +40385,9 @@ pub mod types {
             values: ::std::vec::Vec<::std::string::String>,
         },
         AlertField {
-            ///The ID of the alert field
+            ///The ID of an existing alert field in the escalation policy's organization
             fieldable_id: ::std::string::String,
-            ///The type of the fieldable (e.g., AlertField)
+            ///The field type. Only AlertField is supported.
             fieldable_type: ::std::string::String,
             ///How the alert field value should be matched
             operator: ::std::string::String,
@@ -40442,9 +40528,9 @@ pub mod types {
             values: ::std::vec::Vec<::std::string::String>,
         },
         AlertField {
-            ///The ID of the alert field
+            ///The ID of an existing alert field in the escalation policy's organization
             fieldable_id: ::std::string::String,
-            ///The type of the fieldable (e.g., AlertField)
+            ///The field type. Only AlertField is supported.
             fieldable_type: ::std::string::String,
             ///How the alert field value should be matched
             operator: ::std::string::String,
@@ -48316,7 +48402,7 @@ pub mod types {
     ///`UserListDataItem`
     #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
     pub struct UserListDataItem {
-        pub attributes: User,
+        pub attributes: UserListDataItemAttributes,
         ///Unique ID of the user
         pub id: ::std::string::String,
         #[serde(skip_serializing_if = "::std::option::Option::is_none")]
@@ -48326,6 +48412,45 @@ pub mod types {
     }
     impl UserListDataItem {
         pub fn builder() -> builder::UserListDataItem {
+            Default::default()
+        }
+    }
+    ///`UserListDataItemAttributes`
+    #[derive(::serde::Deserialize, ::serde::Serialize, Clone, Debug)]
+    pub struct UserListDataItemAttributes {
+        ///Date of creation
+        pub created_at: ::std::string::String,
+        ///The email of the user
+        pub email: ::std::string::String,
+        ///First name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub first_name: ::std::option::Option<::std::string::String>,
+        ///The full name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub full_name: ::std::option::Option<::std::string::String>,
+        ///The full name with team of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub full_name_with_team: ::std::option::Option<::std::string::String>,
+        ///How the user most recently joined the requesting organization. `scim` is SCIM provisioning, `invite` is accepting an invitation, `google_directory_sync` is Google Directory Sync, `sso` is SAML sign-in, `sso_google` and `sso_slack` are Google and Slack sign-in, `rootly_admin` is added by Rootly staff, `import` is a Rootly import or migration from an external tool, `web` is email sign-up or creating the organization, and `unknown` is a member who joined before this was recorded without a known source.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub joined_via: ::std::option::Option<::std::string::String>,
+        ///Last name of the user
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub last_name: ::std::option::Option<::std::string::String>,
+        ///The externalId this organization's identity provider sent for the user over SCIM, or the linked organization's for synced users, or null.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub scim_external_id: ::std::option::Option<::std::string::String>,
+        ///Whether the user's membership in this organization is provisioned by its SCIM integration, or synced in by a linked organization's SCIM integration.
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub scim_managed: ::std::option::Option<bool>,
+        ///Configured time zone
+        #[serde(skip_serializing_if = "::std::option::Option::is_none")]
+        pub time_zone: ::std::option::Option<::std::string::String>,
+        ///Date of last update
+        pub updated_at: ::std::string::String,
+    }
+    impl UserListDataItemAttributes {
+        pub fn builder() -> builder::UserListDataItemAttributes {
             Default::default()
         }
     }
@@ -106638,6 +106763,34 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct CreateSubIncidentTaskParams {
+            environment_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            functionality_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            group_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            incident_type_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            private: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            service_ids: ::std::result::Result<
+                ::std::vec::Vec<::std::string::String>,
+                ::std::string::String,
+            >,
+            severity_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
             summary: ::std::result::Result<
                 ::std::option::Option<::std::string::String>,
                 ::std::string::String,
@@ -106651,6 +106804,13 @@ pub mod types {
         impl ::std::default::Default for CreateSubIncidentTaskParams {
             fn default() -> Self {
                 Self {
+                    environment_ids: Ok(Default::default()),
+                    functionality_ids: Ok(Default::default()),
+                    group_ids: Ok(Default::default()),
+                    incident_type_ids: Ok(Default::default()),
+                    private: Ok(Default::default()),
+                    service_ids: Ok(Default::default()),
+                    severity_id: Ok(Default::default()),
                     summary: Ok(Default::default()),
                     task_type: Ok(Default::default()),
                     title: Err("no value supplied for title".to_string()),
@@ -106658,6 +106818,96 @@ pub mod types {
             }
         }
         impl CreateSubIncidentTaskParams {
+            pub fn environment_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.environment_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for environment_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn functionality_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.functionality_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for functionality_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn group_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.group_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for group_ids: {e}")
+                    });
+                self
+            }
+            pub fn incident_type_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.incident_type_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for incident_type_ids: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn private<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.private = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for private: {e}")
+                    });
+                self
+            }
+            pub fn service_ids<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::vec::Vec<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.service_ids = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for service_ids: {e}")
+                    });
+                self
+            }
+            pub fn severity_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.severity_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for severity_id: {e}")
+                    });
+                self
+            }
             pub fn summary<T>(mut self, value: T) -> Self
             where
                 T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
@@ -106702,6 +106952,13 @@ pub mod types {
                 value: CreateSubIncidentTaskParams,
             ) -> ::std::result::Result<Self, super::error::ConversionError> {
                 Ok(Self {
+                    environment_ids: value.environment_ids?,
+                    functionality_ids: value.functionality_ids?,
+                    group_ids: value.group_ids?,
+                    incident_type_ids: value.incident_type_ids?,
+                    private: value.private?,
+                    service_ids: value.service_ids?,
+                    severity_id: value.severity_id?,
                     summary: value.summary?,
                     task_type: value.task_type?,
                     title: value.title?,
@@ -106712,6 +106969,13 @@ pub mod types {
         for CreateSubIncidentTaskParams {
             fn from(value: super::CreateSubIncidentTaskParams) -> Self {
                 Self {
+                    environment_ids: Ok(value.environment_ids),
+                    functionality_ids: Ok(value.functionality_ids),
+                    group_ids: Ok(value.group_ids),
+                    incident_type_ids: Ok(value.incident_type_ids),
+                    private: Ok(value.private),
+                    service_ids: Ok(value.service_ids),
+                    severity_id: Ok(value.severity_id),
                     summary: Ok(value.summary),
                     task_type: Ok(value.task_type),
                     title: Ok(value.title),
@@ -217946,6 +218210,383 @@ pub mod types {
             }
         }
         #[derive(Clone, Debug)]
+        pub struct ScimUser {
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            email: ::std::result::Result<::std::string::String, ::std::string::String>,
+            first_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            full_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            full_name_with_team: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            last_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            scim_external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            scim_managed: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            time_zone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ScimUser {
+            fn default() -> Self {
+                Self {
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    email: Err("no value supplied for email".to_string()),
+                    first_name: Ok(Default::default()),
+                    full_name: Ok(Default::default()),
+                    full_name_with_team: Ok(Default::default()),
+                    last_name: Ok(Default::default()),
+                    scim_external_id: Ok(Default::default()),
+                    scim_managed: Ok(Default::default()),
+                    time_zone: Ok(Default::default()),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
+                }
+            }
+        }
+        impl ScimUser {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for email: {e}")
+                    });
+                self
+            }
+            pub fn first_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.first_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for first_name: {e}")
+                    });
+                self
+            }
+            pub fn full_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.full_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for full_name: {e}")
+                    });
+                self
+            }
+            pub fn full_name_with_team<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.full_name_with_team = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for full_name_with_team: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn last_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for last_name: {e}")
+                    });
+                self
+            }
+            pub fn scim_external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.scim_external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for scim_external_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn scim_managed<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.scim_managed = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for scim_managed: {e}")
+                    });
+                self
+            }
+            pub fn time_zone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.time_zone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for time_zone: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ScimUser> for super::ScimUser {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ScimUser,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    email: value.email?,
+                    first_name: value.first_name?,
+                    full_name: value.full_name?,
+                    full_name_with_team: value.full_name_with_team?,
+                    last_name: value.last_name?,
+                    scim_external_id: value.scim_external_id?,
+                    scim_managed: value.scim_managed?,
+                    time_zone: value.time_zone?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ScimUser> for ScimUser {
+            fn from(value: super::ScimUser) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    email: Ok(value.email),
+                    first_name: Ok(value.first_name),
+                    full_name: Ok(value.full_name),
+                    full_name_with_team: Ok(value.full_name_with_team),
+                    last_name: Ok(value.last_name),
+                    scim_external_id: Ok(value.scim_external_id),
+                    scim_managed: Ok(value.scim_managed),
+                    time_zone: Ok(value.time_zone),
+                    updated_at: Ok(value.updated_at),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ScimUserResponse {
+            data: ::std::result::Result<
+                super::ScimUserResponseData,
+                ::std::string::String,
+            >,
+            included: ::std::result::Result<
+                ::std::vec::Vec<super::JsonapiIncludedResource>,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for ScimUserResponse {
+            fn default() -> Self {
+                Self {
+                    data: Err("no value supplied for data".to_string()),
+                    included: Ok(Default::default()),
+                }
+            }
+        }
+        impl ScimUserResponse {
+            pub fn data<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ScimUserResponseData>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.data = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for data: {e}")
+                    });
+                self
+            }
+            pub fn included<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::vec::Vec<super::JsonapiIncludedResource>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.included = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for included: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ScimUserResponse> for super::ScimUserResponse {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ScimUserResponse,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    data: value.data?,
+                    included: value.included?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ScimUserResponse> for ScimUserResponse {
+            fn from(value: super::ScimUserResponse) -> Self {
+                Self {
+                    data: Ok(value.data),
+                    included: Ok(value.included),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct ScimUserResponseData {
+            attributes: ::std::result::Result<super::ScimUser, ::std::string::String>,
+            id: ::std::result::Result<::std::string::String, ::std::string::String>,
+            relationships: ::std::result::Result<
+                ::std::option::Option<super::UserRelationships>,
+                ::std::string::String,
+            >,
+            type_: ::std::result::Result<::std::string::String, ::std::string::String>,
+        }
+        impl ::std::default::Default for ScimUserResponseData {
+            fn default() -> Self {
+                Self {
+                    attributes: Err("no value supplied for attributes".to_string()),
+                    id: Err("no value supplied for id".to_string()),
+                    relationships: Ok(Default::default()),
+                    type_: Err("no value supplied for type_".to_string()),
+                }
+            }
+        }
+        impl ScimUserResponseData {
+            pub fn attributes<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<super::ScimUser>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.attributes = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for attributes: {e}")
+                    });
+                self
+            }
+            pub fn id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.id = value
+                    .try_into()
+                    .map_err(|e| format!("error converting supplied value for id: {e}"));
+                self
+            }
+            pub fn relationships<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<
+                    ::std::option::Option<super::UserRelationships>,
+                >,
+                T::Error: ::std::fmt::Display,
+            {
+                self.relationships = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for relationships: {e}")
+                    });
+                self
+            }
+            pub fn type_<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.type_ = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for type_: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<ScimUserResponseData>
+        for super::ScimUserResponseData {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: ScimUserResponseData,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    attributes: value.attributes?,
+                    id: value.id?,
+                    relationships: value.relationships?,
+                    type_: value.type_?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::ScimUserResponseData> for ScimUserResponseData {
+            fn from(value: super::ScimUserResponseData) -> Self {
+                Self {
+                    attributes: Ok(value.attributes),
+                    id: Ok(value.id),
+                    relationships: Ok(value.relationships),
+                    type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
         pub struct Secret {
             created_at: ::std::result::Result<
                 ::std::string::String,
@@ -291993,7 +292634,10 @@ pub mod types {
         }
         #[derive(Clone, Debug)]
         pub struct UserListDataItem {
-            attributes: ::std::result::Result<super::User, ::std::string::String>,
+            attributes: ::std::result::Result<
+                super::UserListDataItemAttributes,
+                ::std::string::String,
+            >,
             id: ::std::result::Result<::std::string::String, ::std::string::String>,
             relationships: ::std::result::Result<
                 ::std::option::Option<super::UserRelationships>,
@@ -292014,7 +292658,7 @@ pub mod types {
         impl UserListDataItem {
             pub fn attributes<T>(mut self, value: T) -> Self
             where
-                T: ::std::convert::TryInto<super::User>,
+                T: ::std::convert::TryInto<super::UserListDataItemAttributes>,
                 T::Error: ::std::fmt::Display,
             {
                 self.attributes = value
@@ -292081,6 +292725,244 @@ pub mod types {
                     id: Ok(value.id),
                     relationships: Ok(value.relationships),
                     type_: Ok(value.type_),
+                }
+            }
+        }
+        #[derive(Clone, Debug)]
+        pub struct UserListDataItemAttributes {
+            created_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+            email: ::std::result::Result<::std::string::String, ::std::string::String>,
+            first_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            full_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            full_name_with_team: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            joined_via: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            last_name: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            scim_external_id: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            scim_managed: ::std::result::Result<
+                ::std::option::Option<bool>,
+                ::std::string::String,
+            >,
+            time_zone: ::std::result::Result<
+                ::std::option::Option<::std::string::String>,
+                ::std::string::String,
+            >,
+            updated_at: ::std::result::Result<
+                ::std::string::String,
+                ::std::string::String,
+            >,
+        }
+        impl ::std::default::Default for UserListDataItemAttributes {
+            fn default() -> Self {
+                Self {
+                    created_at: Err("no value supplied for created_at".to_string()),
+                    email: Err("no value supplied for email".to_string()),
+                    first_name: Ok(Default::default()),
+                    full_name: Ok(Default::default()),
+                    full_name_with_team: Ok(Default::default()),
+                    joined_via: Ok(Default::default()),
+                    last_name: Ok(Default::default()),
+                    scim_external_id: Ok(Default::default()),
+                    scim_managed: Ok(Default::default()),
+                    time_zone: Ok(Default::default()),
+                    updated_at: Err("no value supplied for updated_at".to_string()),
+                }
+            }
+        }
+        impl UserListDataItemAttributes {
+            pub fn created_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.created_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for created_at: {e}")
+                    });
+                self
+            }
+            pub fn email<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.email = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for email: {e}")
+                    });
+                self
+            }
+            pub fn first_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.first_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for first_name: {e}")
+                    });
+                self
+            }
+            pub fn full_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.full_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for full_name: {e}")
+                    });
+                self
+            }
+            pub fn full_name_with_team<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.full_name_with_team = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for full_name_with_team: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn joined_via<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.joined_via = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for joined_via: {e}")
+                    });
+                self
+            }
+            pub fn last_name<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.last_name = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for last_name: {e}")
+                    });
+                self
+            }
+            pub fn scim_external_id<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.scim_external_id = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!(
+                            "error converting supplied value for scim_external_id: {e}"
+                        )
+                    });
+                self
+            }
+            pub fn scim_managed<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<bool>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.scim_managed = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for scim_managed: {e}")
+                    });
+                self
+            }
+            pub fn time_zone<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::option::Option<::std::string::String>>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.time_zone = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for time_zone: {e}")
+                    });
+                self
+            }
+            pub fn updated_at<T>(mut self, value: T) -> Self
+            where
+                T: ::std::convert::TryInto<::std::string::String>,
+                T::Error: ::std::fmt::Display,
+            {
+                self.updated_at = value
+                    .try_into()
+                    .map_err(|e| {
+                        format!("error converting supplied value for updated_at: {e}")
+                    });
+                self
+            }
+        }
+        impl ::std::convert::TryFrom<UserListDataItemAttributes>
+        for super::UserListDataItemAttributes {
+            type Error = super::error::ConversionError;
+            fn try_from(
+                value: UserListDataItemAttributes,
+            ) -> ::std::result::Result<Self, super::error::ConversionError> {
+                Ok(Self {
+                    created_at: value.created_at?,
+                    email: value.email?,
+                    first_name: value.first_name?,
+                    full_name: value.full_name?,
+                    full_name_with_team: value.full_name_with_team?,
+                    joined_via: value.joined_via?,
+                    last_name: value.last_name?,
+                    scim_external_id: value.scim_external_id?,
+                    scim_managed: value.scim_managed?,
+                    time_zone: value.time_zone?,
+                    updated_at: value.updated_at?,
+                })
+            }
+        }
+        impl ::std::convert::From<super::UserListDataItemAttributes>
+        for UserListDataItemAttributes {
+            fn from(value: super::UserListDataItemAttributes) -> Self {
+                Self {
+                    created_at: Ok(value.created_at),
+                    email: Ok(value.email),
+                    first_name: Ok(value.first_name),
+                    full_name: Ok(value.full_name),
+                    full_name_with_team: Ok(value.full_name_with_team),
+                    joined_via: Ok(value.joined_via),
+                    last_name: Ok(value.last_name),
+                    scim_external_id: Ok(value.scim_external_id),
+                    scim_managed: Ok(value.scim_managed),
+                    time_zone: Ok(value.time_zone),
+                    updated_at: Ok(value.updated_at),
                 }
             }
         }
@@ -300297,6 +301179,266 @@ let response = client.delete_incident_action_item()
     pub fn delete_incident_action_item(&self) -> builder::DeleteIncidentActionItem<'_> {
         builder::DeleteIncidentActionItem::new(self)
     }
+    /**Gets an AI automation run
+
+Incident-linked runs are visible only when the caller's role permits access. OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Requires OAuth scope `ai.automations:write`.
+
+Sends a `GET` request to `/v1/ai/automation_runs/{id}`
+
+```ignore
+let response = client.get_ai_automation_run()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_ai_automation_run(&self) -> builder::GetAiAutomationRun<'_> {
+        builder::GetAiAutomationRun::new(self)
+    }
+    /**Lists AI automations
+
+Requires OAuth scope `ai.automations:read`.
+
+Sends a `GET` request to `/v1/ai/automations`
+
+Arguments:
+- `filter_created_at_gte`
+- `filter_created_at_lte`
+- `filter_enabled`
+- `filter_event_name`: Comma-separated values; any matching event name is included.
+- `filter_search`
+- `filter_trigger_kind`: Comma-separated values; any matching trigger kind is included.
+- `sort`
+```ignore
+let response = client.list_ai_automations()
+    .filter_created_at_gte(filter_created_at_gte)
+    .filter_created_at_lte(filter_created_at_lte)
+    .filter_enabled(filter_enabled)
+    .filter_event_name(filter_event_name)
+    .filter_search(filter_search)
+    .filter_trigger_kind(filter_trigger_kind)
+    .sort(sort)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_automations(&self) -> builder::ListAiAutomations<'_> {
+        builder::ListAiAutomations::new(self)
+    }
+    /**Creates an AI automation
+
+Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
+
+Sends a `POST` request to `/v1/ai/automations`
+
+```ignore
+let response = client.create_ai_automation()
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn create_ai_automation(&self) -> builder::CreateAiAutomation<'_> {
+        builder::CreateAiAutomation::new(self)
+    }
+    /**Lists synced Slack channels for AI Automations
+
+Channels Rootly has synced from the team's connected Slack workspace; any returned slack_channel_id is accepted as destination_slack_channel_id. When filter[search] is set, exact channel-name matches come first. When Slack channel user filtering is enabled, personal keys and OAuth tokens only see, and can only set new, channels the user can access in Slack; an update may resend the automation's current channel unchanged.
+
+Sends a `GET` request to `/v1/ai/automations/slack_channels`
+
+```ignore
+let response = client.list_ai_automation_slack_channels()
+    .filter_search(filter_search)
+    .page_number(page_number)
+    .page_size(page_size)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_automation_slack_channels(
+        &self,
+    ) -> builder::ListAiAutomationSlackChannels<'_> {
+        builder::ListAiAutomationSlackChannels::new(self)
+    }
+    /**Lists Slack user groups for AI Automations
+
+User groups from the team's connected Slack workspace, read live from Slack; any returned slack_user_group_id is accepted by usergroup trigger conditions.
+
+Sends a `GET` request to `/v1/ai/automations/slack_user_groups`
+
+```ignore
+let response = client.list_ai_automation_slack_user_groups()
+    .filter_search(filter_search)
+    .page_number(page_number)
+    .page_size(page_size)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_automation_slack_user_groups(
+        &self,
+    ) -> builder::ListAiAutomationSlackUserGroups<'_> {
+        builder::ListAiAutomationSlackUserGroups::new(self)
+    }
+    /**Lists Slack users for AI Automations
+
+Users, including bots, from the team's connected Slack workspace; any returned slack_user_id is accepted by user and item_user trigger conditions.
+
+Sends a `GET` request to `/v1/ai/automations/slack_users`
+
+```ignore
+let response = client.list_ai_automation_slack_users()
+    .filter_search(filter_search)
+    .page_number(page_number)
+    .page_size(page_size)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_automation_slack_users(
+        &self,
+    ) -> builder::ListAiAutomationSlackUsers<'_> {
+        builder::ListAiAutomationSlackUsers::new(self)
+    }
+    /**Lists options for configuring AI Automation triggers
+
+Returns the source-of-truth options used by the AI Automation editor.
+
+Sends a `GET` request to `/v1/ai/automations/trigger_options`
+
+```ignore
+let response = client.get_ai_automation_trigger_options()
+    .send()
+    .await;
+```*/
+    pub fn get_ai_automation_trigger_options(
+        &self,
+    ) -> builder::GetAiAutomationTriggerOptions<'_> {
+        builder::GetAiAutomationTriggerOptions::new(self)
+    }
+    /**Lists AI automation runs
+
+Scans the 1000 most recent runs matching the filters; pagination and counts cover the visible runs in that window. When meta.next_scan_cursor is set, older runs exist beyond the window. Present only on the last page of the current scan window; finish page pagination before following it. Repeat the request with filter[scan_cursor] set to that opaque cursor to continue. Incident-linked runs are visible only when the caller's role permits access. OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Requires OAuth scope `ai.automations:write`.
+
+Sends a `GET` request to `/v1/ai/automations/{ai_automation_id}/runs`
+
+Arguments:
+- `ai_automation_id`
+- `filter_created_at_gte`
+- `filter_created_at_lte`
+- `filter_scan_cursor`: Opaque encrypted cursor from meta.next_scan_cursor.
+- `filter_status`: Comma-separated statuses; any matching status is included.
+- `filter_trigger_kind`: Comma-separated trigger kinds; any matching kind is included.
+```ignore
+let response = client.list_ai_automation_runs()
+    .ai_automation_id(ai_automation_id)
+    .filter_created_at_gte(filter_created_at_gte)
+    .filter_created_at_lte(filter_created_at_lte)
+    .filter_scan_cursor(filter_scan_cursor)
+    .filter_status(filter_status)
+    .filter_trigger_kind(filter_trigger_kind)
+    .send()
+    .await;
+```*/
+    pub fn list_ai_automation_runs(&self) -> builder::ListAiAutomationRuns<'_> {
+        builder::ListAiAutomationRuns::new(self)
+    }
+    /**Runs an AI automation now
+
+Requires OAuth scope `ai.automations:write`. For run-now requests with incident_id, or run_id of an incident-linked run, OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Limited to 30 requests per credential per minute (fixed one-minute windows), separate from the default mutation rate limit; exceeding it returns 429 with Retry-After.
+
+Sends a `POST` request to `/v1/ai/automations/{ai_automation_id}/runs`
+
+```ignore
+let response = client.run_ai_automation()
+    .ai_automation_id(ai_automation_id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn run_ai_automation(&self) -> builder::RunAiAutomation<'_> {
+        builder::RunAiAutomation::new(self)
+    }
+    /**Gets an AI automation
+
+Requires OAuth scope `ai.automations:read`.
+
+Sends a `GET` request to `/v1/ai/automations/{id}`
+
+```ignore
+let response = client.get_ai_automation()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn get_ai_automation(&self) -> builder::GetAiAutomation<'_> {
+        builder::GetAiAutomation::new(self)
+    }
+    /**Updates an AI automation
+
+Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
+
+Sends a `PUT` request to `/v1/ai/automations/{id}`
+
+```ignore
+let response = client.put_ai_automation()
+    .id(id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn put_ai_automation(&self) -> builder::PutAiAutomation<'_> {
+        builder::PutAiAutomation::new(self)
+    }
+    /**Deletes an AI automation
+
+Requires OAuth scope `ai.automations:write`. Retires the automation: it is disabled and soft-deleted, no longer listed or runnable; GET show and run-now return 404, while its existing run history remains readable via the runs endpoints.
+
+Sends a `DELETE` request to `/v1/ai/automations/{id}`
+
+```ignore
+let response = client.delete_ai_automation()
+    .id(id)
+    .send()
+    .await;
+```*/
+    pub fn delete_ai_automation(&self) -> builder::DeleteAiAutomation<'_> {
+        builder::DeleteAiAutomation::new(self)
+    }
+    /**Updates an AI automation
+
+Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
+
+Sends a `PATCH` request to `/v1/ai/automations/{id}`
+
+```ignore
+let response = client.update_ai_automation()
+    .id(id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn update_ai_automation(&self) -> builder::UpdateAiAutomation<'_> {
+        builder::UpdateAiAutomation::new(self)
+    }
+    /**Generates or rotates an AI Automation webhook trigger secret
+
+Returns a new secret for a webhook trigger. The previous secret stops working immediately. The secret is only returned in this response; Rootly stores a SHA-256 digest of it.
+
+Sends a `POST` request to `/v1/ai/automations/{id}/triggers/{trigger_id}/webhook_secret`
+
+Arguments:
+- `id`: AI Automation ID
+- `trigger_id`: Webhook trigger ID
+- `body`
+```ignore
+let response = client.rotate_ai_automation_webhook_secret()
+    .id(id)
+    .trigger_id(trigger_id)
+    .body(body)
+    .send()
+    .await;
+```*/
+    pub fn rotate_ai_automation_webhook_secret(
+        &self,
+    ) -> builder::RotateAiAutomationWebhookSecret<'_> {
+        builder::RotateAiAutomationWebhookSecret::new(self)
+    }
     /**Send AI chat message
 
 Send a message to the AI assistant and receive a synchronous reply. Optionally bind the conversation to an incident or alert for context-aware responses. For eligible unbound home chat, `checkpoint_id` and `decision` confirm or cancel approval-gated writes. Responses include `confirmation` for a pending write and `checkpoint_resolved` after resume. If an action-item write needs required fields the model did not supply, no checkpoint is created and the turn completes with a plain reply linking to that incident's action-item form in the Rootly web app. The synchronous response has no `confirmation` key; only `confirmation` responses are resumable. Limited to 60 requests per minute per credential. Rate-limit responses include `Retry-After` and `X-RateLimit-*` headers. Requires `ai.chat:write` OAuth scope or an API key.
@@ -300433,271 +301575,102 @@ let response = client.stream_ai_chat()
     pub fn stream_ai_chat(&self) -> builder::StreamAiChat<'_> {
         builder::StreamAiChat::new(self)
     }
-    /**Gets an AI automation run
+    /**Lists AI SRE investigations
 
-Incident-linked runs are visible only when the caller's role permits access. OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Requires OAuth scope `ai.automations:write`.
+Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. Investigations on alerts and incidents the caller can read, newest first.
 
-Sends a `GET` request to `/v1/ai_automation_runs/{id}`
-
-```ignore
-let response = client.get_ai_automation_run()
-    .id(id)
-    .send()
-    .await;
-```*/
-    pub fn get_ai_automation_run(&self) -> builder::GetAiAutomationRun<'_> {
-        builder::GetAiAutomationRun::new(self)
-    }
-    /**Lists AI automations
-
-Requires OAuth scope `ai.automations:read`.
-
-Sends a `GET` request to `/v1/ai_automations`
+Sends a `GET` request to `/v1/ai/investigations`
 
 Arguments:
-- `filter_created_at_gte`
-- `filter_created_at_lte`
-- `filter_enabled`
-- `filter_event_name`: Comma-separated values; any matching event name is included.
-- `filter_search`
-- `filter_trigger_kind`: Comma-separated values; any matching trigger kind is included.
-- `sort`
+- `filter_alert_id`
+- `filter_incident_id`
+- `filter_outcome`: Comma-separated outcomes.
+- `filter_status`: Comma-separated statuses.
+- `page_number`
+- `page_size`
 ```ignore
-let response = client.list_ai_automations()
-    .filter_created_at_gte(filter_created_at_gte)
-    .filter_created_at_lte(filter_created_at_lte)
-    .filter_enabled(filter_enabled)
-    .filter_event_name(filter_event_name)
-    .filter_search(filter_search)
-    .filter_trigger_kind(filter_trigger_kind)
-    .sort(sort)
-    .send()
-    .await;
-```*/
-    pub fn list_ai_automations(&self) -> builder::ListAiAutomations<'_> {
-        builder::ListAiAutomations::new(self)
-    }
-    /**Creates an AI automation
-
-Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
-
-Sends a `POST` request to `/v1/ai_automations`
-
-```ignore
-let response = client.create_ai_automation()
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn create_ai_automation(&self) -> builder::CreateAiAutomation<'_> {
-        builder::CreateAiAutomation::new(self)
-    }
-    /**Lists synced Slack channels for AI Automations
-
-Channels Rootly has synced from the team's connected Slack workspace; any returned slack_channel_id is accepted as destination_slack_channel_id. When filter[search] is set, exact channel-name matches come first. When Slack channel user filtering is enabled, personal keys and OAuth tokens only see, and can only set new, channels the user can access in Slack; an update may resend the automation's current channel unchanged.
-
-Sends a `GET` request to `/v1/ai_automations/slack_channels`
-
-```ignore
-let response = client.list_ai_automation_slack_channels()
-    .filter_search(filter_search)
-    .page_number(page_number)
-    .page_size(page_size)
-    .send()
-    .await;
-```*/
-    pub fn list_ai_automation_slack_channels(
-        &self,
-    ) -> builder::ListAiAutomationSlackChannels<'_> {
-        builder::ListAiAutomationSlackChannels::new(self)
-    }
-    /**Lists Slack user groups for AI Automations
-
-User groups from the team's connected Slack workspace, read live from Slack; any returned slack_user_group_id is accepted by usergroup trigger conditions.
-
-Sends a `GET` request to `/v1/ai_automations/slack_user_groups`
-
-```ignore
-let response = client.list_ai_automation_slack_user_groups()
-    .filter_search(filter_search)
-    .page_number(page_number)
-    .page_size(page_size)
-    .send()
-    .await;
-```*/
-    pub fn list_ai_automation_slack_user_groups(
-        &self,
-    ) -> builder::ListAiAutomationSlackUserGroups<'_> {
-        builder::ListAiAutomationSlackUserGroups::new(self)
-    }
-    /**Lists Slack users for AI Automations
-
-Users, including bots, from the team's connected Slack workspace; any returned slack_user_id is accepted by user and item_user trigger conditions.
-
-Sends a `GET` request to `/v1/ai_automations/slack_users`
-
-```ignore
-let response = client.list_ai_automation_slack_users()
-    .filter_search(filter_search)
-    .page_number(page_number)
-    .page_size(page_size)
-    .send()
-    .await;
-```*/
-    pub fn list_ai_automation_slack_users(
-        &self,
-    ) -> builder::ListAiAutomationSlackUsers<'_> {
-        builder::ListAiAutomationSlackUsers::new(self)
-    }
-    /**Lists options for configuring AI Automation triggers
-
-Returns the source-of-truth options used by the AI Automation editor.
-
-Sends a `GET` request to `/v1/ai_automations/trigger_options`
-
-```ignore
-let response = client.get_ai_automation_trigger_options()
-    .send()
-    .await;
-```*/
-    pub fn get_ai_automation_trigger_options(
-        &self,
-    ) -> builder::GetAiAutomationTriggerOptions<'_> {
-        builder::GetAiAutomationTriggerOptions::new(self)
-    }
-    /**Lists AI automation runs
-
-Scans the 1000 most recent runs matching the filters; pagination and counts cover the visible runs in that window. When meta.next_scan_cursor is set, older runs exist beyond the window. Present only on the last page of the current scan window; finish page pagination before following it. Repeat the request with filter[scan_cursor] set to that opaque cursor to continue. Incident-linked runs are visible only when the caller's role permits access. OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Requires OAuth scope `ai.automations:write`.
-
-Sends a `GET` request to `/v1/ai_automations/{ai_automation_id}/runs`
-
-Arguments:
-- `ai_automation_id`
-- `filter_created_at_gte`
-- `filter_created_at_lte`
-- `filter_scan_cursor`: Opaque encrypted cursor from meta.next_scan_cursor.
-- `filter_status`: Comma-separated statuses; any matching status is included.
-- `filter_trigger_kind`: Comma-separated trigger kinds; any matching kind is included.
-```ignore
-let response = client.list_ai_automation_runs()
-    .ai_automation_id(ai_automation_id)
-    .filter_created_at_gte(filter_created_at_gte)
-    .filter_created_at_lte(filter_created_at_lte)
-    .filter_scan_cursor(filter_scan_cursor)
+let response = client.list_investigations()
+    .filter_alert_id(filter_alert_id)
+    .filter_incident_id(filter_incident_id)
+    .filter_outcome(filter_outcome)
     .filter_status(filter_status)
-    .filter_trigger_kind(filter_trigger_kind)
+    .page_number(page_number)
+    .page_size(page_size)
     .send()
     .await;
 ```*/
-    pub fn list_ai_automation_runs(&self) -> builder::ListAiAutomationRuns<'_> {
-        builder::ListAiAutomationRuns::new(self)
+    pub fn list_investigations(&self) -> builder::ListInvestigations<'_> {
+        builder::ListInvestigations::new(self)
     }
-    /**Runs an AI automation now
+    /**Starts an AI SRE investigation
 
-Requires OAuth scope `ai.automations:write`. For run-now requests with incident_id, or run_id of an incident-linked run, OAuth tokens also need the `ir.incidents:read` scope; API keys use the key's role. Limited to 30 requests per credential per minute (fixed one-minute windows), separate from the default mutation rate limit; exceeding it returns 429 with Retry-After.
+Requires OAuth scope `ai.investigations:write`. OAuth tokens also need `oc.alerts:write` (alerts) or `ir.incidents:write` (incidents) and update access to the resource; API keys use the key's role. Starts an investigation on an alert or incident you can update, or returns the one already running.
 
-Sends a `POST` request to `/v1/ai_automations/{ai_automation_id}/runs`
+Sends a `POST` request to `/v1/ai/investigations`
 
 ```ignore
-let response = client.run_ai_automation()
-    .ai_automation_id(ai_automation_id)
+let response = client.create_investigation()
     .body(body)
     .send()
     .await;
 ```*/
-    pub fn run_ai_automation(&self) -> builder::RunAiAutomation<'_> {
-        builder::RunAiAutomation::new(self)
+    pub fn create_investigation(&self) -> builder::CreateInvestigation<'_> {
+        builder::CreateInvestigation::new(self)
     }
-    /**Gets an AI automation
+    /**Retrieves an AI SRE investigation
 
-Requires OAuth scope `ai.automations:read`.
+Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. The verdict, hypotheses, evidence, causal chain and open questions.
 
-Sends a `GET` request to `/v1/ai_automations/{id}`
+Sends a `GET` request to `/v1/ai/investigations/{id}`
 
 ```ignore
-let response = client.get_ai_automation()
+let response = client.get_investigation()
     .id(id)
     .send()
     .await;
 ```*/
-    pub fn get_ai_automation(&self) -> builder::GetAiAutomation<'_> {
-        builder::GetAiAutomation::new(self)
+    pub fn get_investigation(&self) -> builder::GetInvestigation<'_> {
+        builder::GetInvestigation::new(self)
     }
-    /**Updates an AI automation
+    /**Cancels an AI SRE investigation
 
-Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
+Requires OAuth scope `ai.investigations:write`. OAuth tokens also need `oc.alerts:write` (alerts) or `ir.incidents:write` (incidents) and update access to the resource; API keys use the key's role.
 
-Sends a `PUT` request to `/v1/ai_automations/{id}`
+Sends a `POST` request to `/v1/ai/investigations/{id}/cancel`
 
 ```ignore
-let response = client.put_ai_automation()
-    .id(id)
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn put_ai_automation(&self) -> builder::PutAiAutomation<'_> {
-        builder::PutAiAutomation::new(self)
-    }
-    /**Deletes an AI automation
-
-Requires OAuth scope `ai.automations:write`. Retires the automation: it is disabled and soft-deleted, no longer listed or runnable; GET show and run-now return 404, while its existing run history remains readable via the runs endpoints.
-
-Sends a `DELETE` request to `/v1/ai_automations/{id}`
-
-```ignore
-let response = client.delete_ai_automation()
+let response = client.cancel_investigation()
     .id(id)
     .send()
     .await;
 ```*/
-    pub fn delete_ai_automation(&self) -> builder::DeleteAiAutomation<'_> {
-        builder::DeleteAiAutomation::new(self)
+    pub fn cancel_investigation(&self) -> builder::CancelInvestigation<'_> {
+        builder::CancelInvestigation::new(self)
     }
-    /**Updates an AI automation
+    /**Retrieves AI SRE investigation progress
 
-Requires OAuth scope `ai.automations:write`. Read-only attributes are ignored on write.
+Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. Returns immediately with steps and tool calls recorded after the cursor. Poll with after=next_cursor until done is true.
 
-Sends a `PATCH` request to `/v1/ai_automations/{id}`
-
-```ignore
-let response = client.update_ai_automation()
-    .id(id)
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn update_ai_automation(&self) -> builder::UpdateAiAutomation<'_> {
-        builder::UpdateAiAutomation::new(self)
-    }
-    /**Generates or rotates an AI Automation webhook trigger secret
-
-Returns a new secret for a webhook trigger. The previous secret stops working immediately. The secret is only returned in this response; Rootly stores a SHA-256 digest of it.
-
-Sends a `POST` request to `/v1/ai_automations/{id}/triggers/{trigger_id}/webhook_secret`
+Sends a `GET` request to `/v1/ai/investigations/{id}/progress`
 
 Arguments:
-- `id`: AI Automation ID
-- `trigger_id`: Webhook trigger ID
-- `body`
+- `id`
+- `after`: next_cursor from the previous call.
 ```ignore
-let response = client.rotate_ai_automation_webhook_secret()
+let response = client.get_investigation_progress()
     .id(id)
-    .trigger_id(trigger_id)
-    .body(body)
+    .after(after)
     .send()
     .await;
 ```*/
-    pub fn rotate_ai_automation_webhook_secret(
-        &self,
-    ) -> builder::RotateAiAutomationWebhookSecret<'_> {
-        builder::RotateAiAutomationWebhookSecret::new(self)
+    pub fn get_investigation_progress(&self) -> builder::GetInvestigationProgress<'_> {
+        builder::GetInvestigationProgress::new(self)
     }
     /**Lists AI skills
 
 Requires OAuth scope `ai.skills:read`.
 
-Sends a `GET` request to `/v1/ai_skills`
+Sends a `GET` request to `/v1/ai/skills`
 
 Arguments:
 - `filter_created_at_gt`
@@ -300732,7 +301705,7 @@ let response = client.list_ai_skills()
 
 Requires OAuth scope `ai.skills:write`. Read-only attributes are ignored on write.
 
-Sends a `POST` request to `/v1/ai_skills`
+Sends a `POST` request to `/v1/ai/skills`
 
 ```ignore
 let response = client.create_ai_skill()
@@ -300747,7 +301720,7 @@ let response = client.create_ai_skill()
 
 Requires OAuth scope `ai.skills:read`.
 
-Sends a `GET` request to `/v1/ai_skills/{ai_skill_id}/versions`
+Sends a `GET` request to `/v1/ai/skills/{ai_skill_id}/versions`
 
 Arguments:
 - `ai_skill_id`: The skill ID or slug.
@@ -300764,7 +301737,7 @@ let response = client.list_ai_skill_versions()
 
 Requires OAuth scope `ai.skills:read`.
 
-Sends a `GET` request to `/v1/ai_skills/{ai_skill_id}/versions/{version}`
+Sends a `GET` request to `/v1/ai/skills/{ai_skill_id}/versions/{version}`
 
 Arguments:
 - `ai_skill_id`: The skill ID or slug.
@@ -300783,7 +301756,7 @@ let response = client.get_ai_skill_version()
 
 Requires OAuth scope `ai.skills:read`.
 
-Sends a `GET` request to `/v1/ai_skills/{id}`
+Sends a `GET` request to `/v1/ai/skills/{id}`
 
 Arguments:
 - `id`: The skill ID or slug.
@@ -300800,7 +301773,7 @@ let response = client.get_ai_skill()
 
 Requires OAuth scope `ai.skills:write`. Read-only attributes are ignored on write.
 
-Sends a `PUT` request to `/v1/ai_skills/{id}`
+Sends a `PUT` request to `/v1/ai/skills/{id}`
 
 Arguments:
 - `id`: The skill ID or slug.
@@ -300819,7 +301792,7 @@ let response = client.put_ai_skill()
 
 Requires OAuth scope `ai.skills:write`.
 
-Sends a `DELETE` request to `/v1/ai_skills/{id}`
+Sends a `DELETE` request to `/v1/ai/skills/{id}`
 
 Arguments:
 - `id`: The skill ID or slug.
@@ -300836,7 +301809,7 @@ let response = client.delete_ai_skill()
 
 Requires OAuth scope `ai.skills:write`. Read-only attributes are ignored on write.
 
-Sends a `PATCH` request to `/v1/ai_skills/{id}`
+Sends a `PATCH` request to `/v1/ai/skills/{id}`
 
 Arguments:
 - `id`: The skill ID or slug.
@@ -300855,7 +301828,7 @@ let response = client.update_ai_skill()
 
 Returns audit events for AI tool calls and connector calls.
 
-Sends a `GET` request to `/v1/ai_tool_call_events`
+Sends a `GET` request to `/v1/ai/tool_call_events`
 
 Arguments:
 - `filter_connector_id`
@@ -307804,12 +308777,19 @@ List incident status page events
 
 Sends a `GET` request to `/v1/incidents/{incident_id}/status-page-events`
 
+Arguments:
+- `incident_id`
+- `include`
+- `page_number`
+- `page_size`
+- `sort`: Comma-separated sort fields: created_at, updated_at, started_at. Prefix with - for descending. Unsupported fields are ignored. Defaults to -started_at,created_at (latest published first).
 ```ignore
 let response = client.list_incident_status_pages()
     .incident_id(incident_id)
     .include(include)
     .page_number(page_number)
     .page_size(page_size)
+    .sort(sort)
     .send()
     .await;
 ```*/
@@ -307882,97 +308862,6 @@ let response = client.create_incident_sub_status()
 ```*/
     pub fn create_incident_sub_status(&self) -> builder::CreateIncidentSubStatus<'_> {
         builder::CreateIncidentSubStatus::new(self)
-    }
-    /**Lists AI SRE investigations
-
-Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. Investigations on alerts and incidents the caller can read, newest first.
-
-Sends a `GET` request to `/v1/investigations`
-
-Arguments:
-- `filter_alert_id`
-- `filter_incident_id`
-- `filter_outcome`: Comma-separated outcomes.
-- `filter_status`: Comma-separated statuses.
-- `page_number`
-- `page_size`
-```ignore
-let response = client.list_investigations()
-    .filter_alert_id(filter_alert_id)
-    .filter_incident_id(filter_incident_id)
-    .filter_outcome(filter_outcome)
-    .filter_status(filter_status)
-    .page_number(page_number)
-    .page_size(page_size)
-    .send()
-    .await;
-```*/
-    pub fn list_investigations(&self) -> builder::ListInvestigations<'_> {
-        builder::ListInvestigations::new(self)
-    }
-    /**Starts an AI SRE investigation
-
-Requires OAuth scope `ai.investigations:write`. OAuth tokens also need `oc.alerts:write` (alerts) or `ir.incidents:write` (incidents) and update access to the resource; API keys use the key's role. Starts an investigation on an alert or incident you can update, or returns the one already running.
-
-Sends a `POST` request to `/v1/investigations`
-
-```ignore
-let response = client.create_investigation()
-    .body(body)
-    .send()
-    .await;
-```*/
-    pub fn create_investigation(&self) -> builder::CreateInvestigation<'_> {
-        builder::CreateInvestigation::new(self)
-    }
-    /**Retrieves an AI SRE investigation
-
-Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. The verdict, hypotheses, evidence, causal chain and open questions.
-
-Sends a `GET` request to `/v1/investigations/{id}`
-
-```ignore
-let response = client.get_investigation()
-    .id(id)
-    .send()
-    .await;
-```*/
-    pub fn get_investigation(&self) -> builder::GetInvestigation<'_> {
-        builder::GetInvestigation::new(self)
-    }
-    /**Cancels an AI SRE investigation
-
-Requires OAuth scope `ai.investigations:write`. OAuth tokens also need `oc.alerts:write` (alerts) or `ir.incidents:write` (incidents) and update access to the resource; API keys use the key's role.
-
-Sends a `POST` request to `/v1/investigations/{id}/cancel`
-
-```ignore
-let response = client.cancel_investigation()
-    .id(id)
-    .send()
-    .await;
-```*/
-    pub fn cancel_investigation(&self) -> builder::CancelInvestigation<'_> {
-        builder::CancelInvestigation::new(self)
-    }
-    /**Retrieves AI SRE investigation progress
-
-Requires OAuth scope `ai.investigations:read`. OAuth tokens also need `oc.alerts:read` for alert investigations and `ir.incidents:read` for incident investigations; API keys use the key's role. Returns immediately with steps and tool calls recorded after the cursor. Poll with after=next_cursor until done is true.
-
-Sends a `GET` request to `/v1/investigations/{id}/progress`
-
-Arguments:
-- `id`
-- `after`: next_cursor from the previous call.
-```ignore
-let response = client.get_investigation_progress()
-    .id(id)
-    .after(after)
-    .send()
-    .await;
-```*/
-    pub fn get_investigation_progress(&self) -> builder::GetInvestigationProgress<'_> {
-        builder::GetInvestigationProgress::new(self)
     }
     /**Retrieves the organization's browser IP allowlist
 
@@ -311747,6 +312636,7 @@ Arguments:
 - `filter_created_at_lt`
 - `filter_created_at_lte`
 - `filter_email`
+- `filter_scim_managed`: `true` returns only users whose membership in this organization is managed by SCIM, including users synced in by a linked organization's SCIM integration, `false` returns only users whose membership isn't. Other values are ignored.
 - `filter_search`
 - `include`: comma separated if needed. eg: email_addresses,phone_numbers
 - `page_number`
@@ -311759,6 +312649,7 @@ let response = client.list_users()
     .filter_created_at_lt(filter_created_at_lt)
     .filter_created_at_lte(filter_created_at_lte)
     .filter_email(filter_email)
+    .filter_scim_managed(filter_scim_managed)
     .filter_search(filter_search)
     .include(include)
     .page_number(page_number)
@@ -313895,6 +314786,1435 @@ pub mod builder {
             }
         }
     }
+    /**Builder for [`Client::get_ai_automation_run`]
+
+[`Client::get_ai_automation_run`]: super::Client::get_ai_automation_run*/
+    #[derive(Debug, Clone)]
+    pub struct GetAiAutomationRun<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+    }
+    impl<'a> GetAiAutomationRun<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/automation_runs/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationRun>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/automation_runs/{}", client.baseurl, encode_path(& id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_ai_automation_run",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_automations`]
+
+[`Client::list_ai_automations`]: super::Client::list_ai_automations*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiAutomations<'a> {
+        client: &'a super::Client,
+        filter_created_at_gte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_created_at_lte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_enabled: Result<Option<bool>, String>,
+        filter_event_name: Result<Option<::std::string::String>, String>,
+        filter_search: Result<Option<::std::string::String>, String>,
+        filter_trigger_kind: Result<Option<::std::string::String>, String>,
+        sort: Result<Option<::std::string::String>, String>,
+    }
+    impl<'a> ListAiAutomations<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_created_at_gte: Ok(None),
+                filter_created_at_lte: Ok(None),
+                filter_enabled: Ok(None),
+                filter_event_name: Ok(None),
+                filter_search: Ok(None),
+                filter_trigger_kind: Ok(None),
+                sort: Ok(None),
+            }
+        }
+        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_gte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_gte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_lte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_lte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_enabled<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<bool>,
+        {
+            self.filter_enabled = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `bool` for filter_enabled failed".to_string()
+                });
+            self
+        }
+        pub fn filter_event_name<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_event_name = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_event_name failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_search<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_search = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_search failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_trigger_kind<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_trigger_kind = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_trigger_kind failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn sort<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.sort = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for sort failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/automations`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationList>, Error<()>> {
+            let Self {
+                client,
+                filter_created_at_gte,
+                filter_created_at_lte,
+                filter_enabled,
+                filter_event_name,
+                filter_search,
+                filter_trigger_kind,
+                sort,
+            } = self;
+            let filter_created_at_gte = filter_created_at_gte
+                .map_err(Error::InvalidRequest)?;
+            let filter_created_at_lte = filter_created_at_lte
+                .map_err(Error::InvalidRequest)?;
+            let filter_enabled = filter_enabled.map_err(Error::InvalidRequest)?;
+            let filter_event_name = filter_event_name.map_err(Error::InvalidRequest)?;
+            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
+            let filter_trigger_kind = filter_trigger_kind
+                .map_err(Error::InvalidRequest)?;
+            let sort = sort.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/automations", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][gte]",
+                        &filter_created_at_gte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][lte]",
+                        &filter_created_at_lte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[enabled]",
+                        &filter_enabled,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[event_name]",
+                        &filter_event_name,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[trigger_kind]",
+                        &filter_trigger_kind,
+                    ),
+                )
+                .query(&progenitor_client::QueryParam::new("sort", &sort))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_automations",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::create_ai_automation`]
+
+[`Client::create_ai_automation`]: super::Client::create_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct CreateAiAutomation<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::NewAiAutomation, String>,
+    }
+    impl<'a> CreateAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewAiAutomation>,
+            <V as std::convert::TryInto<
+                types::NewAiAutomation,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `NewAiAutomation` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewAiAutomation,
+            ) -> types::builder::NewAiAutomation,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai/automations`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| {
+                    types::NewAiAutomation::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/automations", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_automation_slack_channels`]
+
+[`Client::list_ai_automation_slack_channels`]: super::Client::list_ai_automation_slack_channels*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiAutomationSlackChannels<'a> {
+        client: &'a super::Client,
+        filter_search: Result<Option<::std::string::String>, String>,
+        page_number: Result<Option<i64>, String>,
+        page_size: Result<Option<i64>, String>,
+    }
+    impl<'a> ListAiAutomationSlackChannels<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_search: Ok(None),
+                page_number: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn filter_search<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_search = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_search failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_number<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_number = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/automations/slack_channels`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationSlackChannels>, Error<()>> {
+            let Self { client, filter_search, page_number, page_size } = self;
+            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
+            let page_number = page_number.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/automations/slack_channels", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
+                )
+                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_automation_slack_channels",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_automation_slack_user_groups`]
+
+[`Client::list_ai_automation_slack_user_groups`]: super::Client::list_ai_automation_slack_user_groups*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiAutomationSlackUserGroups<'a> {
+        client: &'a super::Client,
+        filter_search: Result<Option<::std::string::String>, String>,
+        page_number: Result<Option<i64>, String>,
+        page_size: Result<Option<i64>, String>,
+    }
+    impl<'a> ListAiAutomationSlackUserGroups<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_search: Ok(None),
+                page_number: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn filter_search<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_search = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_search failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_number<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_number = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/automations/slack_user_groups`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationSlackUserGroups>, Error<()>> {
+            let Self { client, filter_search, page_number, page_size } = self;
+            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
+            let page_number = page_number.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/automations/slack_user_groups", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
+                )
+                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_automation_slack_user_groups",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_automation_slack_users`]
+
+[`Client::list_ai_automation_slack_users`]: super::Client::list_ai_automation_slack_users*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiAutomationSlackUsers<'a> {
+        client: &'a super::Client,
+        filter_search: Result<Option<::std::string::String>, String>,
+        page_number: Result<Option<i64>, String>,
+        page_size: Result<Option<i64>, String>,
+    }
+    impl<'a> ListAiAutomationSlackUsers<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_search: Ok(None),
+                page_number: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn filter_search<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_search = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_search failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_number<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_number = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/automations/slack_users`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationSlackUsers>, Error<()>> {
+            let Self { client, filter_search, page_number, page_size } = self;
+            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
+            let page_number = page_number.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/automations/slack_users", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
+                )
+                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_automation_slack_users",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_ai_automation_trigger_options`]
+
+[`Client::get_ai_automation_trigger_options`]: super::Client::get_ai_automation_trigger_options*/
+    #[derive(Debug, Clone)]
+    pub struct GetAiAutomationTriggerOptions<'a> {
+        client: &'a super::Client,
+    }
+    impl<'a> GetAiAutomationTriggerOptions<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self { client: client }
+        }
+        ///Sends a `GET` request to `/v1/ai/automations/trigger_options`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationTriggerOptions>, Error<()>> {
+            let Self { client } = self;
+            let url = format!("{}/v1/ai/automations/trigger_options", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_ai_automation_trigger_options",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::list_ai_automation_runs`]
+
+[`Client::list_ai_automation_runs`]: super::Client::list_ai_automation_runs*/
+    #[derive(Debug, Clone)]
+    pub struct ListAiAutomationRuns<'a> {
+        client: &'a super::Client,
+        ai_automation_id: Result<::uuid::Uuid, String>,
+        filter_created_at_gte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_created_at_lte: Result<
+            Option<::chrono::DateTime<::chrono::offset::Utc>>,
+            String,
+        >,
+        filter_scan_cursor: Result<Option<::std::string::String>, String>,
+        filter_status: Result<Option<::std::string::String>, String>,
+        filter_trigger_kind: Result<Option<::std::string::String>, String>,
+    }
+    impl<'a> ListAiAutomationRuns<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                ai_automation_id: Err(
+                    "ai_automation_id was not initialized".to_string(),
+                ),
+                filter_created_at_gte: Ok(None),
+                filter_created_at_lte: Ok(None),
+                filter_scan_cursor: Ok(None),
+                filter_status: Ok(None),
+                filter_trigger_kind: Ok(None),
+            }
+        }
+        pub fn ai_automation_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.ai_automation_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for ai_automation_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_gte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_gte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
+        {
+            self.filter_created_at_lte = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_lte failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_scan_cursor<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_scan_cursor = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_scan_cursor failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_trigger_kind<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_trigger_kind = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_trigger_kind failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/automations/{ai_automation_id}/runs`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationRunList>, Error<()>> {
+            let Self {
+                client,
+                ai_automation_id,
+                filter_created_at_gte,
+                filter_created_at_lte,
+                filter_scan_cursor,
+                filter_status,
+                filter_trigger_kind,
+            } = self;
+            let ai_automation_id = ai_automation_id.map_err(Error::InvalidRequest)?;
+            let filter_created_at_gte = filter_created_at_gte
+                .map_err(Error::InvalidRequest)?;
+            let filter_created_at_lte = filter_created_at_lte
+                .map_err(Error::InvalidRequest)?;
+            let filter_scan_cursor = filter_scan_cursor.map_err(Error::InvalidRequest)?;
+            let filter_status = filter_status.map_err(Error::InvalidRequest)?;
+            let filter_trigger_kind = filter_trigger_kind
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/automations/{}/runs", client.baseurl, encode_path(&
+                ai_automation_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][gte]",
+                        &filter_created_at_gte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[created_at][lte]",
+                        &filter_created_at_lte,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[scan_cursor]",
+                        &filter_scan_cursor,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[status]", &filter_status),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[trigger_kind]",
+                        &filter_trigger_kind,
+                    ),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_ai_automation_runs",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::run_ai_automation`]
+
+[`Client::run_ai_automation`]: super::Client::run_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct RunAiAutomation<'a> {
+        client: &'a super::Client,
+        ai_automation_id: Result<::uuid::Uuid, String>,
+        body: Result<types::builder::NewAiAutomationRun, String>,
+    }
+    impl<'a> RunAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                ai_automation_id: Err(
+                    "ai_automation_id was not initialized".to_string(),
+                ),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn ai_automation_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.ai_automation_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for ai_automation_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewAiAutomationRun>,
+            <V as std::convert::TryInto<
+                types::NewAiAutomationRun,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `NewAiAutomationRun` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewAiAutomationRun,
+            ) -> types::builder::NewAiAutomationRun,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai/automations/{ai_automation_id}/runs`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationRun>, Error<()>> {
+            let Self { client, ai_automation_id, body } = self;
+            let ai_automation_id = ai_automation_id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::NewAiAutomationRun::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/automations/{}/runs", client.baseurl, encode_path(&
+                ai_automation_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "run_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                202u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_ai_automation`]
+
+[`Client::get_ai_automation`]: super::Client::get_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct GetAiAutomation<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+    }
+    impl<'a> GetAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/automations/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/automations/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::put_ai_automation`]
+
+[`Client::put_ai_automation`]: super::Client::put_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct PutAiAutomation<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+        body: Result<types::builder::UpdateAiAutomation, String>,
+    }
+    impl<'a> PutAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateAiAutomation>,
+            <V as std::convert::TryInto<
+                types::UpdateAiAutomation,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateAiAutomation` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateAiAutomation,
+            ) -> types::builder::UpdateAiAutomation,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PUT` request to `/v1/ai/automations/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateAiAutomation::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/automations/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .put(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "put_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::delete_ai_automation`]
+
+[`Client::delete_ai_automation`]: super::Client::delete_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct DeleteAiAutomation<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+    }
+    impl<'a> DeleteAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        ///Sends a `DELETE` request to `/v1/ai/automations/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, id } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/automations/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .delete(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "delete_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::update_ai_automation`]
+
+[`Client::update_ai_automation`]: super::Client::update_ai_automation*/
+    #[derive(Debug, Clone)]
+    pub struct UpdateAiAutomation<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+        body: Result<types::builder::UpdateAiAutomation, String>,
+    }
+    impl<'a> UpdateAiAutomation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::UpdateAiAutomation>,
+            <V as std::convert::TryInto<
+                types::UpdateAiAutomation,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `UpdateAiAutomation` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::UpdateAiAutomation,
+            ) -> types::builder::UpdateAiAutomation,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `PATCH` request to `/v1/ai/automations/{id}`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+            let Self { client, id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let body = body
+                .and_then(|v| {
+                    types::UpdateAiAutomation::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/automations/{}", client.baseurl, encode_path(& id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .patch(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "update_ai_automation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::rotate_ai_automation_webhook_secret`]
+
+[`Client::rotate_ai_automation_webhook_secret`]: super::Client::rotate_ai_automation_webhook_secret*/
+    #[derive(Debug, Clone)]
+    pub struct RotateAiAutomationWebhookSecret<'a> {
+        client: &'a super::Client,
+        id: Result<::std::string::String, String>,
+        trigger_id: Result<::std::string::String, String>,
+        body: Result<
+            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+            String,
+        >,
+    }
+    impl<'a> RotateAiAutomationWebhookSecret<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                trigger_id: Err("trigger_id was not initialized".to_string()),
+                body: Err("body was not initialized".to_string()),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn trigger_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.trigger_id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for trigger_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<
+                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
+            >,
+        {
+            self.body = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: serde_json :: Map < :: std :: string :: String , :: serde_json :: Value >` for body failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai/automations/{id}/triggers/{trigger_id}/webhook_secret`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::AiAutomationWebhookSecretResponse>, Error<()>> {
+            let Self { client, id, trigger_id, body } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let trigger_id = trigger_id.map_err(Error::InvalidRequest)?;
+            let body = body.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/automations/{}/triggers/{}/webhook_secret", client.baseurl,
+                encode_path(& id.to_string()), encode_path(& trigger_id.to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "rotate_ai_automation_webhook_secret",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                201u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
     /**Builder for [`Client::create_ai_chat`]
 
 [`Client::create_ai_chat`]: super::Client::create_ai_chat*/
@@ -314567,15 +316887,268 @@ pub mod builder {
             }
         }
     }
-    /**Builder for [`Client::get_ai_automation_run`]
+    /**Builder for [`Client::list_investigations`]
 
-[`Client::get_ai_automation_run`]: super::Client::get_ai_automation_run*/
+[`Client::list_investigations`]: super::Client::list_investigations*/
     #[derive(Debug, Clone)]
-    pub struct GetAiAutomationRun<'a> {
+    pub struct ListInvestigations<'a> {
+        client: &'a super::Client,
+        filter_alert_id: Result<Option<::uuid::Uuid>, String>,
+        filter_incident_id: Result<Option<::uuid::Uuid>, String>,
+        filter_outcome: Result<Option<::std::string::String>, String>,
+        filter_status: Result<Option<::std::string::String>, String>,
+        page_number: Result<Option<i64>, String>,
+        page_size: Result<Option<i64>, String>,
+    }
+    impl<'a> ListInvestigations<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                filter_alert_id: Ok(None),
+                filter_incident_id: Ok(None),
+                filter_outcome: Ok(None),
+                filter_status: Ok(None),
+                page_number: Ok(None),
+                page_size: Ok(None),
+            }
+        }
+        pub fn filter_alert_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.filter_alert_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for filter_alert_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_incident_id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.filter_incident_id = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for filter_incident_id failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_outcome<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_outcome = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_outcome failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn filter_status<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.filter_status = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for filter_status failed"
+                        .to_string()
+                });
+            self
+        }
+        pub fn page_number<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_number = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
+            self
+        }
+        pub fn page_size<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<i64>,
+        {
+            self.page_size = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/investigations`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::InvestigationList>, Error<()>> {
+            let Self {
+                client,
+                filter_alert_id,
+                filter_incident_id,
+                filter_outcome,
+                filter_status,
+                page_number,
+                page_size,
+            } = self;
+            let filter_alert_id = filter_alert_id.map_err(Error::InvalidRequest)?;
+            let filter_incident_id = filter_incident_id.map_err(Error::InvalidRequest)?;
+            let filter_outcome = filter_outcome.map_err(Error::InvalidRequest)?;
+            let filter_status = filter_status.map_err(Error::InvalidRequest)?;
+            let page_number = page_number.map_err(Error::InvalidRequest)?;
+            let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/investigations", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[alert_id]",
+                        &filter_alert_id,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[incident_id]",
+                        &filter_incident_id,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[outcome]",
+                        &filter_outcome,
+                    ),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new("filter[status]", &filter_status),
+                )
+                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
+                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "list_investigations",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::create_investigation`]
+
+[`Client::create_investigation`]: super::Client::create_investigation*/
+    #[derive(Debug, Clone)]
+    pub struct CreateInvestigation<'a> {
+        client: &'a super::Client,
+        body: Result<types::builder::NewInvestigation, String>,
+    }
+    impl<'a> CreateInvestigation<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                body: Ok(::std::default::Default::default()),
+            }
+        }
+        pub fn body<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<types::NewInvestigation>,
+            <V as std::convert::TryInto<
+                types::NewInvestigation,
+            >>::Error: std::fmt::Display,
+        {
+            self.body = value
+                .try_into()
+                .map(From::from)
+                .map_err(|s| {
+                    format!("conversion to `NewInvestigation` for body failed: {}", s)
+                });
+            self
+        }
+        pub fn body_map<F>(mut self, f: F) -> Self
+        where
+            F: std::ops::FnOnce(
+                types::builder::NewInvestigation,
+            ) -> types::builder::NewInvestigation,
+        {
+            self.body = self.body.map(f);
+            self
+        }
+        ///Sends a `POST` request to `/v1/ai/investigations`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::Investigation>, Error<()>> {
+            let Self { client, body } = self;
+            let body = body
+                .and_then(|v| {
+                    types::NewInvestigation::try_from(v).map_err(|e| e.to_string())
+                })
+                .map_err(Error::InvalidRequest)?;
+            let url = format!("{}/v1/ai/investigations", client.baseurl,);
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .post(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .json(&body)
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "create_investigation",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                202u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_investigation`]
+
+[`Client::get_investigation`]: super::Client::get_investigation*/
+    #[derive(Debug, Clone)]
+    pub struct GetInvestigation<'a> {
         client: &'a super::Client,
         id: Result<::uuid::Uuid, String>,
     }
-    impl<'a> GetAiAutomationRun<'a> {
+    impl<'a> GetInvestigation<'a> {
         pub fn new(client: &'a super::Client) -> Self {
             Self {
                 client: client,
@@ -314593,14 +317166,14 @@ pub mod builder {
                 });
             self
         }
-        ///Sends a `GET` request to `/v1/ai_automation_runs/{id}`
+        ///Sends a `GET` request to `/v1/ai/investigations/{id}`
         pub async fn send(
             self,
-        ) -> Result<ResponseValue<types::AiAutomationRun>, Error<()>> {
+        ) -> Result<ResponseValue<types::Investigation>, Error<()>> {
             let Self { client, id } = self;
             let id = id.map_err(Error::InvalidRequest)?;
             let url = format!(
-                "{}/v1/ai_automation_runs/{}", client.baseurl, encode_path(& id
+                "{}/v1/ai/investigations/{}", client.baseurl, encode_path(& id
                 .to_string()),
             );
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
@@ -314622,7 +317195,7 @@ pub mod builder {
                 .headers(header_map)
                 .build()?;
             let info = OperationInfo {
-                operation_id: "get_ai_automation_run",
+                operation_id: "get_investigation",
             };
             client.pre(&mut request, &info).await?;
             let result = client.exec(request, &info).await;
@@ -314634,945 +317207,15 @@ pub mod builder {
             }
         }
     }
-    /**Builder for [`Client::list_ai_automations`]
+    /**Builder for [`Client::cancel_investigation`]
 
-[`Client::list_ai_automations`]: super::Client::list_ai_automations*/
+[`Client::cancel_investigation`]: super::Client::cancel_investigation*/
     #[derive(Debug, Clone)]
-    pub struct ListAiAutomations<'a> {
-        client: &'a super::Client,
-        filter_created_at_gte: Result<
-            Option<::chrono::DateTime<::chrono::offset::Utc>>,
-            String,
-        >,
-        filter_created_at_lte: Result<
-            Option<::chrono::DateTime<::chrono::offset::Utc>>,
-            String,
-        >,
-        filter_enabled: Result<Option<bool>, String>,
-        filter_event_name: Result<Option<::std::string::String>, String>,
-        filter_search: Result<Option<::std::string::String>, String>,
-        filter_trigger_kind: Result<Option<::std::string::String>, String>,
-        sort: Result<Option<::std::string::String>, String>,
-    }
-    impl<'a> ListAiAutomations<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                filter_created_at_gte: Ok(None),
-                filter_created_at_lte: Ok(None),
-                filter_enabled: Ok(None),
-                filter_event_name: Ok(None),
-                filter_search: Ok(None),
-                filter_trigger_kind: Ok(None),
-                sort: Ok(None),
-            }
-        }
-        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
-        {
-            self.filter_created_at_gte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_gte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
-        {
-            self.filter_created_at_lte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_lte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_enabled<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<bool>,
-        {
-            self.filter_enabled = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `bool` for filter_enabled failed".to_string()
-                });
-            self
-        }
-        pub fn filter_event_name<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_event_name = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_event_name failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_search<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_search = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_search failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_trigger_kind<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_trigger_kind = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_trigger_kind failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn sort<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.sort = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for sort failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/ai_automations`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomationList>, Error<()>> {
-            let Self {
-                client,
-                filter_created_at_gte,
-                filter_created_at_lte,
-                filter_enabled,
-                filter_event_name,
-                filter_search,
-                filter_trigger_kind,
-                sort,
-            } = self;
-            let filter_created_at_gte = filter_created_at_gte
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_lte = filter_created_at_lte
-                .map_err(Error::InvalidRequest)?;
-            let filter_enabled = filter_enabled.map_err(Error::InvalidRequest)?;
-            let filter_event_name = filter_event_name.map_err(Error::InvalidRequest)?;
-            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
-            let filter_trigger_kind = filter_trigger_kind
-                .map_err(Error::InvalidRequest)?;
-            let sort = sort.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/ai_automations", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][gte]",
-                        &filter_created_at_gte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][lte]",
-                        &filter_created_at_lte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[enabled]",
-                        &filter_enabled,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[event_name]",
-                        &filter_event_name,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[trigger_kind]",
-                        &filter_trigger_kind,
-                    ),
-                )
-                .query(&progenitor_client::QueryParam::new("sort", &sort))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_ai_automations",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::create_ai_automation`]
-
-[`Client::create_ai_automation`]: super::Client::create_ai_automation*/
-    #[derive(Debug, Clone)]
-    pub struct CreateAiAutomation<'a> {
-        client: &'a super::Client,
-        body: Result<types::builder::NewAiAutomation, String>,
-    }
-    impl<'a> CreateAiAutomation<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::NewAiAutomation>,
-            <V as std::convert::TryInto<
-                types::NewAiAutomation,
-            >>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `NewAiAutomation` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::NewAiAutomation,
-            ) -> types::builder::NewAiAutomation,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `POST` request to `/v1/ai_automations`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
-            let Self { client, body } = self;
-            let body = body
-                .and_then(|v| {
-                    types::NewAiAutomation::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/ai_automations", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .post(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "create_ai_automation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                201u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_ai_automation_slack_channels`]
-
-[`Client::list_ai_automation_slack_channels`]: super::Client::list_ai_automation_slack_channels*/
-    #[derive(Debug, Clone)]
-    pub struct ListAiAutomationSlackChannels<'a> {
-        client: &'a super::Client,
-        filter_search: Result<Option<::std::string::String>, String>,
-        page_number: Result<Option<i64>, String>,
-        page_size: Result<Option<i64>, String>,
-    }
-    impl<'a> ListAiAutomationSlackChannels<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                filter_search: Ok(None),
-                page_number: Ok(None),
-                page_size: Ok(None),
-            }
-        }
-        pub fn filter_search<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_search = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_search failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn page_number<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_number = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
-            self
-        }
-        pub fn page_size<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_size = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
-            self
-        }
-        ///Sends a `GET` request to `/v1/ai_automations/slack_channels`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomationSlackChannels>, Error<()>> {
-            let Self { client, filter_search, page_number, page_size } = self;
-            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
-            let page_number = page_number.map_err(Error::InvalidRequest)?;
-            let page_size = page_size.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/ai_automations/slack_channels", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
-                )
-                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
-                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_ai_automation_slack_channels",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_ai_automation_slack_user_groups`]
-
-[`Client::list_ai_automation_slack_user_groups`]: super::Client::list_ai_automation_slack_user_groups*/
-    #[derive(Debug, Clone)]
-    pub struct ListAiAutomationSlackUserGroups<'a> {
-        client: &'a super::Client,
-        filter_search: Result<Option<::std::string::String>, String>,
-        page_number: Result<Option<i64>, String>,
-        page_size: Result<Option<i64>, String>,
-    }
-    impl<'a> ListAiAutomationSlackUserGroups<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                filter_search: Ok(None),
-                page_number: Ok(None),
-                page_size: Ok(None),
-            }
-        }
-        pub fn filter_search<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_search = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_search failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn page_number<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_number = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
-            self
-        }
-        pub fn page_size<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_size = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
-            self
-        }
-        ///Sends a `GET` request to `/v1/ai_automations/slack_user_groups`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomationSlackUserGroups>, Error<()>> {
-            let Self { client, filter_search, page_number, page_size } = self;
-            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
-            let page_number = page_number.map_err(Error::InvalidRequest)?;
-            let page_size = page_size.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/ai_automations/slack_user_groups", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
-                )
-                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
-                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_ai_automation_slack_user_groups",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_ai_automation_slack_users`]
-
-[`Client::list_ai_automation_slack_users`]: super::Client::list_ai_automation_slack_users*/
-    #[derive(Debug, Clone)]
-    pub struct ListAiAutomationSlackUsers<'a> {
-        client: &'a super::Client,
-        filter_search: Result<Option<::std::string::String>, String>,
-        page_number: Result<Option<i64>, String>,
-        page_size: Result<Option<i64>, String>,
-    }
-    impl<'a> ListAiAutomationSlackUsers<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                filter_search: Ok(None),
-                page_number: Ok(None),
-                page_size: Ok(None),
-            }
-        }
-        pub fn filter_search<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_search = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_search failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn page_number<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_number = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
-            self
-        }
-        pub fn page_size<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_size = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
-            self
-        }
-        ///Sends a `GET` request to `/v1/ai_automations/slack_users`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomationSlackUsers>, Error<()>> {
-            let Self { client, filter_search, page_number, page_size } = self;
-            let filter_search = filter_search.map_err(Error::InvalidRequest)?;
-            let page_number = page_number.map_err(Error::InvalidRequest)?;
-            let page_size = page_size.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/ai_automations/slack_users", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[search]", &filter_search),
-                )
-                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
-                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_ai_automation_slack_users",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::get_ai_automation_trigger_options`]
-
-[`Client::get_ai_automation_trigger_options`]: super::Client::get_ai_automation_trigger_options*/
-    #[derive(Debug, Clone)]
-    pub struct GetAiAutomationTriggerOptions<'a> {
-        client: &'a super::Client,
-    }
-    impl<'a> GetAiAutomationTriggerOptions<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self { client: client }
-        }
-        ///Sends a `GET` request to `/v1/ai_automations/trigger_options`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomationTriggerOptions>, Error<()>> {
-            let Self { client } = self;
-            let url = format!("{}/v1/ai_automations/trigger_options", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "get_ai_automation_trigger_options",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_ai_automation_runs`]
-
-[`Client::list_ai_automation_runs`]: super::Client::list_ai_automation_runs*/
-    #[derive(Debug, Clone)]
-    pub struct ListAiAutomationRuns<'a> {
-        client: &'a super::Client,
-        ai_automation_id: Result<::uuid::Uuid, String>,
-        filter_created_at_gte: Result<
-            Option<::chrono::DateTime<::chrono::offset::Utc>>,
-            String,
-        >,
-        filter_created_at_lte: Result<
-            Option<::chrono::DateTime<::chrono::offset::Utc>>,
-            String,
-        >,
-        filter_scan_cursor: Result<Option<::std::string::String>, String>,
-        filter_status: Result<Option<::std::string::String>, String>,
-        filter_trigger_kind: Result<Option<::std::string::String>, String>,
-    }
-    impl<'a> ListAiAutomationRuns<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                ai_automation_id: Err(
-                    "ai_automation_id was not initialized".to_string(),
-                ),
-                filter_created_at_gte: Ok(None),
-                filter_created_at_lte: Ok(None),
-                filter_scan_cursor: Ok(None),
-                filter_status: Ok(None),
-                filter_trigger_kind: Ok(None),
-            }
-        }
-        pub fn ai_automation_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.ai_automation_id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for ai_automation_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_gte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
-        {
-            self.filter_created_at_gte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_gte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_created_at_lte<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::chrono::DateTime<::chrono::offset::Utc>>,
-        {
-            self.filter_created_at_lte = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: chrono :: DateTime < :: chrono :: offset :: Utc >` for filter_created_at_lte failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_scan_cursor<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_scan_cursor = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_scan_cursor failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_trigger_kind<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_trigger_kind = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_trigger_kind failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/ai_automations/{ai_automation_id}/runs`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomationRunList>, Error<()>> {
-            let Self {
-                client,
-                ai_automation_id,
-                filter_created_at_gte,
-                filter_created_at_lte,
-                filter_scan_cursor,
-                filter_status,
-                filter_trigger_kind,
-            } = self;
-            let ai_automation_id = ai_automation_id.map_err(Error::InvalidRequest)?;
-            let filter_created_at_gte = filter_created_at_gte
-                .map_err(Error::InvalidRequest)?;
-            let filter_created_at_lte = filter_created_at_lte
-                .map_err(Error::InvalidRequest)?;
-            let filter_scan_cursor = filter_scan_cursor.map_err(Error::InvalidRequest)?;
-            let filter_status = filter_status.map_err(Error::InvalidRequest)?;
-            let filter_trigger_kind = filter_trigger_kind
-                .map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/ai_automations/{}/runs", client.baseurl, encode_path(&
-                ai_automation_id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][gte]",
-                        &filter_created_at_gte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[created_at][lte]",
-                        &filter_created_at_lte,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[scan_cursor]",
-                        &filter_scan_cursor,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[status]", &filter_status),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[trigger_kind]",
-                        &filter_trigger_kind,
-                    ),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_ai_automation_runs",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::run_ai_automation`]
-
-[`Client::run_ai_automation`]: super::Client::run_ai_automation*/
-    #[derive(Debug, Clone)]
-    pub struct RunAiAutomation<'a> {
-        client: &'a super::Client,
-        ai_automation_id: Result<::uuid::Uuid, String>,
-        body: Result<types::builder::NewAiAutomationRun, String>,
-    }
-    impl<'a> RunAiAutomation<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                ai_automation_id: Err(
-                    "ai_automation_id was not initialized".to_string(),
-                ),
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn ai_automation_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.ai_automation_id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for ai_automation_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::NewAiAutomationRun>,
-            <V as std::convert::TryInto<
-                types::NewAiAutomationRun,
-            >>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `NewAiAutomationRun` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::NewAiAutomationRun,
-            ) -> types::builder::NewAiAutomationRun,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `POST` request to `/v1/ai_automations/{ai_automation_id}/runs`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomationRun>, Error<()>> {
-            let Self { client, ai_automation_id, body } = self;
-            let ai_automation_id = ai_automation_id.map_err(Error::InvalidRequest)?;
-            let body = body
-                .and_then(|v| {
-                    types::NewAiAutomationRun::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/ai_automations/{}/runs", client.baseurl, encode_path(&
-                ai_automation_id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .post(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "run_ai_automation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                202u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::get_ai_automation`]
-
-[`Client::get_ai_automation`]: super::Client::get_ai_automation*/
-    #[derive(Debug, Clone)]
-    pub struct GetAiAutomation<'a> {
+    pub struct CancelInvestigation<'a> {
         client: &'a super::Client,
         id: Result<::uuid::Uuid, String>,
     }
-    impl<'a> GetAiAutomation<'a> {
+    impl<'a> CancelInvestigation<'a> {
         pub fn new(client: &'a super::Client) -> Self {
             Self {
                 client: client,
@@ -315590,379 +317233,15 @@ pub mod builder {
                 });
             self
         }
-        ///Sends a `GET` request to `/v1/ai_automations/{id}`
+        ///Sends a `POST` request to `/v1/ai/investigations/{id}/cancel`
         pub async fn send(
             self,
-        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
+        ) -> Result<ResponseValue<types::Investigation>, Error<()>> {
             let Self { client, id } = self;
             let id = id.map_err(Error::InvalidRequest)?;
             let url = format!(
-                "{}/v1/ai_automations/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "get_ai_automation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::put_ai_automation`]
-
-[`Client::put_ai_automation`]: super::Client::put_ai_automation*/
-    #[derive(Debug, Clone)]
-    pub struct PutAiAutomation<'a> {
-        client: &'a super::Client,
-        id: Result<::uuid::Uuid, String>,
-        body: Result<types::builder::UpdateAiAutomation, String>,
-    }
-    impl<'a> PutAiAutomation<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
-                });
-            self
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::UpdateAiAutomation>,
-            <V as std::convert::TryInto<
-                types::UpdateAiAutomation,
-            >>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `UpdateAiAutomation` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::UpdateAiAutomation,
-            ) -> types::builder::UpdateAiAutomation,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `PUT` request to `/v1/ai_automations/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
-            let Self { client, id, body } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let body = body
-                .and_then(|v| {
-                    types::UpdateAiAutomation::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/ai_automations/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .put(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "put_ai_automation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::delete_ai_automation`]
-
-[`Client::delete_ai_automation`]: super::Client::delete_ai_automation*/
-    #[derive(Debug, Clone)]
-    pub struct DeleteAiAutomation<'a> {
-        client: &'a super::Client,
-        id: Result<::uuid::Uuid, String>,
-    }
-    impl<'a> DeleteAiAutomation<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
-                });
-            self
-        }
-        ///Sends a `DELETE` request to `/v1/ai_automations/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
-            let Self { client, id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/ai_automations/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .delete(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "delete_ai_automation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::update_ai_automation`]
-
-[`Client::update_ai_automation`]: super::Client::update_ai_automation*/
-    #[derive(Debug, Clone)]
-    pub struct UpdateAiAutomation<'a> {
-        client: &'a super::Client,
-        id: Result<::uuid::Uuid, String>,
-        body: Result<types::builder::UpdateAiAutomation, String>,
-    }
-    impl<'a> UpdateAiAutomation<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
-                });
-            self
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::UpdateAiAutomation>,
-            <V as std::convert::TryInto<
-                types::UpdateAiAutomation,
-            >>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `UpdateAiAutomation` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::UpdateAiAutomation,
-            ) -> types::builder::UpdateAiAutomation,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `PATCH` request to `/v1/ai_automations/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomation>, Error<()>> {
-            let Self { client, id, body } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let body = body
-                .and_then(|v| {
-                    types::UpdateAiAutomation::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/ai_automations/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .patch(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "update_ai_automation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::rotate_ai_automation_webhook_secret`]
-
-[`Client::rotate_ai_automation_webhook_secret`]: super::Client::rotate_ai_automation_webhook_secret*/
-    #[derive(Debug, Clone)]
-    pub struct RotateAiAutomationWebhookSecret<'a> {
-        client: &'a super::Client,
-        id: Result<::std::string::String, String>,
-        trigger_id: Result<::std::string::String, String>,
-        body: Result<
-            ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-            String,
-        >,
-    }
-    impl<'a> RotateAiAutomationWebhookSecret<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-                trigger_id: Err("trigger_id was not initialized".to_string()),
-                body: Err("body was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn trigger_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.trigger_id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for trigger_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<
-                ::serde_json::Map<::std::string::String, ::serde_json::Value>,
-            >,
-        {
-            self.body = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: serde_json :: Map < :: std :: string :: String , :: serde_json :: Value >` for body failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `POST` request to `/v1/ai_automations/{id}/triggers/{trigger_id}/webhook_secret`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::AiAutomationWebhookSecretResponse>, Error<()>> {
-            let Self { client, id, trigger_id, body } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let trigger_id = trigger_id.map_err(Error::InvalidRequest)?;
-            let body = body.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/ai_automations/{}/triggers/{}/webhook_secret", client.baseurl,
-                encode_path(& id.to_string()), encode_path(& trigger_id.to_string()),
+                "{}/v1/ai/investigations/{}/cancel", client.baseurl, encode_path(& id
+                .to_string()),
             );
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
@@ -315980,18 +317259,101 @@ pub mod builder {
                     ::reqwest::header::ACCEPT,
                     ::reqwest::header::HeaderValue::from_static("application/json"),
                 )
-                .json(&body)
                 .headers(header_map)
                 .build()?;
             let info = OperationInfo {
-                operation_id: "rotate_ai_automation_webhook_secret",
+                operation_id: "cancel_investigation",
             };
             client.pre(&mut request, &info).await?;
             let result = client.exec(request, &info).await;
             client.post(&result, &info).await?;
             let response = result?;
             match response.status().as_u16() {
-                201u16 => ResponseValue::from_response(response).await,
+                200u16 => ResponseValue::from_response(response).await,
+                _ => Err(Error::UnexpectedResponse(response)),
+            }
+        }
+    }
+    /**Builder for [`Client::get_investigation_progress`]
+
+[`Client::get_investigation_progress`]: super::Client::get_investigation_progress*/
+    #[derive(Debug, Clone)]
+    pub struct GetInvestigationProgress<'a> {
+        client: &'a super::Client,
+        id: Result<::uuid::Uuid, String>,
+        after: Result<Option<::std::string::String>, String>,
+    }
+    impl<'a> GetInvestigationProgress<'a> {
+        pub fn new(client: &'a super::Client) -> Self {
+            Self {
+                client: client,
+                id: Err("id was not initialized".to_string()),
+                after: Ok(None),
+            }
+        }
+        pub fn id<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::uuid::Uuid>,
+        {
+            self.id = value
+                .try_into()
+                .map_err(|_| {
+                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
+                });
+            self
+        }
+        pub fn after<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.after = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for after failed"
+                        .to_string()
+                });
+            self
+        }
+        ///Sends a `GET` request to `/v1/ai/investigations/{id}/progress`
+        pub async fn send(
+            self,
+        ) -> Result<ResponseValue<types::InvestigationProgress>, Error<()>> {
+            let Self { client, id, after } = self;
+            let id = id.map_err(Error::InvalidRequest)?;
+            let after = after.map_err(Error::InvalidRequest)?;
+            let url = format!(
+                "{}/v1/ai/investigations/{}/progress", client.baseurl, encode_path(& id
+                .to_string()),
+            );
+            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
+            header_map
+                .append(
+                    ::reqwest::header::HeaderName::from_static("api-version"),
+                    ::reqwest::header::HeaderValue::from_static(
+                        super::Client::api_version(),
+                    ),
+                );
+            #[allow(unused_mut)]
+            let mut request = client
+                .client
+                .get(url)
+                .header(
+                    ::reqwest::header::ACCEPT,
+                    ::reqwest::header::HeaderValue::from_static("application/json"),
+                )
+                .query(&progenitor_client::QueryParam::new("after", &after))
+                .headers(header_map)
+                .build()?;
+            let info = OperationInfo {
+                operation_id: "get_investigation_progress",
+            };
+            client.pre(&mut request, &info).await?;
+            let result = client.exec(request, &info).await;
+            client.post(&result, &info).await?;
+            let response = result?;
+            match response.status().as_u16() {
+                200u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }
@@ -316170,7 +317532,7 @@ pub mod builder {
                 });
             self
         }
-        ///Sends a `GET` request to `/v1/ai_skills`
+        ///Sends a `GET` request to `/v1/ai/skills`
         pub async fn send(self) -> Result<ResponseValue<types::AiSkillList>, Error<()>> {
             let Self {
                 client,
@@ -316200,7 +317562,7 @@ pub mod builder {
             let filter_slug = filter_slug.map_err(Error::InvalidRequest)?;
             let filter_source = filter_source.map_err(Error::InvalidRequest)?;
             let sort = sort.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/ai_skills", client.baseurl,);
+            let url = format!("{}/v1/ai/skills", client.baseurl,);
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
                 .append(
@@ -316313,7 +317675,7 @@ pub mod builder {
             self.body = self.body.map(f);
             self
         }
-        ///Sends a `POST` request to `/v1/ai_skills`
+        ///Sends a `POST` request to `/v1/ai/skills`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
@@ -316321,7 +317683,7 @@ pub mod builder {
             let body = body
                 .and_then(|v| types::NewAiSkill::try_from(v).map_err(|e| e.to_string()))
                 .map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/ai_skills", client.baseurl,);
+            let url = format!("{}/v1/ai/skills", client.baseurl,);
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
                 .append(
@@ -316381,14 +317743,14 @@ pub mod builder {
                 });
             self
         }
-        ///Sends a `GET` request to `/v1/ai_skills/{ai_skill_id}/versions`
+        ///Sends a `GET` request to `/v1/ai/skills/{ai_skill_id}/versions`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiSkillVersionList>, Error<()>> {
             let Self { client, ai_skill_id } = self;
             let ai_skill_id = ai_skill_id.map_err(Error::InvalidRequest)?;
             let url = format!(
-                "{}/v1/ai_skills/{}/versions", client.baseurl, encode_path(& ai_skill_id
+                "{}/v1/ai/skills/{}/versions", client.baseurl, encode_path(& ai_skill_id
                 .to_string()),
             );
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
@@ -316460,7 +317822,7 @@ pub mod builder {
                 .map_err(|_| "conversion to `i64` for version failed".to_string());
             self
         }
-        ///Sends a `GET` request to `/v1/ai_skills/{ai_skill_id}/versions/{version}`
+        ///Sends a `GET` request to `/v1/ai/skills/{ai_skill_id}/versions/{version}`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiSkillVersionResponse>, Error<()>> {
@@ -316468,7 +317830,7 @@ pub mod builder {
             let ai_skill_id = ai_skill_id.map_err(Error::InvalidRequest)?;
             let version = version.map_err(Error::InvalidRequest)?;
             let url = format!(
-                "{}/v1/ai_skills/{}/versions/{}", client.baseurl, encode_path(&
+                "{}/v1/ai/skills/{}/versions/{}", client.baseurl, encode_path(&
                 ai_skill_id.to_string()), encode_path(& version.to_string()),
             );
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
@@ -316529,14 +317891,14 @@ pub mod builder {
                 });
             self
         }
-        ///Sends a `GET` request to `/v1/ai_skills/{id}`
+        ///Sends a `GET` request to `/v1/ai/skills/{id}`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
             let Self { client, id } = self;
             let id = id.map_err(Error::InvalidRequest)?;
             let url = format!(
-                "{}/v1/ai_skills/{}", client.baseurl, encode_path(& id.to_string()),
+                "{}/v1/ai/skills/{}", client.baseurl, encode_path(& id.to_string()),
             );
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
@@ -316620,7 +317982,7 @@ pub mod builder {
             self.body = self.body.map(f);
             self
         }
-        ///Sends a `PUT` request to `/v1/ai_skills/{id}`
+        ///Sends a `PUT` request to `/v1/ai/skills/{id}`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
@@ -316632,7 +317994,7 @@ pub mod builder {
                 })
                 .map_err(Error::InvalidRequest)?;
             let url = format!(
-                "{}/v1/ai_skills/{}", client.baseurl, encode_path(& id.to_string()),
+                "{}/v1/ai/skills/{}", client.baseurl, encode_path(& id.to_string()),
             );
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
@@ -316693,14 +318055,14 @@ pub mod builder {
                 });
             self
         }
-        ///Sends a `DELETE` request to `/v1/ai_skills/{id}`
+        ///Sends a `DELETE` request to `/v1/ai/skills/{id}`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
             let Self { client, id } = self;
             let id = id.map_err(Error::InvalidRequest)?;
             let url = format!(
-                "{}/v1/ai_skills/{}", client.baseurl, encode_path(& id.to_string()),
+                "{}/v1/ai/skills/{}", client.baseurl, encode_path(& id.to_string()),
             );
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
@@ -316784,7 +318146,7 @@ pub mod builder {
             self.body = self.body.map(f);
             self
         }
-        ///Sends a `PATCH` request to `/v1/ai_skills/{id}`
+        ///Sends a `PATCH` request to `/v1/ai/skills/{id}`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiSkillResponse>, Error<()>> {
@@ -316796,7 +318158,7 @@ pub mod builder {
                 })
                 .map_err(Error::InvalidRequest)?;
             let url = format!(
-                "{}/v1/ai_skills/{}", client.baseurl, encode_path(& id.to_string()),
+                "{}/v1/ai/skills/{}", client.baseurl, encode_path(& id.to_string()),
             );
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
@@ -316977,7 +318339,7 @@ pub mod builder {
                 .map_err(|_| "conversion to `i64` for page_size failed".to_string());
             self
         }
-        ///Sends a `GET` request to `/v1/ai_tool_call_events`
+        ///Sends a `GET` request to `/v1/ai/tool_call_events`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::AiToolCallEventList>, Error<()>> {
@@ -317005,7 +318367,7 @@ pub mod builder {
             let filter_user_id = filter_user_id.map_err(Error::InvalidRequest)?;
             let page_number = page_number.map_err(Error::InvalidRequest)?;
             let page_size = page_size.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/ai_tool_call_events", client.baseurl,);
+            let url = format!("{}/v1/ai/tool_call_events", client.baseurl,);
             let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
             header_map
                 .append(
@@ -362482,6 +363844,7 @@ pub mod builder {
         include: Result<Option<::std::string::String>, String>,
         page_number: Result<Option<i64>, String>,
         page_size: Result<Option<i64>, String>,
+        sort: Result<Option<::std::string::String>, String>,
     }
     impl<'a> ListIncidentStatusPages<'a> {
         pub fn new(client: &'a super::Client) -> Self {
@@ -362491,6 +363854,7 @@ pub mod builder {
                 include: Ok(None),
                 page_number: Ok(None),
                 page_size: Ok(None),
+                sort: Ok(None),
             }
         }
         pub fn incident_id<V>(mut self, value: V) -> Self
@@ -362538,15 +363902,29 @@ pub mod builder {
                 .map_err(|_| "conversion to `i64` for page_size failed".to_string());
             self
         }
+        pub fn sort<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<::std::string::String>,
+        {
+            self.sort = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `:: std :: string :: String` for sort failed"
+                        .to_string()
+                });
+            self
+        }
         ///Sends a `GET` request to `/v1/incidents/{incident_id}/status-page-events`
         pub async fn send(
             self,
         ) -> Result<ResponseValue<types::IncidentStatusPageEventList>, Error<()>> {
-            let Self { client, incident_id, include, page_number, page_size } = self;
+            let Self { client, incident_id, include, page_number, page_size, sort } = self;
             let incident_id = incident_id.map_err(Error::InvalidRequest)?;
             let include = include.map_err(Error::InvalidRequest)?;
             let page_number = page_number.map_err(Error::InvalidRequest)?;
             let page_size = page_size.map_err(Error::InvalidRequest)?;
+            let sort = sort.map_err(Error::InvalidRequest)?;
             let url = format!(
                 "{}/v1/incidents/{}/status-page-events", client.baseurl, encode_path(&
                 incident_id.to_string()),
@@ -362570,6 +363948,7 @@ pub mod builder {
                 .query(&progenitor_client::QueryParam::new("include", &include))
                 .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
                 .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
+                .query(&progenitor_client::QueryParam::new("sort", &sort))
                 .headers(header_map)
                 .build()?;
             let info = OperationInfo {
@@ -363044,476 +364423,6 @@ pub mod builder {
             let response = result?;
             match response.status().as_u16() {
                 201u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::list_investigations`]
-
-[`Client::list_investigations`]: super::Client::list_investigations*/
-    #[derive(Debug, Clone)]
-    pub struct ListInvestigations<'a> {
-        client: &'a super::Client,
-        filter_alert_id: Result<Option<::uuid::Uuid>, String>,
-        filter_incident_id: Result<Option<::uuid::Uuid>, String>,
-        filter_outcome: Result<Option<::std::string::String>, String>,
-        filter_status: Result<Option<::std::string::String>, String>,
-        page_number: Result<Option<i64>, String>,
-        page_size: Result<Option<i64>, String>,
-    }
-    impl<'a> ListInvestigations<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                filter_alert_id: Ok(None),
-                filter_incident_id: Ok(None),
-                filter_outcome: Ok(None),
-                filter_status: Ok(None),
-                page_number: Ok(None),
-                page_size: Ok(None),
-            }
-        }
-        pub fn filter_alert_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.filter_alert_id = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for filter_alert_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_incident_id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.filter_incident_id = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for filter_incident_id failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_outcome<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_outcome = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_outcome failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn filter_status<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.filter_status = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for filter_status failed"
-                        .to_string()
-                });
-            self
-        }
-        pub fn page_number<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_number = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_number failed".to_string());
-            self
-        }
-        pub fn page_size<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<i64>,
-        {
-            self.page_size = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| "conversion to `i64` for page_size failed".to_string());
-            self
-        }
-        ///Sends a `GET` request to `/v1/investigations`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::InvestigationList>, Error<()>> {
-            let Self {
-                client,
-                filter_alert_id,
-                filter_incident_id,
-                filter_outcome,
-                filter_status,
-                page_number,
-                page_size,
-            } = self;
-            let filter_alert_id = filter_alert_id.map_err(Error::InvalidRequest)?;
-            let filter_incident_id = filter_incident_id.map_err(Error::InvalidRequest)?;
-            let filter_outcome = filter_outcome.map_err(Error::InvalidRequest)?;
-            let filter_status = filter_status.map_err(Error::InvalidRequest)?;
-            let page_number = page_number.map_err(Error::InvalidRequest)?;
-            let page_size = page_size.map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/investigations", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[alert_id]",
-                        &filter_alert_id,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[incident_id]",
-                        &filter_incident_id,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new(
-                        "filter[outcome]",
-                        &filter_outcome,
-                    ),
-                )
-                .query(
-                    &progenitor_client::QueryParam::new("filter[status]", &filter_status),
-                )
-                .query(&progenitor_client::QueryParam::new("page[number]", &page_number))
-                .query(&progenitor_client::QueryParam::new("page[size]", &page_size))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "list_investigations",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::create_investigation`]
-
-[`Client::create_investigation`]: super::Client::create_investigation*/
-    #[derive(Debug, Clone)]
-    pub struct CreateInvestigation<'a> {
-        client: &'a super::Client,
-        body: Result<types::builder::NewInvestigation, String>,
-    }
-    impl<'a> CreateInvestigation<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                body: Ok(::std::default::Default::default()),
-            }
-        }
-        pub fn body<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<types::NewInvestigation>,
-            <V as std::convert::TryInto<
-                types::NewInvestigation,
-            >>::Error: std::fmt::Display,
-        {
-            self.body = value
-                .try_into()
-                .map(From::from)
-                .map_err(|s| {
-                    format!("conversion to `NewInvestigation` for body failed: {}", s)
-                });
-            self
-        }
-        pub fn body_map<F>(mut self, f: F) -> Self
-        where
-            F: std::ops::FnOnce(
-                types::builder::NewInvestigation,
-            ) -> types::builder::NewInvestigation,
-        {
-            self.body = self.body.map(f);
-            self
-        }
-        ///Sends a `POST` request to `/v1/investigations`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::Investigation>, Error<()>> {
-            let Self { client, body } = self;
-            let body = body
-                .and_then(|v| {
-                    types::NewInvestigation::try_from(v).map_err(|e| e.to_string())
-                })
-                .map_err(Error::InvalidRequest)?;
-            let url = format!("{}/v1/investigations", client.baseurl,);
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .post(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .json(&body)
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "create_investigation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                202u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::get_investigation`]
-
-[`Client::get_investigation`]: super::Client::get_investigation*/
-    #[derive(Debug, Clone)]
-    pub struct GetInvestigation<'a> {
-        client: &'a super::Client,
-        id: Result<::uuid::Uuid, String>,
-    }
-    impl<'a> GetInvestigation<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/investigations/{id}`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::Investigation>, Error<()>> {
-            let Self { client, id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/investigations/{}", client.baseurl, encode_path(& id.to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "get_investigation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::cancel_investigation`]
-
-[`Client::cancel_investigation`]: super::Client::cancel_investigation*/
-    #[derive(Debug, Clone)]
-    pub struct CancelInvestigation<'a> {
-        client: &'a super::Client,
-        id: Result<::uuid::Uuid, String>,
-    }
-    impl<'a> CancelInvestigation<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
-                });
-            self
-        }
-        ///Sends a `POST` request to `/v1/investigations/{id}/cancel`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::Investigation>, Error<()>> {
-            let Self { client, id } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/investigations/{}/cancel", client.baseurl, encode_path(& id
-                .to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .post(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "cancel_investigation",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
-                _ => Err(Error::UnexpectedResponse(response)),
-            }
-        }
-    }
-    /**Builder for [`Client::get_investigation_progress`]
-
-[`Client::get_investigation_progress`]: super::Client::get_investigation_progress*/
-    #[derive(Debug, Clone)]
-    pub struct GetInvestigationProgress<'a> {
-        client: &'a super::Client,
-        id: Result<::uuid::Uuid, String>,
-        after: Result<Option<::std::string::String>, String>,
-    }
-    impl<'a> GetInvestigationProgress<'a> {
-        pub fn new(client: &'a super::Client) -> Self {
-            Self {
-                client: client,
-                id: Err("id was not initialized".to_string()),
-                after: Ok(None),
-            }
-        }
-        pub fn id<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::uuid::Uuid>,
-        {
-            self.id = value
-                .try_into()
-                .map_err(|_| {
-                    "conversion to `:: uuid :: Uuid` for id failed".to_string()
-                });
-            self
-        }
-        pub fn after<V>(mut self, value: V) -> Self
-        where
-            V: std::convert::TryInto<::std::string::String>,
-        {
-            self.after = value
-                .try_into()
-                .map(Some)
-                .map_err(|_| {
-                    "conversion to `:: std :: string :: String` for after failed"
-                        .to_string()
-                });
-            self
-        }
-        ///Sends a `GET` request to `/v1/investigations/{id}/progress`
-        pub async fn send(
-            self,
-        ) -> Result<ResponseValue<types::InvestigationProgress>, Error<()>> {
-            let Self { client, id, after } = self;
-            let id = id.map_err(Error::InvalidRequest)?;
-            let after = after.map_err(Error::InvalidRequest)?;
-            let url = format!(
-                "{}/v1/investigations/{}/progress", client.baseurl, encode_path(& id
-                .to_string()),
-            );
-            let mut header_map = ::reqwest::header::HeaderMap::with_capacity(1usize);
-            header_map
-                .append(
-                    ::reqwest::header::HeaderName::from_static("api-version"),
-                    ::reqwest::header::HeaderValue::from_static(
-                        super::Client::api_version(),
-                    ),
-                );
-            #[allow(unused_mut)]
-            let mut request = client
-                .client
-                .get(url)
-                .header(
-                    ::reqwest::header::ACCEPT,
-                    ::reqwest::header::HeaderValue::from_static("application/json"),
-                )
-                .query(&progenitor_client::QueryParam::new("after", &after))
-                .headers(header_map)
-                .build()?;
-            let info = OperationInfo {
-                operation_id: "get_investigation_progress",
-            };
-            client.pre(&mut request, &info).await?;
-            let result = client.exec(request, &info).await;
-            client.post(&result, &info).await?;
-            let response = result?;
-            match response.status().as_u16() {
-                200u16 => ResponseValue::from_response(response).await,
                 _ => Err(Error::UnexpectedResponse(response)),
             }
         }
@@ -387416,6 +388325,7 @@ pub mod builder {
         filter_created_at_lt: Result<Option<::std::string::String>, String>,
         filter_created_at_lte: Result<Option<::std::string::String>, String>,
         filter_email: Result<Option<::std::string::String>, String>,
+        filter_scim_managed: Result<Option<bool>, String>,
         filter_search: Result<Option<::std::string::String>, String>,
         include: Result<Option<::std::string::String>, String>,
         page_number: Result<Option<i64>, String>,
@@ -387431,6 +388341,7 @@ pub mod builder {
                 filter_created_at_lt: Ok(None),
                 filter_created_at_lte: Ok(None),
                 filter_email: Ok(None),
+                filter_scim_managed: Ok(None),
                 filter_search: Ok(None),
                 include: Ok(None),
                 page_number: Ok(None),
@@ -387503,6 +388414,18 @@ pub mod builder {
                 });
             self
         }
+        pub fn filter_scim_managed<V>(mut self, value: V) -> Self
+        where
+            V: std::convert::TryInto<bool>,
+        {
+            self.filter_scim_managed = value
+                .try_into()
+                .map(Some)
+                .map_err(|_| {
+                    "conversion to `bool` for filter_scim_managed failed".to_string()
+                });
+            self
+        }
         pub fn filter_search<V>(mut self, value: V) -> Self
         where
             V: std::convert::TryInto<::std::string::String>,
@@ -387571,6 +388494,7 @@ pub mod builder {
                 filter_created_at_lt,
                 filter_created_at_lte,
                 filter_email,
+                filter_scim_managed,
                 filter_search,
                 include,
                 page_number,
@@ -387586,6 +388510,8 @@ pub mod builder {
             let filter_created_at_lte = filter_created_at_lte
                 .map_err(Error::InvalidRequest)?;
             let filter_email = filter_email.map_err(Error::InvalidRequest)?;
+            let filter_scim_managed = filter_scim_managed
+                .map_err(Error::InvalidRequest)?;
             let filter_search = filter_search.map_err(Error::InvalidRequest)?;
             let include = include.map_err(Error::InvalidRequest)?;
             let page_number = page_number.map_err(Error::InvalidRequest)?;
@@ -387634,6 +388560,12 @@ pub mod builder {
                 )
                 .query(
                     &progenitor_client::QueryParam::new("filter[email]", &filter_email),
+                )
+                .query(
+                    &progenitor_client::QueryParam::new(
+                        "filter[scim_managed]",
+                        &filter_scim_managed,
+                    ),
                 )
                 .query(
                     &progenitor_client::QueryParam::new("filter[search]", &filter_search),
@@ -387884,7 +388816,7 @@ pub mod builder {
         ///Sends a `GET` request to `/v1/users/{id}`
         pub async fn send(
             self,
-        ) -> Result<ResponseValue<types::UserResponse>, Error<()>> {
+        ) -> Result<ResponseValue<types::ScimUserResponse>, Error<()>> {
             let Self { client, id, include } = self;
             let id = id.map_err(Error::InvalidRequest)?;
             let include = include.map_err(Error::InvalidRequest)?;
